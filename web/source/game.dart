@@ -5,8 +5,6 @@ class Game extends Sprite {
   ResourceManager _resourceManager;
   Juggler _juggler;
   
-  var _mouseDownSubscription;
-  
   Game(ResourceManager resourceManager, Juggler juggler) {
     _resourceManager = resourceManager;
     _juggler = juggler;
@@ -16,7 +14,7 @@ class Game extends Sprite {
     background.y = 0;
     addChild(background);
     
-    var fleet = new Fleet(_resourceManager, _juggler);
+    var fleet = new Fleet(_resourceManager, _juggler, this);
     addChild(fleet);
   }
 }

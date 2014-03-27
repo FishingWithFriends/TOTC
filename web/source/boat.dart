@@ -1,16 +1,12 @@
 part of TOTC;
 
-class Boat extends Sprite {
+class Boat extends Sprite implements Touchable {
   
   ResourceManager _resourceManager;
   Juggler _juggler;
   
   Bitmap _boat;
   Bitmap _net;
-  
-  var _mouseDownSubscription;
-  var _mouseUpSubscription;
-  var _mouseMoveSubscription;
   
   bool _dragging = false;
   
@@ -20,28 +16,34 @@ class Boat extends Sprite {
     
     _boat = new Bitmap(_resourceManager.getBitmapData("BoatUp"));
     addChild(_boat);
-    
-    _mouseDownSubscription = this.onMouseDown.listen(_mouseClickDown);
-    _mouseUpSubscription = this.onMouseUp.listen(_mouseClickUp);
-    _mouseMoveSubscription = this.onMouseOut.listen(_mouseMove);
   }
   
-  void _mouseClickDown(MouseEvent e) {
-    print("3");
+  bool containsTouch(Contact e) {
+    return (e.touchX >= this.x &&
+            e.touchX <= this.x+this.width &&
+            e.touchY >= this.y &&
+            e.touchY <= this.y+this.height);
+  }
+   
+  bool touchDown(Contact event) {
     _dragging = true;
     removeChild(_boat);
     _boat = new Bitmap(_resourceManager.getBitmapData("BoatDown"));
     addChild(_boat);
+    return true;
   }
-  
-  void _mouseClickUp(MouseEvent e) {
-    print("2");
+   
+  void touchUp(Contact event) {
     removeChild(_boat);
     _boat = new Bitmap(_resourceManager.getBitmapData("BoatUp"));
     addChild(_boat);
   }
-  
-  void _mouseMove(MouseEvent e) {
-    print("1");
+   
+  void touchDrag(Contact event) {
+    
+  }
+   
+  void touchSlide(Contact event) {
+    
   }
 }
