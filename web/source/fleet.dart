@@ -15,10 +15,11 @@ class Fleet extends Sprite {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _game = game;
+    new Timer.periodic(const Duration(milliseconds : 40), (timer) => animate());
     
     tmanager.registerEvents(_game);
     tmanager.addTouchLayer(tlayer);
-
+    
     addBoat();
   }
   
@@ -28,5 +29,9 @@ class Fleet extends Sprite {
     _boat.y = 400;
     tlayer.touchables.add(_boat);
     addChild(_boat);
+  }
+  
+  void animate() {
+    _boat.animate();
   }
 }

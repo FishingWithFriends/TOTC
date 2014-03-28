@@ -2,6 +2,7 @@ library TOTC;
 
 import 'dart:html' as html;
 import 'dart:math' as math;
+import 'dart:async';
 import 'package:stagexl/stagexl.dart';
 
 part 'source/game.dart';
