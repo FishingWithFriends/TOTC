@@ -50,7 +50,7 @@ class Boat extends Sprite implements Touchable {
       num cx = _newX - x;
       num cy = _newY - y;
       num newAngle = math.atan2(cy, cx)+math.PI/2;
-      _rotateBoat(newAngle);
+      _rotateTowards(newAngle);
 
       x = x+SPEED*math.sin(rotation);
       y = y-SPEED*math.cos(rotation);
@@ -72,6 +72,7 @@ class Boat extends Sprite implements Touchable {
    
   void touchUp(Contact event) {
     _dragging = false;
+    _net.skewX = 0;
     _juggler.remove(_boatMove);
     _juggler.remove(_boatRotate);
     removeChild(_boat);
@@ -87,50 +88,41 @@ class Boat extends Sprite implements Touchable {
    
   void touchSlide(Contact event) { }
   
-  void _rotateBoat(num angle) {
+  void _rotateTowards(num angle) {
     num diff = angle-rotation;
     num newAngle;
     if (angle<0) newAngle = angle+2*math.PI-rotation;
     else newAngle = angle-2*math.PI-rotation;
     
     if (diff.abs() < newAngle.abs()) {
-      if (diff>0) {
-        if (ROT_SPEED>diff) {
-          rotation = angle;
-          _net.skewX = 0;
-        } else {
-          rotation = rotation + ROT_SPEED;
-          _net.skewX = 50;
-        }
-      }else {
-        if (-ROT_SPEED<diff) {
-          rotation = angle;
-          _net.skewX = 0;
-        } else {
-          rotation = rotation - ROT_SPEED;
-          _net.skewX = -50;
-        }
+      if (diff.abs() < ROT_SPEED) {
+        rotation = angle;
+        _net.skewX = 0;
+      } else if (diff > 0) {
+        _turnRight();
+      } else {
+        _turnLeft();
       }
     } else {
-      if (newAngle>0) {
-        if (ROT_SPEED>newAngle) {
-          rotation = angle;
-          _net.skewX = 0;
-        } else {
-          rotation = rotation + ROT_SPEED;
-          _net.skewX = 50;
-        }
+      if (newAngle.abs() < ROT_SPEED) {
+        rotation = angle;
+        _net.skewX = 0;
+      } else if (newAngle > 0) {
+        _turnRight();
       } else {
-        if (-ROT_SPEED<newAngle) {
-          rotation = angle;
-          _net.skewX = 0;
-        } else {
-          rotation = rotation - ROT_SPEED;
-          _net.skewX = -50;
-        }
+        _turnLeft();
       }
     }
     if (rotation<-math.PI) rotation = rotation + 2*math.PI;
     if (rotation>math.PI) rotation = rotation - 2*math.PI; 
+  }
+  
+  void _turnRight() {
+    _net.skewX = 50;
+    rotation = rotation + ROT_SPEED;
+  }
+  void _turnLeft() {
+    _net.skewX = -50;
+    rotation = rotation - ROT_SPEED;
   }
 }
