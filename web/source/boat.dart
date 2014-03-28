@@ -50,9 +50,6 @@ class Boat extends Sprite implements Touchable {
       num cx = _newX - x;
       num cy = _newY - y;
       num newAngle = math.atan2(cy, cx)+math.PI/2;
-      
-      print("newAngle: $newAngle rotation: $rotation");
-      
       _rotateBoat(newAngle);
 
       x = x+SPEED*math.sin(rotation);
@@ -100,28 +97,36 @@ class Boat extends Sprite implements Touchable {
       if (diff>0) {
         if (ROT_SPEED>diff) {
           rotation = angle;
+          _net.skewX = 0;
         } else {
           rotation = rotation + ROT_SPEED;
+          _net.skewX = 50;
         }
       }else {
         if (-ROT_SPEED<diff) {
           rotation = angle;
+          _net.skewX = 0;
         } else {
           rotation = rotation - ROT_SPEED;
+          _net.skewX = -50;
         }
       }
     } else {
       if (newAngle>0) {
         if (ROT_SPEED>newAngle) {
           rotation = angle;
+          _net.skewX = 0;
         } else {
           rotation = rotation + ROT_SPEED;
+          _net.skewX = 50;
         }
       } else {
         if (-ROT_SPEED<newAngle) {
           rotation = angle;
+          _net.skewX = 0;
         } else {
           rotation = rotation - ROT_SPEED;
+          _net.skewX = -50;
         }
       }
     }
