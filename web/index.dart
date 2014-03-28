@@ -21,6 +21,7 @@ void main() {
   var resourceManager = new ResourceManager();
   resourceManager.addBitmapData("BoatDown", "images/boat_down.png");
   resourceManager.addBitmapData("BoatUp", "images/boat_up.png");
+  resourceManager.addBitmapData("Net", "images/net.png");
   resourceManager.addBitmapData("Background", "images/background.png");
   
   resourceManager.load().then((res) {
