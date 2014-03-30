@@ -14,6 +14,8 @@ class Game extends Sprite {
     background.y = 0;
     addChild(background);
     
+    var ecosystem = new Ecosystem(_resourceManager, _juggler);
+    addChild(ecosystem);
     var fleet = new Fleet(_resourceManager, _juggler, this);
     addChild(fleet);
   }

@@ -3,12 +3,15 @@ library TOTC;
 import 'dart:html' as html;
 import 'dart:math' as math;
 import 'dart:async';
+
 import 'package:stagexl/stagexl.dart';
 
 part 'source/game.dart';
+part 'source/touch.dart';
 part 'source/fleet.dart';
 part 'source/boat.dart';
-part 'source/touch.dart';
+part 'source/ecosystem.dart';
+part 'source/fish.dart';
 
 void main() {
 
@@ -23,6 +26,7 @@ void main() {
   resourceManager.addBitmapData("BoatUp", "images/boat_up.png");
   resourceManager.addBitmapData("Net", "images/net.png");
   resourceManager.addBitmapData("Background", "images/background.png");
+  resourceManager.addBitmapData("Fish", "images/fish.png");
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler);
