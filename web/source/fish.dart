@@ -10,6 +10,7 @@ class Fish extends Bitmap implements Animatable {
   
   static const MIN_SEPARATION = 15;
   static const ROT_AWAY = math.PI/45;
+  static const ROT_SPEED = math.PI/8;
   
   Fish (BitmapData bitmapData, List<Fish> fishes) : super(bitmapData) {
     _fishes = fishes;
@@ -23,15 +24,15 @@ class Fish extends Bitmap implements Animatable {
     rotation = rot;
     
     rotateTimer = 0;
-    timerMax = random.nextInt(10) + 10;
+    timerMax = random.nextInt(5) + 10;
   }
   
   bool advanceTime(num time) {
     if (rotateTimer < timerMax) rotateTimer++;
     else {
-      timerMax = random.nextInt(10) + 10;
+      timerMax = random.nextInt(5) + 10;
       rotateTimer = 0;
-      rotation = _rotationChange(40);
+      rotation = _rotateTowards(_rotationChange(40));
     }
 
     var tx = x + math.cos(rotation)*v;
@@ -80,5 +81,33 @@ class Fish extends Bitmap implements Animatable {
   num _distanceTo(Fish f) {
     Point myP = new Point(x, y);
     return myP.distanceTo(new Point(f.x, f.y));
+  }
+  
+  num _rotateTowards(num angle) {
+    num diff = angle-rotation;
+    num newAngle, ret;
+    if (angle<0) newAngle = angle+2*math.PI-rotation;
+    else newAngle = angle-2*math.PI-rotation;
+    
+    if (diff.abs() < newAngle.abs()) {
+      if (diff.abs() < ROT_SPEED) {
+        ret = angle;
+      } else if (diff > 0) {
+        ret = rotation+ROT_SPEED;
+      } else {
+        ret = rotation-ROT_SPEED;
+      }
+    } else {
+      if (newAngle.abs() < ROT_SPEED) {
+        ret = angle;
+      } else if (newAngle > 0) {
+        ret = rotation+ROT_SPEED;
+      } else {
+        ret = rotation-ROT_SPEED;
+      }
+    }
+    if (ret<-math.PI) ret = ret + 2*math.PI;
+    if (ret>math.PI) ret = ret - 2*math.PI;
+    return ret;
   }
 }
