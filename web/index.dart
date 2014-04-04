@@ -30,6 +30,7 @@ void main() {
   resourceManager.addBitmapData("Background", "images/background.png");
   resourceManager.addBitmapData("Tuna", "images/tuna.png");
   resourceManager.addBitmapData("Shark", "images/shark.png");
+  resourceManager.addBitmapData("Sardine", "images/sardine.png");
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler);

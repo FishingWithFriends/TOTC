@@ -5,22 +5,19 @@ class Fish extends Bitmap implements Animatable {
   List<Fish> _fishes;
   Ecosystem _ecosystem;
   int _rotateTimer, _timerMax;
+  int _magicTimer, _magicTimerMax;
   var _random;
   
   num _v, _minSeparation, _eyesightRadius, _rotationSpeed, _dartV, _dartRotationSpeed;
-  int type, _hunger, _hungerMax, _foodType, _predType, _chompSize, _dartTimerMax, _dartTimer;
+  int type, _hunger, _hungerMax, _foodType, _predType, _dartTimerMax, _dartTimer;
   bool _flocking, _darting, _pouncing;
   Fish ate;
   
-  static const MIN_SEPARATION = 15;
-  static const ROT_AWAY = math.PI/8;
-  static const ROT_SPEED = math.PI/8;
-  
   Fish (BitmapData bitmapData, List<Fish> fishes, int t, Ecosystem eco) : super(bitmapData) {
     _fishes = fishes;
-    _random = new math.Random();
     type = t;
     _ecosystem = eco;
+    _random = _ecosystem.random;
     
     pivotX = width/2;
     pivotY = height/2;
@@ -35,30 +32,44 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 15;
       _rotationSpeed = math.PI/8;
       _hunger = 0;
-      _hungerMax = _ecosystem.random.nextInt(200) + 5000;
+      _hungerMax = _random.nextInt(200) + 2000;
       _foodType = Ecosystem.SARDINE;
       _predType = Ecosystem.SHARK;
-      _chompSize = -1;
-      _eyesightRadius = 150;
+      _eyesightRadius = 50;
       _dartV = 150;
       _dartRotationSpeed = math.PI/2;
       _flocking = true;
-      _dartTimerMax = _random.nextInt(5) + 15;
+      _dartTimerMax = _random.nextInt(5) + 150;
     }
-    if (type == Ecosystem.SHARK){
+    if (type == Ecosystem.SHARK) {
       _v = 1.5;
       _minSeparation = 50;
       _rotationSpeed = math.PI/45;
       _hunger = 0;
-      _hungerMax = _ecosystem.random.nextInt(200) + 5000;
+      _hungerMax = _random.nextInt(200) + 2000;
       _foodType = Ecosystem.TUNA;
       _predType = -1;
-      _chompSize = -1;
       _eyesightRadius = 75;
       _dartV = 20;
       _dartRotationSpeed = math.PI/8;
       _flocking = false;
-      _dartTimerMax = _random.nextInt(5) + 75;
+      _dartTimerMax = _random.nextInt(5) + 150;
+    }
+    if (type == Ecosystem.SARDINE) {
+      _v = 2;
+      _minSeparation = 1;
+      _rotationSpeed = math.PI/8;
+      _hunger = 0;
+      _hungerMax = _random.nextInt(200) + 5000;
+      _foodType = Ecosystem.MAGIC;
+      _predType = Ecosystem.TUNA;
+      _eyesightRadius = 50;
+      _dartV = 75;
+      _dartRotationSpeed = math.PI/2;
+      _flocking = true;
+      _dartTimerMax = _random.nextInt(5) + 30;
+      _magicTimer = 0;
+      _magicTimerMax = _random.nextInt(5) + 100;
     }
   }
   
@@ -67,6 +78,12 @@ class Fish extends Bitmap implements Animatable {
       _ecosystem.removeFish(this, Ecosystem.STARVATION);
       return true;
     } else _hunger++;
+    if (_foodType == Ecosystem.MAGIC) {
+      if (_magicTimer > _magicTimerMax) {
+        _hunger = _hunger - _hungerMax~/100;
+        _magicTimer = 0;
+      } else _magicTimer++;
+    }
     
     _dartTimer++;
     if (_rotateTimer < _timerMax) _rotateTimer++;
@@ -156,7 +173,7 @@ class Fish extends Bitmap implements Animatable {
         }
       }
     }
-    if (_tooClose(fishes)) return rotation+(_random.nextInt(2) - 1)*ROT_AWAY;
+    if (_tooClose(fishes)) return rotation+(_random.nextInt(2) - 1)*_rotationSpeed;
     else return _averageRotation(fishes);
   }
   

@@ -20,13 +20,15 @@ class Ecosystem extends Sprite {
     random = new math.Random();
 
     addFish(2, SHARK);
-    addFish(100, TUNA);
+    addFish(50, TUNA);
+    addFish(400, SARDINE);
   }
   
   void addFish(int n, int type) {
     var fishImage;
     if (type == TUNA) fishImage = _resourceManager.getBitmapData("Tuna");
     if (type == SHARK) fishImage = _resourceManager.getBitmapData("Shark");
+    if (type == SARDINE) fishImage = _resourceManager.getBitmapData("Sardine");
     
     while (--n >= 0) {
       var fish = new Fish(fishImage, fishes, type, this);

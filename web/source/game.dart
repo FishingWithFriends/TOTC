@@ -10,13 +10,11 @@ class Game extends Sprite {
     _juggler = juggler;
     
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
-    background.x = 0;
-    background.y = 0;
-    addChild(background);
-    
     var ecosystem = new Ecosystem(_resourceManager, _juggler);
-    addChild(ecosystem);
     var fleet = new Fleet(_resourceManager, _juggler, this);
+    
+    addChild(background);
+    addChild(ecosystem);
     addChild(fleet);
   }
 }
