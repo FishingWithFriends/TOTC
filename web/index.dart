@@ -10,8 +10,10 @@ part 'source/game.dart';
 part 'source/touch.dart';
 part 'source/fleet.dart';
 part 'source/boat.dart';
+part 'source/net.dart';
 part 'source/ecosystem.dart';
 part 'source/fish.dart';
+part 'source/movement.dart';
 
 void main() {
 
@@ -26,7 +28,8 @@ void main() {
   resourceManager.addBitmapData("BoatUp", "images/boat_up.png");
   resourceManager.addBitmapData("Net", "images/net.png");
   resourceManager.addBitmapData("Background", "images/background.png");
-  resourceManager.addBitmapData("Fish", "images/fish.png");
+  resourceManager.addBitmapData("Tuna", "images/tuna.png");
+  resourceManager.addBitmapData("Shark", "images/shark.png");
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler);

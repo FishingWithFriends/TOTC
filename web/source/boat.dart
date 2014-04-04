@@ -9,6 +9,7 @@ class Boat extends Sprite implements Touchable {
   
   Bitmap _boat;
   Bitmap _net;
+  Tween _netSkew;
   
   var _mouseDownSubscription;
   bool _dragging = false;
@@ -25,7 +26,7 @@ class Boat extends Sprite implements Touchable {
     _boat = new Bitmap(_resourceManager.getBitmapData("BoatUp"));
     _boat.addEventListener(Event.ADDED, _bitmapLoaded);
     addChild(_boat);
-
+    
     _newX = x;
     _newY = y;
     _mouseDownSubscription = this.onMouseDown.listen(_mouseDown);
@@ -50,7 +51,15 @@ class Boat extends Sprite implements Touchable {
       num cx = _newX - x;
       num cy = _newY - y;
       num newAngle = math.atan2(cy, cx)+math.PI/2;
-      _rotateTowards(newAngle);
+      num newRot = Movement.rotateTowards(newAngle, ROT_SPEED, rotation);
+      if ((newRot-rotation).abs() > ROT_SPEED/2) {
+        if (newRot>rotation) _turnRight();
+        if (newRot<rotation) _turnLeft();
+      } else {
+        _goStraight();
+      }
+      
+      rotation = newRot;
 
       x = x+SPEED*math.sin(rotation);
       y = y-SPEED*math.cos(rotation);
@@ -72,7 +81,7 @@ class Boat extends Sprite implements Touchable {
    
   void touchUp(Contact event) {
     _dragging = false;
-    _net.skewX = 0;
+    _goStraight();
     _juggler.remove(_boatMove);
     _juggler.remove(_boatRotate);
     removeChild(_boat);
@@ -118,11 +127,21 @@ class Boat extends Sprite implements Touchable {
   }
   
   void _turnRight() {
-    _net.skewX = 50;
-    rotation = rotation + ROT_SPEED;
+    _juggler.remove(_netSkew);
+    _netSkew = new Tween(_net, 1.5, TransitionFunction.linear);
+    _netSkew.animate.skewX.to(.4);
+    _juggler.add(_netSkew);
   }
   void _turnLeft() {
-    _net.skewX = -50;
-    rotation = rotation - ROT_SPEED;
+    _juggler.remove(_netSkew);
+    _netSkew = new Tween(_net, 1.5, TransitionFunction.linear);
+    _netSkew.animate.skewX.to(-.4);
+    _juggler.add(_netSkew);
   }
+  void _goStraight() {
+    _juggler.remove(_netSkew);
+    _netSkew = new Tween(_net, 1.0, TransitionFunction.linear);
+    _netSkew.animate.skewX.to(0);
+    _juggler.add(_netSkew);
+    }
 }
