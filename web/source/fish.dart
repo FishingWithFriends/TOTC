@@ -39,7 +39,7 @@ class Fish extends Bitmap implements Animatable {
       _dartV = 150;
       _dartRotationSpeed = math.PI/2;
       _flocking = true;
-      _dartTimerMax = _random.nextInt(80) + 30;
+      _dartTimerMax = _random.nextInt(200) + 200;
     }
     if (type == Ecosystem.SHARK) {
       _v = 1.5;
@@ -53,7 +53,7 @@ class Fish extends Bitmap implements Animatable {
       _dartV = 20;
       _dartRotationSpeed = math.PI/8;
       _flocking = false;
-      _dartTimerMax = _random.nextInt(80) + 30;
+      _dartTimerMax = _random.nextInt(200) + 100;
     }
     if (type == Ecosystem.SARDINE) {
       _v = 2;
