@@ -17,7 +17,6 @@ part 'source/movement.dart';
 
 void main() {
 
-  // setup the Stage and RenderLoop
   var canvas = html.querySelector('#stage');
   var stage = new Stage(canvas);
   var renderLoop = new RenderLoop();
@@ -28,6 +27,7 @@ void main() {
   resourceManager.addBitmapData("BoatUp", "images/boat_up.png");
   resourceManager.addBitmapData("Net", "images/net.png");
   resourceManager.addBitmapData("Background", "images/background.png");
+  resourceManager.addBitmapData("Mask", "images/mask.png");
   resourceManager.addBitmapData("Tuna", "images/tuna.png");
   resourceManager.addBitmapData("Shark", "images/shark.png");
   resourceManager.addBitmapData("Sardine", "images/sardine.png");

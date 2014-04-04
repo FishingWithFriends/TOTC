@@ -32,8 +32,8 @@ class Ecosystem extends Sprite {
     
     while (--n >= 0) {
       var fish = new Fish(fishImage, fishes, type, this);
-      fish.x = 1248 * random.nextInt(1);
-      fish.x = 702 * random.nextInt(1);
+      fish.x = random.nextInt(1248);
+      fish.y = random.nextInt(702);
       fish.rotation = random.nextDouble()*2*math.PI;;
       
       fishes.add(fish);
@@ -55,7 +55,7 @@ class Ecosystem extends Sprite {
       f.removeFromParent();
       var blood = new Shape();
       blood.graphics.circle(f.x, f.y, 5);
-      blood.graphics.fillColor(Color.Red);
+      blood.graphics.fillColor(Color.DarkRed);
       stage.addChild(blood);
       
       var t = new Tween(blood, 2.0, TransitionFunction.linear);
