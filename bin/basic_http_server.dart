@@ -1,28 +1,27 @@
-import 'dart:io';
-import 'package:http_server/http_server.dart';
+import 'dart:io' show File, HttpServer, Platform;
+import 'dart:async' show runZoned;
+import 'package:http_server/http_server.dart' show VirtualDirectory;
 
-main() {
+void main() {
+  // Assumes the server lives in bin/ and that `pub build` ran.
+  var buildUri = Platform.script.resolve('../build');
 
-  handleService(HttpRequest request) {
-    print('New service request');
-    request.response.write('[{"field":"value"}]');
-    request.response.close();
+  var staticFiles = new VirtualDirectory('../build/');
+  staticFiles
+      ..allowDirectoryListing = true
+      ..jailRoot = false
+      ..directoryHandler = (dir, request) {
+    var indexUri = new Uri.file(dir.path).resolve('index.html');
+    staticFiles.serveFile(new File(indexUri.toFilePath()), request);
   };
 
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 9999 : int.parse(portEnv);
-  
-  HttpServer.bind('0.0.0.0', port).then((HttpServer server) {
-    VirtualDirectory vd = new VirtualDirectory('../build/');
-    vd.jailRoot = false;
-    server.listen((request) { 
-      print("request.uri.path: " + request.uri.path);
-      if (request.uri.path == '/services') {
-        handleService(request);
-      } else {
-        print('File request');
-        vd.serveRequest(request);
-      } 
+
+  runZoned(() {
+    HttpServer.bind('0.0.0.0', port).then((server) {
+      server.listen(staticFiles.serveRequest);
     });
-  });
+  },
+  onError: (e, stackTrace) => print('Oh noes! $e $stackTrace'));
 }
