@@ -2,11 +2,6 @@ name: totc
 description: A sample web application
 dependencies:
   browser: any
-  hangouts_api: any
-  mime: any
-  polymer: any
-  route: any
+  http_server: any
+  path: any
   stagexl: any
-transformers:
-- polymer:
-    entry_points: web/index.html
