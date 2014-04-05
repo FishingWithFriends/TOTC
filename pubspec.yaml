@@ -5,3 +5,6 @@ dependencies:
   mime: any
   route: any
   stagexl: any
+transformers:
+- polymer:
+    entry_points: web/index.html
