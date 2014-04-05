@@ -30,7 +30,7 @@ class Fish extends Bitmap implements Animatable {
     if (type == Ecosystem.TUNA) {
       _v = 1.5;
       _minSeparation = 15;
-      _rotationSpeed = math.PI/8;
+      _rotationSpeed = math.PI/16;
       _hunger = 0;
       _hungerMax = _random.nextInt(200) + 2000;
       _foodType = Ecosystem.SARDINE;
@@ -63,7 +63,7 @@ class Fish extends Bitmap implements Animatable {
       _hungerMax = _random.nextInt(200) + 5000;
       _foodType = Ecosystem.MAGIC;
       _predType = Ecosystem.TUNA;
-      _eyesightRadius = 50;
+      _eyesightRadius = 75;
       _dartV = 75;
       _dartRotationSpeed = math.PI/2;
       _flocking = true;

@@ -2,4 +2,6 @@ name: totc
 description: A sample web application
 dependencies:
   browser: any
+  mime: any
+  route: any
   stagexl: any

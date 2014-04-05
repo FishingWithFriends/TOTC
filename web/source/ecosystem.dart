@@ -20,8 +20,8 @@ class Ecosystem extends Sprite {
     random = new math.Random();
 
     addFish(2, SHARK);
-    addFish(50, TUNA);
-    addFish(400, SARDINE);
+    addFish(25, TUNA);
+    addFish(200, SARDINE);
   }
   
   void addFish(int n, int type) {
