@@ -177,3 +177,158 @@ build.dart --machine --changed=build/web/images/background.png --changed=build/w
 
 build.dart finished [1134 ms]
 
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1211 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1146 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1143 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1131 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1139 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1164 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1184 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1169 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1166 ms]
+
+---
+build.dart --machine --changed=web/source/touch.dart
+
+build.dart finished [1194 ms]
+
+---
+build.dart --machine --changed=web/source/touch.dart
+
+build.dart finished [1183 ms]
+
+---
+build.dart --machine --changed=web/source/touch.dart
+
+build.dart finished [1171 ms]
+
+---
+build.dart --machine --changed=web/source/touch.dart
+
+build.dart finished [1158 ms]
+
+---
+build.dart --machine --changed=web/source/touch.dart
+
+build.dart finished [1147 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1169 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1171 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1155 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1186 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1172 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1164 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1179 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1187 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1184 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1177 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1194 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1272 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1138 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1122 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1118 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1216 ms]
+
+---
+build.dart --machine --changed=web/source/boat.dart
+
+build.dart finished [1319 ms]
+

@@ -1,11 +1,13 @@
 part of TOTC;
 
-class Boat extends Sprite implements Touchable {
+class Boat extends Sprite implements Touchable, Animatable {
   
   ResourceManager _resourceManager;
   Juggler _juggler;
   Tween _boatMove;
   Tween _boatRotate;
+  
+  int _type;
   
   Bitmap _boat;
   Bitmap _net;
@@ -15,13 +17,14 @@ class Boat extends Sprite implements Touchable {
   bool _dragging = false;
   num _newX, _newY;
   
-  static const num SPEED = 5; //pixels moved every 40ms
-  static const num ROT_SPEED = .1;
+  static const num SPEED = 2; //pixels moved every 40ms
+  static const num ROT_SPEED = .03;
   static const num PROXIMITY = 5; //finger must be PROXIMITY from boat to move
   
-  Boat(ResourceManager resourceManager, Juggler juggler) {
+  Boat(ResourceManager resourceManager, Juggler juggler, int type) {
     _resourceManager = resourceManager;
     _juggler = juggler;
+    _type = type;
     
     _boat = new Bitmap(_resourceManager.getBitmapData("BoatUp"));
     _boat.addEventListener(Event.ADDED, _bitmapLoaded);
@@ -46,7 +49,7 @@ class Boat extends Sprite implements Touchable {
      _net.y = y+_boat.height;
    }
    
-   void animate() {
+   bool advanceTime(num time) {
     if (_dragging && ((_newX-x).abs() > PROXIMITY || (_newY-y).abs() > PROXIMITY)) {
       num cx = _newX - x;
       num cy = _newY - y;
@@ -64,6 +67,7 @@ class Boat extends Sprite implements Touchable {
       x = x+SPEED*math.sin(rotation);
       y = y-SPEED*math.cos(rotation);
     }
+    return true;
   }
   
   void _mouseDown(MouseEvent e) { _dragging = true; }

@@ -22,6 +22,8 @@ class Ecosystem extends Sprite {
     addFish(2, SHARK);
     addFish(25, TUNA);
     addFish(200, SARDINE);
+    
+    //new Timer.periodic(const Duration(milliseconds : 40), (timer) => animate());
   }
   
   void addFish(int n, int type) {
