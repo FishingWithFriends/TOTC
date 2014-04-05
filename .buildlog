@@ -152,3 +152,28 @@ build.dart --machine --changed=build/web/images/background.png --changed=build/w
 
 build.dart finished [1129 ms]
 
+---
+build.dart --machine --changed=bin/main.dart
+
+build.dart finished [1122 ms]
+
+---
+build.dart --machine --changed=pubspec.lock
+
+build.dart finished [1137 ms]
+
+---
+build.dart --machine --full
+
+build.dart finished [1101 ms]
+
+---
+build.dart --machine --removed=build/web/images/background.png --removed=build/web/images/boat_down.png --remov...
+
+build.dart finished [1140 ms]
+
+---
+build.dart --machine --changed=build/web/images/background.png --changed=build/web/images/boat_down.png --chang...
+
+build.dart finished [1134 ms]
+
