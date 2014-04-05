@@ -17,7 +17,6 @@ class Fleet extends Sprite {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _game = game;
-    //new Timer.periodic(const Duration(milliseconds : 40), (timer) => animate());
     
     tmanager.registerEvents(_game);
     tmanager.addTouchLayer(tlayer);

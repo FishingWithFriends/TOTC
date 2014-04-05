@@ -332,3 +332,388 @@ build.dart --machine --changed=web/source/boat.dart
 
 build.dart finished [1319 ms]
 
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1136 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1131 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1143 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1142 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1142 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1143 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1122 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1145 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1155 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1313 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1178 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1240 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1177 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1266 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1200 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1186 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1180 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1138 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1134 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1189 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1168 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1173 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1187 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1164 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1167 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1171 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1260 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1287 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1248 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1123 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1115 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1529 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1129 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1477 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1298 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1165 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1123 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1113 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1114 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1118 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1125 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1128 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1130 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1139 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1118 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1333 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1208 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1162 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1150 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1497 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1120 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1136 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1129 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1358 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1316 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1352 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1320 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1224 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1166 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1217 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1211 ms]
+
+---
+build.dart --machine --changed=web/index.dart
+
+build.dart finished [1186 ms]
+
+---
+build.dart --machine --changed=web/source/game.dart
+
+build.dart finished [1190 ms]
+
+---
+build.dart --machine --changed=web/source/game.dart
+
+build.dart finished [1155 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1157 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1180 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1340 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1292 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1324 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1139 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1167 ms]
+
+---
+build.dart --machine --changed=web/source/fleet.dart
+
+build.dart finished [1145 ms]
+
+---
+build.dart --machine --changed=web/source/game.dart
+
+build.dart finished [1176 ms]
+
+---
+build.dart --machine --changed=web/index.dart
+
+build.dart finished [1162 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1313 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1251 ms]
+
+---
+build.dart --machine --changed=web/source/ecosystem.dart
+
+build.dart finished [1166 ms]
+
