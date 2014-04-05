@@ -9,7 +9,10 @@ main() {
     request.response.close();
   };
 
-  HttpServer.bind('127.0.0.1', 8888).then((HttpServer server) {
+  var portEnv = Platform.environment['PORT'];
+  var port = portEnv == null ? 9999 : int.parse(portEnv);
+  
+  HttpServer.bind('0.0.0.0', port).then((HttpServer server) {
     VirtualDirectory vd = new VirtualDirectory('../build/');
     vd.jailRoot = false;
     server.listen((request) { 
