@@ -1,0 +1,154 @@
+---
+build.dart --machine --changed=web/index.dart
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [105 ms]
+
+---
+build.dart --machine --changed=web/index.dart
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [52 ms]
+
+---
+build.dart --machine --changed=pubspec.lock
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [55 ms]
+
+---
+build.dart --machine --changed=Procfile.dart --removed=Procfile
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [54 ms]
+
+---
+build.dart --machine --changed=web/images/skinny_tuna.png --removed=web/images/tuna.png
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [55 ms]
+
+---
+build.dart --machine --changed=web/images/tuna.png
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [52 ms]
+
+---
+build.dart --machine --changed=Procfile --changed=web/images/tuna.png --removed=Procfile.dart --removed=web/ima...
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [56 ms]
+
+---
+build.dart --machine --clean
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [54 ms]
+
+---
+build.dart --machine --full
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [51 ms]
+
+---
+build.dart --machine --changed=bin/main.dart
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [50 ms]
+
+---
+build.dart --machine --changed=bin/main.dart
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [58 ms]
+
+---
+build.dart --machine --changed=bin/utils.dart
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [51 ms]
+
+---
+build.dart --machine --changed=bin/utils.dart
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [53 ms]
+
+---
+build.dart --machine --removed=web/source/util.dart
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [53 ms]
+
+---
+build.dart --machine --changed=pubspec.yaml
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [58 ms]
+
+---
+build.dart --machine --changed=pubspec.yaml
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [58 ms]
+
+---
+build.dart --machine --changed=pubspec.yaml
+Unable to open file: /Users/felixhu/Documents/totc/packages/polymer/builder.dart'file:///Users/felixhu/Documents/totc/build.dart': error: line 1 pos 1: library handler failed
+import 'package:polymer/builder.dart';
+^
+build.dart finished [51 ms]
+
+---
+build.dart --machine --changed=pubspec.yaml
+
+build.dart finished [1384 ms]
+
+---
+build.dart --machine --changed=pubspec.yaml
+
+build.dart finished [2145 ms]
+
+---
+build.dart --machine --clean
+
+build.dart finished [1204 ms]
+
+---
+build.dart --machine --full
+
+build.dart finished [1193 ms]
+
+---
+build.dart --machine --changed=pubspec.lock
+
+build.dart finished [1164 ms]
+
+---
+build.dart --machine --full
+
+build.dart finished [1348 ms]
+
+---
+build.dart --machine --changed=build/web/images/background.png --changed=build/web/images/boat_down.png --chang...
+
+build.dart finished [1129 ms]
+
