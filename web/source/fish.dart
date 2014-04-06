@@ -37,7 +37,7 @@ class Fish extends Bitmap implements Animatable {
       _hungerMax = _random.nextInt(200) + 2000;
       _foodType = Ecosystem.SARDINE;
       _predType = Ecosystem.SHARK;
-      _eyesightRadius = 50;
+      _eyesightRadius = 75;
       _dartV = 150;
       _dartRotationSpeed = math.PI/2;
       _flocking = true;
@@ -128,13 +128,13 @@ class Fish extends Bitmap implements Animatable {
       ty = y + math.sin(rotation)*_v;
     }
     
-    if (tx < 1248 && tx > 0) x = tx;
-    else if (tx > 1248) x = 0;
-    else x = 1248;
+    if (tx < Game.WIDTH && tx > 0) x = tx;
+    else if (tx > Game.WIDTH) x = 0;
+    else x = Game.WIDTH;
     
-    if (ty < 702 && ty > 0) y = ty;
-    else if (ty > 702) y = 0;
-    else y = 702;
+    if (ty < Game.HEIGHT && ty > 0) y = ty;
+    else if (ty > Game.HEIGHT) y = 0;
+    else y = Game.HEIGHT;
     
     return true;
   }

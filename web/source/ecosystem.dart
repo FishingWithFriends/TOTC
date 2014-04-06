@@ -59,8 +59,8 @@ class Ecosystem extends Sprite {
       
       while (--n >= 0) {
         var fish = new Fish(fishImage, fishes, type, this, _fleet.boats);
-        fish.x = random.nextInt(1)*1248;
-        fish.y = random.nextInt(1)*702;
+        fish.x = random.nextInt(1)*Game.WIDTH;
+        fish.y = random.nextInt(1)*Game.HEIGHT;
         fish.rotation = random.nextDouble()*2*math.PI;;
         
         fishes.add(fish);

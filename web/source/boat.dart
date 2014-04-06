@@ -9,11 +9,12 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   List<Fish> _fishes;
   Ecosystem _ecosystem;
+  Fleet _fleet;
   
   int _type;
   int _netMoney;
   
-  Bitmap _boat;
+  Bitmap boat;
   Bitmap _net;
   Tween _netSkew;
   
@@ -28,16 +29,17 @@ class Boat extends Sprite implements Touchable, Animatable {
   static const num PROXIMITY = 5; //finger must be PROXIMITY from boat to move
   static const num NET_CAPACITY = 500;
   
-  Boat(ResourceManager resourceManager, Juggler juggler, int type) {
+  Boat(ResourceManager resourceManager, Juggler juggler, int type, Fleet f) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _type = type;
     
     netHitBox = new Sprite();
     addChild(netHitBox);
-    _boat = new Bitmap(_resourceManager.getBitmapData("BoatUp"));
-    _boat.addEventListener(Event.ADDED, _bitmapLoaded);
-    addChild(_boat);
+    
+    _setBoatUp();
+    boat.addEventListener(Event.ADDED, _bitmapLoaded);
+    addChild(boat);
     
     _newX = x;
     _newY = y;
@@ -54,8 +56,8 @@ class Boat extends Sprite implements Touchable, Animatable {
    }
    
    void _netLoaded(Event e) {
-     _net.x = x-_net.width/2+_boat.width/2;
-     _net.y = y+_boat.height;
+     _net.x = x-_net.width/2+boat.width/2;
+     _net.y = y+boat.height;
      
      var shape = new Shape();
      shape.graphics.rect(_net.x, _net.y+20, _net.width, 5);
@@ -89,9 +91,9 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool touchDown(Contact event) {
     _dragging = true;
     
-    removeChild(_boat);
-    _boat = new Bitmap(_resourceManager.getBitmapData("BoatDown"));
-    addChild(_boat);
+    removeChild(boat);
+    _setBoatDown();
+    addChild(boat);
 
     return true;
   }
@@ -101,10 +103,10 @@ class Boat extends Sprite implements Touchable, Animatable {
     _goStraight();
     _juggler.remove(_boatMove);
     _juggler.remove(_boatRotate);
-    removeChild(_boat);
+    removeChild(boat);
     
-    _boat = new Bitmap(_resourceManager.getBitmapData("BoatUp"));
-    addChild(_boat);
+    _setBoatUp();
+    addChild(boat);
   }
    
   void touchDrag(Contact event) {
@@ -145,6 +147,16 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   void _increaseFishNet(int n) {
     
+  }
+  
+  void _setBoatUp(){
+    if (_type==Fleet.TEAM1SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatAUp"));
+    if (_type==Fleet.TEAM2SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatBUp"));
+  }
+  
+  void _setBoatDown() {
+    if (_type==Fleet.TEAM1SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatADown"));
+    if (_type==Fleet.TEAM2SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatBDown"));
   }
 
   void _turnRight() {

@@ -22,8 +22,10 @@ void main() {
   renderLoop.addStage(stage);
 
   var resourceManager = new ResourceManager();
-  resourceManager.addBitmapData("BoatDown", "images/boat_down.png");
-  resourceManager.addBitmapData("BoatUp", "images/boat_up.png");
+  resourceManager.addBitmapData("BoatADown", "images/boat_a_down.png");
+  resourceManager.addBitmapData("BoatAUp", "images/boat_a_up.png");
+  resourceManager.addBitmapData("BoatBDown", "images/boat_b_down.png");
+  resourceManager.addBitmapData("BoatBUp", "images/boat_b_up.png");
   resourceManager.addBitmapData("Net", "images/net.png");
   resourceManager.addBitmapData("Background", "images/background.png");
   resourceManager.addBitmapData("Mask", "images/mask.png");
