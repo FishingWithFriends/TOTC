@@ -2,6 +2,14 @@ part of TOTC;
 
 class Boat extends Sprite implements Touchable, Animatable {
   
+  static const num SPEED = 1.5; //pixels moved every 40ms
+  static const num ROT_SPEED = .02;
+  static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
+  static const num NET_CAPACITY = 500;
+  static const int RIGHT = 0;
+  static const int LEFT = 1;
+  static const int STRAIGHT = 2;
+  
   ResourceManager _resourceManager;
   Juggler _juggler;
   Tween _boatMove;
@@ -19,6 +27,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   Bitmap _boatImage;
   Bitmap _net;
   Tween _netSkew;
+  int _turnMode;
   
   Sprite netHitBox;
   int catchType;
@@ -26,11 +35,6 @@ class Boat extends Sprite implements Touchable, Animatable {
   var _mouseDownSubscription;
   bool _dragging = false;
   num _newX, _newY;
-  
-  static const num SPEED = 1.5; //pixels moved every 40ms
-  static const num ROT_SPEED = .01;
-  static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
-  static const num NET_CAPACITY = 500;
   
   Boat(ResourceManager resourceManager, Juggler juggler, int type, Fleet f) {
     _resourceManager = resourceManager;
@@ -43,6 +47,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     netHitBox = new Sprite();
     addChild(netHitBox);
+    _turnMode = STRAIGHT;
     
     boat = new Sprite();
     addChild(boat);
@@ -191,24 +196,30 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
 
   void _turnRight() {
-    _net.skewX = .3;
-//    _juggler.remove(_netSkew);
-//    _netSkew = new Tween(_net, .5, TransitionFunction.linear);
-//    _netSkew.animate.skewX.to(.6);
-//    _juggler.add(_netSkew);
+    if (_turnMode != RIGHT) {
+      _turnMode = RIGHT;
+      _juggler.remove(_netSkew);
+      _netSkew = new Tween(_net, .75, TransitionFunction.easeInQuadratic);
+      _netSkew.animate.skewX.to(.6);
+      _juggler.add(_netSkew);
+    }
   }
   void _turnLeft() {
-    _net.skewX = -.3;
-//    _juggler.remove(_netSkew);
-//    _netSkew = new Tween(_net, .5, TransitionFunction.linear);
-//    _netSkew.animate.skewX.to(-.6);
-//    _juggler.add(_netSkew);
+    if (_turnMode != LEFT) {
+      _turnMode = LEFT;
+      _juggler.remove(_netSkew);
+      _netSkew = new Tween(_net, .75, TransitionFunction.easeInQuadratic);
+      _netSkew.animate.skewX.to(-.6);
+      _juggler.add(_netSkew);
+    }
   }
   void _goStraight() {
-    _net.skewX = 0;
-//    _juggler.remove(_netSkew);
-//    _netSkew = new Tween(_net, .5, TransitionFunction.linear);
-//    _netSkew.animate.skewX.to(0);
-//    _juggler.add(_netSkew);
+    if (_turnMode != STRAIGHT) {
+      _turnMode = STRAIGHT;
+      _juggler.remove(_netSkew);
+      _netSkew = new Tween(_net, .75, TransitionFunction.easeInQuadratic);
+      _netSkew.animate.skewX.to(0);
+      _juggler.add(_netSkew);
     }
+  }
 }
