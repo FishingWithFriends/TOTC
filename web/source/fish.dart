@@ -34,14 +34,14 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 15;
       _rotationSpeed = math.PI/16;
       _hunger = 0;
-      _hungerMax = _random.nextInt(200) + 2000;
+      _hungerMax = _random.nextInt(200) + 5000;
       _foodType = Ecosystem.SARDINE;
       _predType = Ecosystem.SHARK;
-      _eyesightRadius = 75;
+      _eyesightRadius = 50;
       _dartV = 150;
       _dartRotationSpeed = math.PI/2;
       _flocking = true;
-      _dartTimerMax = _random.nextInt(200) + 200;
+      _dartTimerMax = _random.nextInt(100) + 50;
     }
     if (type == Ecosystem.SHARK) {
       _v = .6;
@@ -51,7 +51,7 @@ class Fish extends Bitmap implements Animatable {
       _hungerMax = _random.nextInt(200) + 2000;
       _foodType = Ecosystem.TUNA;
       _predType = -1;
-      _eyesightRadius = 75;
+      _eyesightRadius = 100;
       _dartV = 20;
       _dartRotationSpeed = math.PI/8;
       _flocking = false;
@@ -62,7 +62,7 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 1;
       _rotationSpeed = math.PI/8;
       _hunger = 0;
-      _hungerMax = _random.nextInt(200) + 5000;
+      _hungerMax = _random.nextInt(200) + 500;
       _foodType = Ecosystem.MAGIC;
       _predType = Ecosystem.TUNA;
       _eyesightRadius = 75;
@@ -71,7 +71,7 @@ class Fish extends Bitmap implements Animatable {
       _flocking = true;
       _dartTimerMax = _random.nextInt(5) + 30;
       _magicTimer = 0;
-      _magicTimerMax = _random.nextInt(5) + 100;
+      _magicTimerMax = _random.nextInt(550) + 50;
     }
   }
   
@@ -89,7 +89,8 @@ class Fish extends Bitmap implements Animatable {
     } else _hunger++;
     if (_foodType == Ecosystem.MAGIC) {
       if (_magicTimer > _magicTimerMax) {
-        _hunger = _hunger - _hungerMax~/100;
+        _hunger = 0;
+        _magicTimerMax = _random.nextInt(550) + 50;
         _magicTimer = 0;
       } else _magicTimer++;
     }

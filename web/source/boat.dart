@@ -66,6 +66,7 @@ class Boat extends Sprite implements Touchable, Animatable {
      
      _net = new Bitmap(_resourceManager.getBitmapData("Net"));
      _net.addEventListener(Event.ADDED, _netLoaded);
+     
      addChild(_net);
    }
    
@@ -94,6 +95,8 @@ class Boat extends Sprite implements Touchable, Animatable {
       
       rotation = newRot;
       _setNewLocation(newRot);
+    } else {
+      _goStraight();
     }
     return true;
   }
@@ -200,7 +203,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       _turnMode = RIGHT;
       _juggler.remove(_netSkew);
       _netSkew = new Tween(_net, .75, TransitionFunction.easeInQuadratic);
-      _netSkew.animate.skewX.to(.6);
+      _netSkew.animate.skewX.to(.4);
       _juggler.add(_netSkew);
     }
   }
@@ -209,7 +212,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       _turnMode = LEFT;
       _juggler.remove(_netSkew);
       _netSkew = new Tween(_net, .75, TransitionFunction.easeInQuadratic);
-      _netSkew.animate.skewX.to(-.6);
+      _netSkew.animate.skewX.to(-.4);
       _juggler.add(_netSkew);
     }
   }

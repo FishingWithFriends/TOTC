@@ -19,6 +19,8 @@ class Ecosystem extends Sprite {
   List<int> _babies = new List<int>(3);
   List<int> _fishCount = new List<int>(3);
   
+  BitmapData _tunaBloodData, _sardineBloodData;
+
   var random = new math.Random();
   
   Ecosystem(ResourceManager resourceManager, Juggler juggler, Fleet fleet) {
@@ -26,6 +28,9 @@ class Ecosystem extends Sprite {
     _juggler = juggler;
     _fleet = fleet;
     random = new math.Random();
+    
+    _tunaBloodData = _resourceManager.getBitmapData("TunaBlood");
+    _sardineBloodData = _resourceManager.getBitmapData("SardineBlood");
     
     _babies[TUNA] = 0;
     _babies[SARDINE] = 0;
@@ -35,7 +40,7 @@ class Ecosystem extends Sprite {
     _fishCount[SHARK] = 0;
 
     addFish(2, SHARK);
-    addFish(20, TUNA);
+    addFish(50, TUNA);
     addFish(200, SARDINE);
     
     new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
@@ -72,8 +77,6 @@ class Ecosystem extends Sprite {
   
   void removeFish(Fish f, int reason) {
     _juggler.remove(f);
-    this.removeChild(f);
-    f.removeFromParent();
     if (f.type == TUNA) {
       _fishCount[TUNA]--;
     }
@@ -86,22 +89,23 @@ class Ecosystem extends Sprite {
     if (reason == STARVATION) {
       var t = new Tween(f, 2.0, TransitionFunction.linear);
       t.animate.alpha.to(0);
-      t.onComplete = () => f.removeFromParent();
-      
       _juggler.add(t);
     }
     if (reason == EATEN) {
-      var blood = new Shape();
-      blood.graphics.circle(f.x, f.y, 5);
-      blood.graphics.fillColor(Color.DarkRed);
-      stage.addChild(blood);
+      Bitmap blood = new Bitmap();
+      if (f.type==SARDINE) blood.bitmapData=_sardineBloodData;
+      if (f.type==TUNA) blood.bitmapData = _tunaBloodData;
+      blood.x = f.x;
+      blood.y = f.y;
+      addChild(blood);
       
       var t = new Tween(blood, 2.0, TransitionFunction.linear);
       t.animate.alpha.to(0);
-      t.onComplete = () => blood.removeFromParent();
+      t.onComplete = () => removeChild(blood);
       
       _juggler.add(t);
     }
+    removeChild(f);
     fishes.remove(f);
   } 
   
