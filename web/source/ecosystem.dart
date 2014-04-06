@@ -7,21 +7,24 @@ class Ecosystem extends Sprite {
   static const MAGIC = 3;
   static const EATEN = 4;
   static const STARVATION = 5;
+  static const CAUGHT = 6;
   static const MAX_SHARK = 3;
   static const MAX_TUNA = 60;
   static const MAX_SARDINE = 400;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
+  Fleet _fleet;
   List<Fish> fishes = new List<Fish>();
   List<int> _babies = new List<int>(3);
   List<int> _fishCount = new List<int>(3);
   
   var random = new math.Random();
   
-  Ecosystem(ResourceManager resourceManager, Juggler juggler) {
+  Ecosystem(ResourceManager resourceManager, Juggler juggler, Fleet fleet) {
     _resourceManager = resourceManager;
     _juggler = juggler;
+    _fleet = fleet;
     random = new math.Random();
     
     _babies[TUNA] = 0;
@@ -55,7 +58,7 @@ class Ecosystem extends Sprite {
       }
       
       while (--n >= 0) {
-        var fish = new Fish(fishImage, fishes, type, this);
+        var fish = new Fish(fishImage, fishes, type, this, _fleet.boats);
         fish.x = random.nextInt(1)*1248;
         fish.y = random.nextInt(1)*702;
         fish.rotation = random.nextDouble()*2*math.PI;;
@@ -70,6 +73,7 @@ class Ecosystem extends Sprite {
   void removeFish(Fish f, int reason) {
     _juggler.remove(f);
     this.removeChild(f);
+    f.removeFromParent();
     if (f.type == TUNA) {
       _fishCount[TUNA]--;
     }
@@ -85,10 +89,8 @@ class Ecosystem extends Sprite {
       t.onComplete = () => f.removeFromParent();
       
       _juggler.add(t);
-      fishes.remove(f);
     }
     if (reason == EATEN) {
-      f.removeFromParent();
       var blood = new Shape();
       blood.graphics.circle(f.x, f.y, 5);
       blood.graphics.fillColor(Color.DarkRed);
@@ -99,8 +101,8 @@ class Ecosystem extends Sprite {
       t.onComplete = () => blood.removeFromParent();
       
       _juggler.add(t);
-      fishes.remove(f);
     }
+    fishes.remove(f);
   } 
   
   void _respawnFishes() {

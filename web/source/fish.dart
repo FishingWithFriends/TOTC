@@ -4,6 +4,7 @@ class Fish extends Bitmap implements Animatable {
 
   List<Fish> _fishes;
   Ecosystem _ecosystem;
+  List<Boat> _boats;
   int _rotateTimer, _timerMax;
   int _magicTimer, _magicTimerMax;
   var _random;
@@ -13,10 +14,11 @@ class Fish extends Bitmap implements Animatable {
   bool _flocking, _darting, _pouncing;
   Fish ate;
   
-  Fish (BitmapData bitmapData, List<Fish> fishes, int t, Ecosystem eco) : super(bitmapData) {
+  Fish (BitmapData bitmapData, List<Fish> fishes, int t, Ecosystem eco, List<Boat> boats) : super(bitmapData) {
     _fishes = fishes;
     type = t;
     _ecosystem = eco;
+    _boats = boats;
     _random = _ecosystem.random;
     
     pivotX = width/2;
@@ -74,6 +76,12 @@ class Fish extends Bitmap implements Animatable {
   }
   
   bool advanceTime(num time) {
+    for (int i=0; i<_boats.length; i++) {
+      if (hitTestObject(_boats[i].netHitBox)) {
+        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
+        return true;
+      }
+    }
     if (_hunger > _hungerMax) {
       _ecosystem.removeFish(this, Ecosystem.STARVATION);
       return true;

@@ -11,8 +11,8 @@ class Game extends Sprite {
     
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
     Bitmap mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
-    var ecosystem = new Ecosystem(_resourceManager, _juggler);
     var fleet = new Fleet(_resourceManager, _juggler, this);
+    var ecosystem = new Ecosystem(_resourceManager, _juggler, fleet);
     
     addChild(background);
     addChild(ecosystem);

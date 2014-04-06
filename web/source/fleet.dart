@@ -7,11 +7,12 @@ class Fleet extends Sprite {
   ResourceManager _resourceManager;
   Juggler _juggler;
   Game _game;
+  Ecosystem _ecosystem;
   
   TouchManager tmanager = new TouchManager();
   TouchLayer tlayer = new TouchLayer();
   
-  Boat _boat;
+  List<Boat> boats = new List<Boat>();
   
   Fleet(ResourceManager resourceManager, Juggler juggler, Game game) {
     _resourceManager = resourceManager;
@@ -25,11 +26,12 @@ class Fleet extends Sprite {
   }
   
   void addBoat(int type) {
-    _boat = new Boat(_resourceManager, _juggler, type);
-    _boat.x = 400;
-    _boat.y = 400;
-    tlayer.touchables.add(_boat);
-    addChild(_boat);
-    _juggler.add(_boat);
+    Boat boat = new Boat(_resourceManager, _juggler, type);
+    boat.x = 400;
+    boat.y = 400;
+    boats.add(boat);
+    tlayer.touchables.add(boat);
+    addChild(boat);
+    _juggler.add(boat);
   }
 }

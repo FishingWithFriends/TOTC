@@ -7,11 +7,17 @@ class Boat extends Sprite implements Touchable, Animatable {
   Tween _boatMove;
   Tween _boatRotate;
   
+  List<Fish> _fishes;
+  Ecosystem _ecosystem;
+  
   int _type;
+  int _netMoney;
   
   Bitmap _boat;
   Bitmap _net;
   Tween _netSkew;
+  
+  Sprite netHitBox;
   
   var _mouseDownSubscription;
   bool _dragging = false;
@@ -20,12 +26,15 @@ class Boat extends Sprite implements Touchable, Animatable {
   static const num SPEED = 2; //pixels moved every 40ms
   static const num ROT_SPEED = .03;
   static const num PROXIMITY = 5; //finger must be PROXIMITY from boat to move
+  static const num NET_CAPACITY = 500;
   
   Boat(ResourceManager resourceManager, Juggler juggler, int type) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _type = type;
     
+    netHitBox = new Sprite();
+    addChild(netHitBox);
     _boat = new Bitmap(_resourceManager.getBitmapData("BoatUp"));
     _boat.addEventListener(Event.ADDED, _bitmapLoaded);
     addChild(_boat);
@@ -47,6 +56,11 @@ class Boat extends Sprite implements Touchable, Animatable {
    void _netLoaded(Event e) {
      _net.x = x-_net.width/2+_boat.width/2;
      _net.y = y+_boat.height;
+     
+     var shape = new Shape();
+     shape.graphics.rect(_net.x, _net.y+20, _net.width, 5);
+     shape.graphics.fillColor(Color.Red);
+     netHitBox.addChild(shape);
    }
    
    bool advanceTime(num time) {
@@ -63,7 +77,6 @@ class Boat extends Sprite implements Touchable, Animatable {
       }
       
       rotation = newRot;
-
       x = x+SPEED*math.sin(rotation);
       y = y-SPEED*math.cos(rotation);
     }
@@ -130,6 +143,10 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (rotation>math.PI) rotation = rotation - 2*math.PI; 
   }
   
+  void _increaseFishNet(int n) {
+    
+  }
+
   void _turnRight() {
     _juggler.remove(_netSkew);
     _netSkew = new Tween(_net, 1.5, TransitionFunction.linear);
