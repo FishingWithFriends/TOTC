@@ -19,8 +19,9 @@ class Game extends Sprite {
     
     addChild(background);
     addChild(ecosystem);
-    addChild(mask);
+    
     addChild(fleet);
+    addChild(mask);
     
     this.onEnterFrame.listen(_onEnterFrame);
   }

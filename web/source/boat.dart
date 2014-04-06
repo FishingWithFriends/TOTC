@@ -13,19 +13,22 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   int _type;
   int _netMoney;
+  var random;
   
-  Bitmap boat;
+  Sprite boat;
+  Bitmap _boatImage;
   Bitmap _net;
   Tween _netSkew;
   
   Sprite netHitBox;
+  int catchType;
   
   var _mouseDownSubscription;
   bool _dragging = false;
   num _newX, _newY;
   
-  static const num SPEED = 2; //pixels moved every 40ms
-  static const num ROT_SPEED = .03;
+  static const num SPEED = 1.5; //pixels moved every 40ms
+  static const num ROT_SPEED = .01;
   static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
   static const num NET_CAPACITY = 500;
   
@@ -33,17 +36,23 @@ class Boat extends Sprite implements Touchable, Animatable {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _type = type;
+    _fleet = f;
+    random = new math.Random();
+    
+    if (type==Fleet.TEAM1SARDINE || type==Fleet.TEAM2SARDINE) catchType = Ecosystem.SARDINE;
     
     netHitBox = new Sprite();
     addChild(netHitBox);
     
-    _setBoatUp();
-    boat.addEventListener(Event.ADDED, _bitmapLoaded);
+    boat = new Sprite();
     addChild(boat);
+    _setBoatUp();
+    _boatImage.addEventListener(Event.ADDED, _bitmapLoaded);
+    boat.addChild(_boatImage);
     
     _newX = x;
     _newY = y;
-    _mouseDownSubscription = this.onMouseDown.listen(_mouseDown);
+    _mouseDownSubscription = boat.onMouseDown.listen(_mouseDown);
   }
   
    void _bitmapLoaded(Event e) {
@@ -79,8 +88,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       }
       
       rotation = newRot;
-      x = x+SPEED*math.sin(rotation);
-      y = y-SPEED*math.cos(rotation);
+      _setNewLocation(newRot);
     }
     return true;
   }
@@ -94,9 +102,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     _newX = event.touchX;
     _newY = event.touchY;
     
-    removeChild(boat);
+    boat.removeChild(_boatImage);
     _setBoatDown();
-    addChild(boat);
+    boat.addChild(_boatImage);
 
     return true;
   }
@@ -106,10 +114,10 @@ class Boat extends Sprite implements Touchable, Animatable {
     _goStraight();
     _juggler.remove(_boatMove);
     _juggler.remove(_boatRotate);
-    removeChild(boat);
+    boat.removeChild(_boatImage);
     
     _setBoatUp();
-    addChild(boat);
+    boat.addChild(_boatImage);
   }
    
   void touchDrag(Contact event) {
@@ -153,31 +161,54 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _setBoatUp(){
-    if (_type==Fleet.TEAM1SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatAUp"));
-    if (_type==Fleet.TEAM2SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatBUp"));
+    if (_type==Fleet.TEAM1SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatAUp"));
+    if (_type==Fleet.TEAM2SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBUp"));
   }
   
   void _setBoatDown() {
-    if (_type==Fleet.TEAM1SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatADown"));
-    if (_type==Fleet.TEAM2SARDINE) boat = new Bitmap(_resourceManager.getBitmapData("BoatBDown"));
+    if (_type==Fleet.TEAM1SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatADown"));
+    if (_type==Fleet.TEAM2SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBDown"));
+  }
+  
+  void _setNewLocation(num rot) {
+    num oldX = x;
+    num oldY = y;
+    x = x+SPEED*math.sin(rotation);
+    y = y-SPEED*math.cos(rotation);
+    for (int i=0; i<_fleet.boats.length; i++) {
+      Boat b = _fleet.boats[i];
+      if (b != this) {
+        Point p1 = new Point(x+boat.width/2, y+boat.height/2);
+        Point p2 = new Point(b.x+b.boat.width/2, b.y+b.boat.height/2);
+        if (p1.distanceTo(p2)<PROXIMITY*2.4) {
+          x = oldX;
+          y = oldY;
+        }
+        return;
+      }  
+    }
+    return;
   }
 
   void _turnRight() {
-    _juggler.remove(_netSkew);
-    _netSkew = new Tween(_net, 1.5, TransitionFunction.linear);
-    _netSkew.animate.skewX.to(.4);
-    _juggler.add(_netSkew);
+    _net.skewX = .3;
+//    _juggler.remove(_netSkew);
+//    _netSkew = new Tween(_net, .5, TransitionFunction.linear);
+//    _netSkew.animate.skewX.to(.6);
+//    _juggler.add(_netSkew);
   }
   void _turnLeft() {
-    _juggler.remove(_netSkew);
-    _netSkew = new Tween(_net, 1.5, TransitionFunction.linear);
-    _netSkew.animate.skewX.to(-.4);
-    _juggler.add(_netSkew);
+    _net.skewX = -.3;
+//    _juggler.remove(_netSkew);
+//    _netSkew = new Tween(_net, .5, TransitionFunction.linear);
+//    _netSkew.animate.skewX.to(-.6);
+//    _juggler.add(_netSkew);
   }
   void _goStraight() {
-    _juggler.remove(_netSkew);
-    _netSkew = new Tween(_net, 1.0, TransitionFunction.linear);
-    _netSkew.animate.skewX.to(0);
-    _juggler.add(_netSkew);
+    _net.skewX = 0;
+//    _juggler.remove(_netSkew);
+//    _netSkew = new Tween(_net, .5, TransitionFunction.linear);
+//    _netSkew.animate.skewX.to(0);
+//    _juggler.add(_netSkew);
     }
 }
