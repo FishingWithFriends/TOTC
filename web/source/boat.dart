@@ -26,7 +26,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   static const num SPEED = 2; //pixels moved every 40ms
   static const num ROT_SPEED = .03;
-  static const num PROXIMITY = 5; //finger must be PROXIMITY from boat to move
+  static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
   static const num NET_CAPACITY = 500;
   
   Boat(ResourceManager resourceManager, Juggler juggler, int type, Fleet f) {
@@ -90,6 +90,9 @@ class Boat extends Sprite implements Touchable, Animatable {
    
   bool touchDown(Contact event) {
     _dragging = true;
+    
+    _newX = event.touchX;
+    _newY = event.touchY;
     
     removeChild(boat);
     _setBoatDown();
