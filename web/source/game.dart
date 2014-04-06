@@ -18,5 +18,20 @@ class Game extends Sprite {
     addChild(ecosystem);
     addChild(mask);
     addChild(fleet);
+    
+    this.onEnterFrame.listen(_onEnterFrame);
   }
+  num _fpsAverage = null;
+
+  _onEnterFrame(EnterFrameEvent e) {
+
+    if (_fpsAverage == null) {
+      _fpsAverage = 1.00 / e.passedTime;
+    } else {
+      _fpsAverage = 0.05 / e.passedTime + 0.95 * _fpsAverage;
+    }
+
+    html.querySelector('#fpsMeter').innerHtml = 'fps: ${_fpsAverage.round()}';
+  }
+
 }

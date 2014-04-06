@@ -34,9 +34,9 @@ class Ecosystem extends Sprite {
     _fishCount[SARDINE] = 0;
     _fishCount[SHARK] = 0;
 
-    addFish(3, SHARK);
-    addFish(80, TUNA);
-    addFish(400, SARDINE);
+    addFish(2, SHARK);
+    addFish(20, TUNA);
+    addFish(200, SARDINE);
     
     new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
   }

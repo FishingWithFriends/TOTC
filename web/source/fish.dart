@@ -77,6 +77,7 @@ class Fish extends Bitmap implements Animatable {
   
   bool advanceTime(num time) {
     for (int i=0; i<_boats.length; i++) {
+      num rotDiff = (_boats[i].netHitBox.rotation-rotation).abs();
       if (hitTestObject(_boats[i].netHitBox)) {
         _ecosystem.removeFish(this, Ecosystem.CAUGHT);
         return true;
