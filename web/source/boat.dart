@@ -217,7 +217,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_turnMode != STRAIGHT) {
       _turnMode = STRAIGHT;
       _juggler.remove(_netSkew);
-      _netSkew = new Tween(_net, .75, TransitionFunction.easeInQuadratic);
+      _netSkew = new Tween(_net, .75, TransitionFunction.easeOutQuadratic);
       _netSkew.animate.skewX.to(0);
       _juggler.add(_netSkew);
     }
