@@ -34,14 +34,14 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 15;
       _rotationSpeed = math.PI/16;
       _hunger = 0;
-      _hungerMax = _random.nextInt(200) + 5000;
+      _hungerMax = _random.nextInt(200) + 2000;
       _foodType = Ecosystem.SARDINE;
       _predType = Ecosystem.SHARK;
-      _eyesightRadius = 50;
+      _eyesightRadius = 60;
       _dartV = 150;
       _dartRotationSpeed = math.PI/2;
       _flocking = true;
-      _dartTimerMax = _random.nextInt(100) + 50;
+      _dartTimerMax = _random.nextInt(50) + 50;
     }
     if (type == Ecosystem.SHARK) {
       _v = .6;
@@ -78,7 +78,8 @@ class Fish extends Bitmap implements Animatable {
   bool advanceTime(num time) {
     for (int i=0; i<_boats.length; i++) {
       num rotDiff = (_boats[i].netHitBox.rotation-rotation).abs();
-      if (_boats[i].catchType==type && hitTestObject(_boats[i].netHitBox)) {
+      if (_boats[i].catchType==type && _boats[i].canCatch && hitTestObject(_boats[i].netHitBox)) {
+        _boats[i].increaseFishNet(Ecosystem.SARDINE);
         _ecosystem.removeFish(this, Ecosystem.CAUGHT);
         return true;
       }
@@ -103,7 +104,7 @@ class Fish extends Bitmap implements Animatable {
       
       var newRot = _rotationChange(_eyesightRadius);
       if (_pouncing) {
-        _hunger = _hunger - _hungerMax~/10;
+        _hunger = _hunger - _hungerMax~/3;
         _pouncing = false;
         _darting = false;
         x = ate.x;

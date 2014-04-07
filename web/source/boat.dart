@@ -31,6 +31,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   Sprite netHitBox;
   int catchType;
+  bool canCatch;
+  bool _autoMove;
   
   var _mouseDownSubscription;
   bool _dragging = false;
@@ -47,7 +49,10 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     netHitBox = new Sprite();
     addChild(netHitBox);
+    canCatch = true;
+    _netMoney = 0;
     _turnMode = STRAIGHT;
+    _autoMove = false;
     
     boat = new Sprite();
     addChild(boat);
@@ -98,6 +103,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     } else {
       _goStraight();
     }
+    if (canCatch == false && _autoMove == false) {
+      //_goToDock();
+    }
     return true;
   }
   
@@ -135,37 +143,53 @@ class Boat extends Sprite implements Touchable, Animatable {
    
   void touchSlide(Contact event) { }
   
-  void _rotateTowards(num angle) {
-    num diff = angle-rotation;
-    num newAngle;
-    if (angle<0) newAngle = angle+2*math.PI-rotation;
-    else newAngle = angle-2*math.PI-rotation;
+  void increaseFishNet(int n) {
+    int worth;
+    if (n==Ecosystem.SARDINE) worth = 25;
+    if (n==Ecosystem.TUNA) worth = 100;
+    if (n==Ecosystem.SHARK) worth = 250;
+    _netMoney = _netMoney + worth;
     
-    if (diff.abs() < newAngle.abs()) {
-      if (diff.abs() < ROT_SPEED) {
-        rotation = angle;
-        _net.skewX = 0;
-      } else if (diff > 0) {
-        _turnRight();
-      } else {
-        _turnLeft();
-      }
-    } else {
-      if (newAngle.abs() < ROT_SPEED) {
-        rotation = angle;
-        _net.skewX = 0;
-      } else if (newAngle > 0) {
-        _turnRight();
-      } else {
-        _turnLeft();
-      }
+    if (_netMoney > NET_CAPACITY) {
+      canCatch = false;
     }
-    if (rotation<-math.PI) rotation = rotation + 2*math.PI;
-    if (rotation>math.PI) rotation = rotation - 2*math.PI; 
+    _changeNetGraphic();
   }
   
-  void _increaseFishNet(int n) {
+  void _goToDock() {
+    canCatch = false;
+    _autoMove = true;
+    Point p1;
+    if (_type == Fleet.TEAM1SARDINE) p1 = new Point(100-x, 100-y);
+    if (_type == Fleet.TEAM2SARDINE) p1 = new Point(Game.WIDTH-100-x, Game.HEIGHT-100-y);
     
+    num newAngle = math.atan2(p1.y, p1.x)+math.PI/2;
+    num newRot = Movement.rotateTowards(newAngle, 100, rotation);
+    num travelDistance = p1.distanceTo(new Point(x, y));
+    num secondsToRot = ((newRot-rotation)/ROT_SPEED).abs()/50;
+    num secondsToMove = (travelDistance/SPEED).abs()/50;
+    if (newRot>rotation) _turnRight();
+    if (newRot<rotation) _turnLeft();
+
+    var t1 = new Tween(this, secondsToRot, TransitionFunction.linear);
+    t1.animate.rotation.to(newRot);
+    t1.onComplete = _goStraight;
+    _juggler.add(t1);
+    var t2 = new Tween(this, secondsToMove, TransitionFunction.linear);
+    t2.delay = secondsToRot;
+    t2.animate.x.to(p1.x+x);
+    t2.animate.y.to(p1.y+y);
+    t2.onComplete = _depositFishes;
+    _juggler.add(t2);
+  }
+  
+  void _changeNetGraphic() {
+    
+  }
+  
+  void _depositFishes() {
+    _autoMove = false;
+    canCatch = true;
   }
   
   void _setBoatUp(){
