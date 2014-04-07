@@ -38,7 +38,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool canCatch;
   bool _autoMove;
   
-  var _mouseDownSubscription;
+  var _mouseDownSubscription, _touchDownSubscription;
   bool _dragging = false;
   num _newX, _newY;
   
@@ -70,6 +70,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _newX = x;
     _newY = y;
     _mouseDownSubscription = boat.onMouseDown.listen(_mouseDown);
+    _touchDownSubscription = boat.onTouchBegin.listen(_touchDown);
   }
   
    void _bitmapLoaded(Event e) {
@@ -116,6 +117,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _mouseDown(MouseEvent e) { _dragging = true; }
+  void _touchDown(TouchEvent e) { _dragging = true; }
   bool containsTouch(Contact e) => _dragging;
    
   bool touchDown(Contact event) {

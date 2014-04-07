@@ -66,7 +66,7 @@ class TouchManager {
       element.onTouchEnd.listen((e) => _touchUp(e));
         
       // Prevent screen from dragging on ipad
-      //document.onTouchMove.listen((e) => e.preventDefault());
+      html.document.onTouchMove.listen((e) => e.preventDefault());
   }
 
   
@@ -118,38 +118,33 @@ class TouchManager {
   }
    
    
-  void _touchDown(var tframe) {
-    for (TouchEvent touch in tframe.changedTouches) {
-      Contact t = new Contact.fromTouch(touch, parent);
-      TouchBinding target = findTouchTarget(t);
-      if (target != null) {
-        if (target.touchDown(t)) {
-          touch_bindings[t.id] = target;
-        }
+  void _touchDown(TouchEvent evt) {
+    Contact t = new Contact.fromTouch(evt);
+    TouchBinding target = findTouchTarget(t);
+    if (target != null) {
+      if (target.touchDown(t)) {
+        touch_bindings[-1] = target;
       }
     }
+    mdown = true;
   }
    
    
-  void _touchUp(var tframe) {
-    for (TouchEvent touch in tframe.changedTouches) {
-      Contact t = new Contact.fromTouch(touch, parent);
-      TouchBinding target = touch_bindings[t.id];
-      if (target != null) {
-        target.touchUp(t);
-        touch_bindings[t.id] = null;
-      }
+  void _touchUp(TouchEvent evt) {
+    TouchBinding target = touch_bindings[-1];
+    if (target != null) {
+      Contact c = new Contact.fromTouch(evt);
+      target.touchUp(c);
     }
-    if (tframe.touches.length == 0) {
-      touch_bindings.clear();
-    }
+    touch_bindings[-1] = null;
+    mdown = false;
   }
    
    
-  void _touchDrag(var tframe) {
-    for (TouchEvent touch in tframe.changedTouches) {
-      Contact t = new Contact.fromTouch(touch, parent);
-      TouchBinding target = touch_bindings[t.id];
+  void _touchDrag(TouchEvent evt) {
+    if (mdown) {
+      Contact t = new Contact.fromTouch(evt);
+      TouchBinding target = touch_bindings[-1];
       if (target != null) {
         target.touchDrag(t);
       } else {
@@ -303,12 +298,10 @@ class Contact {
   }
 
   
-  Contact.fromTouch(TouchEvent touch, Sprite parent) {
+  Contact.fromTouch(TouchEvent touch) {
     id = -1;
     touchX = touch.stageX.toDouble();
     touchY = touch.stageY.toDouble();
-    finger = true;
-
     finger = true;
   }
   
