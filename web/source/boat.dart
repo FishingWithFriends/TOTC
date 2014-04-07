@@ -25,11 +25,15 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   Sprite boat;
   Bitmap _boatImage;
+  
+  TextureAtlas _nets;
+  var _netNames;
   Bitmap _net;
   Tween _netSkew;
   int _turnMode;
   
   Sprite netHitBox;
+  Shape _netShapeHitBox;
   int catchType;
   bool canCatch;
   bool _autoMove;
@@ -43,9 +47,12 @@ class Boat extends Sprite implements Touchable, Animatable {
     _juggler = juggler;
     _type = type;
     _fleet = f;
+    _nets = resourceManager.getTextureAtlas('Nets');
     random = new math.Random();
     
     if (type==Fleet.TEAM1SARDINE || type==Fleet.TEAM2SARDINE) catchType = Ecosystem.SARDINE;
+    
+    _netNames = _nets.frameNames;
     
     netHitBox = new Sprite();
     addChild(netHitBox);
@@ -69,20 +76,19 @@ class Boat extends Sprite implements Touchable, Animatable {
      pivotX = width/2;
      pivotY = height/2;
      
-     _net = new Bitmap(_resourceManager.getBitmapData("Net"));
+     _net = new Bitmap(_nets.getBitmapData(_netNames[0]));
      _net.addEventListener(Event.ADDED, _netLoaded);
      
      addChild(_net);
    }
    
    void _netLoaded(Event e) {
-     _net.x = x-_net.width/2+boat.width/2;
-     _net.y = y+boat.height;
-     
-     var shape = new Shape();
-     shape.graphics.rect(_net.x, _net.y+20, _net.width, 5);
-     shape.graphics.fillColor(Color.Red);
-     netHitBox.addChild(shape);
+     _setNetPos();
+     if (_netShapeHitBox != null) netHitBox.removeChild(_netShapeHitBox);
+     _netShapeHitBox = new Shape();
+     _netShapeHitBox.graphics.rect(_net.x, _net.y+20, _net.width, 5);
+     _netShapeHitBox.graphics.fillColor(Color.Transparent);
+     netHitBox.addChild(_netShapeHitBox);
    }
    
    bool advanceTime(num time) {
@@ -145,7 +151,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   void increaseFishNet(int n) {
     int worth;
-    if (n==Ecosystem.SARDINE) worth = 25;
+    if (n==Ecosystem.SARDINE) worth = 5;
     if (n==Ecosystem.TUNA) worth = 100;
     if (n==Ecosystem.SHARK) worth = 250;
     _netMoney = _netMoney + worth;
@@ -184,7 +190,18 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _changeNetGraphic() {
+    num n = NET_CAPACITY/_netNames.length;
+    num i = _netMoney~/n;
+    if (_netMoney>0 && _netMoney< n+1) i = 1;
     
+    if (i<_netNames.length){ 
+      removeChild(_net);
+      
+      _net = new Bitmap(_nets.getBitmapData(_netNames[i]));
+      _net.addEventListener(Event.ADDED, _netLoaded);
+      
+      addChild(_net);
+    }
   }
   
   void _depositFishes() {
@@ -220,6 +237,11 @@ class Boat extends Sprite implements Touchable, Animatable {
       }  
     }
     return;
+  }
+  
+  void _setNetPos() {
+    _net.x = boat.width/2-_net.width/2;
+    _net.y = boat.height-19;
   }
 
   void _turnRight() {
