@@ -22,8 +22,8 @@ class Fleet extends Sprite{
     tmanager.registerEvents(_game);
     tmanager.addTouchLayer(tlayer);
     
-    addBoat(TEAM1SARDINE, 500, 350, math.PI/2);
-    addBoatFlightControl(TEAM2SARDINE, 850, 350, -math.PI/2);
+    addBoat(TEAM1SARDINE, 250, 175, math.PI/2);
+    addBoatFlightControl(TEAM2SARDINE, 425, 175, -math.PI/2);
   }
   
   void addBoat(int type, int x, int y, num rot) {

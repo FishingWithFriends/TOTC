@@ -3,7 +3,7 @@ part of TOTC;
 class Game extends Sprite {
   
   static const WIDTH = 700;
-  static const HEIGHT = 371;
+  static const HEIGHT = 351;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
