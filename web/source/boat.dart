@@ -2,8 +2,8 @@ part of TOTC;
 
 class Boat extends Sprite implements Touchable, Animatable {
   
-  static const num SPEED = 1.5; //pixels moved every 40ms
-  static const num ROT_SPEED = .2;
+  static const num SPEED = 5; //pixels moved every 40ms
+  static const num ROT_SPEED = .3;
   static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
   static const num NET_CAPACITY = 500;
   static const int RIGHT = 0;
@@ -310,10 +310,8 @@ class BoatFlightControl extends Boat{
   }
    
   bool advanceTime(num time) {
+    print(boatPath.length);
     if (boatPath.length > 1) {
-      print(boatPath);
-      print("${_newX}, ${_newY}");
-      print("${x}, ${y}");
       num cx = _newX - x;
       num cy = _newY - y;
       num newAngle = math.atan2(cy, cx)+math.PI/2;

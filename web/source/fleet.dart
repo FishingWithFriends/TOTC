@@ -1,6 +1,6 @@
 part of TOTC;
 
-class Fleet extends Sprite {
+class Fleet extends Sprite{
   static const TEAM1SARDINE = 1;
   static const TEAM2SARDINE = 2;
   
