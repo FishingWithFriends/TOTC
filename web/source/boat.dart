@@ -3,7 +3,7 @@ part of TOTC;
 class Boat extends Sprite implements Touchable, Animatable {
   
   static const num SPEED = 1.5; //pixels moved every 40ms
-  static const num ROT_SPEED = .02;
+  static const num ROT_SPEED = .2;
   static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
   static const num NET_CAPACITY = 500;
   static const int RIGHT = 0;
@@ -271,4 +271,102 @@ class Boat extends Sprite implements Touchable, Animatable {
       _juggler.add(_netSkew);
     }
   }
+}
+
+class BoatFlightControl extends Boat{
+  static const num SPEED = 5; //pixels moved every 40ms
+  static const num ROT_SPEED = 2*math.PI;
+  List<Point> boatPath;
+  
+  BoatFlightControl(ResourceManager resourceManager, Juggler juggler, int type, Fleet f):super(resourceManager, juggler, type, f){
+    boatPath = new List<Point>();
+    boatPath.add(new Point(x, y));
+  }
+  
+  
+  void touchDrag(Contact event) {
+    boatPath.add(new Point(event.touchX, event.touchY));
+  }
+  bool touchDown(Contact event) {
+    _dragging = true;
+    _newX = x;
+    _newY = y;
+    boatPath.clear();
+    //boatPath.add(new Point(x, y));
+    boat.removeChild(_boatImage);
+    _setBoatDown();
+    boat.addChild(_boatImage);
+
+    return true;
+  }
+   
+  void touchUp(Contact event) {
+    _dragging = false;
+    boat.removeChild(_boatImage);
+    _setBoatUp();
+    boat.addChild(_boatImage);
+  }
+   
+  bool advanceTime(num time) {
+    if (boatPath.length > 1) {
+      print(boatPath);
+      print("${_newX}, ${_newY}");
+      print("${x}, ${y}");
+      num cx = _newX - x;
+      num cy = _newY - y;
+      num newAngle = math.atan2(cy, cx)+math.PI/2;
+      num newRot = Movement.rotateTowards(newAngle, ROT_SPEED, rotation);
+      if ((newRot-rotation).abs() > ROT_SPEED/2) {
+        if (newRot>rotation) _turnRight();
+        if (newRot<rotation) _turnLeft();
+      } else {
+        _goStraight();
+      }
+      
+      rotation = newRot;
+      _setNewLocation(newRot);
+      if(_newX == x && _newY == y){
+        boatPath.removeAt(0);
+        _newX = boatPath[0].x;
+        _newY = boatPath[0].y;
+      }
+    } 
+    else {
+      _juggler.remove(_boatMove);
+      _juggler.remove(_boatRotate);
+    }
+    if (canCatch == false && _autoMove == false) {
+      //_goToDock();
+    }
+    return true;
+  }
+  
+  void _setNewLocation(num rot) {
+    num oldX = x;
+    num oldY = y;
+    var dist = math.sqrt(math.pow((_newX - x), 2) + math.pow((_newY - y), 2));
+    if(dist > SPEED){
+      x = x+SPEED*math.sin(rotation);
+      y = y-SPEED*math.cos(rotation);
+    }
+    else{
+      x = x+dist*math.sin(rotation);
+      y = y-dist*math.cos(rotation);
+    }
+
+    for (int i=0; i<_fleet.boats.length; i++) {
+      Boat b = _fleet.boats[i];
+      if (b != this) {
+        Point p1 = new Point(x+boat.width/2, y+boat.height/2);
+        Point p2 = new Point(b.x+b.boat.width/2, b.y+b.boat.height/2);
+        if (p1.distanceTo(p2)<Boat.PROXIMITY*2.4) {
+          x = oldX;
+          y = oldY;
+        }
+        return;
+      }  
+    }
+    return;
+  }
+  
 }

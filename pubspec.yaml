@@ -2,4 +2,5 @@ name: totc
 description: A sample web application
 dependencies:
   browser: any
+  math: any
   stagexl: any
