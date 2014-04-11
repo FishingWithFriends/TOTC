@@ -277,7 +277,7 @@ class Boat extends Sprite implements Touchable, Animatable {
 
 class BoatFlightControl extends Boat{
   static const num SPEED = 5; //pixels moved every 40ms
-  static const num ROT_SPEED = 2*math.PI;
+  static const num ROT_SPEED = .3;
   List<Point> boatPath;
   
   BoatFlightControl(ResourceManager resourceManager, Juggler juggler, int type, Fleet f):super(resourceManager, juggler, type, f){
