@@ -45,6 +45,7 @@ void main() {
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);
     stage.addChild(game);
+    stage.juggler.add(game);
   });
   
  Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
