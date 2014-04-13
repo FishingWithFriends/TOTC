@@ -17,6 +17,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   Fleet _fleet;
   Game _game;
   
+  bool _teamA;
+  
   int _type;
   int _netMoney;
   var random;
@@ -58,6 +60,8 @@ class Boat extends Sprite implements Touchable, Animatable {
     netCapacity = 250;
     
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE) catchType = Ecosystem.SARDINE;
+    if (type==Fleet.TEAMASARDINE) _teamA = true;
+    else _teamA = false;
     
     _netNames = _nets.frameNames;
     
@@ -95,6 +99,7 @@ class Boat extends Sprite implements Touchable, Animatable {
      _netShapeHitBox.graphics.rect(_net.x, _net.y+20, _net.width, 5);
      _netShapeHitBox.graphics.fillColor(Color.Transparent);
      netHitBox.addChild(_netShapeHitBox);
+     canCatch = false;
    }
    
    bool advanceTime(num time) {
@@ -164,29 +169,92 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _goToDock() {
+    num totalSeconds = 0;
+    num nextX = x;
+    num nextY = y;
+    num nextRot = rotation;
+    if ((_teamA && y<_fleet.dockHeight) ||
+        (y>_game.height-_fleet.dockHeight)) {
+      Point aboveDockP;
+      num newRot;
+      if (_teamA) {
+        aboveDockP = new Point(x, _fleet.dockHeight+80);
+        newRot = math.PI;
+      }
+      else {
+        aboveDockP = new Point(x, _game.height-_fleet.dockHeight-80);
+        newRot = 0;
+      }
+      num secondsToRot = (rotation-newRot).abs();
+      _rotateTo(newRot, secondsToRot, 0);
+      
+      num travelDistance = new Point(x, y).distanceTo(new Point(aboveDockP.x, aboveDockP.y));
+      num secondsToMove = (travelDistance/speed).abs()/30;
+      _moveTo(aboveDockP.x, aboveDockP.y, secondsToMove, secondsToRot);
+      
+      nextX = aboveDockP.x;
+      nextY = aboveDockP.y;
+      nextRot = newRot;
+      totalSeconds = totalSeconds+secondsToRot+secondsToMove;
+    }
     
+    Point frontOfDock = _fleet.findEmptyNet(_teamA);
+    if (_teamA) {
+      frontOfDock.y = _fleet.dockHeight+80;
+      frontOfDock.x = frontOfDock.x;
+    }
+    else {
+      frontOfDock.y = _game.height-_fleet.dockHeight-80;
+      frontOfDock.x = frontOfDock.x;
+    }
+    num cx = frontOfDock.x - nextX;
+    num cy = frontOfDock.y - nextY;
+    num newAngle = Movement.findMinimumAngle(nextRot, math.atan2(cy, cx)+math.PI/2);
+    num secondsToRot = (nextRot-newAngle).abs();
+    _rotateTo(newAngle, secondsToRot, totalSeconds);
     
-    Point p1;
-    if (_type == Fleet.TEAMASARDINE) p1 = new Point(100-x, 100-y);
-    if (_type == Fleet.TEAMBSARDINE) p1 = new Point(_game.width-100-x, _game.height-100-y);
+    num travelDistance = new Point(nextX, nextY).distanceTo(new Point(frontOfDock.x, frontOfDock.y));
+    num secondsToMove = (travelDistance/speed).abs()/30;
+    _moveTo(frontOfDock.x, frontOfDock.y, secondsToMove, totalSeconds+secondsToRot);
     
-    num newAngle = math.atan2(p1.y, p1.x)+math.PI/2;
-    num newRot = Movement.rotateTowards(newAngle, 100, rotation);
-    num travelDistance = p1.distanceTo(new Point(x, y));
-    num secondsToRot = ((newRot-rotation)/rotSpeed).abs()/50;
-    num secondsToMove = (travelDistance/speed).abs()/50;
-    if (newRot>rotation) _turnRight();
-    if (newRot<rotation) _turnLeft();
-
-    var t1 = new Tween(this, secondsToRot, TransitionFunction.linear);
+    nextX = frontOfDock.x;
+    nextY = frontOfDock.y;
+    nextRot = newAngle;
+    totalSeconds = totalSeconds+secondsToRot+secondsToMove;
+    
+    Point insideDock;
+    if (_teamA) {
+      insideDock = new Point(nextX+5, nextY-140);
+      newAngle = 0;
+    }
+    else {
+      insideDock = new Point(nextX+5, nextY+140);
+      newAngle = math.PI;
+    }
+    newAngle = Movement.findMinimumAngle(nextRot, newAngle);
+    secondsToRot = (nextRot-newAngle).abs();
+    _rotateTo(newAngle, secondsToRot, totalSeconds);
+    
+    travelDistance = new Point(nextX, nextY).distanceTo(new Point(insideDock.x, insideDock.y));
+    secondsToMove = (travelDistance/speed).abs()/30;
+    _moveTo(insideDock.x, insideDock.y, secondsToMove, totalSeconds+secondsToRot);
+  }
+  
+  void _rotateTo(num newRot, num secondsToRot, num delay) {
+    Tween t1 = new Tween(this, secondsToRot, TransitionFunction.linear);
     t1.animate.rotation.to(newRot);
+    t1.delay = delay;
     t1.onComplete = _goStraight;
+    if (newRot>rotation) _turnLeft();
+    else _turnRight();
     _juggler.add(t1);
-    var t2 = new Tween(this, secondsToMove, TransitionFunction.linear);
-    t2.delay = secondsToRot;
-    t2.animate.x.to(p1.x+x);
-    t2.animate.y.to(p1.y+y);
-    t2.onComplete = _depositFishes;
+  }
+  
+  void _moveTo(num newX, num newY, num secondsToMove, num delay) {
+    Tween t2 = new Tween(this, secondsToMove, TransitionFunction.linear);
+    t2.delay = delay;
+    t2.animate.x.to(newX);
+    t2.animate.y.to(newY);
     _juggler.add(t2);
   }
   

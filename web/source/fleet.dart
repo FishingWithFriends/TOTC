@@ -41,10 +41,10 @@ class Fleet extends Sprite {
           dockB[i] = new Dock(_game, this, i, false);
           addChild(dockB[i]);
         }
+        addBoat(TEAMASARDINE, _game.width~/2-150, _game.height~/2, math.PI/2);
+        addBoat(TEAMBSARDINE, _game.width~/2+150, _game.height~/2, -math.PI/2);
       });
     });
-    addBoat(TEAMASARDINE, _game.width~/2-150, _game.height~/2, math.PI/2);
-    addBoat(TEAMBSARDINE, _game.width~/2+150, _game.height~/2, -math.PI/2);
   }
   
   void addBoat(int type, int x, int y, num rot) {
@@ -56,6 +56,28 @@ class Fleet extends Sprite {
     tlayer.touchables.add(boat);
     addChild(boat);
     _juggler.add(boat);
+  }
+  
+  Point findEmptyNet(teamA) {
+    while (dockB[3].location == null) {}
+    Dock dock;
+    Point ret;
+    if (teamA) {
+      for (int i=0; i<3; i++) {
+        dock = dockA[i];
+        if (dock.filled == false) {
+          ret = new Point(dock.location.x, dock.location.y+80);
+        }
+      }
+    } else {
+      for (int i=0; i<3; i++) {
+        dock = dockB[i];
+        if (dock.filled == false) {
+          ret = new Point(dock.location.x, dock.location.y-80);
+        }
+      }
+    }
+    return ret;
   }
 }
 
@@ -70,14 +92,15 @@ class Dock extends Sprite{
     _game = game;
     _fleet = fleet;
     
+    if (teamA) location = new Point(_fleet.consoleWidth/2+Fleet.DOCK_SEPARATION/2+n*Fleet.DOCK_SEPARATION, Fleet.LARGE_DOCK_HEIGHT);
+    else location = new Point(_game.width-_fleet.consoleWidth/2-Fleet.DOCK_SEPARATION/2-n*Fleet.DOCK_SEPARATION, _game.height-Fleet.LARGE_DOCK_HEIGHT);
+    
     BitmapData.load('images/dock.png').then((bitmapData) {
       Bitmap bitmap = new Bitmap(bitmapData);
       if (teamA == true) {
-        location = new Point(_fleet.consoleWidth/2+Fleet.DOCK_SEPARATION/2+n*Fleet.DOCK_SEPARATION, Fleet.LARGE_DOCK_HEIGHT);
         bitmap.x = location.x-Fleet.DOCK_SEPARATION/2;
         bitmap.y = location.y;
       } else {
-        location = new Point(_game.width-_fleet.consoleWidth/2-Fleet.DOCK_SEPARATION/2-n*Fleet.DOCK_SEPARATION, _game.height-Fleet.LARGE_DOCK_HEIGHT);
         bitmap.x = location.x+Fleet.DOCK_SEPARATION/2;
         bitmap.y = location.y-_fleet.dockHeight;
       }
