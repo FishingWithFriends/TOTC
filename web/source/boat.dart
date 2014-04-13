@@ -3,7 +3,7 @@ part of TOTC;
 class Boat extends Sprite implements Touchable, Animatable {
   
   static const num SPEED = 1.5; //pixels moved every 40ms
-  static const num ROT_SPEED = .02;
+  static const num ROT_SPEED = .034;
   static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
   static const num NET_CAPACITY = 500;
   static const int RIGHT = 0;
@@ -18,6 +18,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   List<Fish> _fishes;
   Ecosystem _ecosystem;
   Fleet _fleet;
+  Game _game;
   
   int _type;
   int _netMoney;
@@ -42,11 +43,12 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool _dragging = false;
   num _newX, _newY;
   
-  Boat(ResourceManager resourceManager, Juggler juggler, int type, Fleet f) {
+  Boat(ResourceManager resourceManager, Juggler juggler, int type, Game game, Fleet f) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _type = type;
     _fleet = f;
+    _game = game;
     _nets = resourceManager.getTextureAtlas('Nets');
     random = new math.Random();
     
@@ -169,7 +171,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _autoMove = true;
     Point p1;
     if (_type == Fleet.TEAM1SARDINE) p1 = new Point(100-x, 100-y);
-    if (_type == Fleet.TEAM2SARDINE) p1 = new Point(Game.WIDTH-100-x, Game.HEIGHT-100-y);
+    if (_type == Fleet.TEAM2SARDINE) p1 = new Point(_game.width-100-x, _game.height-100-y);
     
     num newAngle = math.atan2(p1.y, p1.x)+math.PI/2;
     num newRot = Movement.rotateTowards(newAngle, 100, rotation);
@@ -196,7 +198,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     num i = _netMoney~/n;
     if (_netMoney>0 && _netMoney< n+1) i = 1;
     
-    if (i<_netNames.length){ 
+    if (i<_netNames.length){
       removeChild(_net);
       
       _net = new Bitmap(_nets.getBitmapData(_netNames[i]));

@@ -2,25 +2,31 @@ part of TOTC;
 
 class Game extends Sprite {
   
-  static const WIDTH = 1400;
-  static const HEIGHT = 742;
-  
   ResourceManager _resourceManager;
   Juggler _juggler;
   
-  Game(ResourceManager resourceManager, Juggler juggler) {
+  int width;
+  int height;
+  
+  Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
     _juggler = juggler;
+    width = w;
+    height = h;
     
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
     Bitmap mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
     var fleet = new Fleet(_resourceManager, _juggler, this);
-    var ecosystem = new Ecosystem(_resourceManager, _juggler, fleet);
+    var ecosystem = new Ecosystem(_resourceManager, _juggler, this, fleet);
     
+    background.width = width;
+    background.height = height;
     addChild(background);
     addChild(ecosystem);
     
     addChild(fleet);
+    mask.width = width;
+    mask.height = height;
     addChild(mask);
     
     this.onEnterFrame.listen(_onEnterFrame);

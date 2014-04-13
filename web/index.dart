@@ -16,7 +16,13 @@ part 'source/fish.dart';
 part 'source/movement.dart';
 
 void main() {
+  int height = html.window.innerHeight;
+  int width = html.window.innerWidth;
+  
   var canvas = html.querySelector('#stage');
+  canvas.width = width;
+  canvas.height = height;
+  
   var stage = new Stage(canvas);
   var renderLoop = new RenderLoop();
   renderLoop.addStage(stage);
@@ -36,7 +42,7 @@ void main() {
   resourceManager.addBitmapData("TunaBlood", "images/tuna_blood.png");
   
   resourceManager.load().then((res) {
-    var game = new Game(resourceManager, stage.juggler);
+    var game = new Game(resourceManager, stage.juggler, width, height);
     stage.addChild(game);
   });
   

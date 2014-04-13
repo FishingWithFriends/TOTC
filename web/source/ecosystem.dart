@@ -14,6 +14,7 @@ class Ecosystem extends Sprite {
   
   ResourceManager _resourceManager;
   Juggler _juggler;
+  Game game;
   Fleet _fleet;
   List<Fish> fishes = new List<Fish>();
   List<int> _babies = new List<int>(3);
@@ -23,10 +24,12 @@ class Ecosystem extends Sprite {
 
   var random = new math.Random();
   
-  Ecosystem(ResourceManager resourceManager, Juggler juggler, Fleet fleet) {
+  Ecosystem(ResourceManager resourceManager, Juggler juggler, Game g, Fleet fleet) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _fleet = fleet;
+    game = g;
+    
     random = new math.Random();
     
     _tunaBloodData = _resourceManager.getBitmapData("TunaBlood");
@@ -39,9 +42,9 @@ class Ecosystem extends Sprite {
     _fishCount[SARDINE] = 0;
     _fishCount[SHARK] = 0;
 
-    addFish(2, SHARK);
-    addFish(25, TUNA);
-    addFish(400, SARDINE);
+    addFish(0, SHARK);
+    addFish(0, TUNA);
+    addFish(100, SARDINE);
     
     new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
   }
@@ -64,8 +67,8 @@ class Ecosystem extends Sprite {
       
       while (--n >= 0) {
         var fish = new Fish(fishImage, fishes, type, this, _fleet.boats);
-        fish.x = random.nextInt(1)*Game.WIDTH;
-        fish.y = random.nextInt(1)*Game.HEIGHT;
+        fish.x = random.nextInt(1)*game.width;
+        fish.y = random.nextInt(1)*game.height;
         fish.rotation = random.nextDouble()*2*math.PI;;
         
         fishes.add(fish);

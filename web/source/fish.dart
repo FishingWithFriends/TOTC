@@ -130,13 +130,13 @@ class Fish extends Bitmap implements Animatable {
       ty = y + math.sin(rotation)*_v;
     }
     
-    if (tx < Game.WIDTH && tx > 0) x = tx;
-    else if (tx > Game.WIDTH) x = 0;
-    else x = Game.WIDTH;
+    if (tx < _ecosystem.game.width && tx > 0) x = tx;
+    else if (tx > _ecosystem.game.width) x = 0;
+    else x = _ecosystem.game.width;
     
-    if (ty < Game.HEIGHT && ty > 0) y = ty;
-    else if (ty > Game.HEIGHT) y = 0;
-    else y = Game.HEIGHT;
+    if (ty < _ecosystem.game.height && ty > 0) y = ty;
+    else if (ty > _ecosystem.game.height) y = 0;
+    else y = _ecosystem.game.height;
     
     return true;
   }

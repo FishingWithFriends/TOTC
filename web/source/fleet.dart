@@ -22,12 +22,12 @@ class Fleet extends Sprite {
     tmanager.registerEvents(_game);
     tmanager.addTouchLayer(tlayer);
     
-    addBoat(TEAM1SARDINE, 500, 350, math.PI/2);
-    addBoat(TEAM2SARDINE, 850, 350, -math.PI/2);
+    addBoat(TEAM1SARDINE, _game.width~/2-150, _game.height~/2, math.PI/2);
+    addBoat(TEAM2SARDINE, _game.width~/2+150, _game.height~/2, -math.PI/2);
   }
   
   void addBoat(int type, int x, int y, num rot) {
-    Boat boat = new Boat(_resourceManager, _juggler, type, this);
+    Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
     boat.x = x;
     boat.y = y;
     boat.rotation = rot;
