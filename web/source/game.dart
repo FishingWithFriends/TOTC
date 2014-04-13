@@ -42,15 +42,18 @@ class Game extends Sprite implements Animatable{
     
     this.onEnterFrame.listen(_onEnterFrame);
     
-    TextFormat format = new TextFormat("Arial", 40, Color.Green);
+    TextFormat format = new TextFormat("Arial", 40, Color.Green, align: "center");
     teamATextField = new TextField("\$0", format);
-    teamATextField..x = width~/2+10
-                  ..y = 60
-                  ..rotation = math.PI;
+    teamATextField.width = 300;
+    teamATextField.x = width~/2+teamATextField.width~/2;
+    teamATextField.y = 60;
+    teamATextField.rotation = math.PI;
     addChild(teamATextField);
+    
     teamBTextField = new TextField("\$0", format);
-    teamBTextField..x = width~/2+10
-                  ..y = height-60;
+    teamBTextField.width = 300;
+    teamBTextField.x = width~/2-teamBTextField.width~/2;
+    teamBTextField.y = height-60;
     addChild(teamBTextField);
   }
   num _fpsAverage = null;
