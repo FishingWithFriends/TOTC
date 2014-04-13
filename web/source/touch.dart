@@ -123,7 +123,7 @@ class TouchManager {
     TouchBinding target = findTouchTarget(t);
     if (target != null) {
       if (target.touchDown(t)) {
-        touch_bindings[-1] = target;
+        touch_bindings[t.id] = target;
       }
     }
     mdown = true;
@@ -131,27 +131,29 @@ class TouchManager {
    
    
   void _touchUp(TouchEvent evt) {
-    TouchBinding target = touch_bindings[-1];
+    Contact t = new Contact.fromTouch(evt);
+    TouchBinding target = touch_bindings[t.id];
     if (target != null) {
-      Contact c = new Contact.fromTouch(evt);
-      target.touchUp(c);
+      target.touchUp(t);
+      touch_bindings[t.id] = null;
     }
-    touch_bindings[-1] = null;
-    mdown = false;
+    bool touchExists = false;
+    for (int i=0;i<touch_bindings.length;i++) {
+      if (touch_bindings[i] != null) touchExists = true;
+    }
+    if (touchExists == false) touch_bindings.clear;
   }
    
    
   void _touchDrag(TouchEvent evt) {
-    if (mdown) {
-      Contact t = new Contact.fromTouch(evt);
-      TouchBinding target = touch_bindings[-1];
+    Contact t = new Contact.fromTouch(evt);
+    TouchBinding target = touch_bindings[t.id];
+    if (target != null) {
+      target.touchDrag(t);
+    } else {
+      target = findTouchTarget(t);
       if (target != null) {
-        target.touchDrag(t);
-      } else {
-        target = findTouchTarget(t);
-        if (target != null) {
-          target.touchSlide(t);
-        }
+        target.touchSlide(t);
       }
     }
   }
@@ -299,7 +301,7 @@ class Contact {
 
   
   Contact.fromTouch(TouchEvent touch) {
-    id = -1;
+    id = touch.touchPointID;
     touchX = touch.stageX.toDouble();
     touchY = touch.stageY.toDouble();
     finger = true;

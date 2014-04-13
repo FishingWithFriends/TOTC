@@ -4,7 +4,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   static const num SPEED = 1.5; //pixels moved every 40ms
   static const num ROT_SPEED = .034;
-  static const num PROXIMITY = 40; //finger must be PROXIMITY from boat to move
+  static const num PROXIMITY = 75; //finger must be PROXIMITY from boat to move
   static const num NET_CAPACITY = 500;
   static const int RIGHT = 0;
   static const int LEFT = 1;
@@ -39,8 +39,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool canCatch;
   bool _autoMove;
   
-  var _mouseDownSubscription, _touchDownSubscription;
   bool _dragging = false;
+  bool _touched = false;
   num _newX, _newY;
   
   Boat(ResourceManager resourceManager, Juggler juggler, int type, Game game, Fleet f) {
@@ -71,8 +71,6 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     _newX = x;
     _newY = y;
-    _mouseDownSubscription = boat.onMouseDown.listen(_mouseDown);
-    _touchDownSubscription = boat.onTouchBegin.listen(_touchDown);
   }
   
    void _bitmapLoaded(Event e) {
@@ -95,7 +93,7 @@ class Boat extends Sprite implements Touchable, Animatable {
    }
    
    bool advanceTime(num time) {
-    if (_dragging && ((_newX-x).abs() > PROXIMITY || (_newY-y).abs() > PROXIMITY)) {
+    if (_dragging && !_inProximity(_newX, _newY, PROXIMITY*.8)) {
       num cx = _newX - x;
       num cy = _newY - y;
       num newAngle = math.atan2(cy, cx)+math.PI/2;
@@ -117,10 +115,13 @@ class Boat extends Sprite implements Touchable, Animatable {
     }
     return true;
   }
-  
-  void _mouseDown(MouseEvent e) { _dragging = true; }
-  void _touchDown(TouchEvent e) { _dragging = true; }
-  bool containsTouch(Contact e) => _dragging;
+   
+  bool containsTouch(Contact e) {
+    if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
+      _dragging = true;
+      return true;
+    } else return false;
+  }
    
   bool touchDown(Contact event) {
     _dragging = true;
@@ -231,9 +232,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     for (int i=0; i<_fleet.boats.length; i++) {
       Boat b = _fleet.boats[i];
       if (b != this) {
-        Point p1 = new Point(x+boat.width/2, y+boat.height/2);
-        Point p2 = new Point(b.x+b.boat.width/2, b.y+b.boat.height/2);
-        if (p1.distanceTo(p2)<PROXIMITY*2.4) {
+        if (_inProximity(b.x, b.y, PROXIMITY)) {
           x = oldX;
           y = oldY;
         }
@@ -241,6 +240,15 @@ class Boat extends Sprite implements Touchable, Animatable {
       }  
     }
     return;
+  }
+  
+  bool _inProximity(num myX, num myY, num p) {
+    Point p1 = new Point(x, y);
+    Point p2 = new Point(myX, myY);
+    print("boat: $p1");
+    print("point $p2");
+    if (p1.distanceTo(p2)<p) return true;
+    else return false;
   }
   
   void _setNetPos() {
