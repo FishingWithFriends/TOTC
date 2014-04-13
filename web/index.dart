@@ -16,7 +16,7 @@ part 'source/fish.dart';
 part 'source/movement.dart';
 
 void main() {
-  int height = html.window.innerHeight;
+  int height = html.window.innerHeight-20;
   int width = html.window.innerWidth;
   
   var canvas = html.querySelector('#stage');
@@ -40,6 +40,7 @@ void main() {
   resourceManager.addBitmapData("Sardine", "images/sardine.png");
   resourceManager.addBitmapData("SardineBlood", "images/sardine_blood.png");
   resourceManager.addBitmapData("TunaBlood", "images/tuna_blood.png");
+  resourceManager.addBitmapData("Dock", "images/dock.png");
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);

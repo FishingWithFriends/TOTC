@@ -1,8 +1,11 @@
 part of TOTC;
 
 class Fleet extends Sprite {
-  static const TEAM1SARDINE = 1;
-  static const TEAM2SARDINE = 2;
+  static const TEAMASARDINE = 1;
+  static const TEAMBSARDINE = 2;
+  
+  static const DOCK_SEPARATION = 100;
+  static const LARGE_DOCK_HEIGHT = 0;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -13,6 +16,10 @@ class Fleet extends Sprite {
   TouchLayer tlayer = new TouchLayer();
   
   List<Boat> boats = new List<Boat>();
+  Map<int, Dock> dockA = new Map<int, Dock>();
+  Map<int, Dock> dockB = new Map<int, Dock>();
+  num consoleWidth;
+  num dockHeight;
   
   Fleet(ResourceManager resourceManager, Juggler juggler, Game game) {
     _resourceManager = resourceManager;
@@ -22,8 +29,22 @@ class Fleet extends Sprite {
     tmanager.registerEvents(_game);
     tmanager.addTouchLayer(tlayer);
     
-    addBoat(TEAM1SARDINE, _game.width~/2-150, _game.height~/2, math.PI/2);
-    addBoat(TEAM2SARDINE, _game.width~/2+150, _game.height~/2, -math.PI/2);
+    BitmapData.load('images/console.png').then((console) {
+      consoleWidth = console.width;
+      BitmapData.load("images/dock.png").then((bitmapData) {
+        dockHeight = bitmapData.height;
+        for (int i=0;i<4;i++) {
+          dockA[i] = new Dock(_game, this, i, true);
+          addChild(dockA[i]);
+        }
+        for (int i=0;i<4;i++) {
+          dockB[i] = new Dock(_game, this, i, false);
+          addChild(dockB[i]);
+        }
+      });
+    });
+    addBoat(TEAMASARDINE, _game.width~/2-150, _game.height~/2, math.PI/2);
+    addBoat(TEAMBSARDINE, _game.width~/2+150, _game.height~/2, -math.PI/2);
   }
   
   void addBoat(int type, int x, int y, num rot) {
@@ -35,5 +56,34 @@ class Fleet extends Sprite {
     tlayer.touchables.add(boat);
     addChild(boat);
     _juggler.add(boat);
+  }
+}
+
+class Dock extends Sprite{
+  Point location;
+  bool filled;
+  Game _game;
+  Fleet _fleet;
+  
+  Dock(Game game, Fleet fleet, int n, bool teamA) {
+    filled = false;
+    _game = game;
+    _fleet = fleet;
+    
+    BitmapData.load('images/dock.png').then((bitmapData) {
+      Bitmap bitmap = new Bitmap(bitmapData);
+      if (teamA == true) {
+        location = new Point(_fleet.consoleWidth/2+Fleet.DOCK_SEPARATION/2+n*Fleet.DOCK_SEPARATION, Fleet.LARGE_DOCK_HEIGHT);
+        bitmap.x = location.x-Fleet.DOCK_SEPARATION/2;
+        bitmap.y = location.y;
+      } else {
+        location = new Point(_game.width-_fleet.consoleWidth/2-Fleet.DOCK_SEPARATION/2-n*Fleet.DOCK_SEPARATION, _game.height-Fleet.LARGE_DOCK_HEIGHT);
+        bitmap.x = location.x+Fleet.DOCK_SEPARATION/2;
+        bitmap.y = location.y-_fleet.dockHeight;
+      }
+      addChild(bitmap);
+      
+      if (n == 3) filled = true;
+    });
   }
 }

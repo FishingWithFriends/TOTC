@@ -1,11 +1,8 @@
 part of TOTC;
 
 class Boat extends Sprite implements Touchable, Animatable {
-  
-  static const num SPEED = 1.5; //pixels moved every 40ms
-  static const num ROT_SPEED = .034;
+
   static const num PROXIMITY = 75; //finger must be PROXIMITY from boat to move
-  static const num NET_CAPACITY = 500;
   static const int RIGHT = 0;
   static const int LEFT = 1;
   static const int STRAIGHT = 2;
@@ -23,6 +20,10 @@ class Boat extends Sprite implements Touchable, Animatable {
   int _type;
   int _netMoney;
   var random;
+  
+  num speed;
+  num rotSpeed;
+  num netCapacity;
   
   Sprite boat;
   Bitmap _boatImage;
@@ -52,7 +53,11 @@ class Boat extends Sprite implements Touchable, Animatable {
     _nets = resourceManager.getTextureAtlas('Nets');
     random = new math.Random();
     
-    if (type==Fleet.TEAM1SARDINE || type==Fleet.TEAM2SARDINE) catchType = Ecosystem.SARDINE;
+    speed = 4;
+    rotSpeed = .1;
+    netCapacity = 250;
+    
+    if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE) catchType = Ecosystem.SARDINE;
     
     _netNames = _nets.frameNames;
     
@@ -93,31 +98,21 @@ class Boat extends Sprite implements Touchable, Animatable {
    }
    
    bool advanceTime(num time) {
+    if (_autoMove == true) return true;
+    if (canCatch == false) {
+      _autoMove = true;
+      _goToDock();
+    }
     if (_dragging && !_inProximity(_newX, _newY, PROXIMITY*.8)) {
-      num cx = _newX - x;
-      num cy = _newY - y;
-      num newAngle = math.atan2(cy, cx)+math.PI/2;
-      num newRot = Movement.rotateTowards(newAngle, ROT_SPEED, rotation);
-      if ((newRot-rotation).abs() > ROT_SPEED/2) {
-        if (newRot>rotation) _turnRight();
-        if (newRot<rotation) _turnLeft();
-      } else {
-        _goStraight();
-      }
-      
-      rotation = newRot;
-      _setNewLocation(newRot);
+      _setNewLocation();
     } else {
       _goStraight();
-    }
-    if (canCatch == false && _autoMove == false) {
-      //_goToDock();
     }
     return true;
   }
    
   bool containsTouch(Contact e) {
-    if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
+    if (_inProximity(e.touchX, e.touchY, PROXIMITY) && !_autoMove) {
       _dragging = true;
       return true;
     } else return false;
@@ -148,6 +143,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   void touchDrag(Contact event) {
+    
     _newX = event.touchX;
     _newY = event.touchY;
   }
@@ -161,24 +157,24 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (n==Ecosystem.SHARK) worth = 250;
     _netMoney = _netMoney + worth;
     
-    if (_netMoney > NET_CAPACITY) {
+    if (_netMoney > netCapacity) {
       canCatch = false;
     }
     _changeNetGraphic();
   }
   
   void _goToDock() {
-    canCatch = false;
-    _autoMove = true;
+    
+    
     Point p1;
-    if (_type == Fleet.TEAM1SARDINE) p1 = new Point(100-x, 100-y);
-    if (_type == Fleet.TEAM2SARDINE) p1 = new Point(_game.width-100-x, _game.height-100-y);
+    if (_type == Fleet.TEAMASARDINE) p1 = new Point(100-x, 100-y);
+    if (_type == Fleet.TEAMBSARDINE) p1 = new Point(_game.width-100-x, _game.height-100-y);
     
     num newAngle = math.atan2(p1.y, p1.x)+math.PI/2;
     num newRot = Movement.rotateTowards(newAngle, 100, rotation);
     num travelDistance = p1.distanceTo(new Point(x, y));
-    num secondsToRot = ((newRot-rotation)/ROT_SPEED).abs()/50;
-    num secondsToMove = (travelDistance/SPEED).abs()/50;
+    num secondsToRot = ((newRot-rotation)/rotSpeed).abs()/50;
+    num secondsToMove = (travelDistance/speed).abs()/50;
     if (newRot>rotation) _turnRight();
     if (newRot<rotation) _turnLeft();
 
@@ -195,7 +191,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _changeNetGraphic() {
-    num n = NET_CAPACITY/_netNames.length;
+    num n = netCapacity/_netNames.length;
     num i = _netMoney~/n;
     if (_netMoney>0 && _netMoney< n+1) i = 1;
     
@@ -215,38 +211,61 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _setBoatUp(){
-    if (_type==Fleet.TEAM1SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatAUp"));
-    if (_type==Fleet.TEAM2SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBUp"));
+    if (_type==Fleet.TEAMASARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatAUp"));
+    if (_type==Fleet.TEAMBSARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBUp"));
   }
   
   void _setBoatDown() {
-    if (_type==Fleet.TEAM1SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatADown"));
-    if (_type==Fleet.TEAM2SARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBDown"));
+    if (_type==Fleet.TEAMASARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatADown"));
+    if (_type==Fleet.TEAMBSARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBDown"));
   }
   
-  void _setNewLocation(num rot) {
+  bool _setNewLocation() {
+    num cx = _newX - x;
+    num cy = _newY - y;
+    num newAngle = math.atan2(cy, cx)+math.PI/2;
+    num newRot = Movement.rotateTowards(newAngle, rotSpeed, rotation);
+    if ((newRot-rotation).abs() > rotSpeed/2) {
+      if (newRot>rotation) _turnRight();
+      if (newRot<rotation) _turnLeft();
+    } else {
+      _goStraight();
+    }
     num oldX = x;
     num oldY = y;
-    x = x+SPEED*math.sin(rotation);
-    y = y-SPEED*math.cos(rotation);
+    
+    rotation = newRot;
+    x = x+speed*math.sin(rotation);
+    y = y-speed*math.cos(rotation);
+    
+    if (_collisionDetected()) {
+      x = oldX;
+      y = oldY;
+      rotation = Movement.rotateTowards(newAngle, rotSpeed, rotation);
+      return true;
+    } else {
+      return true;
+    }
+  }
+  
+  bool _collisionDetected() {
     for (int i=0; i<_fleet.boats.length; i++) {
       Boat b = _fleet.boats[i];
       if (b != this) {
         if (_inProximity(b.x, b.y, PROXIMITY)) {
-          x = oldX;
-          y = oldY;
+          return true;
         }
-        return;
       }  
     }
-    return;
+    if ((x>_fleet.consoleWidth/2 && x<_fleet.consoleWidth/2+Fleet.DOCK_SEPARATION*3 && y<_fleet.dockHeight && y>0) ||
+        (x<_game.width-_fleet.consoleWidth/2 && x>_game.width-_fleet.consoleWidth/2-Fleet.DOCK_SEPARATION*3 && y>_game.height-_fleet.dockHeight && y<_game.height))
+      return true;
+    return false;
   }
   
   bool _inProximity(num myX, num myY, num p) {
     Point p1 = new Point(x, y);
     Point p2 = new Point(myX, myY);
-    print("boat: $p1");
-    print("point $p2");
     if (p1.distanceTo(p2)<p) return true;
     else return false;
   }
