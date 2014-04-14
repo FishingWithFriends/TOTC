@@ -47,6 +47,18 @@ class Fleet extends Sprite {
     });
   }
   
+  void returnBoats() {
+    for (int i=0; i<boats.length; i++) {
+      boats[i].returnToDock();
+    }
+  }
+  
+  void reactivateBoats() {
+    for (int i=0; i<boats.length; i++) {
+      boats[i].fishingSeasonStart();
+    }
+  }
+  
   void addBoat(int type, num x, num y, num rot) {
     Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
     boat.x = x;
@@ -58,26 +70,26 @@ class Fleet extends Sprite {
     _juggler.add(boat);
   }
   
-  Point findEmptyNet(teamA) {
+  Dock findEmptyDock(teamA) {
     while (dockB[3].location == null) {}
     Dock dock;
-    Point ret;
     if (teamA) {
       for (int i=0; i<3; i++) {
         dock = dockA[i];
         if (dock.filled == false) {
-          ret = new Point(dock.location.x, dock.location.y+80);
+          dock.filled = true;
+          return dock;
         }
       }
     } else {
       for (int i=0; i<3; i++) {
         dock = dockB[i];
         if (dock.filled == false) {
-          ret = new Point(dock.location.x, dock.location.y-80);
+          dock.filled = true;
+          return dock;
         }
       }
     }
-    return ret;
   }
 }
 

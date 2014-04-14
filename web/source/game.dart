@@ -8,6 +8,9 @@ class Game extends Sprite implements Animatable{
   ResourceManager _resourceManager;
   Juggler _juggler;
   
+  Fleet _fleet;
+  Ecosystem _ecosystem;
+  
   bool gameStarted = false;
   
   int width;
@@ -19,7 +22,6 @@ class Game extends Sprite implements Animatable{
   int teamBMoney = 0;
   bool moneyChanged;
   
-  bool fishingSeason = true;
   Shape teamATimer = new Shape();
   Shape teamBTimer = new Shape();
   TextField teamATimerField, teamBTimerField;
@@ -29,8 +31,8 @@ class Game extends Sprite implements Animatable{
   
   bool buyPhase = false;
   int timer = 0;
-  int fishingTimerTick = 1;
-  int buyTimerTick = 1;
+  int fishingTimerTick = 3;
+  int buyTimerTick = 2;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -42,15 +44,15 @@ class Game extends Sprite implements Animatable{
     
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
     Bitmap mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
-    var fleet = new Fleet(_resourceManager, _juggler, this);
-    var ecosystem = new Ecosystem(_resourceManager, _juggler, this, fleet);
+    _fleet = new Fleet(_resourceManager, _juggler, this);
+    _ecosystem = new Ecosystem(_resourceManager, _juggler, this, _fleet);
     
     background.width = width;
     background.height = height;
     addChild(background);
-    addChild(ecosystem);
+    addChild(_ecosystem);
     
-    addChild(fleet);
+    addChild(_fleet);
     mask.width = width;
     mask.height = height;
     addChild(mask);
@@ -143,6 +145,7 @@ class Game extends Sprite implements Animatable{
     if (teamATimer.width<4 || teamBTimer.width<4) {
       if (buyPhase==true) {
         buyPhase = false;
+        _fleet.reactivateBoats();
         teamATimer.graphics.fillColor(Color.LightGreen);
         teamBTimer.graphics.fillColor(Color.LightGreen);
         teamATimerField.text = "Fishing season";
@@ -153,6 +156,7 @@ class Game extends Sprite implements Animatable{
         teamBTimer.width = FISHING_TIMER_WIDTH;
       } else {
         buyPhase = true;
+        _fleet.returnBoats();
         teamATimer.graphics.fillColor(Color.DarkRed);
         teamBTimer.graphics.fillColor(Color.DarkRed);
         teamATimerField.text = "Time left to buy";

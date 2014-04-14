@@ -22,6 +22,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   int _type;
   int _netMoney;
   var random;
+  Dock _dock;
   
   num speed;
   num rotSpeed;
@@ -58,7 +59,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     random = new math.Random();
     
     _inDock = true;
-    canCatch = false;
+    canCatch = true;
     _canMove = false;
     _autoMove = false;
     
@@ -146,47 +147,89 @@ class Boat extends Sprite implements Touchable, Animatable {
       
       _net = new Bitmap(_nets.getBitmapData(_netNames[i]));
       _net.addEventListener(Event.ADDED, _netLoaded);
-      
       addChildAt(_net, 0);
     }
   }
   
   void _unloadNet() {
     _goStraight();
+    _canMove = false;
+    _autoMove = true;
+    _inDock = true;
+    canCatch = false;
     
     if (_teamA) _game.teamAMoney = _game.teamAMoney+_netMoney;
     else _game.teamBMoney = _game.teamBMoney+_netMoney;
     _game.moneyChanged = true;
-    
-    _netMoney = 0;
-    _changeNetGraphic();
-    Bitmap b = new Bitmap(_nets.getBitmapData(_netNames[_netNames.length-1]));
-    b.x = _net.x;
-    b.y = _net.y;
-    addChild(b);
-    Tween t = new Tween(b, 3, TransitionFunction.linear);
+
+    Tween t = new Tween(_net, 3, TransitionFunction.linear);
     t.animate.alpha.to(0);
     t.onComplete = _netUnloaded;
     _juggler.add(t);
   }
   
   void _netUnloaded() {
-    if (_teamA) {
-      _moveTo(x, y+250, 3, 0, null);
-      _rotateTo(Movement.findMinimumAngle(rotation, math.PI*3/4), 1, 2, _boatReady);
-    }
-    else {
-      _moveTo(x, y-250, 3, 0, null);
-      _rotateTo(Movement.findMinimumAngle(rotation, -math.PI*1/4), 1, 2, _boatReady);
-    }
+    _netMoney = 0;
+    _changeNetGraphic();
   }
   
   void _boatReady() {
     _goStraight();
+    _inDock = false;
     _canMove = true;
     canCatch = true;
     _autoMove = false;
+    if (_dock != null) 
+      _dock.filled = false;
+    _dock = null;
+  }
+  
+  void _leaveDock() {
+    _canMove = false;
+    _autoMove = true;
     _inDock = false;
+    if (_teamA) {
+      _moveTo(x, y+250, 1.25, 0, null);
+      num newRot = Movement.findMinimumAngle(rotation, math.PI*3/4);
+      _rotateTo(newRot, (rotation-newRot).abs()/1.25, 1.25, _boatReady);
+    }
+    else {
+      _moveTo(x, y-250, 1.25, 0, null);
+      num newRot = Movement.findMinimumAngle(rotation, -math.PI*1/4);
+      _rotateTo(newRot, (rotation-newRot).abs()/1.25, 1.25, _boatReady);
+    }
+  }
+  
+  void fishingSeasonStart() {
+    _inDock = true;
+    canCatch = false;
+  }
+  
+  void returnToDock() {
+    _juggler.removeTweens(this);
+    if (_dock != null) _dock.filled = false;
+    
+    Tween t1 = new Tween(this, 2, TransitionFunction.linear);
+    t1.animate.alpha.to(0);
+    _juggler.add(t1);
+    
+    _dock = _fleet.findEmptyDock(_teamA);
+    Point frontOfDock = new Point(_dock.location.x, _dock.location.y);
+    Tween t2 = new Tween(this, 0, TransitionFunction.linear);
+    t2.animate.x.to(frontOfDock.x+5);
+    t2.animate.y.to(frontOfDock.y);
+    if (_teamA) {
+      t2.animate.rotation.to(math.PI);
+      t2.animate.y.to(frontOfDock.y+_fleet.dockHeight/2);
+    }
+    else { 
+      t2.animate.rotation.to(0);
+      t2.animate.y.to(frontOfDock.y-_fleet.dockHeight/2);
+    }
+    t2.delay = 2;
+    t2.animate.alpha.to(1);
+    t2.onComplete = _unloadNet;
+    _juggler.add(t2);
   }
   
   void _setBoatUp(){
@@ -320,7 +363,8 @@ class Boat extends Sprite implements Touchable, Animatable {
       totalSeconds = totalSeconds+secondsToRot+secondsToMove;
     }
     
-    Point frontOfDock = _fleet.findEmptyNet(_teamA);
+    _dock = _fleet.findEmptyDock(_teamA);
+    Point frontOfDock = new Point(_dock.location.x, _dock.location.y);
     if (_teamA) {
       frontOfDock.y = _fleet.dockHeight+80;
       frontOfDock.x = frontOfDock.x;
@@ -384,18 +428,16 @@ class Boat extends Sprite implements Touchable, Animatable {
    
   bool containsTouch(Contact e) {
     if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
-      _dragging = true;
       return true;
     }
     return false;
   }
    
   bool touchDown(Contact event) {
-    _dragging = true;
-    
-    if (_inDock==true) {
+    if (_inDock==true && _game.buyPhase==false) {
       _game.gameStarted = true;
-      _netUnloaded();
+      _leaveDock();
+      return true;
     }
     if (_canMove==true) {
       _newX = event.touchX;
@@ -404,6 +446,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       boat.removeChild(_boatImage);
       _setBoatDown();
       boat.addChild(_boatImage);
+      _dragging = true;
     }
 
     return true;
@@ -421,7 +464,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   void touchDrag(Contact event) {
-    if (_canMove==true) {
+    if (_canMove==true && _dragging==true) {
       _newX = event.touchX;
       _newY = event.touchY;
     }
