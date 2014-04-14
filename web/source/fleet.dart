@@ -41,13 +41,13 @@ class Fleet extends Sprite {
           dockB[i] = new Dock(_game, this, i, false);
           addChild(dockB[i]);
         }
-        addBoat(TEAMASARDINE, _game.width~/2-150, _game.height~/2, math.PI/2);
-        addBoat(TEAMBSARDINE, _game.width~/2+150, _game.height~/2, -math.PI/2);
+        addBoat(TEAMASARDINE, dockA[2].location.x+5, dockA[2].location.y+dockHeight/2, math.PI);
+        addBoat(TEAMBSARDINE, dockB[2].location.x+5, dockB[2].location.y-dockHeight/2, 0);
       });
     });
   }
   
-  void addBoat(int type, int x, int y, num rot) {
+  void addBoat(int type, num x, num y, num rot) {
     Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
     boat.x = x;
     boat.y = y;

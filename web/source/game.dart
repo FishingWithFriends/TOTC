@@ -2,8 +2,13 @@ part of TOTC;
 
 class Game extends Sprite implements Animatable{
   
+  static const FISHING_TIMER_WIDTH = 350;
+  static const BUY_TIMER_WIDTH = 150;
+  
   ResourceManager _resourceManager;
   Juggler _juggler;
+  
+  bool gameStarted = false;
   
   int width;
   int height;
@@ -14,8 +19,18 @@ class Game extends Sprite implements Animatable{
   int teamBMoney = 0;
   bool moneyChanged;
   
+  bool fishingSeason = true;
+  Shape teamATimer = new Shape();
+  Shape teamBTimer = new Shape();
+  TextField teamATimerField, teamBTimerField;
+  
+  int moneyTimer = 0;
+  int moneyTimerMax = 2;
+  
+  bool buyPhase = false;
   int timer = 0;
-  int timerMax = 2;
+  int fishingTimerTick = 1;
+  int buyTimerTick = 1;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -42,7 +57,7 @@ class Game extends Sprite implements Animatable{
     
     this.onEnterFrame.listen(_onEnterFrame);
     
-    TextFormat format = new TextFormat("Arial", 40, Color.Green, align: "center");
+    TextFormat format = new TextFormat("Arial", 40, Color.Green, align: "center", bold:true);
     teamATextField = new TextField("\$0", format);
     teamATextField.width = 300;
     teamATextField.x = width~/2+teamATextField.width~/2;
@@ -55,6 +70,30 @@ class Game extends Sprite implements Animatable{
     teamBTextField.x = width~/2-teamBTextField.width~/2;
     teamBTextField.y = height-60;
     addChild(teamBTextField);
+    
+    teamATimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
+    teamATimer.x = width-400;
+    teamATimer.y = 20;
+    teamATimer.graphics.fillColor(Color.LightGreen);
+    addChild(teamATimer);
+    
+    format = new TextFormat("Arial", 14, Color.LightYellow, align: "left");
+    teamATimerField = new TextField("Fishing season", format);
+    teamATimerField.x = width-50;
+    teamATimerField.y = 55;
+    teamATimerField.rotation = math.PI;
+    addChild(teamATimerField);
+    
+    teamBTimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
+    teamBTimer.x = 50;
+    teamBTimer.y = height-20;
+    teamBTimer.graphics.fillColor(Color.LightGreen);
+    addChild(teamBTimer);
+    
+    teamBTimerField = new TextField("Fishing season", format);
+    teamBTimerField.x = 50;
+    teamBTimerField.y = height-45;
+    addChild(teamBTimerField);
   }
   num _fpsAverage = null;
 
@@ -70,8 +109,10 @@ class Game extends Sprite implements Animatable{
   }
   
   bool advanceTime(num time) {
-    if (timer>timerMax) {
-      timer = 0;
+    if (gameStarted == false) return true;
+    
+    if (moneyTimer>moneyTimerMax) {
+      moneyTimer = 0;
       if (moneyChanged == true) {
         var x = teamATextField.text.substring(1);
         int a = int.parse(teamATextField.text.substring(1));
@@ -91,7 +132,37 @@ class Game extends Sprite implements Animatable{
           teamBTextField.text = "\$$b";
         }
       }
+    } else moneyTimer++;
+    
+    if ((timer>buyTimerTick && buyPhase==true) || (timer>fishingTimerTick && buyPhase==false)) {
+      timer = 0;
+      teamATimer.width = teamATimer.width-2;
+      teamATimer.x = teamATimer.x +2;
+      teamBTimer.width = teamBTimer.width-2;
     } else timer++;
+    if (teamATimer.width<4 || teamBTimer.width<4) {
+      if (buyPhase==true) {
+        buyPhase = false;
+        teamATimer.graphics.fillColor(Color.LightGreen);
+        teamBTimer.graphics.fillColor(Color.LightGreen);
+        teamATimerField.text = "Fishing season";
+        teamBTimerField.text = "Fishing season";
+        
+        teamATimer.x = width-FISHING_TIMER_WIDTH-50;
+        teamATimer.width = FISHING_TIMER_WIDTH;
+        teamBTimer.width = FISHING_TIMER_WIDTH;
+      } else {
+        buyPhase = true;
+        teamATimer.graphics.fillColor(Color.DarkRed);
+        teamBTimer.graphics.fillColor(Color.DarkRed);
+        teamATimerField.text = "Time left to buy";
+        teamBTimerField.text = "Time left to buy";
+        
+        teamATimer.x = width-BUY_TIMER_WIDTH-50;
+        teamATimer.width = BUY_TIMER_WIDTH;
+        teamBTimer.width = BUY_TIMER_WIDTH;
+      }
+    }
     return true;
   }
 }

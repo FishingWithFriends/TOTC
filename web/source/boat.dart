@@ -42,6 +42,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool canCatch;
   bool _canMove;
   bool _autoMove;
+  bool _inDock;
   
   bool _dragging = false;
   bool _touched = false;
@@ -56,6 +57,11 @@ class Boat extends Sprite implements Touchable, Animatable {
     _nets = resourceManager.getTextureAtlas('Nets');
     random = new math.Random();
     
+    _inDock = true;
+    canCatch = false;
+    _canMove = false;
+    _autoMove = false;
+    
     speed = 4;
     rotSpeed = .1;
     netCapacity = 50;
@@ -65,14 +71,10 @@ class Boat extends Sprite implements Touchable, Animatable {
     else _teamA = false;
     
     _netNames = _nets.frameNames;
-    
     netHitBox = new Sprite();
     addChild(netHitBox);
-    canCatch = true;
-    _canMove = true;
     _netMoney = 0;
     _turnMode = STRAIGHT;
-    _autoMove = false;
     
     boat = new Sprite();
     addChild(boat);
@@ -184,6 +186,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _canMove = true;
     canCatch = true;
     _autoMove = false;
+    _inDock = false;
   }
   
   void _setBoatUp(){
@@ -380,15 +383,20 @@ class Boat extends Sprite implements Touchable, Animatable {
 
    
   bool containsTouch(Contact e) {
-    if (_inProximity(e.touchX, e.touchY, PROXIMITY) && !_autoMove) {
+    if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
       _dragging = true;
       return true;
-    } else return false;
+    }
+    return false;
   }
    
   bool touchDown(Contact event) {
     _dragging = true;
     
+    if (_inDock==true) {
+      _game.gameStarted = true;
+      _netUnloaded();
+    }
     if (_canMove==true) {
       _newX = event.touchX;
       _newY = event.touchY;
