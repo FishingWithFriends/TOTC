@@ -15,7 +15,7 @@ class Game extends Sprite implements Animatable{
   bool moneyChanged;
   
   int timer = 0;
-  int timerMax = 3;
+  int timerMax = 2;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;

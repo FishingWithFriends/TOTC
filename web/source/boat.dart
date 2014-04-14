@@ -91,7 +91,7 @@ class Boat extends Sprite implements Touchable, Animatable {
      _net = new Bitmap(_nets.getBitmapData(_netNames[0]));
      _net.addEventListener(Event.ADDED, _netLoaded);
      
-     addChild(_net);
+     addChildAt(_net, 0);
    }
    
    void _netLoaded(Event e) {
@@ -145,7 +145,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       _net = new Bitmap(_nets.getBitmapData(_netNames[i]));
       _net.addEventListener(Event.ADDED, _netLoaded);
       
-      addChild(_net);
+      addChildAt(_net, 0);
     }
   }
   
@@ -155,17 +155,20 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_teamA) _game.teamAMoney = _game.teamAMoney+_netMoney;
     else _game.teamBMoney = _game.teamBMoney+_netMoney;
     _game.moneyChanged = true;
-
-    Tween t = new Tween(_net, 3, TransitionFunction.linear);
+    
+    _netMoney = 0;
+    _changeNetGraphic();
+    Bitmap b = new Bitmap(_nets.getBitmapData(_netNames[_netNames.length-1]));
+    b.x = _net.x;
+    b.y = _net.y;
+    addChild(b);
+    Tween t = new Tween(b, 3, TransitionFunction.linear);
     t.animate.alpha.to(0);
     t.onComplete = _netUnloaded;
     _juggler.add(t);
   }
   
   void _netUnloaded() {
-    _netMoney = 0;
-    _changeNetGraphic();
-    
     if (_teamA) {
       _moveTo(x, y+250, 3, 0, null);
       _rotateTo(Movement.findMinimumAngle(rotation, math.PI*3/4), 1, 2, _boatReady);
