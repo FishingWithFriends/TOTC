@@ -19,6 +19,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   bool _teamA;
   
+  Sprite _console;
+  
   int _type;
   int _netMoney;
   var random;
@@ -63,9 +65,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     _canMove = false;
     _autoMove = false;
     
-    speed = 4;
-    rotSpeed = .1;
-    netCapacity = 50;
+    speed = 3;
+    rotSpeed = .03;
+    netCapacity = 250;
     
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE) catchType = Ecosystem.SARDINE;
     if (type==Fleet.TEAMASARDINE) _teamA = true;
@@ -124,6 +126,26 @@ class Boat extends Sprite implements Touchable, Animatable {
     return true;
   }
   
+  void clearConsole() {
+    if (_fleet.contains(_console)) _fleet.removeChild(_console);
+  }
+   
+  void _loadConsole() {
+    _fleet.clearOtherConsoles(_teamA);
+    if (_fleet.contains(_console)) _fleet.removeChild(_console);
+    
+    _console = new Console(_resourceManager, _juggler, _game, _fleet, this);
+    if (_teamA) {
+      _console.x = x+_fleet.consoleWidth/2;
+      _console.y = 2.8*_fleet.dockHeight;
+      _console.rotation = math.PI;
+    } else {
+      _console.x = x-_fleet.consoleWidth/2;
+      _console.y = _game.height-2.8*_fleet.dockHeight;
+    }
+    _fleet.addChild(_console);
+  }
+  
   void increaseFishNet(int n) {
     int worth;
     if (n==Ecosystem.SARDINE) worth = 5;
@@ -162,10 +184,15 @@ class Boat extends Sprite implements Touchable, Animatable {
     else _game.teamBMoney = _game.teamBMoney+_netMoney;
     _game.moneyChanged = true;
 
-    Tween t = new Tween(_net, 3, TransitionFunction.linear);
+    Tween t = new Tween(_net, 2, TransitionFunction.linear);
     t.animate.alpha.to(0);
     t.onComplete = _netUnloaded;
     _juggler.add(t);
+    
+    if (_game.buyPhase==true) {
+      _loadConsole();
+      _fleet.addButtons();
+    }
   }
   
   void _netUnloaded() {
@@ -203,6 +230,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   void fishingSeasonStart() {
     _inDock = true;
     canCatch = false;
+    clearConsole();
   }
   
   void returnToDock() {
@@ -434,6 +462,10 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool touchDown(Contact event) {
+    if (_game.buyPhase==true) {
+      _loadConsole();
+      return true;
+    }
     if (_inDock==true && _game.buyPhase==false) {
       _game.gameStarted = true;
       _leaveDock();

@@ -12,22 +12,19 @@ class Fleet extends Sprite {
   Game _game;
   Ecosystem _ecosystem;
   
-  TouchManager tmanager = new TouchManager();
-  TouchLayer tlayer = new TouchLayer();
-  
   List<Boat> boats = new List<Boat>();
   Map<int, Dock> dockA = new Map<int, Dock>();
   Map<int, Dock> dockB = new Map<int, Dock>();
   num consoleWidth;
   num dockHeight;
   
+  List<SimpleButton> buttonsA = new List<SimpleButton>(3);
+  List<SimpleButton> buttonsB = new List<SimpleButton>(3);
+  
   Fleet(ResourceManager resourceManager, Juggler juggler, Game game) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _game = game;
-    
-    tmanager.registerEvents(_game);
-    tmanager.addTouchLayer(tlayer);
     
     BitmapData.load('images/console.png').then((console) {
       consoleWidth = console.width;
@@ -41,10 +38,26 @@ class Fleet extends Sprite {
           dockB[i] = new Dock(_game, this, i, false);
           addChild(dockB[i]);
         }
-        addBoat(TEAMASARDINE, dockA[2].location.x+5, dockA[2].location.y+dockHeight/2, math.PI);
-        addBoat(TEAMBSARDINE, dockB[2].location.x+5, dockB[2].location.y-dockHeight/2, 0);
+        addBoat(TEAMASARDINE, dockA[0].location.x+5, dockA[0].location.y+dockHeight/2, math.PI);
+        addBoat(TEAMBSARDINE, dockB[0].location.x+5, dockB[0].location.y-dockHeight/2, 0);
+        addBoat(TEAMBSARDINE, dockB[1].location.x+5, dockB[1].location.y-dockHeight/2, 0);
+        
+        _setupButtons();
       });
     });
+  }
+  
+  void clearOtherConsoles(bool teamA) {
+    for (int i=0; i<boats.length; i++) {
+      if (boats[i]._teamA==teamA) boats[i].clearConsole();
+    }
+  }
+  
+  void clearBuyButtons() {
+    for (int i=0; i<3; i++) {
+      if (this.contains(buttonsA[i])) removeChild(buttonsA[i]);
+      if (this.contains(buttonsB[i])) removeChild(buttonsB[i]);
+    }
   }
   
   void returnBoats() {
@@ -52,6 +65,25 @@ class Fleet extends Sprite {
       boats[i].returnToDock();
     }
   }
+  
+  void addButtons() {
+    clearBuyButtons();
+    for (int i=0; i<3; i++) {
+      if (dockA[i].filled==false) addChild(buttonsA[i]);
+      if (dockB[i].filled==false) addChild(buttonsB[i]);
+    }
+  }
+  
+  void _buyBoat(bool teamA, int i) {
+    
+  }
+  
+  void _buyBoatA0(var e) => _buyBoat(true, 0);
+  void _buyBoatA1(var e) => _buyBoat(true, 1);
+  void _buyBoatA2(var e) => _buyBoat(true, 2);
+  void _buyBoatB0(var e) => _buyBoat(false, 0);
+  void _buyBoatB1(var e) => _buyBoat(false, 1);
+  void _buyBoatB2(var e) => _buyBoat(false, 2);
   
   void reactivateBoats() {
     for (int i=0; i<boats.length; i++) {
@@ -65,7 +97,7 @@ class Fleet extends Sprite {
     boat.y = y;
     boat.rotation = rot;
     boats.add(boat);
-    tlayer.touchables.add(boat);
+    _game.tlayer.touchables.add(boat);
     addChild(boat);
     _juggler.add(boat);
   }
@@ -90,6 +122,35 @@ class Fleet extends Sprite {
         }
       }
     }
+  }
+  void _setupButtons() {
+    while (dockB[3].location == null) {}
+    for (int i=0;i<3;i++) {
+      buttonsA[i] = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("BuyUp")), 
+                                     new Bitmap(_resourceManager.getBitmapData("BuyUp")),
+                                     new Bitmap(_resourceManager.getBitmapData("BuyDown")), 
+                                     new Bitmap(_resourceManager.getBitmapData("BuyDown")));
+      buttonsA[i].x = dockA[i].location.x-28;
+      buttonsA[i].y = dockA[i].location.y+30;
+      buttonsB[i] = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("BuyUp")), 
+                                     new Bitmap(_resourceManager.getBitmapData("BuyUp")),
+                                     new Bitmap(_resourceManager.getBitmapData("BuyDown")), 
+                                     new Bitmap(_resourceManager.getBitmapData("BuyDown")));
+      buttonsB[i].x = dockB[i].location.x-28;
+      buttonsB[i].y = dockB[i].location.y-120;
+    }
+    buttonsA[0].addEventListener(MouseEvent.MOUSE_UP, _buyBoatA0);
+    buttonsA[0].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatA0);
+    buttonsA[1].addEventListener(MouseEvent.MOUSE_UP, _buyBoatA1);
+    buttonsA[1].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatA1);
+    buttonsA[2].addEventListener(MouseEvent.MOUSE_UP, _buyBoatA2);
+    buttonsA[2].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatA2);
+    buttonsB[0].addEventListener(MouseEvent.MOUSE_UP, _buyBoatB0);
+    buttonsB[0].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatB0);
+    buttonsB[1].addEventListener(MouseEvent.MOUSE_UP, _buyBoatB1);
+    buttonsB[1].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatB1);
+    buttonsB[2].addEventListener(MouseEvent.MOUSE_UP, _buyBoatB2);
+    buttonsB[2].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatB2);
   }
 }
 

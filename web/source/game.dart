@@ -11,6 +11,9 @@ class Game extends Sprite implements Animatable{
   Fleet _fleet;
   Ecosystem _ecosystem;
   
+  TouchManager tmanager = new TouchManager();
+  TouchLayer tlayer = new TouchLayer();
+  
   bool gameStarted = false;
   
   int width;
@@ -31,16 +34,18 @@ class Game extends Sprite implements Animatable{
   
   bool buyPhase = false;
   int timer = 0;
-  int fishingTimerTick = 3;
-  int buyTimerTick = 2;
+  int fishingTimerTick = 10;
+  int buyTimerTick = 7;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     width = w;
     height = h;
-    
     moneyChanged = false;
+    
+    tmanager.registerEvents(this);
+    tmanager.addTouchLayer(tlayer);
     
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
     Bitmap mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
@@ -51,51 +56,17 @@ class Game extends Sprite implements Animatable{
     background.height = height;
     addChild(background);
     addChild(_ecosystem);
-    
+    addChild(mask);
     addChild(_fleet);
     mask.width = width;
     mask.height = height;
-    addChild(mask);
+    
     
     this.onEnterFrame.listen(_onEnterFrame);
     
-    TextFormat format = new TextFormat("Arial", 40, Color.Green, align: "center", bold:true);
-    teamATextField = new TextField("\$0", format);
-    teamATextField.width = 300;
-    teamATextField.x = width~/2+teamATextField.width~/2;
-    teamATextField.y = 60;
-    teamATextField.rotation = math.PI;
-    addChild(teamATextField);
+    _loadTextAndShapes();
     
-    teamBTextField = new TextField("\$0", format);
-    teamBTextField.width = 300;
-    teamBTextField.x = width~/2-teamBTextField.width~/2;
-    teamBTextField.y = height-60;
-    addChild(teamBTextField);
     
-    teamATimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
-    teamATimer.x = width-400;
-    teamATimer.y = 20;
-    teamATimer.graphics.fillColor(Color.LightGreen);
-    addChild(teamATimer);
-    
-    format = new TextFormat("Arial", 14, Color.LightYellow, align: "left");
-    teamATimerField = new TextField("Fishing season", format);
-    teamATimerField.x = width-50;
-    teamATimerField.y = 55;
-    teamATimerField.rotation = math.PI;
-    addChild(teamATimerField);
-    
-    teamBTimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
-    teamBTimer.x = 50;
-    teamBTimer.y = height-20;
-    teamBTimer.graphics.fillColor(Color.LightGreen);
-    addChild(teamBTimer);
-    
-    teamBTimerField = new TextField("Fishing season", format);
-    teamBTimerField.x = 50;
-    teamBTimerField.y = height-45;
-    addChild(teamBTimerField);
   }
   num _fpsAverage = null;
 
@@ -168,5 +139,45 @@ class Game extends Sprite implements Animatable{
       }
     }
     return true;
+  }
+  
+  void _loadTextAndShapes() {
+    TextFormat format = new TextFormat("Arial", 40, Color.Green, align: "center", bold:true);
+    teamATextField = new TextField("\$0", format);
+    teamATextField.width = 300;
+    teamATextField.x = width~/2+teamATextField.width~/2;
+    teamATextField.y = 60;
+    teamATextField.rotation = math.PI;
+    addChild(teamATextField);
+    
+    teamBTextField = new TextField("\$0", format);
+    teamBTextField.width = 300;
+    teamBTextField.x = width~/2-teamBTextField.width~/2;
+    teamBTextField.y = height-60;
+    addChild(teamBTextField);
+    
+    teamATimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
+    teamATimer.x = width-400;
+    teamATimer.y = 20;
+    teamATimer.graphics.fillColor(Color.LightGreen);
+    addChild(teamATimer);
+    
+    format = new TextFormat("Arial", 14, Color.LightYellow, align: "left");
+    teamATimerField = new TextField("Fishing season", format);
+    teamATimerField.x = width-50;
+    teamATimerField.y = 55;
+    teamATimerField.rotation = math.PI;
+    addChild(teamATimerField);
+    
+    teamBTimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
+    teamBTimer.x = 50;
+    teamBTimer.y = height-20;
+    teamBTimer.graphics.fillColor(Color.LightGreen);
+    addChild(teamBTimer);
+    
+    teamBTimerField = new TextField("Fishing season", format);
+    teamBTimerField.x = 50;
+    teamBTimerField.y = height-45;
+    addChild(teamBTimerField);
   }
 }

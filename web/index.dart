@@ -14,6 +14,7 @@ part 'source/net.dart';
 part 'source/ecosystem.dart';
 part 'source/fish.dart';
 part 'source/movement.dart';
+part 'source/console.dart';
 
 void main() {
   int height = html.window.innerHeight-20;
@@ -41,6 +42,15 @@ void main() {
   resourceManager.addBitmapData("SardineBlood", "images/sardine_blood.png");
   resourceManager.addBitmapData("TunaBlood", "images/tuna_blood.png");
   resourceManager.addBitmapData("Dock", "images/dock.png");
+  resourceManager.addBitmapData("Console", "images/console.png");
+  resourceManager.addBitmapData("CapacityDown", "images/capacity_down.png");
+  resourceManager.addBitmapData("CapacityUp", "images/capacity_up.png");
+  resourceManager.addBitmapData("SpeedDown", "images/speed_down.png");
+  resourceManager.addBitmapData("SpeedUp", "images/speed_up.png");
+  resourceManager.addBitmapData("SellDown", "images/sell_down.png");
+  resourceManager.addBitmapData("SellUp", "images/sell_up.png");
+  resourceManager.addBitmapData("BuyDown", "images/buy_down.png");
+  resourceManager.addBitmapData("BuyUp", "images/buy_up.png");
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);
