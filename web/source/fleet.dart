@@ -47,6 +47,20 @@ class Fleet extends Sprite {
     });
   }
   
+  void addBoat(int type, num x, num y, num rot) {
+    Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
+    boat.x = x;
+    boat.y = y;
+    boat.rotation = rot;
+    if (type==TEAMASARDINE) boat._dock = findEmptyDock(true);
+    else boat._dock = findEmptyDock(false);
+    boat._dock.filled=true;
+    boats.add(boat);
+    _game.tlayer.touchables.add(boat);
+    addChild(boat);
+    _juggler.add(boat);
+  }
+  
   void clearOtherConsoles(bool teamA) {
     for (int i=0; i<boats.length; i++) {
       if (boats[i]._teamA==teamA) boats[i].clearConsole();
@@ -63,6 +77,13 @@ class Fleet extends Sprite {
   void returnBoats() {
     for (int i=0; i<boats.length; i++) {
       boats[i].returnToDock();
+    }
+  }
+  
+  void reactivateBoats() {
+    clearBuyButtons();
+    for (int i=0; i<boats.length; i++) {
+      boats[i].fishingSeasonStart();
     }
   }
   
@@ -84,23 +105,6 @@ class Fleet extends Sprite {
   void _buyBoatB0(var e) => _buyBoat(false, 0);
   void _buyBoatB1(var e) => _buyBoat(false, 1);
   void _buyBoatB2(var e) => _buyBoat(false, 2);
-  
-  void reactivateBoats() {
-    for (int i=0; i<boats.length; i++) {
-      boats[i].fishingSeasonStart();
-    }
-  }
-  
-  void addBoat(int type, num x, num y, num rot) {
-    Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
-    boat.x = x;
-    boat.y = y;
-    boat.rotation = rot;
-    boats.add(boat);
-    _game.tlayer.touchables.add(boat);
-    addChild(boat);
-    _juggler.add(boat);
-  }
   
   Dock findEmptyDock(teamA) {
     while (dockB[3].location == null) {}

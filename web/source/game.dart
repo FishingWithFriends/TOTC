@@ -35,7 +35,7 @@ class Game extends Sprite implements Animatable{
   bool buyPhase = false;
   int timer = 0;
   int fishingTimerTick = 10;
-  int buyTimerTick = 7;
+  int buyTimerTick = 15;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -61,12 +61,9 @@ class Game extends Sprite implements Animatable{
     mask.width = width;
     mask.height = height;
     
-    
     this.onEnterFrame.listen(_onEnterFrame);
     
     _loadTextAndShapes();
-    
-    
   }
   num _fpsAverage = null;
 
@@ -90,16 +87,20 @@ class Game extends Sprite implements Animatable{
         var x = teamATextField.text.substring(1);
         int a = int.parse(teamATextField.text.substring(1));
         int b = int.parse(teamBTextField.text.substring(1));
+        if (a==teamAMoney) teamATextField.textColor = Color.Green;
+        if (b==teamBMoney) teamBTextField.textColor = Color.Green;
         if (a==teamAMoney && b==teamBMoney) {
           moneyChanged = false;
           return true;
         }
         if (a!=teamAMoney) {
+          teamATextField.textColor = Color.LightGreen;
           if (a<teamAMoney) a=a+1;
           else a=a-1;
           teamATextField.text = "\$$a";
         }
         if (b!=teamBMoney) {
+          teamBTextField.textColor = Color.LightGreen;
           if (b<teamBMoney) b=b+1;
           else b=b-1;
           teamBTextField.text = "\$$b";
@@ -117,8 +118,8 @@ class Game extends Sprite implements Animatable{
       if (buyPhase==true) {
         buyPhase = false;
         _fleet.reactivateBoats();
-        teamATimer.graphics.fillColor(Color.LightGreen);
-        teamBTimer.graphics.fillColor(Color.LightGreen);
+        teamATimer.graphics.fillColor(Color.Green);
+        teamBTimer.graphics.fillColor(Color.Green);
         teamATimerField.text = "Fishing season";
         teamBTimerField.text = "Fishing season";
         
@@ -130,8 +131,8 @@ class Game extends Sprite implements Animatable{
         _fleet.returnBoats();
         teamATimer.graphics.fillColor(Color.DarkRed);
         teamBTimer.graphics.fillColor(Color.DarkRed);
-        teamATimerField.text = "Time left to buy";
-        teamBTimerField.text = "Time left to buy";
+        teamATimerField.text = "Offseason";
+        teamBTimerField.text = "Offseason";
         
         teamATimer.x = width-BUY_TIMER_WIDTH-50;
         teamATimer.width = BUY_TIMER_WIDTH;

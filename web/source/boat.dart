@@ -46,6 +46,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool _canMove;
   bool _autoMove;
   bool _inDock;
+  bool _canLoadConsole = false;
   
   bool _dragging = false;
   bool _touched = false;
@@ -61,7 +62,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     random = new math.Random();
     
     _inDock = true;
-    canCatch = true;
+    canCatch = false;
     _canMove = false;
     _autoMove = false;
     
@@ -190,6 +191,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _juggler.add(t);
     
     if (_game.buyPhase==true) {
+      _canLoadConsole = true;
       _loadConsole();
       _fleet.addButtons();
     }
@@ -215,6 +217,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _canMove = false;
     _autoMove = true;
     _inDock = false;
+    canCatch = false;
     if (_teamA) {
       _moveTo(x, y+250, 1.25, 0, null);
       num newRot = Movement.findMinimumAngle(rotation, math.PI*3/4);
@@ -230,12 +233,14 @@ class Boat extends Sprite implements Touchable, Animatable {
   void fishingSeasonStart() {
     _inDock = true;
     canCatch = false;
+    _canLoadConsole = false;
     clearConsole();
   }
   
   void returnToDock() {
     _juggler.removeTweens(this);
     if (_dock != null) _dock.filled = false;
+    _dock = null;
     
     Tween t1 = new Tween(this, 2, TransitionFunction.linear);
     t1.animate.alpha.to(0);
@@ -462,7 +467,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool touchDown(Contact event) {
-    if (_game.buyPhase==true) {
+    if (_canLoadConsole==true) {
       _loadConsole();
       return true;
     }
