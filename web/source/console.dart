@@ -6,7 +6,8 @@ class Console extends Sprite {
   static const NET_CONFIRM = 2;
   static const BUY_CONFIRM = 3;
   static const SELL_CONFIRM = 4;
-  static const ONLY_CONFIRM = 4;
+  static const ONLY_CONFIRM = 5;
+  static const ONLY_CONFIRM_DESTROY = 6;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -112,7 +113,7 @@ class Console extends Sprite {
     _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
     _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
     
-    _confirmMode = ONLY_CONFIRM;
+    if (_confirmMode != ONLY_CONFIRM_DESTROY) _confirmMode == ONLY_CONFIRM;
     
     _confirmText.wordWrap = true;
     _confirmText.x = 10;
@@ -162,6 +163,15 @@ class Console extends Sprite {
   
   void _yesClicked(var e) {
     if (_confirmMode == ONLY_CONFIRM) startBuy();
+    if (_confirmMode == ONLY_CONFIRM_DESTROY) {
+      _fleet.sellBoat(_boat);
+    }
+    if (_confirmMode == SELL_CONFIRM) {
+      if (_boat._teamA==true) _game.teamAMoney-_game.teamAMoney+700;
+      else _game.teamBMoney = _game.teamBMoney+700;
+      _game.moneyChanged = true;
+      _fleet.sellBoat(_boat);
+    }
     if (_confirmMode == SPEED_CONFIRM) {
       if (_boat._teamA==true) {
         if (_game.teamAMoney<200) startWarning("Fish more! You don't have enough money for this upgrade");
@@ -196,15 +206,45 @@ class Console extends Sprite {
         }
       }
     }
+    if (_confirmMode == BUY_CONFIRM) {
+      if (_boat._teamA==true) {
+        if (_game.teamAMoney<700) {
+          _confirmMode = ONLY_CONFIRM_DESTROY;
+          startWarning("Fish more! You don't have enough money to buy this boat.");
+        }
+        else {
+          _game.teamAMoney = _game.teamAMoney-700;
+          _boat.alpha = 1;
+          _boat._canLoadConsole = true;
+          _fleet.addButtons();
+          startBuy();
+        }
+      } else {
+        if (_game.teamBMoney<700) {
+          _confirmMode = ONLY_CONFIRM_DESTROY;
+          startWarning("Fish more! You don't have enough money to buy this boat.");
+        }
+        else {
+          _game.teamBMoney = _game.teamBMoney-700;
+          _boat.alpha = 1;
+          _boat._canLoadConsole = true;
+          _fleet.addButtons();
+          startBuy();
+        }
+      }
+    }
     _game.moneyChanged = true;
   }
   
   void _noClicked(var e) {
-    startBuy();
+    if (_confirmMode == BUY_CONFIRM) {
+      _fleet.sellBoat(_boat);
+    }
+    else startBuy();
   }
   
   void _sellButtonClicked(var e) {
-    startConfirm("Sell this boat for \$400?", SELL_CONFIRM);
+    startConfirm("Sell this boat for \$700?", SELL_CONFIRM);
   }
   void _capacityButtonClicked(var e) {
     startConfirm("Upgrade net size for \$300?", NET_CONFIRM);

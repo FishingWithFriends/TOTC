@@ -150,7 +150,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_fleet.contains(_console)) _fleet.removeChild(_console);
   }
    
-  void _loadConsole() {
+  Console _loadConsole() {
     _fleet.clearOtherConsoles(_teamA);
     if (_fleet.contains(_console)) _fleet.removeChild(_console);
     
@@ -164,6 +164,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       _console.y = _game.height-2.8*_fleet.dockHeight;
     }
     _fleet.addChild(_console);
+    return _console;
   }
   
   void increaseFishNet(int n) {
@@ -492,6 +493,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool touchDown(Contact event) {
+    print("touched");
     if (_canLoadConsole==true) {
       _loadConsole();
       return true;

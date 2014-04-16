@@ -40,14 +40,24 @@ class Fleet extends Sprite {
         }
         addBoat(TEAMASARDINE, dockA[0].location.x+5, dockA[0].location.y+dockHeight/2, math.PI);
         addBoat(TEAMBSARDINE, dockB[0].location.x+5, dockB[0].location.y-dockHeight/2, 0);
-        addBoat(TEAMBSARDINE, dockB[1].location.x+5, dockB[1].location.y-dockHeight/2, 0);
         
         _setupButtons();
       });
     });
   }
   
-  void addBoat(int type, num x, num y, num rot) {
+  void sellBoat(Boat boat) {
+    removeChild(boat);
+    _juggler.remove(boat);
+    _game.tlayer.touchables.remove(boat);
+    if (boat._dock != null) 
+      boat._dock.filled = false;
+    boat.clearConsole();
+    boats.remove(boat);
+    addButtons();
+  }
+  
+  Boat addBoat(int type, num x, num y, num rot) {
     Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
     boat.x = x;
     boat.y = y;
@@ -59,6 +69,8 @@ class Fleet extends Sprite {
     _game.tlayer.touchables.add(boat);
     addChild(boat);
     _juggler.add(boat);
+    
+    return boat;
   }
   
   void clearOtherConsoles(bool teamA) {
@@ -83,7 +95,8 @@ class Fleet extends Sprite {
   void reactivateBoats() {
     clearBuyButtons();
     for (int i=0; i<boats.length; i++) {
-      boats[i].fishingSeasonStart();
+      if (boats[i].alpha==0) sellBoat(boats[i]);
+      else boats[i].fishingSeasonStart();
     }
   }
   
@@ -96,7 +109,28 @@ class Fleet extends Sprite {
   }
   
   void _buyBoat(bool teamA, int i) {
-    
+    if (teamA==true) {
+      Boat b = addBoat(TEAMASARDINE, dockA[i].location.x+5, dockA[i].location.y+dockHeight/2, math.PI);
+      b.alpha = 0;
+      b._dock.filled = false;
+      b._dock = dockA[i];
+      b._dock.filled = true;
+      b._teamA = true;
+      
+      Console c = b._loadConsole();
+      c.startConfirm("Buy a new boat for \$700?", Console.BUY_CONFIRM);
+    }
+    else {
+      Boat b = addBoat(TEAMBSARDINE, dockB[i].location.x+5, dockB[i].location.y-dockHeight/2, 0);
+      b.alpha = 0;
+      b._dock.filled = false;
+      b._dock = dockB[i];
+      b._dock.filled = true;
+      b._teamA = false;
+      
+      Console c = b._loadConsole();
+      c.startConfirm("Buy a new boat for \$700?", Console.BUY_CONFIRM);
+    }
   }
   
   void _buyBoatA0(var e) => _buyBoat(true, 0);
@@ -163,11 +197,14 @@ class Dock extends Sprite{
   bool filled;
   Game _game;
   Fleet _fleet;
+  int pos;
   
   Dock(Game game, Fleet fleet, int n, bool teamA) {
     filled = false;
     _game = game;
     _fleet = fleet;
+    
+    pos = n;
     
     if (teamA) location = new Point(_fleet.consoleWidth/2+Fleet.DOCK_SEPARATION/2+n*Fleet.DOCK_SEPARATION, Fleet.LARGE_DOCK_HEIGHT);
     else location = new Point(_game.width-_fleet.consoleWidth/2-Fleet.DOCK_SEPARATION/2-n*Fleet.DOCK_SEPARATION, _game.height-Fleet.LARGE_DOCK_HEIGHT);
