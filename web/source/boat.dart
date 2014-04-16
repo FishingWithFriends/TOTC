@@ -2,7 +2,7 @@ part of TOTC;
 
 class Boat extends Sprite implements Touchable, Animatable {
 
-  static const num PROXIMITY = 75; //finger must be PROXIMITY from boat to move
+  static const num PROXIMITY = 75;
   static const int RIGHT = 0;
   static const int LEFT = 1;
   static const int STRAIGHT = 2;
@@ -33,6 +33,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   Sprite boat;
   Bitmap _boatImage;
   
+  Bitmap _tempNet;
   TextureAtlas _nets;
   var _netNames;
   Bitmap _net;
@@ -184,7 +185,12 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_teamA) _game.teamAMoney = _game.teamAMoney+_netMoney;
     else _game.teamBMoney = _game.teamBMoney+_netMoney;
     _game.moneyChanged = true;
-
+    
+    _tempNet = new Bitmap(_nets.getBitmapData(_netNames[0]));
+    _tempNet.x = _net.x;
+    _tempNet.y = _net.y;
+    addChild(_tempNet);
+    
     Tween t = new Tween(_net, 2, TransitionFunction.linear);
     t.animate.alpha.to(0);
     t.onComplete = _netUnloaded;
@@ -198,6 +204,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _netUnloaded() {
+    if (_tempNet != null) removeChild(_tempNet);
     _netMoney = 0;
     _changeNetGraphic();
   }
