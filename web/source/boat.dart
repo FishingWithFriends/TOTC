@@ -378,8 +378,8 @@ class Boat extends Sprite implements Touchable, Animatable {
     num nextX = x;
     num nextY = y;
     num nextRot = rotation;
-    if ((_teamA && y<_fleet.dockHeight) ||
-        (y>_game.height-_fleet.dockHeight)) {
+    if ((_teamA == true && y<_fleet.dockHeight) ||
+        (_teamA == false && y>_game.height-_fleet.dockHeight)) {
       Point aboveDockP;
       num newRot;
       if (_teamA) {
