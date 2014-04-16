@@ -409,7 +409,7 @@ class Boat extends Sprite implements Touchable, Animatable {
         aboveDockP = new Point(x, _game.height-_fleet.dockHeight-80);
         newRot = 0;
       }
-      num secondsToRot = (rotation-newRot).abs();
+      num secondsToRot = (rotation-newRot).abs()/rotSpeed/35;
       _rotateTo(newRot, secondsToRot, 0, null);
       
       num travelDistance = new Point(x, y).distanceTo(new Point(aboveDockP.x, aboveDockP.y));
@@ -435,7 +435,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     num cx = frontOfDock.x - nextX;
     num cy = frontOfDock.y - nextY;
     num newAngle = Movement.findMinimumAngle(nextRot, math.atan2(cy, cx)+math.PI/2);
-    num secondsToRot = (nextRot-newAngle).abs();
+    num secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
     _rotateTo(newAngle, secondsToRot, totalSeconds, null);
     
     num travelDistance = new Point(nextX, nextY).distanceTo(new Point(frontOfDock.x, frontOfDock.y));
@@ -457,7 +457,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       newAngle = math.PI;
     }
     newAngle = Movement.findMinimumAngle(nextRot, newAngle);
-    secondsToRot = (nextRot-newAngle).abs();
+    secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
     _rotateTo(newAngle, secondsToRot, totalSeconds, null);
     
     travelDistance = new Point(nextX, nextY).distanceTo(new Point(insideDock.x, insideDock.y));
