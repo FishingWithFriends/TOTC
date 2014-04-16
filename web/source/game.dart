@@ -2,7 +2,7 @@ part of TOTC;
 
 class Game extends Sprite implements Animatable{
   
-  static const FISHING_TIMER_WIDTH = 350;
+  static const FISHING_TIMER_WIDTH = 5;
   static const BUY_TIMER_WIDTH = 150;
   
   ResourceManager _resourceManager;

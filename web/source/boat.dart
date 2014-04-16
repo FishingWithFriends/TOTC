@@ -6,6 +6,9 @@ class Boat extends Sprite implements Touchable, Animatable {
   static const int RIGHT = 0;
   static const int LEFT = 1;
   static const int STRAIGHT = 2;
+  static const num BASE_SPEED = 3;
+  static const num BASE_ROT_SPEED = .03;
+  static const num BASE_NET_CAPACITY = 250;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -26,6 +29,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   var random;
   Dock _dock;
   
+  num speedLevel;
+  num capacityLevel;
   num speed;
   num rotSpeed;
   num netCapacity;
@@ -67,9 +72,11 @@ class Boat extends Sprite implements Touchable, Animatable {
     _canMove = false;
     _autoMove = false;
     
-    speed = 3;
-    rotSpeed = .03;
-    netCapacity = 250;
+    speedLevel = 0;
+    capacityLevel = 0;
+    speed = BASE_SPEED;
+    rotSpeed = BASE_ROT_SPEED;
+    netCapacity = BASE_NET_CAPACITY;
     
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE) catchType = Ecosystem.SARDINE;
     if (type==Fleet.TEAMASARDINE) _teamA = true;
@@ -128,6 +135,17 @@ class Boat extends Sprite implements Touchable, Animatable {
     return true;
   }
   
+  void increaseSpeed() {
+    speedLevel++;
+    speed = BASE_SPEED + speedLevel;
+    rotSpeed = BASE_ROT_SPEED + .01*speedLevel;
+  }
+  
+  void increaseCapacity() {
+    capacityLevel++;
+    netCapacity = BASE_NET_CAPACITY + 100*capacityLevel;
+  }
+  
   void clearConsole() {
     if (_fleet.contains(_console)) _fleet.removeChild(_console);
   }
@@ -182,7 +200,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _inDock = true;
     canCatch = false;
     
-    if (_teamA) _game.teamAMoney = _game.teamAMoney+_netMoney;
+    if (_teamA==true) _game.teamAMoney = _game.teamAMoney+_netMoney;
     else _game.teamBMoney = _game.teamBMoney+_netMoney;
     _game.moneyChanged = true;
     
@@ -249,7 +267,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_dock != null) _dock.filled = false;
     _dock = null;
     
-    Tween t1 = new Tween(this, 2, TransitionFunction.linear);
+    Tween t1 = new Tween(this, 1.25, TransitionFunction.linear);
     t1.animate.alpha.to(0);
     _juggler.add(t1);
     
@@ -266,7 +284,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       t2.animate.rotation.to(0);
       t2.animate.y.to(frontOfDock.y-_fleet.dockHeight/2);
     }
-    t2.delay = 2;
+    t2.delay = 1.25;
     t2.animate.alpha.to(1);
     t2.onComplete = _unloadNet;
     _juggler.add(t2);
