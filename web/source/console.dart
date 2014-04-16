@@ -106,10 +106,10 @@ class Console extends Sprite {
     
     TextFormat format = new TextFormat("Arial", 24, Color.Yellow, align: "center");
     _confirmText = new TextField(s, format);
-    _yesButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SellUp")), 
-                                  new Bitmap(_resourceManager.getBitmapData("SellUp")),
-                                  new Bitmap(_resourceManager.getBitmapData("SellDown")), 
-                                  new Bitmap(_resourceManager.getBitmapData("SellDown")));
+    _yesButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("OkayUp")), 
+                                  new Bitmap(_resourceManager.getBitmapData("OkayUp")),
+                                  new Bitmap(_resourceManager.getBitmapData("OkayDown")), 
+                                  new Bitmap(_resourceManager.getBitmapData("OkayDown")));
     _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
     _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
     
@@ -134,14 +134,14 @@ class Console extends Sprite {
     
     TextFormat format = new TextFormat("Arial", 24, Color.Yellow, align: "center");
     _confirmText = new TextField(s, format);
-    _yesButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SellUp")), 
-                                   new Bitmap(_resourceManager.getBitmapData("SellUp")),
-                                   new Bitmap(_resourceManager.getBitmapData("SellDown")), 
-                                   new Bitmap(_resourceManager.getBitmapData("SellDown")));
-    _noButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SellUp")), 
-                                   new Bitmap(_resourceManager.getBitmapData("SellUp")),
-                                   new Bitmap(_resourceManager.getBitmapData("SellDown")), 
-                                   new Bitmap(_resourceManager.getBitmapData("SellDown")));
+    _yesButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("YesUp")), 
+                                   new Bitmap(_resourceManager.getBitmapData("YesUp")),
+                                   new Bitmap(_resourceManager.getBitmapData("YesDown")), 
+                                   new Bitmap(_resourceManager.getBitmapData("YesDown")));
+    _noButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("NoUp")), 
+                                   new Bitmap(_resourceManager.getBitmapData("NoUp")),
+                                   new Bitmap(_resourceManager.getBitmapData("NoDown")), 
+                                   new Bitmap(_resourceManager.getBitmapData("NoDown")));
     _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
     _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
     _noButton.addEventListener(MouseEvent.MOUSE_UP, _noClicked);

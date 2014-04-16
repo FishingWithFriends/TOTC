@@ -51,6 +51,12 @@ void main() {
   resourceManager.addBitmapData("SellUp", "images/sell_up.png");
   resourceManager.addBitmapData("BuyDown", "images/buy_down.png");
   resourceManager.addBitmapData("BuyUp", "images/buy_up.png");
+  resourceManager.addBitmapData("NoDown", "images/no_down.png");
+  resourceManager.addBitmapData("NoUp", "images/no_up.png");
+  resourceManager.addBitmapData("OkayDown", "images/okay_down.png");
+  resourceManager.addBitmapData("OkayUp", "images/okay_up.png");
+  resourceManager.addBitmapData("YesDown", "images/yes_down.png");
+  resourceManager.addBitmapData("YesUp", "images/yes_up.png");
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);
