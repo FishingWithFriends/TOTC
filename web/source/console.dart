@@ -113,7 +113,7 @@ class Console extends Sprite {
     _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
     _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
     
-    if (_confirmMode != ONLY_CONFIRM_DESTROY) _confirmMode == ONLY_CONFIRM;
+    if (_confirmMode != ONLY_CONFIRM_DESTROY) _confirmMode = ONLY_CONFIRM;
     
     _confirmText.wordWrap = true;
     _confirmText.x = 10;

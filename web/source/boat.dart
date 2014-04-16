@@ -223,7 +223,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _netUnloaded() {
-    if (_tempNet != null) removeChild(_tempNet);
+    if (_fleet.contains(_tempNet)) removeChild(_tempNet);
     _netMoney = 0;
     _changeNetGraphic();
   }
