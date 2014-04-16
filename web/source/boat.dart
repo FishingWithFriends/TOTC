@@ -493,7 +493,6 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool touchDown(Contact event) {
-    print("touched");
     if (_canLoadConsole==true) {
       _loadConsole();
       return true;

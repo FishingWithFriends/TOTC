@@ -2,7 +2,7 @@ part of TOTC;
 
 class Game extends Sprite implements Animatable{
   
-  static const FISHING_TIMER_WIDTH = 5;
+  static const FISHING_TIMER_WIDTH = 350;
   static const BUY_TIMER_WIDTH = 150;
   
   ResourceManager _resourceManager;
@@ -95,14 +95,28 @@ class Game extends Sprite implements Animatable{
         }
         if (a!=teamAMoney) {
           teamATextField.textColor = Color.LightGreen;
-          if (a<teamAMoney) a=a+1;
-          else a=a-1;
+          if (a<teamAMoney-5)a=a+5;
+          else if (a<teamAMoney) a=a+1;
+          else if (a>teamAMoney+5){ 
+            a=a-5;
+            teamATextField.textColor = Color.Salmon;
+          } else if (a>teamAMoney) {
+            a=a-1;
+            teamATextField.textColor = Color.Salmon;
+          }
           teamATextField.text = "\$$a";
         }
         if (b!=teamBMoney) {
           teamBTextField.textColor = Color.LightGreen;
-          if (b<teamBMoney) b=b+1;
-          else b=b-1;
+          if (b<teamBMoney-5)b=b+5;
+          else if (b<teamBMoney) b=b+1;
+          else if (b>teamBMoney+5){ 
+            b=b-5;
+            teamBTextField.textColor = Color.Salmon;
+          } else if (b>teamBMoney) {
+            b=b-1;
+            teamBTextField.textColor = Color.Salmon;
+          }
           teamBTextField.text = "\$$b";
         }
       }

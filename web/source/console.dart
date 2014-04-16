@@ -167,7 +167,7 @@ class Console extends Sprite {
       _fleet.sellBoat(_boat);
     }
     if (_confirmMode == SELL_CONFIRM) {
-      if (_boat._teamA==true) _game.teamAMoney-_game.teamAMoney+700;
+      if (_boat._teamA==true) _game.teamAMoney = _game.teamAMoney+700;
       else _game.teamBMoney = _game.teamBMoney+700;
       _game.moneyChanged = true;
       _fleet.sellBoat(_boat);
@@ -184,7 +184,7 @@ class Console extends Sprite {
         if (_game.teamBMoney<200) startWarning("Fish more! You don't have enough money for this upgrade.");
         else {
           _boat.increaseSpeed();
-          _game.teamBMoney = _game.teamAMoney-200;
+          _game.teamBMoney = _game.teamBMoney-200;
           startBuy();
         }
       }
@@ -201,7 +201,7 @@ class Console extends Sprite {
         if (_game.teamBMoney<300) startWarning("Fish more! You don't have enough money for this upgrade.");
         else {
           _boat.increaseCapacity();
-          _game.teamBMoney = _game.teamAMoney-300;
+          _game.teamBMoney = _game.teamBMoney-300;
           startBuy();
         }
       }
