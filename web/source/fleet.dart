@@ -47,6 +47,9 @@ class Fleet extends Sprite {
   }
   
   void sellBoat(Boat boat) {
+    for (int i=0; i<boats.length; i++) {
+      if (boats[i]._teamA==boat._teamA && boats[i].alpha==0 && boats[i] != boat) sellBoat(boats[i]);
+    }
     removeChild(boat);
     _juggler.remove(boat);
     _game.tlayer.touchables.remove(boat);
@@ -109,6 +112,9 @@ class Fleet extends Sprite {
   }
   
   void _buyBoat(bool teamA, int i) {
+    for (int i=0; i<boats.length; i++) {
+      if (boats[i]._teamA==teamA && boats[i].alpha==0) sellBoat(boats[i]);
+    }
     if (teamA==true) {
       Boat b = addBoat(TEAMASARDINE, dockA[i].location.x+5, dockA[i].location.y+dockHeight/2, math.PI);
       b.alpha = 0;

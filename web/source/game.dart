@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 50;
-  static const BUY_TIMER_WIDTH = 50;
-  static const REGROW_TIMER_WIDTH = 50;
+  static const FISHING_TIMER_WIDTH = 5;
+  static const BUY_TIMER_WIDTH = 200;
+  static const REGROW_TIMER_WIDTH = 5;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -169,9 +169,9 @@ class Game extends Sprite implements Animatable{
         teamATimerField.text = "Regrowth season";
         teamBTimerField.text = "Regrowth season";
         
-        teamATimer.x = width-BUY_TIMER_WIDTH-50;
-        teamATimer.width = BUY_TIMER_WIDTH;
-        teamBTimer.width = BUY_TIMER_WIDTH;
+        teamATimer.x = width-REGROW_TIMER_WIDTH-50;
+        teamATimer.width = REGROW_TIMER_WIDTH;
+        teamBTimer.width = REGROW_TIMER_WIDTH;
       } else {
         _fleet.returnBoats();
         phase = BUY_PHASE;
