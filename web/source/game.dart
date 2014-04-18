@@ -2,8 +2,13 @@ part of TOTC;
 
 class Game extends Sprite implements Animatable{
   
-  static const FISHING_TIMER_WIDTH = 350;
-  static const BUY_TIMER_WIDTH = 150;
+  static const FISHING_PHASE = 1;
+  static const BUY_PHASE = 2;
+  static const REGROWTH_PHASE = 3;
+  
+  static const FISHING_TIMER_WIDTH = 50;
+  static const BUY_TIMER_WIDTH = 50;
+  static const REGROW_TIMER_WIDTH = 50;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -19,6 +24,8 @@ class Game extends Sprite implements Animatable{
   int width;
   int height;
   
+  Bitmap _mask;
+  
   TextField teamATextField;
   TextField teamBTextField;
   int teamAMoney = 0;
@@ -32,10 +39,11 @@ class Game extends Sprite implements Animatable{
   int moneyTimer = 0;
   int moneyTimerMax = 2;
   
-  bool buyPhase = false;
+  int phase = FISHING_PHASE;
   int timer = 0;
   int fishingTimerTick = 10;
   int buyTimerTick = 15;
+  int regrowthTimerTick = 15;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -48,7 +56,7 @@ class Game extends Sprite implements Animatable{
     tmanager.addTouchLayer(tlayer);
     
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
-    Bitmap mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
+    _mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
     _fleet = new Fleet(_resourceManager, _juggler, this);
     _ecosystem = new Ecosystem(_resourceManager, _juggler, this, _fleet);
     
@@ -56,10 +64,10 @@ class Game extends Sprite implements Animatable{
     background.height = height;
     addChild(background);
     addChild(_ecosystem);
-    addChild(mask);
+    addChild(_mask);
     addChild(_fleet);
-    mask.width = width;
-    mask.height = height;
+    _mask.width = width;
+    _mask.height = height;
     
     this.onEnterFrame.listen(_onEnterFrame);
     
@@ -87,8 +95,8 @@ class Game extends Sprite implements Animatable{
         var x = teamATextField.text.substring(1);
         int a = int.parse(teamATextField.text.substring(1));
         int b = int.parse(teamBTextField.text.substring(1));
-        if (a==teamAMoney) teamATextField.textColor = Color.Green;
-        if (b==teamBMoney) teamBTextField.textColor = Color.Green;
+        if (a==teamAMoney) teamATextField.textColor = Color.LightYellow;
+        if (b==teamBMoney) teamBTextField.textColor = Color.LightYellow;
         if (a==teamAMoney && b==teamBMoney) {
           moneyChanged = false;
           return true;
@@ -122,15 +130,16 @@ class Game extends Sprite implements Animatable{
       }
     } else moneyTimer++;
     
-    if ((timer>buyTimerTick && buyPhase==true) || (timer>fishingTimerTick && buyPhase==false)) {
+    if ((timer>buyTimerTick && phase==BUY_PHASE) || (timer>fishingTimerTick &&  phase==FISHING_PHASE) || (timer>regrowthTimerTick && phase==REGROWTH_PHASE)) {
       timer = 0;
       teamATimer.width = teamATimer.width-2;
       teamATimer.x = teamATimer.x +2;
       teamBTimer.width = teamBTimer.width-2;
     } else timer++;
     if (teamATimer.width<4 || teamBTimer.width<4) {
-      if (buyPhase==true) {
-        buyPhase = false;
+      if (phase==BUY_PHASE) {
+        phase = FISHING_PHASE;
+        addChild(_mask);
         _fleet.reactivateBoats();
         teamATimer.graphics.fillColor(Color.Green);
         teamBTimer.graphics.fillColor(Color.Green);
@@ -140,9 +149,32 @@ class Game extends Sprite implements Animatable{
         teamATimer.x = width-FISHING_TIMER_WIDTH-50;
         teamATimer.width = FISHING_TIMER_WIDTH;
         teamBTimer.width = FISHING_TIMER_WIDTH;
-      } else {
-        buyPhase = true;
+        
+        _mask.alpha = 0;
+        addChildAt(_mask, getChildIndex(_fleet)-1);
+        Tween t = new Tween(_mask, 1.5, TransitionFunction.linear);
+        t.animate.alpha.to(1);
+        _juggler.add(t);
+      } else if (phase==FISHING_PHASE){
+        Tween t = new Tween(_mask, 1.5, TransitionFunction.linear);
+        t.animate.alpha.to(0);
+        t.onComplete = _removeMask;
+        _juggler.add(t);
+        
+        phase = REGROWTH_PHASE;
+        
         _fleet.returnBoats();
+        teamATimer.graphics.fillColor(Color.Salmon);
+        teamBTimer.graphics.fillColor(Color.Salmon);
+        teamATimerField.text = "Regrowth season";
+        teamBTimerField.text = "Regrowth season";
+        
+        teamATimer.x = width-BUY_TIMER_WIDTH-50;
+        teamATimer.width = BUY_TIMER_WIDTH;
+        teamBTimer.width = BUY_TIMER_WIDTH;
+      } else {
+        _fleet.returnBoats();
+        phase = BUY_PHASE;
         teamATimer.graphics.fillColor(Color.DarkRed);
         teamBTimer.graphics.fillColor(Color.DarkRed);
         teamATimerField.text = "Offseason";
@@ -153,11 +185,16 @@ class Game extends Sprite implements Animatable{
         teamBTimer.width = BUY_TIMER_WIDTH;
       }
     }
+
     return true;
   }
   
+  void _removeMask() {
+    if (contains(_mask)) removeChild(_mask);
+  }
+  
   void _loadTextAndShapes() {
-    TextFormat format = new TextFormat("Arial", 40, Color.Green, align: "center", bold:true);
+    TextFormat format = new TextFormat("Arial", 40, Color.LightYellow, align: "center", bold:true);
     teamATextField = new TextField("\$0", format);
     teamATextField.width = 300;
     teamATextField.x = width~/2+teamATextField.width~/2;
@@ -182,6 +219,7 @@ class Game extends Sprite implements Animatable{
     teamATimerField.x = width-50;
     teamATimerField.y = 55;
     teamATimerField.rotation = math.PI;
+    teamATimerField.width = 200;
     addChild(teamATimerField);
     
     teamBTimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
@@ -193,6 +231,7 @@ class Game extends Sprite implements Animatable{
     teamBTimerField = new TextField("Fishing season", format);
     teamBTimerField.x = 50;
     teamBTimerField.y = height-45;
+    teamBTimerField.width = 200;
     addChild(teamBTimerField);
   }
 }

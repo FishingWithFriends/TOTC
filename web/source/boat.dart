@@ -215,7 +215,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     t.onComplete = _netUnloaded;
     _juggler.add(t);
     
-    if (_game.buyPhase==true) {
+    if (_game.phase==Game.BUY_PHASE) {
       _canLoadConsole = true;
       _loadConsole();
       _fleet.addButtons();
@@ -497,7 +497,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       _loadConsole();
       return true;
     }
-    if (_inDock==true && _game.buyPhase==false) {
+    if (_inDock==true && _game.phase==Game.FISHING_PHASE) {
       _game.gameStarted = true;
       _leaveDock();
       return true;
