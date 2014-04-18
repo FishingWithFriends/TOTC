@@ -29,6 +29,12 @@ class Game extends Sprite implements Animatable{
   Shape teamBTimer = new Shape();
   TextField teamATimerField, teamBTimerField;
   
+  //Temp rectangles for population visualization
+  Shape planktonGraph = new Shape();
+  Shape sardineGraph = new Shape();
+  Shape tunaGraph = new Shape();
+  Shape sharkGraph = new Shape();
+  
   int moneyTimer = 0;
   int moneyTimerMax = 2;
   
@@ -153,6 +159,12 @@ class Game extends Sprite implements Animatable{
         teamBTimer.width = BUY_TIMER_WIDTH;
       }
     }
+    
+    sardineGraph.width = _ecosystem._fishCount[0];
+    tunaGraph.width = _ecosystem._fishCount[1];
+    sharkGraph.width = _ecosystem._fishCount[2];
+    planktonGraph.width = _ecosystem._fishCount[3];
+    
     return true;
   }
   
@@ -194,5 +206,30 @@ class Game extends Sprite implements Animatable{
     teamBTimerField.x = 50;
     teamBTimerField.y = height-45;
     addChild(teamBTimerField);
+    
+    
+    planktonGraph.graphics.rect(0, 0, 100, 10);
+    planktonGraph.x = width/2;
+    planktonGraph.y = height-110;
+    planktonGraph.graphics.fillColor(Color.Black);
+    addChild(planktonGraph);
+    
+    sardineGraph.graphics.rect(0, 0, 100, 10);
+    sardineGraph.x = width/2;
+    sardineGraph.y = height-100;
+    sardineGraph.graphics.fillColor(Color.Green);
+    addChild(sardineGraph);
+    
+    tunaGraph.graphics.rect(0, 0, 100, 10);
+    tunaGraph.x = width/2;
+    tunaGraph.y = height-90;
+    tunaGraph.graphics.fillColor(Color.Red);
+    addChild(tunaGraph);
+    
+    sharkGraph.graphics.rect(0, 0, 100, 10);
+    sharkGraph.x = width/2;
+    sharkGraph.y = height-80;
+    sharkGraph.graphics.fillColor(Color.Blue);
+    addChild(sharkGraph);
   }
 }

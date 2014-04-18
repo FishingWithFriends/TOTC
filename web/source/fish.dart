@@ -14,11 +14,8 @@ class Fish extends Bitmap implements Animatable {
   bool _flocking, _darting, _pouncing;
   Fish ate;
   
-  Fish (BitmapData bitmapData, List<Fish> fishes, int t, Ecosystem eco, List<Boat> boats) : super(bitmapData) {
-    _fishes = fishes;
-    type = t;
-    _ecosystem = eco;
-    _boats = boats;
+  Fish (BitmapData bitmapData, this._fishes, this.type, this._ecosystem, this._boats) : super(bitmapData) {
+    
     _random = _ecosystem.random;
     
     pivotX = width/2;
@@ -65,10 +62,26 @@ class Fish extends Bitmap implements Animatable {
       _hungerMax = _random.nextInt(200) + 500;
       _foodType = Ecosystem.MAGIC;
       _predType = Ecosystem.TUNA;
-      _eyesightRadius = 75;
+      _eyesightRadius = 100;
       _dartV = 75;
       _dartRotationSpeed = math.PI/2;
       _flocking = true;
+      _dartTimerMax = _random.nextInt(5) + 30;
+      _magicTimer = 0;
+      _magicTimerMax = _random.nextInt(550) + 50;
+    }
+    if (type == Ecosystem.PLANKTON) {
+      _v = 0;
+      _minSeparation = 0;
+      _rotationSpeed = 0;
+      _hunger = 0;
+      _hungerMax = _random.nextInt(200) + 5000000;
+      _foodType = null;
+      _predType = Ecosystem.SARDINE;
+      _eyesightRadius = 0;
+      _dartV = 0;
+      _dartRotationSpeed = 0;
+      _flocking = false;
       _dartTimerMax = _random.nextInt(5) + 30;
       _magicTimer = 0;
       _magicTimerMax = _random.nextInt(550) + 50;
@@ -78,7 +91,7 @@ class Fish extends Bitmap implements Animatable {
   bool advanceTime(num time) {
     for (int i=0; i<_boats.length; i++) {
       num rotDiff = (_boats[i].netHitBox.rotation-rotation).abs();
-      if (_boats[i].catchType==type && _boats[i].canCatch && hitTestObject(_boats[i].netHitBox) && _ecosystem.game.gameStarted==true) {
+      if (_boats[i].catchType==type && _boats[i].canCatch && hitTestObject(_boats[i].netHitBox) && _ecosystem.game.gameStarted==true && _boats[i]._dragging == true) {
         _boats[i].increaseFishNet(Ecosystem.SARDINE);
         _ecosystem.removeFish(this, Ecosystem.CAUGHT);
         return true;

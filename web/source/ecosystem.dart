@@ -1,9 +1,10 @@
 part of TOTC;
 
 class Ecosystem extends Sprite {
-  static const TUNA = 0;
-  static const SARDINE = 1;
+  static const SARDINE = 0;
+  static const TUNA = 1;
   static const SHARK = 2;
+  static const PLANKTON = 3;
   static const MAGIC = 3;
   static const EATEN = 4;
   static const STARVATION = 5;
@@ -11,14 +12,15 @@ class Ecosystem extends Sprite {
   static const MAX_SHARK = 3;
   static const MAX_TUNA = 60;
   static const MAX_SARDINE = 400;
+  static const MAX_PLANKTON = 400;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
   Game game;
   Fleet _fleet;
   List<Fish> fishes = new List<Fish>();
-  List<int> _babies = new List<int>(3);
-  List<int> _fishCount = new List<int>(3);
+  List<int> _babies = new List<int>(4);
+  List<int> _fishCount = new List<int>(4);
   
   BitmapData _tunaBloodData, _sardineBloodData;
 
@@ -35,23 +37,40 @@ class Ecosystem extends Sprite {
     _tunaBloodData = _resourceManager.getBitmapData("TunaBlood");
     _sardineBloodData = _resourceManager.getBitmapData("SardineBlood");
     
-    _babies[TUNA] = 0;
     _babies[SARDINE] = 0;
+    _babies[TUNA] = 0;
     _babies[SHARK] = 0;
-    _fishCount[TUNA] = 0;
+    _babies[PLANKTON] = 0;
     _fishCount[SARDINE] = 0;
+    _fishCount[TUNA] = 0;
     _fishCount[SHARK] = 0;
+    _fishCount[PLANKTON] = 0;
 
     addFish(2, SHARK);
     addFish(30, TUNA);
     addFish(250, SARDINE);
+    addFish(300, PLANKTON);
     
-    new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
+    //new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
+    new Timer.periodic(const Duration(seconds : 1), (timer) => addFish(20, PLANKTON));
+    
   }
   
   void addFish(int n, int type) {
     if (n>0) {
       var fishImage;
+      if (type == PLANKTON) {
+        if(_fishCount[PLANKTON] >= MAX_PLANKTON){
+          return;
+        }
+        //fishImage = null;
+        fishImage = _resourceManager.getBitmapData("Plankton");
+        _fishCount[PLANKTON] = _fishCount[PLANKTON]+n;
+      }
+      if (type == SARDINE) {
+        fishImage = _resourceManager.getBitmapData("Sardine");
+        _fishCount[SARDINE] = _fishCount[SARDINE]+n;
+      }
       if (type == TUNA) {
         fishImage = _resourceManager.getBitmapData("Tuna");
         _fishCount[TUNA] = _fishCount[TUNA]+n;
@@ -60,15 +79,10 @@ class Ecosystem extends Sprite {
         fishImage = _resourceManager.getBitmapData("Shark");
         _fishCount[SHARK] = _fishCount[SHARK]+n;
       }
-      if (type == SARDINE) {
-        fishImage = _resourceManager.getBitmapData("Sardine");
-        _fishCount[SARDINE] = _fishCount[SARDINE]+n;
-      }
-      
       while (--n >= 0) {
         var fish = new Fish(fishImage, fishes, type, this, _fleet.boats);
-        fish.x = random.nextInt(1)*game.width;
-        fish.y = random.nextInt(1)*game.height;
+        fish.x = random.nextInt(game.width);
+        fish.y = random.nextInt(game.height);
         fish.rotation = random.nextDouble()*2*math.PI;;
         
         fishes.add(fish);
@@ -87,6 +101,9 @@ class Ecosystem extends Sprite {
     }
     if (f.type == SARDINE) {
       _fishCount[SARDINE]--;
+    }
+    if (f.type == PLANKTON) {
+      _fishCount[PLANKTON]--;
     }
     if (reason == STARVATION) {
       var t = new Tween(f, 2.0, TransitionFunction.linear);

@@ -17,6 +17,7 @@ part 'source/movement.dart';
 part 'source/console.dart';
 
 void main() {
+  print("game started...");
   int height = html.window.innerHeight-20;
   int width = html.window.innerWidth;
   
@@ -39,6 +40,7 @@ void main() {
   resourceManager.addBitmapData("Tuna", "images/tuna.png");
   resourceManager.addBitmapData("Shark", "images/shark.png");
   resourceManager.addBitmapData("Sardine", "images/sardine.png");
+  resourceManager.addBitmapData("Plankton", "images/plankton.png");
   resourceManager.addBitmapData("SardineBlood", "images/sardine_blood.png");
   resourceManager.addBitmapData("TunaBlood", "images/tuna_blood.png");
   resourceManager.addBitmapData("Dock", "images/dock.png");
@@ -57,6 +59,7 @@ void main() {
   resourceManager.addBitmapData("OkayUp", "images/okay_up.png");
   resourceManager.addBitmapData("YesDown", "images/yes_down.png");
   resourceManager.addBitmapData("YesUp", "images/yes_up.png");
+  
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);
