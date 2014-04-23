@@ -173,35 +173,37 @@ class Console extends Sprite {
       _fleet.sellBoat(_boat);
     }
     if (_confirmMode == SPEED_CONFIRM) {
+      num amount = (_boat.speedLevel+1)*200;
       if (_boat._teamA==true) {
-        if (_game.teamAMoney<200) startWarning("Fish more! You don't have enough money for this upgrade");
+        if (_game.teamAMoney<amount) startWarning("Fish more! You don't have enough money for this upgrade");
         else {
           _boat.increaseSpeed();
-          _game.teamAMoney = _game.teamAMoney-200;
+          _game.teamAMoney = _game.teamAMoney-amount;
           startBuy();
         }
       } else {
-        if (_game.teamBMoney<200) startWarning("Fish more! You don't have enough money for this upgrade.");
+        if (_game.teamBMoney<amount) startWarning("Fish more! You don't have enough money for this upgrade.");
         else {
           _boat.increaseSpeed();
-          _game.teamBMoney = _game.teamBMoney-200;
+          _game.teamBMoney = _game.teamBMoney-amount;
           startBuy();
         }
       }
     }
     if (_confirmMode == NET_CONFIRM) {
+      num amount = (_boat.capacityLevel+1)*300;
       if (_boat._teamA==true) {
-        if (_game.teamAMoney<300) startWarning("Fish more! You don't have enough money for this upgrade");
+        if (_game.teamAMoney<amount) startWarning("Fish more! You don't have enough money for this upgrade");
         else {
           _boat.increaseCapacity();
-          _game.teamAMoney = _game.teamAMoney-300;
+          _game.teamAMoney = _game.teamAMoney-amount;
           startBuy();
         }
       } else {
-        if (_game.teamBMoney<300) startWarning("Fish more! You don't have enough money for this upgrade.");
+        if (_game.teamBMoney<amount) startWarning("Fish more! You don't have enough money for this upgrade.");
         else {
           _boat.increaseCapacity();
-          _game.teamBMoney = _game.teamBMoney-300;
+          _game.teamBMoney = _game.teamBMoney-amount;
           startBuy();
         }
       }
@@ -247,9 +249,11 @@ class Console extends Sprite {
     startConfirm("Sell this boat for \$700?", SELL_CONFIRM);
   }
   void _capacityButtonClicked(var e) {
-    startConfirm("Upgrade net size for \$300?", NET_CONFIRM);
+    num amount = (_boat.capacityLevel+1)*300;
+    startConfirm("Upgrade net size for \$$amount?", NET_CONFIRM);
   }
   void _speedButtonClicked(var e) {
-    startConfirm("Upgrade speed for \$200?", SPEED_CONFIRM);
+    num amount = (_boat.speedLevel+1)*200;
+    startConfirm("Upgrade speed for \$$amount?", SPEED_CONFIRM);
   }
 }
