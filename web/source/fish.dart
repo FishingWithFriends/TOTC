@@ -67,7 +67,7 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 1;
       _rotationSpeed = math.PI/8;
       _hunger = 0;
-      _hungerMax = _random.nextInt(200) + 500;
+      _hungerMax = _random.nextInt(200) + 250;
       _foodType = Ecosystem.MAGIC;
       _predType = Ecosystem.TUNA;
       _eyesightRadius = 75;
@@ -76,7 +76,7 @@ class Fish extends Bitmap implements Animatable {
       _flocking = true;
       _dartTimerMax = _random.nextInt(5) + 30;
       _magicTimer = 0;
-      _magicTimerMax = _random.nextInt(200) + 350;
+      _magicTimerMax = _random.nextInt(100) + 225;
     }
   }
   
@@ -92,17 +92,20 @@ class Fish extends Bitmap implements Animatable {
         } 
       } else _catchTimer++;
     }
+    if (_foodType == Ecosystem.MAGIC) {
+      if (_magicTimer>_magicTimerMax) {
+        _hunger = 0;
+        
+        if (_ecosystem._fishCount[Ecosystem.SHARK]>3) _magicTimerMax = 250;
+        else _magicTimerMax = _random.nextInt(100) + 425-_ecosystem._fishCount[Ecosystem.SHARK]*100;
+        
+        _magicTimer = 0;
+      } else _magicTimer++;
+    }
     if (_hunger > _hungerMax) {
       _ecosystem.removeFish(this, Ecosystem.STARVATION);
       return true;
     } else _hunger++;
-    if (_foodType == Ecosystem.MAGIC) {
-      if (_magicTimer > _magicTimerMax) {
-        _hunger = 0;
-        _magicTimerMax = _ecosystem.random.nextInt(200) + 650-_ecosystem._fishCount[Ecosystem.SHARK]*100;
-        _magicTimer = 0;
-      } else _magicTimer++;
-    }
     
     _dartTimer++;
     if (_rotateTimer < _timerMax) _rotateTimer++;
