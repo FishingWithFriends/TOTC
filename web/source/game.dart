@@ -6,7 +6,7 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 350;
+  static const FISHING_TIMER_WIDTH = 40;
   static const BUY_TIMER_WIDTH = 150;
   static const REGROW_TIMER_WIDTH = 50;
   
@@ -33,6 +33,7 @@ class Game extends Sprite implements Animatable{
   bool moneyChanged;
   
   Slider _teamASlider, _teamBSlider;
+  Graph _teamAGraph, _teamBGraph;
   
   Shape teamATimer = new Shape();
   Shape teamBTimer = new Shape();
@@ -67,7 +68,7 @@ class Game extends Sprite implements Animatable{
     background.height = height;
     addChild(background);
     addChild(_ecosystem);
-    addChild(_mask);
+    //addChild(_mask);
     addChild(_fleet);
     _mask.width = width;
     _mask.height = height;
@@ -91,7 +92,6 @@ class Game extends Sprite implements Animatable{
   
   bool advanceTime(num time) {
     if (gameStarted == false) return true;
-    
     if (moneyTimer>moneyTimerMax) {
       moneyTimer = 0;
       if (moneyChanged == true) {
@@ -171,6 +171,8 @@ class Game extends Sprite implements Animatable{
         teamATimer.x = width-REGROW_TIMER_WIDTH-50;
         teamATimer.width = REGROW_TIMER_WIDTH;
         teamBTimer.width = REGROW_TIMER_WIDTH;
+        
+        _regrowthPhase();
       } else {
         _fleet.returnBoats();
         phase = BUY_PHASE;
@@ -182,10 +184,37 @@ class Game extends Sprite implements Animatable{
         teamATimer.x = width-BUY_TIMER_WIDTH-50;
         teamATimer.width = BUY_TIMER_WIDTH;
         teamBTimer.width = BUY_TIMER_WIDTH;
+        
+        _buyPhase();
       }
     }
 
     return true;
+  }
+  
+  void _regrowthPhase() {
+    teamATextField.alpha = 0;
+    teamBTextField.alpha = 0;
+    _fleet.alpha = 0;
+    
+    _teamAGraph = new Graph(_resourceManager, _juggler, this, _ecosystem, true);
+    _teamAGraph.x = width/2 + _teamAGraph.width/2;
+    _teamAGraph.y = height/4;
+    _teamAGraph.rotation = math.PI;
+    _teamBGraph = new Graph(_resourceManager, _juggler, this, _ecosystem, true);
+    _teamBGraph.x = width/2 - _teamBGraph.width/2;
+    _teamBGraph.y = height*3/4;
+    addChild(_teamAGraph);
+    addChild(_teamBGraph);
+  }
+  
+  void _buyPhase() {
+    teamATextField.alpha = 1;
+    teamBTextField.alpha = 1;
+    _fleet.alpha = 1;
+    
+    if (contains(_teamAGraph)) removeChild(_teamAGraph);
+    if (contains(_teamBGraph)) removeChild(_teamBGraph);
   }
   
   void _removeMask() {

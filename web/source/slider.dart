@@ -24,8 +24,8 @@ class Slider extends Sprite implements Touchable{
     
     _bigCircle = new Shape();
     _bigCircle.graphics.circle(0, 0, RADIUS);
-    _bigCircle.graphics.fillColor(Color.Black);
-    _bigCircle.alpha = .5;
+    _bigCircle.graphics.fillColor(Color.White);
+    _bigCircle.alpha = .1;
     _smallCircle = new Shape();
     _smallCircle.graphics.circle(0, -0, 5);
     _smallCircle.x = 0;
@@ -74,31 +74,35 @@ class Slider extends Sprite implements Touchable{
     _sardineLine.graphics.beginPath();
     _sardineLine.graphics.moveTo(0, -RADIUS);
     _sardineLine.graphics.lineTo(_smallCircle.x, _smallCircle.y);
-    _sardineLine.graphics.strokeColor(Color.Yellow);
+    _sardineLine.graphics.strokeColor(Color.White, 3);
     _sardineLine.graphics.closePath();
-    _sardineLine.alpha = .5;
-    addChildAt(_sardineLine, 1);
+    _sardineLine.alpha = .9;
+    
     _sardineLength = math.sqrt(math.pow((_smallCircle.x-0).abs(), 2) + math.pow((_smallCircle.y-RADIUS*-1).abs(), 2));
     
     _tunaLine = new Shape();
     _tunaLine.graphics.beginPath();
     _tunaLine.graphics.moveTo(-lX, lY);
     _tunaLine.graphics.lineTo(_smallCircle.x, _smallCircle.y);
-    _tunaLine.graphics.strokeColor(Color.LightBlue);
+    _tunaLine.graphics.strokeColor(Color.LightBlue, 3);
     _tunaLine.graphics.closePath();
     _tunaLine.alpha = .5;
-    addChildAt(_tunaLine, 1);
+    
     _tunaLength = math.sqrt(math.pow((_smallCircle.x-lX*-1).abs(), 2) + math.pow((_smallCircle.y-lY).abs(), 2));
     
     _sharkLine = new Shape();
     _sharkLine.graphics.beginPath();
     _sharkLine.graphics.moveTo(lX, lY);
     _sharkLine.graphics.lineTo(_smallCircle.x, _smallCircle.y);
-    _sharkLine.graphics.strokeColor(Color.Gray);
+    _sharkLine.graphics.strokeColor(Color.Gray, 3);
     _sharkLine.graphics.closePath();
-    _sharkLine.alpha = .5;
-    addChildAt(_sharkLine, 1);
+    _sharkLine.alpha = .8;
+    
     _sharkLength = math.sqrt(math.pow((_smallCircle.x-lX).abs(), 2) + math.pow((_smallCircle.y-lY).abs(), 2));
+    
+    addChildAt(_sardineLine, 1);
+    addChildAt(_tunaLine, 1);
+    addChildAt(_sharkLine, 1);
     
     _updateText();
   }

@@ -15,7 +15,7 @@ class Fish extends Bitmap implements Animatable {
   Fish ate;
   
   int _catchTimer = 0;
-  int _catchTimerMax = 50;
+  int _catchTimerMax = 80;
   
   var _random = new math.Random();
   

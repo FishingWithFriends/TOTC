@@ -20,6 +20,11 @@ class Ecosystem extends Sprite {
   List<int> _babies = new List<int>(3);
   List<int> _fishCount = new List<int>(3);
   
+  List<int> sardineGraph = new List<int>();
+  List<int> tunaGraph = new List<int>();
+  List<int> sharkGraph = new List<int>();
+  int largestSardinePop = 0, lowestSardinePop = 0, largestTunaPop = 0, lowestTunaPop = 0, largestSharkPop = 0, lowestSharkPop = 0;
+  
   BitmapData _tunaBloodData, _sardineBloodData;
 
   var random = new math.Random();
@@ -46,6 +51,7 @@ class Ecosystem extends Sprite {
     addFish(30, TUNA, true);
     addFish(250, SARDINE, true);
     
+    new Timer.periodic(const Duration(seconds : 1), (timer) => _addToGraph());
     new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
   }
   
@@ -141,5 +147,20 @@ class Ecosystem extends Sprite {
     _babies[TUNA] = _fishCount[TUNA]~/2;
     _babies[SARDINE] = _fishCount[SARDINE]~/2;
     _babies[SHARK] = _fishCount[SHARK]~/2;
+  }
+  
+  void _addToGraph() {
+    if (_fishCount[SARDINE]>largestSardinePop) largestSardinePop=_fishCount[SARDINE];
+    if (_fishCount[TUNA]>largestTunaPop) largestTunaPop=_fishCount[TUNA];
+    if (_fishCount[SHARK]>largestSharkPop) largestSharkPop=_fishCount[SHARK];
+    if (_fishCount[SARDINE]<lowestSardinePop) lowestSardinePop=_fishCount[SARDINE];
+    if (_fishCount[TUNA]<lowestTunaPop) lowestTunaPop=_fishCount[TUNA];
+    if (_fishCount[SHARK]<lowestSharkPop) lowestSharkPop=_fishCount[SHARK];
+    
+    if (game.gameStarted==true) {
+      sardineGraph.add(_fishCount[SARDINE]);    
+      tunaGraph.add(_fishCount[TUNA]);    
+      sharkGraph.add(_fishCount[SHARK]);    
+    }
   }
 }
