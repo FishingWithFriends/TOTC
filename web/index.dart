@@ -31,10 +31,10 @@ void main() {
   renderLoop.addStage(stage);
 
   var resourceManager = new ResourceManager();
-  resourceManager.addBitmapData("BoatADown", "images/new boat down2.png");
-  resourceManager.addBitmapData("BoatAUp", "images/new boat up2.png");
-  resourceManager.addBitmapData("BoatBDown", "images/new boat down.png");
-  resourceManager.addBitmapData("BoatBUp", "images/new boat up.png");
+  resourceManager.addBitmapData("BoatADown", "images/boat_a_down.png");
+  resourceManager.addBitmapData("BoatAUp", "images/boat_a_up.png");
+  resourceManager.addBitmapData("BoatBDown", "images/boat_b_down.png");
+  resourceManager.addBitmapData("BoatBUp", "images/boat_b_up.png");
   resourceManager.addTextureAtlas("Nets", "images/nets.json", TextureAtlasFormat.JSONARRAY);
   resourceManager.addBitmapData("Background", "images/background.png");
   resourceManager.addBitmapData("Mask", "images/mask.png");
