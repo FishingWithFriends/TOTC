@@ -39,7 +39,7 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 15;
       _rotationSpeed = math.PI/60;
       _hunger = 0;
-      _hungerMax = _random.nextInt(200) + 1000;
+      _hungerMax = _random.nextInt(200) + 1500;
       _foodType = Ecosystem.SARDINE;
       _predType = Ecosystem.SHARK;
       _eyesightRadius = 60;
@@ -76,7 +76,7 @@ class Fish extends Bitmap implements Animatable {
       _flocking = true;
       _dartTimerMax = _random.nextInt(5) + 30;
       _magicTimer = 0;
-      _magicTimerMax = _random.nextInt(550) + 50;
+      _magicTimerMax = _random.nextInt(200) + 350;
     }
   }
   
@@ -99,7 +99,7 @@ class Fish extends Bitmap implements Animatable {
     if (_foodType == Ecosystem.MAGIC) {
       if (_magicTimer > _magicTimerMax) {
         _hunger = 0;
-        _magicTimerMax = _ecosystem.random.nextInt(550) + 50;
+        _magicTimerMax = _ecosystem.random.nextInt(200) + 650-_ecosystem._fishCount[Ecosystem.SHARK]*100;
         _magicTimer = 0;
       } else _magicTimer++;
     }

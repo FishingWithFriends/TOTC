@@ -50,20 +50,17 @@ class Graph extends Sprite {
     _sardineLine.graphics.beginPath();
     _sardineLine.graphics.moveTo(_xTop, (_yBottom-_ecosystem.sardineGraph[start]/sardineRatio).toInt());
     for (int i=start+1; i<_ecosystem.sardineGraph.length; i++) 
-      _sardineLine.graphics.lineTo(xIncr*i+_xTop, (_yBottom-_ecosystem.sardineGraph[i]/sardineRatio).toInt());
+      _sardineLine.graphics.lineTo(xIncr*(i-(start+1))+_xTop, (_yBottom-_ecosystem.sardineGraph[i]/sardineRatio).toInt());
     _sardineLine.graphics.strokeColor(Color.White, 4);
     _sardineLine.graphics.closePath();
     _sardineLine.alpha = .7;
-    
-    print(start+1);
-    print(_ecosystem.sardineGraph.length);
     
     num tunaRatio = (_ecosystem.largestTunaPop-_ecosystem.lowestTunaPop)/yLength;
     _tunaLine = new Shape();
     _tunaLine.graphics.beginPath();
     _tunaLine.graphics.moveTo(_xTop, (_yBottom-_ecosystem.tunaGraph[start]/tunaRatio).toInt());
     for (int i=start+1; i<_ecosystem.tunaGraph.length; i++) 
-      _tunaLine.graphics.lineTo(xIncr*i+_xTop, (_yBottom-_ecosystem.tunaGraph[i]/tunaRatio).toInt());
+      _tunaLine.graphics.lineTo(xIncr*(i-(start+1))+_xTop, (_yBottom-_ecosystem.tunaGraph[i]/tunaRatio).toInt());
     _tunaLine.graphics.strokeColor(Color.Blue, 4);
     _tunaLine.graphics.closePath();
     _tunaLine.alpha = .3;
@@ -73,7 +70,7 @@ class Graph extends Sprite {
     _sharkLine.graphics.beginPath();
     _sharkLine.graphics.moveTo(_xTop, (_yBottom-_ecosystem.sharkGraph[start]/sharkRatio).toInt());
     for (int i=start+1; i<_ecosystem.sharkGraph.length; i++) 
-      _sharkLine.graphics.lineTo(xIncr*i+_xTop, (_yBottom-_ecosystem.sharkGraph[i]/sharkRatio).toInt());
+      _sharkLine.graphics.lineTo(xIncr*(i-(start+1))+_xTop, (_yBottom-_ecosystem.sharkGraph[i]/sharkRatio).toInt());
     _sharkLine.graphics.strokeColor(Color.Black, 4);
     _sharkLine.graphics.closePath();
     _sharkLine.alpha = .5;
