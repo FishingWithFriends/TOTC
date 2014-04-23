@@ -25,7 +25,7 @@ class Slider extends Sprite implements Touchable{
     _bigCircle = new Shape();
     _bigCircle.graphics.circle(0, 0, RADIUS);
     _bigCircle.graphics.fillColor(Color.White);
-    _bigCircle.alpha = .1;
+    _bigCircle.alpha = .4;
     _smallCircle = new Shape();
     _smallCircle.graphics.circle(0, -0, 5);
     _smallCircle.x = 0;
@@ -84,9 +84,9 @@ class Slider extends Sprite implements Touchable{
     _tunaLine.graphics.beginPath();
     _tunaLine.graphics.moveTo(-lX, lY);
     _tunaLine.graphics.lineTo(_smallCircle.x, _smallCircle.y);
-    _tunaLine.graphics.strokeColor(Color.LightBlue, 3);
+    _tunaLine.graphics.strokeColor(Color.Blue, 3);
     _tunaLine.graphics.closePath();
-    _tunaLine.alpha = .5;
+    _tunaLine.alpha = .3;
     
     _tunaLength = math.sqrt(math.pow((_smallCircle.x-lX*-1).abs(), 2) + math.pow((_smallCircle.y-lY).abs(), 2));
     

@@ -27,10 +27,10 @@ class Ecosystem extends Sprite {
   
   BitmapData _tunaBloodData, _sardineBloodData;
   
-  int tunaBirthTimerMax = 15;
+  int tunaBirthTimerMax = 20;
   int tunaBirthTimer = 0;
   int sardineBirthTimerMax = 15;
-  int sardineBirthTimer = 0;
+  int sardineBirthTimer = 15;
   int sharkBirthTimerMax = 45;
   int sharkBirthTimer = 0;
 

@@ -43,7 +43,6 @@ void main() {
   resourceManager.addBitmapData("Sardine", "images/sardine.png");
   resourceManager.addBitmapData("SardineBlood", "images/sardine_blood.png");
   resourceManager.addBitmapData("TunaBlood", "images/tuna_blood.png");
-  resourceManager.addBitmapData("Dock", "images/dock.png");
   resourceManager.addBitmapData("Console", "images/console.png");
   resourceManager.addBitmapData("CapacityDown", "images/capacity_down.png");
   resourceManager.addBitmapData("CapacityUp", "images/capacity_up.png");
