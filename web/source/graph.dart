@@ -37,7 +37,11 @@ class Graph extends Sprite {
     int xIncr = xLength~/_ecosystem.sardineGraph.length;
     
     num start = 0;
-    if (_ecosystem.sardineGraph.length>120) start = _ecosystem.sardineGraph.length-120;
+    int lastX = 240;
+    if (_ecosystem.sardineGraph.length>lastX) {
+      xIncr = xLength~/lastX;
+      start = _ecosystem.sardineGraph.length-lastX;
+    }
     
     num sardineRatio = (_ecosystem.largestSardinePop-_ecosystem.lowestSardinePop)/yLength;
     _sardineLine = new Shape();

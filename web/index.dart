@@ -59,6 +59,7 @@ void main() {
   resourceManager.addBitmapData("YesDown", "images/yes_down.png");
   resourceManager.addBitmapData("YesUp", "images/yes_up.png");
   resourceManager.addBitmapData("GraphBackground", "images/graph.png");
+  resourceManager.addBitmapData("Net", "images/net.png");
   
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);

@@ -27,7 +27,7 @@ class Ecosystem extends Sprite {
   
   BitmapData _tunaBloodData, _sardineBloodData;
   
-  int tunaBirthTimerMax = 20;
+  int tunaBirthTimerMax = 15;
   int tunaBirthTimer = 0;
   int sardineBirthTimerMax = 15;
   int sardineBirthTimer = 15;
@@ -155,7 +155,7 @@ class Ecosystem extends Sprite {
       _babies[SARDINE] = _babies[SARDINE]+_fishCount[SARDINE]~/1.5;
       sardineBirthTimer = 0;
     } else sardineBirthTimer++;
-    if (sharkBirthTimer>sharkBirthTimerMax && _babies[SHARK]<MAX_TUNA) {
+    if (sharkBirthTimer>sharkBirthTimerMax && _babies[SHARK]<MAX_SHARK) {
       _babies[SHARK] = _babies[SHARK]+_fishCount[SHARK]~/2;
       sharkBirthTimer = 0;
     } else sharkBirthTimer++;
