@@ -26,6 +26,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   int _type;
   int _netMoney;
+  int _netCapacity;
+  
   var random;
   Dock _dock;
   
@@ -33,7 +35,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   num capacityLevel;
   num speed;
   num rotSpeed;
-  num netCapacity;
+  num netCapacityMax;
   
   Sprite boat;
   Bitmap _boatImage;
@@ -76,7 +78,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     capacityLevel = 0;
     speed = BASE_SPEED;
     rotSpeed = BASE_ROT_SPEED;
-    netCapacity = BASE_NET_CAPACITY;
+    netCapacityMax = BASE_NET_CAPACITY;
     
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE) catchType = Ecosystem.SARDINE;
     if (type==Fleet.TEAMASARDINE) _teamA = true;
@@ -86,6 +88,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     netHitBox = new Sprite();
     addChild(netHitBox);
     _netMoney = 0;
+    _netCapacity = 0;
     _turnMode = STRAIGHT;
     
     boat = new Sprite();
@@ -143,7 +146,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   void increaseCapacity() {
     capacityLevel++;
-    netCapacity = BASE_NET_CAPACITY + 100*capacityLevel;
+    netCapacityMax = BASE_NET_CAPACITY + 100*capacityLevel;
   }
   
   void clearConsole() {
@@ -170,20 +173,22 @@ class Boat extends Sprite implements Touchable, Animatable {
   void increaseFishNet(int n) {
     int worth;
     if (n==Ecosystem.SARDINE) worth = 5;
-    if (n==Ecosystem.TUNA) worth = 100;
-    if (n==Ecosystem.SHARK) worth = 250;
+    if (n==Ecosystem.TUNA) worth = 20;
+    if (n==Ecosystem.SHARK) worth = 100;
     _netMoney = _netMoney + worth;
     
-    if (_netMoney > netCapacity) {
+    _netCapacity = _netCapacity + 5;
+    
+    if (_netCapacity > netCapacityMax) {
       canCatch = false;
     }
     _changeNetGraphic();
   }
 
   void _changeNetGraphic() {
-    num n = netCapacity/_netNames.length;
-    num i = _netMoney~/n;
-    if (_netMoney>0 && _netMoney< n+1) i = 1;
+    num n = netCapacityMax/_netNames.length;
+    num i = _netCapacity~/n;
+    if (_netCapacity>0 && _netCapacity< n+1) i = 1;
     
     if (i<_netNames.length){
       removeChild(_net);
@@ -225,6 +230,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   void _netUnloaded() {
     if (_fleet.contains(_tempNet)) removeChild(_tempNet);
     _netMoney = 0;
+    _netCapacity = 0;
     _changeNetGraphic();
   }
   
