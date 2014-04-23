@@ -66,7 +66,7 @@ class Ecosystem extends Sprite {
       }
       
       while (--n >= 0) {
-        var fish = new Fish(fishImage, fishes, type, this, _fleet.boats);
+        var fish = new Fish(fishImage, fishes, type, this, _fleet, _fleet.boats);
         
         if (start==true) {
           fish.x = random.nextInt(game.width);

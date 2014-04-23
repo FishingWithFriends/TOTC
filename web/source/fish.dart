@@ -4,22 +4,27 @@ class Fish extends Bitmap implements Animatable {
 
   List<Fish> _fishes;
   Ecosystem _ecosystem;
+  Fleet _fleet;
   List<Boat> _boats;
   int _rotateTimer, _timerMax;
   int _magicTimer, _magicTimerMax;
-  var _random;
   
   num _v, _minSeparation, _eyesightRadius, _rotationSpeed, _dartV, _dartRotationSpeed;
   int type, _hunger, _hungerMax, _foodType, _predType, _dartTimerMax, _dartTimer;
   bool _flocking, _darting, _pouncing;
   Fish ate;
   
-  Fish (BitmapData bitmapData, List<Fish> fishes, int t, Ecosystem eco, List<Boat> boats) : super(bitmapData) {
+  int _catchTimer = 0;
+  int _catchTimerMax = 50;
+  
+  var _random = new math.Random();
+  
+  Fish (BitmapData bitmapData, List<Fish> fishes, int t, Ecosystem eco, Fleet fleet, List<Boat> boats) : super(bitmapData) {
     _fishes = fishes;
     type = t;
     _ecosystem = eco;
+    _fleet = fleet;
     _boats = boats;
-    _random = _ecosystem.random;
     
     pivotX = width/2;
     pivotY = height/2;
@@ -78,10 +83,13 @@ class Fish extends Bitmap implements Animatable {
   bool advanceTime(num time) {
     for (int i=0; i<_boats.length; i++) {
       num rotDiff = (_boats[i].netHitBox.rotation-rotation).abs();
-      if (_boats[i].catchType==type && _boats[i].canCatch && hitTestObject(_boats[i].netHitBox) && _ecosystem.game.gameStarted==true) {
-        _boats[i].increaseFishNet(Ecosystem.SARDINE);
-        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
-        return true;
+      Boat b = _boats[i];
+      if (b.canCatch && hitTestObject(b.netHitBox) && _ecosystem.game.gameStarted==true) {
+        if (_catchTimer>_catchTimerMax) {
+          _catchFish(b);
+          _catchTimer = 0;
+          return true;
+        } else _catchTimer++;
       }
     }
     if (_hunger > _hungerMax) {
@@ -91,7 +99,7 @@ class Fish extends Bitmap implements Animatable {
     if (_foodType == Ecosystem.MAGIC) {
       if (_magicTimer > _magicTimerMax) {
         _hunger = 0;
-        _magicTimerMax = _random.nextInt(550) + 50;
+        _magicTimerMax = _ecosystem.random.nextInt(550) + 50;
         _magicTimer = 0;
       } else _magicTimer++;
     }
@@ -141,6 +149,39 @@ class Fish extends Bitmap implements Animatable {
     return true;
   }
   
+  void _catchFish(Boat b) {
+    num shP, saP, tP;
+    if (b._teamA==true) {
+      shP = _fleet.teamASharkPercent;
+      saP = _fleet.teamASardinePercent;
+      tP = _fleet.teamATunaPercent;
+    } else {
+      shP = _fleet.teamBSharkPercent;
+      saP = _fleet.teamBSardinePercent;
+      tP = _fleet.teamBTunaPercent;
+    }
+    bool caught = false;
+    int caughtType = 0;
+    int r = _random.nextInt(100);
+
+    if (type==Ecosystem.SARDINE) {
+      if (r<saP) {
+        b.increaseFishNet(Ecosystem.SARDINE);
+        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
+      }
+    } else if (type==Ecosystem.SHARK) {
+      if (r<shP) {
+        b.increaseFishNet(Ecosystem.SHARK);
+        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
+      }
+    } else if (type==Ecosystem.TUNA) {
+      if (r<tP) {
+        b.increaseFishNet(Ecosystem.TUNA);
+        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
+      }
+  }
+  }
+  
   num _averageRotation(List<Fish> fishes) {
     num rotationSum = 0;
     int counter = 0;
@@ -172,7 +213,7 @@ class Fish extends Bitmap implements Animatable {
         if (fishType == _predType && _dartTimer > _dartTimerMax) {
           _dartTimer = 0;
           _darting = true;
-          if (_ecosystem.random.nextInt(1) == 0) return rotation+_dartRotationSpeed;
+          if (_random.nextInt(1) == 0) return rotation+_dartRotationSpeed;
           else return rotation-_dartRotationSpeed;
         }
         if (fishType == type) {

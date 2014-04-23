@@ -18,13 +18,18 @@ class Slider extends Sprite implements Touchable{
     _juggler = juggler;
     _fleet = fleet;
     _teamA = teamA;
+
+    lX = RADIUS*math.cos(math.PI*3/4);
+    lY = RADIUS*math.sin(math.PI*3/4);
     
     _bigCircle = new Shape();
     _bigCircle.graphics.circle(0, 0, RADIUS);
     _bigCircle.graphics.fillColor(Color.Black);
     _bigCircle.alpha = .5;
     _smallCircle = new Shape();
-    _smallCircle.graphics.circle(0, 0, 5);
+    _smallCircle.graphics.circle(0, -0, 5);
+    _smallCircle.x = 0;
+    _smallCircle.y = RADIUS;
     _smallCircle.graphics.fillColor(Color.Red);
     _smallCircle.alpha = 1;
     
@@ -56,9 +61,6 @@ class Slider extends Sprite implements Touchable{
     _sharkText.x = -RADIUS+13;
     _sharkText.y = -RADIUS-30;
     addChild(_sharkText);
-    
-    lX = RADIUS*math.cos(math.PI*3/4);
-    lY = RADIUS*math.sin(math.PI*3/4);
     
     _drawLines();
   }
@@ -97,11 +99,51 @@ class Slider extends Sprite implements Touchable{
     _sharkLine.alpha = .5;
     addChildAt(_sharkLine, 1);
     _sharkLength = math.sqrt(math.pow((_smallCircle.x-lX).abs(), 2) + math.pow((_smallCircle.y-lY).abs(), 2));
+    
+    _updateText();
+  }
+  
+  void _updateText() {
+    num sa = _sardineLength;
+    num sh = _sharkLength;
+    num t = _tunaLength;
+    num prox = 20;
+    
+    if (_sardineLength>(_tunaLength + prox) && _sardineLength>(_sharkLength + prox)) sa = sa*3;
+    if (_tunaLength>(_sardineLength + prox) && _tunaLength>(_sharkLength + prox)) t = t*3;
+    if (_sharkLength>(_tunaLength + prox) && _sharkLength>(_sardineLength + prox)) sh = sh*3;
+    num sum = sa + t + sh;
+    
+    num saP = (sa/sum*100).toInt();
+    num tP = (t/sum*100).toInt();
+    num shP = (sh/sum*100).toInt();
+
+    _sardineText.text = "$saP% Sardine";
+    _tunaText.text = "$tP% Tuna";
+    _sharkText.text = "$shP% Shark";
+    
+    if (_teamA) {
+      _fleet.teamASardinePercent = saP;
+      _fleet.teamATunaPercent = tP;
+      _fleet.teamASharkPercent = shP;
+    } else {
+      _fleet.teamBSardinePercent = saP;
+      _fleet.teamBTunaPercent = tP;
+      _fleet.teamBSharkPercent = shP;
+    }
   }
 
   @override
   bool containsTouch(Contact event) {
-    if ((event.touchX-_smallCircle.x-x).abs()<15 && (event.touchY-_smallCircle.y-y).abs()<15)
+    num tX, tY;
+    if (_teamA==true) {
+      tX = (event.touchX-x)*-1;
+      tY = (event.touchY-y)*-1;
+    } else {
+      tX = event.touchX-x;
+      tY = event.touchY-y;
+    }
+    if ((tX-_smallCircle.x).abs()<15 && (tY-_smallCircle.y).abs()<15)
       return true;
     else return false;
   }
@@ -118,46 +160,20 @@ class Slider extends Sprite implements Touchable{
     num touchY = event.touchY-y;
 
     num hyp = math.sqrt(math.pow((touchX-0).abs(), 2) + (math.pow((touchY-0).abs(), 2)));
-    
-    if (hyp<RADIUS) {
-      if (_teamA) {
-        _smallCircle.x = (event.touchX-x)*-1;
-        _smallCircle.y = (event.touchY-y)*-1;
-      } else {
-        _smallCircle.x = event.touchX-x;
-        _smallCircle.y = event.touchY-y;
-      }
-      _drawLines();
-
-      num sa = _sardineLength;
-      num sh = _sharkLength;
-      num t = _tunaLength;
-      num prox = 20;
-      
-      if (_sardineLength>(_tunaLength + prox) && _sardineLength>(_sharkLength + prox)) sa = sa*3;
-      if (_tunaLength>(_sardineLength + prox) && _tunaLength>(_sharkLength + prox)) t = t*3;
-      if (_sharkLength>(_tunaLength + prox) && _sharkLength>(_sardineLength + prox)) sh = sh*3;
-      num sum = sa + t + sh;
-      
-      num saP = (sa/sum*100).toInt();
-      num tP = (t/sum*100).toInt();
-      num shP = (sh/sum*100).toInt();
-
-      _sardineText.text = "$saP% Sardine";
-      _tunaText.text = "$tP% Tuna";
-      _sharkText.text = "$shP% Shark";
-      
-      if (_teamA) {
-        _fleet.teamASardinePercent = saP;
-        _fleet.teamATunePercent = tP;
-        _fleet.teamASharkPercent = shP;
-      } else {
-        _fleet.teamBSardinePercent = saP;
-        _fleet.teamBTunePercent = tP;
-        _fleet.teamBSharkPercent = shP;
-      }
-      
+    if (hyp>RADIUS) {
+      num ratio = RADIUS/hyp;
+      touchX = touchX*ratio;
+      touchY = touchY*ratio;
     }
+    
+    if (_teamA) {
+      _smallCircle.x = touchX*-1;
+      _smallCircle.y = touchY*-1;
+    } else {
+      _smallCircle.x = touchX;
+      _smallCircle.y = touchY;
+    }
+    _drawLines();
   }
 
   @override

@@ -6,7 +6,7 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 50;
+  static const FISHING_TIMER_WIDTH = 350;
   static const BUY_TIMER_WIDTH = 150;
   static const REGROW_TIMER_WIDTH = 50;
   
@@ -240,11 +240,11 @@ class Game extends Sprite implements Animatable{
     _teamBSlider = new Slider(_resourceManager, _juggler, _fleet, false);
     
     _teamBSlider.x = width-73;
-    _teamBSlider.y = height-80;
+    _teamBSlider.y = height-90;
     tlayer.touchables.add(_teamBSlider);
     
     _teamASlider.x = 73;
-    _teamASlider.y = 80;
+    _teamASlider.y = 90;
     _teamASlider.rotation = math.PI;
     tlayer.touchables.add(_teamASlider);
     
