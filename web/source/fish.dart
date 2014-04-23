@@ -53,7 +53,7 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 50;
       _rotationSpeed = math.PI/60;
       _hunger = 0;
-      _hungerMax = _random.nextInt(200) + 2000;
+      _hungerMax = _random.nextInt(200) + 1500;
       _foodType = Ecosystem.TUNA;
       _predType = -1;
       _eyesightRadius = 100;

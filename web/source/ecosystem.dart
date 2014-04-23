@@ -152,7 +152,7 @@ class Ecosystem extends Sprite {
       tunaBirthTimer = 0;
     } else tunaBirthTimer++;
     if (sardineBirthTimer>sardineBirthTimerMax && _babies[SARDINE]<MAX_SARDINE) {
-      _babies[SARDINE] = _babies[SARDINE]+_fishCount[SARDINE]~/1.5;
+      _babies[SARDINE] = _babies[SARDINE]+_fishCount[SARDINE]~/1.2;
       sardineBirthTimer = 0;
     } else sardineBirthTimer++;
     if (sharkBirthTimer>sharkBirthTimerMax && _babies[SHARK]<MAX_SHARK) {

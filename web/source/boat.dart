@@ -105,7 +105,7 @@ class Boat extends Sprite implements Touchable, Animatable {
      pivotX = width/2;
      pivotY = height/2;
      
-     _net = new Bitmap(_resourceManager.getBitmapData("Net"));
+     _net = new Bitmap(_nets.getBitmapData(_netNames[0]));
      _net.addEventListener(Event.ADDED, _netLoaded);
      
      addChildAt(_net, 0);
@@ -186,17 +186,17 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
 
   void _changeNetGraphic() {
-//    num n = netCapacityMax/_netNames.length;
-//    num i = _netCapacity~/n;
-//    if (_netCapacity>0 && _netCapacity< n+1) i = 1;
-//    
-//    if (i<_netNames.length){
-//      removeChild(_net);
-//      
-//      _net = new Bitmap(_nets.getBitmapData(_netNames[i]));
-//      _net.addEventListener(Event.ADDED, _netLoaded);
-//      addChildAt(_net, 0);
-//    }
+    num n = netCapacityMax/_netNames.length;
+    num i = _netCapacity~/n;
+    if (_netCapacity>0 && _netCapacity< n+1) i = 1;
+    
+    if (i<_netNames.length){
+      removeChild(_net);
+      
+      _net = new Bitmap(_nets.getBitmapData(_netNames[i]));
+      _net.addEventListener(Event.ADDED, _netLoaded);
+      addChildAt(_net, 0);
+    }
   }
   
   void _unloadNet() {

@@ -32,6 +32,8 @@ class Graph extends Sprite {
   }
   
   void _drawGraph() {
+    
+    
     num xLength = _xBottom-_xTop;
     num yLength = _yBottom-_yTop;
     int xIncr = xLength~/_ecosystem.sardineGraph.length;
@@ -52,6 +54,9 @@ class Graph extends Sprite {
     _sardineLine.graphics.strokeColor(Color.White, 4);
     _sardineLine.graphics.closePath();
     _sardineLine.alpha = .7;
+    
+    print(start+1);
+    print(_ecosystem.sardineGraph.length);
     
     num tunaRatio = (_ecosystem.largestTunaPop-_ecosystem.lowestTunaPop)/yLength;
     _tunaLine = new Shape();
