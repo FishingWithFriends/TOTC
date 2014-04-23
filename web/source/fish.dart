@@ -82,15 +82,15 @@ class Fish extends Bitmap implements Animatable {
   
   bool advanceTime(num time) {
     for (int i=0; i<_boats.length; i++) {
-      num rotDiff = (_boats[i].netHitBox.rotation-rotation).abs();
       Boat b = _boats[i];
+      num rotDiff = (b.netHitBox.rotation-rotation).abs();
+      if (_catchTimer>_catchTimerMax) {
       if (b.canCatch && hitTestObject(b.netHitBox) && _ecosystem.game.gameStarted==true) {
-        if (_catchTimer>_catchTimerMax) {
-          _catchFish(b);
-          _catchTimer = 0;
-          return true;
-        } else _catchTimer++;
-      }
+        _catchFish(b);
+        _catchTimer = 0;
+        return true;
+        } 
+      } else _catchTimer++;
     }
     if (_hunger > _hungerMax) {
       _ecosystem.removeFish(this, Ecosystem.STARVATION);
@@ -163,7 +163,6 @@ class Fish extends Bitmap implements Animatable {
     bool caught = false;
     int caughtType = 0;
     int r = _random.nextInt(100);
-
     if (type==Ecosystem.SARDINE) {
       if (r<saP) {
         b.increaseFishNet(Ecosystem.SARDINE);

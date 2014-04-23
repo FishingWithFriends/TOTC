@@ -213,7 +213,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _tempNet = new Bitmap(_nets.getBitmapData(_netNames[0]));
     _tempNet.x = _net.x;
     _tempNet.y = _net.y;
-    addChild(_tempNet);
+    addChildAt(_tempNet, 0);
     
     Tween t = new Tween(_net, 2, TransitionFunction.linear);
     t.animate.alpha.to(0);
