@@ -9,8 +9,8 @@ class Ecosystem extends Sprite {
   static const STARVATION = 5;
   static const CAUGHT = 6;
   static const MAX_SHARK = 7;
-  static const MAX_TUNA = 70;
-  static const MAX_SARDINE = 425;
+  static const MAX_TUNA = 50;
+  static const MAX_SARDINE = 400;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -23,9 +23,16 @@ class Ecosystem extends Sprite {
   List<int> sardineGraph = new List<int>();
   List<int> tunaGraph = new List<int>();
   List<int> sharkGraph = new List<int>();
-  int largestSardinePop = 0, lowestSardinePop = 0, largestTunaPop = 0, lowestTunaPop = 0, largestSharkPop = 0, lowestSharkPop = 0;
+  int largestSardinePop = MAX_SARDINE+30, lowestSardinePop = 0, largestTunaPop = MAX_TUNA+10, lowestTunaPop = 0, largestSharkPop = MAX_SHARK+2, lowestSharkPop = 0;
   
   BitmapData _tunaBloodData, _sardineBloodData;
+  
+  int tunaBirthTimerMax = 15;
+  int tunaBirthTimer = 0;
+  int sardineBirthTimerMax = 15;
+  int sardineBirthTimer = 0;
+  int sharkBirthTimerMax = 45;
+  int sharkBirthTimer = 0;
 
   var random = new math.Random();
   
@@ -49,10 +56,9 @@ class Ecosystem extends Sprite {
 
     addFish(2, SHARK, true);
     addFish(30, TUNA, true);
-    addFish(250, SARDINE, true);
+    addFish(350, SARDINE, true);
     
-    new Timer.periodic(const Duration(seconds : 1), (timer) => _addToGraph());
-    new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
+    new Timer.periodic(const Duration(seconds : 1), (timer) => _timerTick());
   }
   
   void addFish(int n, int type, bool start) {
@@ -126,36 +132,38 @@ class Ecosystem extends Sprite {
   } 
   
   void _respawnFishes() {
-    if (_babies[TUNA]+_fishCount[TUNA]>MAX_TUNA) {
-      addFish(MAX_TUNA-_fishCount[TUNA], TUNA, false);
+    if (_fishCount[TUNA]<MAX_TUNA && _babies[TUNA]>0) {
+      addFish(3, TUNA, false);
+      _babies[TUNA] = _babies[TUNA] - 3;
     }
-    else {
-      addFish(_babies[TUNA], TUNA, false);
+    if (_fishCount[SARDINE]<MAX_SARDINE && _babies[SARDINE]>0) {
+      addFish(10, SARDINE, false);
+      _babies[SARDINE] = _babies[SARDINE] - 10;
     }
-    if (_babies[SARDINE]+_fishCount[SARDINE]>MAX_SARDINE) {
-      addFish(MAX_SARDINE-_fishCount[SARDINE], SARDINE, false);
-    }
-    else {
-      addFish(_babies[SARDINE], SARDINE, false);
-    }
-    if (_babies[SHARK]+_fishCount[SHARK]>MAX_SHARK) {
-      addFish(MAX_SHARK-_fishCount[SHARK], SHARK, false);
-    }
-    else {
-      addFish(_babies[SHARK], SHARK, false);
-    }
-    _babies[TUNA] = _fishCount[TUNA]~/2;
-    _babies[SARDINE] = _fishCount[SARDINE]~/2;
-    _babies[SHARK] = _fishCount[SHARK]~/2;
+    if (_fishCount[SHARK]<MAX_SHARK && _babies[SHARK]>0) {
+      addFish(1, SHARK, false);
+      _babies[SHARK] = _babies[SHARK] - 1;
+   }
   }
   
-  void _addToGraph() {
-    if (_fishCount[SARDINE]>largestSardinePop) largestSardinePop=_fishCount[SARDINE];
-    if (_fishCount[TUNA]>largestTunaPop) largestTunaPop=_fishCount[TUNA];
-    if (_fishCount[SHARK]>largestSharkPop) largestSharkPop=_fishCount[SHARK];
-    if (_fishCount[SARDINE]<lowestSardinePop) lowestSardinePop=_fishCount[SARDINE];
-    if (_fishCount[TUNA]<lowestTunaPop) lowestTunaPop=_fishCount[TUNA];
-    if (_fishCount[SHARK]<lowestSharkPop) lowestSharkPop=_fishCount[SHARK];
+  void _birthFish() {
+    if (tunaBirthTimer>tunaBirthTimerMax && _babies[TUNA]<MAX_TUNA) {
+      _babies[TUNA] = _babies[TUNA]+_fishCount[TUNA]~/2;
+      tunaBirthTimer = 0;
+    } else tunaBirthTimer++;
+    if (sardineBirthTimer>sardineBirthTimerMax && _babies[SARDINE]<MAX_SARDINE) {
+      _babies[SARDINE] = _babies[SARDINE]+_fishCount[SARDINE]~/1.5;
+      sardineBirthTimer = 0;
+    } else sardineBirthTimer++;
+    if (sharkBirthTimer>sharkBirthTimerMax && _babies[SHARK]<MAX_TUNA) {
+      _babies[SHARK] = _babies[SHARK]+_fishCount[SHARK]~/2;
+      sharkBirthTimer = 0;
+    } else sharkBirthTimer++;
+  }
+  
+  void _timerTick() {
+    _respawnFishes();
+    _birthFish();
     
     if (game.gameStarted==true) {
       sardineGraph.add(_fishCount[SARDINE]);    

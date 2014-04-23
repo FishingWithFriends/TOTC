@@ -274,7 +274,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_dock != null) _dock.filled = false;
     _dock = null;
     
-    Tween t1 = new Tween(this, 1.25, TransitionFunction.linear);
+    Tween t1 = new Tween(this, 0, TransitionFunction.linear);
     t1.animate.alpha.to(0);
     _juggler.add(t1);
     
@@ -291,7 +291,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       t2.animate.rotation.to(0);
       t2.animate.y.to(frontOfDock.y-_fleet.dockHeight/2);
     }
-    t2.delay = 1.25;
+    t2.delay = 0;
     t2.animate.alpha.to(1);
     t2.onComplete = _unloadNet;
     _juggler.add(t2);

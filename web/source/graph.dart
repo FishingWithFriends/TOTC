@@ -55,7 +55,7 @@ class Graph extends Sprite {
     _tunaLine.graphics.strokeColor(Color.Blue, 4);
     _tunaLine.graphics.closePath();
     _tunaLine.alpha = .3;
-    
+
     num sharkRatio = (_ecosystem.largestSharkPop-_ecosystem.lowestSharkPop)/yLength;
     _sharkLine = new Shape();
     _sharkLine.graphics.beginPath();

@@ -53,7 +53,7 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 50;
       _rotationSpeed = math.PI/60;
       _hunger = 0;
-      _hungerMax = _random.nextInt(200) + 1000;
+      _hungerMax = _random.nextInt(200) + 4000;
       _foodType = Ecosystem.TUNA;
       _predType = -1;
       _eyesightRadius = 100;
@@ -112,7 +112,7 @@ class Fish extends Bitmap implements Animatable {
       
       var newRot = _rotationChange(_eyesightRadius);
       if (_pouncing) {
-        _hunger = _hunger - _hungerMax~/3;
+        _hunger = 0;
         _pouncing = false;
         _darting = false;
         x = ate.x;
@@ -200,7 +200,7 @@ class Fish extends Bitmap implements Animatable {
       if (_distanceTo(_fishes[i]) < r 
           && _fishes[i] != this) {
         int fishType = _fishes[i].type;
-        if (_hunger > _hungerMax/100 && fishType == _foodType && _dartTimer > _dartTimerMax) {
+        if (_hunger > _hungerMax~/8 && fishType == _foodType && _dartTimer > _dartTimerMax) {
           _dartTimer = 0;
           _darting = true;
           _pouncing = true;
