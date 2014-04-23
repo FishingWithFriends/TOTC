@@ -344,8 +344,8 @@ class Boat extends Sprite implements Touchable, Animatable {
         }
       }  
     }
-    if ((x>0 && x<_fleet.consoleWidth+Fleet.DOCK_SEPARATION*3 && y<_fleet.dockHeight*1.5 && y>0) ||
-        (x<_game.width && x>_game.width-_fleet.consoleWidth-Fleet.DOCK_SEPARATION*3 && y>_game.height-_fleet.dockHeight*1.5 && y<_game.height))
+    if ((x>0 && x<_fleet.consoleWidth+Fleet.DOCK_SEPARATION*2 && y<_fleet.dockHeight*1.3 && y>0) ||
+        (x<_game.width && x>_game.width-_fleet.consoleWidth-Fleet.DOCK_SEPARATION*2 && y>_game.height-_fleet.dockHeight*1.3 && y<_game.height))
       return true;
     return false;
   }
