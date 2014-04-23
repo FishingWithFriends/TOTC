@@ -177,7 +177,10 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (n==Ecosystem.SHARK) worth = 100;
     _netMoney = _netMoney + worth;
     
-    _netCapacity = _netCapacity + 5;
+    if (n==Ecosystem.SARDINE) _netCapacity = _netCapacity + 5;
+    if (n==Ecosystem.TUNA) _netCapacity = _netCapacity + 15;
+    if (n==Ecosystem.SHARK) _netCapacity = _netCapacity + 50;
+    
     
     if (_netCapacity > netCapacityMax) {
       canCatch = false;
