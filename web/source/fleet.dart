@@ -18,6 +18,8 @@ class Fleet extends Sprite {
   num consoleWidth;
   num dockHeight;
   
+  num teamASardinePercent, teamATunePercent, teamASharkPercent, teamBSardinePercent, teamBTunePercent, teamBSharkPercent;
+  
   List<SimpleButton> buttonsA = new List<SimpleButton>(3);
   List<SimpleButton> buttonsB = new List<SimpleButton>(3);
   

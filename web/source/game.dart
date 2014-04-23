@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 5;
-  static const BUY_TIMER_WIDTH = 200;
-  static const REGROW_TIMER_WIDTH = 5;
+  static const FISHING_TIMER_WIDTH = 50;
+  static const BUY_TIMER_WIDTH = 150;
+  static const REGROW_TIMER_WIDTH = 50;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -31,6 +31,8 @@ class Game extends Sprite implements Animatable{
   int teamAMoney = 0;
   int teamBMoney = 0;
   bool moneyChanged;
+  
+  Slider _teamASlider, _teamBSlider;
   
   Shape teamATimer = new Shape();
   Shape teamBTimer = new Shape();
@@ -59,6 +61,7 @@ class Game extends Sprite implements Animatable{
     _mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
     _fleet = new Fleet(_resourceManager, _juggler, this);
     _ecosystem = new Ecosystem(_resourceManager, _juggler, this, _fleet);
+
     
     background.width = width;
     background.height = height;
@@ -139,7 +142,6 @@ class Game extends Sprite implements Animatable{
     if (teamATimer.width<4 || teamBTimer.width<4) {
       if (phase==BUY_PHASE) {
         phase = FISHING_PHASE;
-        addChild(_mask);
         _fleet.reactivateBoats();
         teamATimer.graphics.fillColor(Color.Green);
         teamBTimer.graphics.fillColor(Color.Green);
@@ -150,15 +152,12 @@ class Game extends Sprite implements Animatable{
         teamATimer.width = FISHING_TIMER_WIDTH;
         teamBTimer.width = FISHING_TIMER_WIDTH;
         
-        _mask.alpha = 0;
-        addChildAt(_mask, getChildIndex(_fleet)-1);
         Tween t = new Tween(_mask, 1.5, TransitionFunction.linear);
         t.animate.alpha.to(1);
         _juggler.add(t);
       } else if (phase==FISHING_PHASE){
         Tween t = new Tween(_mask, 1.5, TransitionFunction.linear);
         t.animate.alpha.to(0);
-        t.onComplete = _removeMask;
         _juggler.add(t);
         
         phase = REGROWTH_PHASE;
@@ -194,6 +193,7 @@ class Game extends Sprite implements Animatable{
   }
   
   void _loadTextAndShapes() {
+
     TextFormat format = new TextFormat("Arial", 40, Color.LightYellow, align: "center", bold:true);
     teamATextField = new TextField("\$0", format);
     teamATextField.width = 300;
@@ -209,7 +209,8 @@ class Game extends Sprite implements Animatable{
     addChild(teamBTextField);
     
     teamATimer.graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10);
-    teamATimer.x = width-400;
+    teamATimer.x = width-FISHING_TIMER_WIDTH-50;
+    teamATimer.width = FISHING_TIMER_WIDTH;
     teamATimer.y = 20;
     teamATimer.graphics.fillColor(Color.LightGreen);
     addChild(teamATimer);
@@ -233,5 +234,21 @@ class Game extends Sprite implements Animatable{
     teamBTimerField.y = height-45;
     teamBTimerField.width = 200;
     addChild(teamBTimerField);
+    
+    
+    _teamASlider = new Slider(_resourceManager, _juggler, _fleet, true);
+    _teamBSlider = new Slider(_resourceManager, _juggler, _fleet, false);
+    
+    _teamBSlider.x = width-73;
+    _teamBSlider.y = height-80;
+    tlayer.touchables.add(_teamBSlider);
+    
+    _teamASlider.x = 73;
+    _teamASlider.y = 80;
+    _teamASlider.rotation = math.PI;
+    tlayer.touchables.add(_teamASlider);
+    
+    addChild(_teamBSlider);
+    addChild(_teamASlider);
   }
 }

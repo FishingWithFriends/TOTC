@@ -8,9 +8,9 @@ class Ecosystem extends Sprite {
   static const EATEN = 4;
   static const STARVATION = 5;
   static const CAUGHT = 6;
-  static const MAX_SHARK = 3;
-  static const MAX_TUNA = 60;
-  static const MAX_SARDINE = 400;
+  static const MAX_SHARK = 7;
+  static const MAX_TUNA = 70;
+  static const MAX_SARDINE = 425;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -42,14 +42,14 @@ class Ecosystem extends Sprite {
     _fishCount[SARDINE] = 0;
     _fishCount[SHARK] = 0;
 
-    addFish(2, SHARK);
-    addFish(30, TUNA);
-    addFish(250, SARDINE);
+    addFish(2, SHARK, true);
+    addFish(30, TUNA, true);
+    addFish(250, SARDINE, true);
     
     new Timer.periodic(const Duration(seconds : 15), (timer) => _respawnFishes());
   }
   
-  void addFish(int n, int type) {
+  void addFish(int n, int type, bool start) {
     if (n>0) {
       var fishImage;
       if (type == TUNA) {
@@ -67,8 +67,14 @@ class Ecosystem extends Sprite {
       
       while (--n >= 0) {
         var fish = new Fish(fishImage, fishes, type, this, _fleet.boats);
-        fish.x = random.nextInt(1)*game.width;
-        fish.y = random.nextInt(1)*game.height;
+        
+        if (start==true) {
+          fish.x = random.nextInt(game.width);
+          fish.y = random.nextInt(game.height);
+        } else {
+          fish.x = random.nextInt(1)*game.width;
+          fish.y = random.nextInt(1)*game.height;
+        }
         fish.rotation = random.nextDouble()*2*math.PI;;
         
         fishes.add(fish);
@@ -115,22 +121,22 @@ class Ecosystem extends Sprite {
   
   void _respawnFishes() {
     if (_babies[TUNA]+_fishCount[TUNA]>MAX_TUNA) {
-      addFish(MAX_TUNA-_fishCount[TUNA], TUNA);
+      addFish(MAX_TUNA-_fishCount[TUNA], TUNA, false);
     }
     else {
-      addFish(_babies[TUNA], TUNA);
+      addFish(_babies[TUNA], TUNA, false);
     }
     if (_babies[SARDINE]+_fishCount[SARDINE]>MAX_SARDINE) {
-      addFish(MAX_SARDINE-_fishCount[SARDINE], SARDINE);
+      addFish(MAX_SARDINE-_fishCount[SARDINE], SARDINE, false);
     }
     else {
-      addFish(_babies[SARDINE], SARDINE);
+      addFish(_babies[SARDINE], SARDINE, false);
     }
     if (_babies[SHARK]+_fishCount[SHARK]>MAX_SHARK) {
-      addFish(MAX_SHARK-_fishCount[SHARK], SHARK);
+      addFish(MAX_SHARK-_fishCount[SHARK], SHARK, false);
     }
     else {
-      addFish(_babies[SHARK], SHARK);
+      addFish(_babies[SHARK], SHARK, false);
     }
     _babies[TUNA] = _fishCount[TUNA]~/2;
     _babies[SARDINE] = _fishCount[SARDINE]~/2;

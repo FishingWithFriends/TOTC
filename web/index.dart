@@ -15,6 +15,7 @@ part 'source/ecosystem.dart';
 part 'source/fish.dart';
 part 'source/movement.dart';
 part 'source/console.dart';
+part 'source/slider.dart';
 
 void main() {
   int height = html.window.innerHeight-20;
