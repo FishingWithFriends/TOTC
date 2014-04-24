@@ -35,6 +35,8 @@ class Game extends Sprite implements Animatable{
   Slider _teamASlider, _teamBSlider;
   int sliderPrompt = 6;
   Graph _teamAGraph, _teamBGraph;
+  int _graphTimerMax = 25;
+  int _graphTimer=0;
   
   Shape teamATimer = new Shape();
   Shape teamBTimer = new Shape();
@@ -49,6 +51,8 @@ class Game extends Sprite implements Animatable{
   int buyTimerTick = 15;
   int regrowthTimerTick = 15;
   
+  Tween _maskTween;
+  
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
     _juggler = juggler;
@@ -62,6 +66,7 @@ class Game extends Sprite implements Animatable{
     
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
     _mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
+    _mask.alpha = 0;
     _fleet = new Fleet(_resourceManager, _juggler, this);
     _ecosystem = new Ecosystem(_resourceManager, _juggler, this, _fleet);
 
@@ -70,7 +75,7 @@ class Game extends Sprite implements Animatable{
     background.height = height;
     addChild(background);
     addChild(_ecosystem);
-    //addChild(_mask);
+    addChild(_mask);
     addChild(_fleet);
     _mask.width = width;
     _mask.height = height;
@@ -94,6 +99,28 @@ class Game extends Sprite implements Animatable{
 //  
   bool advanceTime(num time) {
     if (gameStarted == false) return true;
+    
+    if (!_juggler.contains(_maskTween)) {
+      int sardineCount = _ecosystem._fishCount[Ecosystem.SARDINE];
+      int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
+      int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
+      _maskTween = new Tween(_mask, 1, TransitionFunction.linear);
+      if (sardineCount < 50 && tunaCount < 10 && sharkCount<2)
+        _maskTween.animate.alpha.to(1);
+      else if (sardineCount < Ecosystem.MAX_SARDINE-250 || tunaCount < Ecosystem.MAX_TUNA-40 || sharkCount<2)
+        _maskTween.animate.alpha.to(.8);
+      else if (sardineCount < Ecosystem.MAX_SARDINE-150 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3)
+        _maskTween.animate.alpha.to(.6);
+      else if (sardineCount < Ecosystem.MAX_SARDINE-100 && (tunaCount > Ecosystem.MAX_TUNA-15 || sharkCount>2)) 
+        _maskTween.animate.alpha.to(.3);
+      else if (tunaCount < Ecosystem.MAX_TUNA-20 && (sardineCount > Ecosystem.MAX_SARDINE-100 || sharkCount>2))
+        _maskTween.animate.alpha.to(.3);
+      else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-15 || sardineCount>Ecosystem.MAX_SARDINE-100))
+        _maskTween.animate.alpha.to(.3);
+      else _maskTween.animate.alpha.to(0);
+      _juggler.add(_maskTween);
+    }
+    
     if (moneyTimer>moneyTimerMax) {
       moneyTimer = 0;
       if (moneyChanged == true) {
@@ -161,7 +188,8 @@ class Game extends Sprite implements Animatable{
         Tween t = new Tween(_mask, 1.5, TransitionFunction.linear);
         t.animate.alpha.to(0);
         _juggler.add(t);
-        
+        _teamASlider._promptUser();
+        _teamBSlider._promptUser(); 
         phase = REGROWTH_PHASE;
         
         _fleet.returnBoats();
@@ -191,6 +219,8 @@ class Game extends Sprite implements Animatable{
         
         _buyPhase();
       }
+    } else {
+      if (phase==REGROWTH_PHASE) _regrowthPhase();
     }
 
     return true;
@@ -201,15 +231,20 @@ class Game extends Sprite implements Animatable{
     teamBTextField.alpha = 0;
     _fleet.alpha = 0;
     
-    _teamAGraph = new Graph(_resourceManager, _juggler, this, _ecosystem, true);
-    _teamAGraph.x = width/2 + _teamAGraph.width/2;
-    _teamAGraph.y = height/4;
-    _teamAGraph.rotation = math.PI;
-    _teamBGraph = new Graph(_resourceManager, _juggler, this, _ecosystem, true);
-    _teamBGraph.x = width/2 - _teamBGraph.width/2;
-    _teamBGraph.y = height*3/4;
-    addChild(_teamAGraph);
-    addChild(_teamBGraph);
+    if (_graphTimer>_graphTimerMax) {
+      _graphTimer = 0;
+      if (contains(_teamAGraph)) removeChild(_teamAGraph);
+      if (contains(_teamBGraph)) removeChild(_teamBGraph);
+      _teamAGraph = new Graph(_resourceManager, _juggler, this, _ecosystem, true);
+      _teamAGraph.x = width/2 + _teamAGraph.width/2;
+      _teamAGraph.y = height/4;
+      _teamAGraph.rotation = math.PI;
+      _teamBGraph = new Graph(_resourceManager, _juggler, this, _ecosystem, true);
+      _teamBGraph.x = width/2 - _teamBGraph.width/2;
+      _teamBGraph.y = height*3/4;
+      addChild(_teamAGraph);
+      addChild(_teamBGraph);
+    } else _graphTimer++;
   }
   
   void _buyPhase() {

@@ -38,19 +38,19 @@ class Graph extends Sprite {
     int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
     int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
 
-    _statusText.text = "You're doing great! The ecosystem is healthy.";
-    if (sardineCount < 25 && tunaCount < 5 && sharkCount<2)
+    if (sardineCount < 50 && tunaCount < 10 && sharkCount<2)
       _statusText.text = "You have destroyed the ecosystem.";
     else if (sardineCount < Ecosystem.MAX_SARDINE-250 || tunaCount < Ecosystem.MAX_TUNA-40 || sharkCount<2)
       _statusText.text = "Your ecosystem is about to collapse!";
-    else if (sardineCount < Ecosystem.MAX_SARDINE-100 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3)
+    else if (sardineCount < Ecosystem.MAX_SARDINE-150 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3)
       _statusText.text = "Your ecosystem is not doing well! Let the fish grow more!";
     else if (sardineCount < Ecosystem.MAX_SARDINE-100 && (tunaCount > Ecosystem.MAX_TUNA-15 || sharkCount>2)) 
       _statusText.text = "There are not enough sardines! The tuna will starve.";
     else if (tunaCount < Ecosystem.MAX_TUNA-20 && (sardineCount > Ecosystem.MAX_SARDINE-100 || sharkCount>2))
       _statusText.text = "There are not enough tuna! The sharks will starve.";
-    else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-25 || sardineCount>Ecosystem.MAX_SARDINE-100))
+    else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-15 || sardineCount>Ecosystem.MAX_SARDINE-100))
       _statusText.text = "There are not enough sharks! The sardines will starve.";
+    else _statusText.text = "You're doing great! The ecosystem is healthy.";
   }
   
   void _drawGraph() {
@@ -59,7 +59,7 @@ class Graph extends Sprite {
     int xIncr = xLength~/_ecosystem.sardineGraph.length;
     
     num start = 0;
-    int lastX = 240;
+    int lastX = 60;
     if (_ecosystem.sardineGraph.length>lastX) {
       xIncr = xLength~/lastX;
       start = _ecosystem.sardineGraph.length-lastX;

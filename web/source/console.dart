@@ -76,10 +76,13 @@ class Console extends Sprite {
     
     _sellButton.addEventListener(MouseEvent.MOUSE_UP, _sellButtonClicked);
     _sellButton.addEventListener(TouchEvent.TOUCH_BEGIN, _sellButtonClicked);
+    _sellButton.addEventListener(TouchEvent.TOUCH_TAP, _sellButtonClicked);
     _capacityButton.addEventListener(MouseEvent.MOUSE_UP, _capacityButtonClicked);
     _capacityButton.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityButtonClicked);
+    _capacityButton.addEventListener(TouchEvent.TOUCH_TAP, _capacityButtonClicked);
     _speedButton.addEventListener(MouseEvent.MOUSE_UP, _speedButtonClicked);
     _speedButton.addEventListener(TouchEvent.TOUCH_BEGIN, _speedButtonClicked);
+    _speedButton.addEventListener(TouchEvent.TOUCH_TAP, _speedButtonClicked);
     
     TextFormat format = new TextFormat("Arial", 12, Color.Black, align: "left", bold:true);
     int sLevel = _boat.speedLevel+1;
@@ -112,6 +115,7 @@ class Console extends Sprite {
                                   new Bitmap(_resourceManager.getBitmapData("OkayDown")));
     _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
     _yesButton.addEventListener(TouchEvent.TOUCH_BEGIN, _yesClicked);
+    _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
     
     if (_confirmMode != ONLY_CONFIRM_DESTROY) _confirmMode = ONLY_CONFIRM;
     
@@ -144,8 +148,10 @@ class Console extends Sprite {
                                    new Bitmap(_resourceManager.getBitmapData("NoDown")));
     _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
     _yesButton.addEventListener(TouchEvent.TOUCH_BEGIN, _yesClicked);
+    _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
     _noButton.addEventListener(MouseEvent.MOUSE_UP, _noClicked);
     _noButton.addEventListener(TouchEvent.TOUCH_BEGIN, _noClicked);
+    _noButton.addEventListener(TouchEvent.TOUCH_TAP, _noClicked);
     
     _confirmText.x = 10;
     _confirmText.y = 45;

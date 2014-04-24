@@ -55,6 +55,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool _autoMove;
   bool _inDock;
   bool _canLoadConsole = false;
+  bool _leavingDock;
   
   bool _showingFullPrompt = false;
   bool _showingPrompt = false;
@@ -132,6 +133,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     }
     if (_netCapacity > netCapacityMax) {
       canCatch = false;
+      _leavingDock = false;
       _canMove = false;
       _goToDock();
       return true;
@@ -249,6 +251,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _leaveDock() {
+    _leavingDock = true;
     _canMove = false;
     _autoMove = true;
     _inDock = false;
@@ -548,6 +551,7 @@ class Boat extends Sprite implements Touchable, Animatable {
 
       TextFormat format = new TextFormat("Arial", 20, Color.LightYellow, align: "left");
       _fullText = new TextField("Your boat is full!", format);
+      if (_leavingDock==true) _fullText.text = "Leaving dock!";
       _fullText.width = 200;
 
       if (_teamA==true) {

@@ -149,8 +149,9 @@ class Slider extends Sprite implements Touchable{
       _showingPrompt = true;
       
       _arrow = new Bitmap(_resourceManager.getBitmapData("Arrow"));
-      TextFormat format = new TextFormat("Arial", 20, Color.Red, align: "left");
+      TextFormat format = new TextFormat("Arial", 20, Color.Red, align: "left", bold:true);
       _text = new TextField("Move the red dot to change what you fish!", format);
+      _text.alpha = .6;
       _text.width = 400;
       
       if (_teamA==true) {

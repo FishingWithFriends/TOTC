@@ -189,16 +189,22 @@ class Fleet extends Sprite {
     }
     buttonsA[0].addEventListener(MouseEvent.MOUSE_UP, _buyBoatA0);
     buttonsA[0].addEventListener(TouchEvent.TOUCH_BEGIN, _buyBoatA0);
+    buttonsA[0].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatA0);
     buttonsA[1].addEventListener(MouseEvent.MOUSE_UP, _buyBoatA1);
     buttonsA[1].addEventListener(TouchEvent.TOUCH_BEGIN, _buyBoatA1);
+    buttonsA[1].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatA1);
     buttonsA[2].addEventListener(MouseEvent.MOUSE_UP, _buyBoatA2);
     buttonsA[2].addEventListener(TouchEvent.TOUCH_BEGIN, _buyBoatA2);
+    buttonsA[2].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatA2);
     buttonsB[0].addEventListener(MouseEvent.MOUSE_UP, _buyBoatB0);
     buttonsB[0].addEventListener(TouchEvent.TOUCH_BEGIN, _buyBoatB0);
+    buttonsB[0].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatB0);
     buttonsB[1].addEventListener(MouseEvent.MOUSE_UP, _buyBoatB1);
     buttonsB[1].addEventListener(TouchEvent.TOUCH_BEGIN, _buyBoatB1);
+    buttonsB[1].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatB1);
     buttonsB[2].addEventListener(MouseEvent.MOUSE_UP, _buyBoatB2);
     buttonsB[2].addEventListener(TouchEvent.TOUCH_BEGIN, _buyBoatB2);
+    buttonsB[2].addEventListener(TouchEvent.TOUCH_TAP, _buyBoatB2);
   }
 }
 
