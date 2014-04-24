@@ -538,7 +538,6 @@ class Boat extends Sprite implements Touchable, Animatable {
   void _removePrompt() {
     if (_fleet.contains(_text)) _fleet.removeChild(_text);
     if (_fleet.contains(_arrow)) _fleet.removeChild(_arrow);
-    if (_fleet.contains(_fullText)) _fleet.removeChild(_fullText);
   }
   
   void _promptBoatFull() {
@@ -562,13 +561,13 @@ class Boat extends Sprite implements Touchable, Animatable {
       Tween t2 = new Tween(_fullText, 1, TransitionFunction.linear);
       t2.animate.alpha.to(0);
       t2.onComplete = _promptBoatFullDone;
-      t2.onComplete = _removePrompt;
       _fleet._juggler.add(t2);
     }
   }
   
   void _promptBoatFullDone() {
     _showingFullPrompt = false;
+    if (_fleet.contains(_fullText)) _fleet.removeChild(_fullText);
   }
    
   bool containsTouch(Contact e) {
