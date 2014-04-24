@@ -11,6 +11,7 @@ class Graph extends Sprite {
   num _xTop, _xBottom, _yTop, _yBottom;
   
   Shape _sardineLine, _sharkLine, _tunaLine;
+  TextField _statusText;
   
   Graph(ResourceManager resourceManager, Juggler juggler, Game game, Ecosystem ecosystem, bool teamA) {
     _resourceManager = resourceManager;
@@ -29,11 +30,31 @@ class Graph extends Sprite {
     
     _addGraphics();
     _drawGraph();
+    _setStatus();
+  }
+  
+  void _setStatus() {
+    int sardineCount = _ecosystem._fishCount[Ecosystem.SARDINE];
+    int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
+    int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
+
+    _statusText.text = "You're doing great! The ecosystem is healthy.";
+    if (sardineCount < Ecosystem.MAX_SARDINE-100 && (tunaCount > Ecosystem.MAX_TUNA-15 || sharkCount>2)) {
+      _statusText.text = "There are not enough sardines! The tuna will starve.";
+    } else if (sardineCount > Ecosystem.MAX_SARDINE-100 && (tunaCount < Ecosystem.MAX_TUNA-15 || sharkCount>2)) {
+      _statusText.text = "There are not enough tuna! The sharks will starve.";
+    } else if (sardineCount > Ecosystem.MAX_SARDINE-100 && (tunaCount > Ecosystem.MAX_TUNA-15 || sharkCount<2)) {
+      _statusText.text = "There are not enough sharks! The sardines will starve.";
+    } else if (sardineCount < Ecosystem.MAX_SARDINE-100 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3) {
+      _statusText.text = "Your ecosystem is not doing well! Let the fish grow more!";
+    } else if (sardineCount < Ecosystem.MAX_SARDINE-250 || tunaCount < Ecosystem.MAX_TUNA-40 || sharkCount<1) {
+      _statusText.text = "Your ecosystem is about to collapse!";
+    } else if (sardineCount < 25 && tunaCount < Ecosystem.MAX_TUNA-5 && sharkCount<2) {
+      _statusText.text = "You have destroyed the ecosystem.";
+    }
   }
   
   void _drawGraph() {
-    
-    
     num xLength = _xBottom-_xTop;
     num yLength = _yBottom-_yTop;
     int xIncr = xLength~/_ecosystem.sardineGraph.length;
@@ -88,7 +109,18 @@ class Graph extends Sprite {
     addChild(background);
     
     num h = _height/8;
-    TextFormat format = new TextFormat("Arial", 14, Color.LightYellow, align: "left");
+    TextFormat format = new TextFormat("Arial", 22, Color.Red, align: "left", bold: true);
+    
+    _statusText = new TextField("", format);
+    _statusText.width = 1000;
+    _statusText.alpha = .6;
+    _statusText.x = 20;
+    _statusText.y = -40;
+    addChild(_statusText);
+    
+    format.size = 14;
+    format.bold = false;
+    format.color = Color.LightYellow;
     TextField saT = new TextField("Sardine", format);
     saT.x = _width-70;
     saT.y = h;
