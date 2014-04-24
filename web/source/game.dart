@@ -59,6 +59,7 @@ class Game extends Sprite implements Animatable{
     tmanager.registerEvents(this);
     tmanager.addTouchLayer(tlayer);
     
+    
     Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
     _mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
     _fleet = new Fleet(_resourceManager, _juggler, this);

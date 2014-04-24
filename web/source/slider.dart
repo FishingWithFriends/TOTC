@@ -174,7 +174,8 @@ class Slider extends Sprite implements Touchable{
   }
   
   void _promptUserFinished() {
-    _showingPrompt=false;
+    if (_showingPrompt==true) {
+      _showingPrompt=false;
     Tween t = new Tween(_arrow, 1, TransitionFunction.linear);
     t.animate.alpha.to(0);
     _fleet._juggler.add(t);
@@ -182,6 +183,7 @@ class Slider extends Sprite implements Touchable{
     t2.animate.alpha.to(0);
     _fleet._juggler.add(t2);
     t2.onComplete = _removePrompt;
+    }
   }
   
   void _removePrompt() {
@@ -192,6 +194,7 @@ class Slider extends Sprite implements Touchable{
   @override
   bool containsTouch(Contact event) {
     num tX, tY;
+    print("hi");
     if (_teamA==true) {
       tX = (event.touchX-x)*-1;
       tY = (event.touchY-y)*-1;

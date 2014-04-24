@@ -39,19 +39,18 @@ class Graph extends Sprite {
     int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
 
     _statusText.text = "You're doing great! The ecosystem is healthy.";
-    if (sardineCount < Ecosystem.MAX_SARDINE-100 && (tunaCount > Ecosystem.MAX_TUNA-15 || sharkCount>2)) {
-      _statusText.text = "There are not enough sardines! The tuna will starve.";
-    } else if (tunaCount < Ecosystem.MAX_TUNA-20 && (sardineCount > Ecosystem.MAX_SARDINE-100 || sharkCount>2)) {
-      _statusText.text = "There are not enough tuna! The sharks will starve.";
-    } else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-25 || sardineCount>Ecosystem.MAX_SARDINE-100)) {
-      _statusText.text = "There are not enough sharks! The sardines will starve.";
-    } else if (sardineCount < Ecosystem.MAX_SARDINE-100 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3) {
-      _statusText.text = "Your ecosystem is not doing well! Let the fish grow more!";
-    } else if (sardineCount < Ecosystem.MAX_SARDINE-250 || tunaCount < Ecosystem.MAX_TUNA-40 || sharkCount<3) {
-      _statusText.text = "Your ecosystem is about to collapse!";
-    } else if (sardineCount < 25 && tunaCount < 5 && sharkCount<2) {
+    if (sardineCount < 25 && tunaCount < 5 && sharkCount<2)
       _statusText.text = "You have destroyed the ecosystem.";
-    }
+    else if (sardineCount < Ecosystem.MAX_SARDINE-250 || tunaCount < Ecosystem.MAX_TUNA-40 || sharkCount<2)
+      _statusText.text = "Your ecosystem is about to collapse!";
+    else if (sardineCount < Ecosystem.MAX_SARDINE-100 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3)
+      _statusText.text = "Your ecosystem is not doing well! Let the fish grow more!";
+    else if (sardineCount < Ecosystem.MAX_SARDINE-100 && (tunaCount > Ecosystem.MAX_TUNA-15 || sharkCount>2)) 
+      _statusText.text = "There are not enough sardines! The tuna will starve.";
+    else if (tunaCount < Ecosystem.MAX_TUNA-20 && (sardineCount > Ecosystem.MAX_SARDINE-100 || sharkCount>2))
+      _statusText.text = "There are not enough tuna! The sharks will starve.";
+    else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-25 || sardineCount>Ecosystem.MAX_SARDINE-100))
+      _statusText.text = "There are not enough sharks! The sardines will starve.";
   }
   
   void _drawGraph() {

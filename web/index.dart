@@ -61,11 +61,12 @@ void main() {
   resourceManager.addBitmapData("GraphBackground", "images/graph.png");
   resourceManager.addBitmapData("Arrow", "images/arrow.png");
   
+  
+  Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+  
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);
     stage.addChild(game);
     stage.juggler.add(game);
   });
-  
- Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 }
