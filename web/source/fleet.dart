@@ -18,6 +18,8 @@ class Fleet extends Sprite {
   num consoleWidth;
   num dockHeight;
   
+  int touchReminders = 4;
+  
   num teamASardinePercent, teamATunaPercent, teamASharkPercent, teamBSardinePercent, teamBTunaPercent, teamBSharkPercent;
   
   List<SimpleButton> buttonsA = new List<SimpleButton>(3);

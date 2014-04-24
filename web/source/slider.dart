@@ -6,6 +6,7 @@ class Slider extends Sprite implements Touchable{
   ResourceManager _resourceManager;
   Juggler _juggler;
   Fleet _fleet;
+  Game _game;
   bool _teamA;
   
   Shape _bigCircle, _smallCircle, _sardineLine, _tunaLine, _sharkLine;
@@ -13,10 +14,15 @@ class Slider extends Sprite implements Touchable{
   num lX, lY;
   num _sardineLength, _tunaLength, _sharkLength;
   
-  Slider(ResourceManager resourceManager, Juggler juggler, Fleet fleet, bool teamA) {
+  bool _showingPrompt = false;
+  Bitmap _arrow;
+  TextField _text;
+  
+  Slider(ResourceManager resourceManager, Juggler juggler, Fleet fleet, Game game, bool teamA) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _fleet = fleet;
+    _game = game;
     _teamA = teamA;
 
     lX = RADIUS*math.cos(math.PI*3/4);
@@ -136,6 +142,52 @@ class Slider extends Sprite implements Touchable{
       _fleet.teamBSharkPercent = shP;
     }
   }
+  
+  void _promptUser() {
+    if (_game.sliderPrompt>1 && _showingPrompt==false) {
+      _game.sliderPrompt--;
+      _showingPrompt = true;
+      
+      _arrow = new Bitmap(_resourceManager.getBitmapData("Arrow"));
+      TextFormat format = new TextFormat("Arial", 20, Color.Red, align: "left");
+      _text = new TextField("Move the red dot to change what you fish!", format);
+      _text.width = 400;
+      
+      if (_teamA==true) {
+        _arrow.y = y+300;
+        _arrow.x = x-80;
+        _arrow.rotation = -math.PI/2;
+        _text.x = x+350;
+        _text.y = y+320;
+        _text.rotation = math.PI;
+      } else {
+        _arrow.y = y-300;
+        _arrow.x = x+80;
+        _arrow.rotation = math.PI/2;
+        _text.x = x-350;
+        _text.y = y-320;
+        _text.rotation = 0;
+      }
+      _game.addChild(_text);
+      _game.addChild(_arrow);
+    }
+  }
+  
+  void _promptUserFinished() {
+    _showingPrompt=false;
+    Tween t = new Tween(_arrow, 1, TransitionFunction.linear);
+    t.animate.alpha.to(0);
+    _fleet._juggler.add(t);
+    Tween t2 = new Tween(_text, 1, TransitionFunction.linear);
+    t2.animate.alpha.to(0);
+    _fleet._juggler.add(t2);
+    t2.onComplete = _removePrompt;
+  }
+  
+  void _removePrompt() {
+    if (_game.contains(_text)) _game.removeChild(_text);
+    if (_game.contains(_arrow)) _game.removeChild(_arrow);
+  }
 
   @override
   bool containsTouch(Contact event) {
@@ -147,9 +199,14 @@ class Slider extends Sprite implements Touchable{
       tX = event.touchX-x;
       tY = event.touchY-y;
     }
-    if ((tX-_smallCircle.x).abs()<15 && (tY-_smallCircle.y).abs()<15)
+    if ((tX-_smallCircle.x).abs()<15 && (tY-_smallCircle.y).abs()<15) {
+      _promptUserFinished();
       return true;
-    else return false;
+    }
+    else {
+      if (_game.phase==Game.REGROWTH_PHASE && _showingPrompt==false) _promptUser();
+      return false;
+    }
   }
 
   @override

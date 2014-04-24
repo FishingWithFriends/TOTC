@@ -56,6 +56,11 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool _inDock;
   bool _canLoadConsole = false;
   
+  bool _showingFullPrompt = false;
+  bool _showingPrompt = false;
+  Bitmap _arrow;
+  TextField _text, _fullText;
+  
   bool _dragging = false;
   bool _touched = false;
   num _newX, _newY;
@@ -269,6 +274,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   void returnToDock() {
     _juggler.removeTweens(this);
+    if(_showingPrompt==true) _promptUserFinished();
     if (_dock != null) _dock.filled = false;
     _dock = null;
     
@@ -487,13 +493,91 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (fnc!=null) t2.onComplete = fnc;
     _juggler.add(t2);
   }
+  
+  void _promptUser() {
+    if (_fleet.touchReminders>1 && _inDock==true && _showingPrompt==false) {
+      _fleet.touchReminders--;
+      _showingPrompt = true;
+      
+      _arrow = new Bitmap(_resourceManager.getBitmapData("Arrow"));
+      TextFormat format = new TextFormat("Arial", 20, Color.Red, align: "left");
+      _text = new TextField("Touch boat to begin!", format);
+      _text.width = 200;
+      
+      if (_teamA==true) {
+        _arrow.y = y+240;
+        _arrow.x = x-80;
+        _arrow.rotation = -math.PI/2;
+        _text.x = x+90;
+        _text.y = y+260;
+        _text.rotation = math.PI;
+      } else {
+        _arrow.y = y-240;
+        _arrow.x = x+80;
+        _arrow.rotation = math.PI/2;
+        _text.x = x-90;
+        _text.y = y-260;
+        _text.rotation = 0;
+      }
+      _fleet.addChild(_text);
+      _fleet.addChild(_arrow);
+    }
+  }
+  
+  void _promptUserFinished() {
+    _showingPrompt=false;
+    Tween t = new Tween(_arrow, 1, TransitionFunction.linear);
+    t.animate.alpha.to(0);
+    _fleet._juggler.add(t);
+    Tween t2 = new Tween(_text, 1, TransitionFunction.linear);
+    t2.animate.alpha.to(0);
+    _fleet._juggler.add(t2);
+    t2.onComplete = _removePrompt;
+  }
+  
+  void _removePrompt() {
+    if (_fleet.contains(_text)) _fleet.removeChild(_text);
+    if (_fleet.contains(_arrow)) _fleet.removeChild(_arrow);
+    if (_fleet.contains(_fullText)) _fleet.removeChild(_fullText);
+  }
+  
+  void _promptBoatFull() {
+    if (_showingFullPrompt==false) {
+      _showingFullPrompt = true;
 
+      TextFormat format = new TextFormat("Arial", 20, Color.LightYellow, align: "left");
+      _fullText = new TextField("Your boat is full!", format);
+      _fullText.width = 200;
+
+      if (_teamA==true) {
+        _fullText.x = x+50;
+        _fullText.y = y+75;
+        _fullText.rotation = math.PI;
+      } else {
+        _fullText.x = x-50;
+        _fullText.y = y-75;
+        _fullText.rotation = 0;
+      }
+      _fleet.addChild(_fullText);
+      Tween t2 = new Tween(_fullText, 1, TransitionFunction.linear);
+      t2.animate.alpha.to(0);
+      t2.onComplete = _promptBoatFullDone;
+      t2.onComplete = _removePrompt;
+      _fleet._juggler.add(t2);
+    }
+  }
+  
+  void _promptBoatFullDone() {
+    _showingFullPrompt = false;
+  }
    
   bool containsTouch(Contact e) {
     if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
       return true;
+    } else {
+      if (_game.phase==Game.FISHING_PHASE || _game.gameStarted == false) _promptUser();
+      return false;
     }
-    return false;
   }
    
   bool touchDown(Contact event) {
@@ -503,10 +587,12 @@ class Boat extends Sprite implements Touchable, Animatable {
     }
     if (_inDock==true && _game.phase==Game.FISHING_PHASE) {
       _game.gameStarted = true;
+      if(_showingPrompt==true) _promptUserFinished();
       _leaveDock();
       return true;
     }
     if (_canMove==true) {
+      if(_showingPrompt==true) _promptUserFinished();
       canCatch = true;
       _newX = event.touchX;
       _newY = event.touchY;
@@ -516,7 +602,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       boat.addChild(_boatImage);
       _dragging = true;
     }
-
+    if (canCatch==false && _canMove==false) _promptBoatFull();
     return true;
   }
    

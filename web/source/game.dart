@@ -33,6 +33,7 @@ class Game extends Sprite implements Animatable{
   bool moneyChanged;
   
   Slider _teamASlider, _teamBSlider;
+  int sliderPrompt = 6;
   Graph _teamAGraph, _teamBGraph;
   
   Shape teamATimer = new Shape();
@@ -175,6 +176,8 @@ class Game extends Sprite implements Animatable{
         _regrowthPhase();
       } else {
         _fleet.returnBoats();
+        if (_teamASlider._showingPrompt==true)_teamASlider._promptUserFinished();
+        if (_teamBSlider._showingPrompt==true)_teamBSlider._promptUserFinished();
         phase = BUY_PHASE;
         teamATimer.graphics.fillColor(Color.DarkRed);
         teamBTimer.graphics.fillColor(Color.DarkRed);
@@ -265,8 +268,8 @@ class Game extends Sprite implements Animatable{
     addChild(teamBTimerField);
     
     
-    _teamASlider = new Slider(_resourceManager, _juggler, _fleet, true);
-    _teamBSlider = new Slider(_resourceManager, _juggler, _fleet, false);
+    _teamASlider = new Slider(_resourceManager, _juggler, _fleet, this, true);
+    _teamBSlider = new Slider(_resourceManager, _juggler, _fleet, this, false);
     
     _teamBSlider.x = width-73;
     _teamBSlider.y = height-80;
