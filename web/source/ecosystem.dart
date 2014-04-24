@@ -8,9 +8,9 @@ class Ecosystem extends Sprite {
   static const EATEN = 4;
   static const STARVATION = 5;
   static const CAUGHT = 6;
-  static const MAX_SHARK = 7;
-  static const MAX_TUNA = 50;
-  static const MAX_SARDINE = 400;
+  static const MAX_SHARK = 5;
+  static const MAX_TUNA = 40;
+  static const MAX_SARDINE = 375;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -27,7 +27,7 @@ class Ecosystem extends Sprite {
   
   BitmapData _tunaBloodData, _sardineBloodData;
   
-  int tunaBirthTimerMax = 15;
+  int tunaBirthTimerMax = 13;
   int tunaBirthTimer = 0;
   int sardineBirthTimerMax = 15;
   int sardineBirthTimer = 15;

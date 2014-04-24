@@ -24,7 +24,7 @@ void main() {
   
   var canvas = html.querySelector('#stage');
   canvas.width = width;
-  canvas.height = height;
+  canvas.height = height+16;
   
   var stage = new Stage(canvas);
   var renderLoop = new RenderLoop();

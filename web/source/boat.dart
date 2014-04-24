@@ -125,7 +125,8 @@ class Boat extends Sprite implements Touchable, Animatable {
       _goStraight();
       return true;
     }
-    if (canCatch == false) {
+    if (_netCapacity > netCapacityMax) {
+      canCatch = false;
       _canMove = false;
       _goToDock();
       return true;
@@ -180,11 +181,6 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (n==Ecosystem.SARDINE) _netCapacity = _netCapacity + 5;
     if (n==Ecosystem.TUNA) _netCapacity = _netCapacity + 15;
     if (n==Ecosystem.SHARK) _netCapacity = _netCapacity + 50;
-    
-    
-    if (_netCapacity > netCapacityMax) {
-      canCatch = false;
-    }
     _changeNetGraphic();
   }
 
@@ -241,7 +237,6 @@ class Boat extends Sprite implements Touchable, Animatable {
     _goStraight();
     _inDock = false;
     _canMove = true;
-    canCatch = true;
     _autoMove = false;
     if (_dock != null) 
       _dock.filled = false;
@@ -512,6 +507,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       return true;
     }
     if (_canMove==true) {
+      canCatch = true;
       _newX = event.touchX;
       _newY = event.touchY;
       
@@ -526,6 +522,7 @@ class Boat extends Sprite implements Touchable, Animatable {
    
   void touchUp(Contact event) {
     _dragging = false;
+    canCatch = false;
     _goStraight();
     _juggler.remove(_boatMove);
     _juggler.remove(_boatRotate);

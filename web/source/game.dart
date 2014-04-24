@@ -52,7 +52,7 @@ class Game extends Sprite implements Animatable{
     _resourceManager = resourceManager;
     _juggler = juggler;
     width = w;
-    height = h;
+    height = h+16;
     moneyChanged = false;
     
     tmanager.registerEvents(this);
@@ -73,23 +73,23 @@ class Game extends Sprite implements Animatable{
     _mask.width = width;
     _mask.height = height;
     
-    this.onEnterFrame.listen(_onEnterFrame);
+    //this.onEnterFrame.listen(_onEnterFrame);
     
     _loadTextAndShapes();
   }
-  num _fpsAverage = null;
-
-  _onEnterFrame(EnterFrameEvent e) {
-
-    if (_fpsAverage == null) {
-      _fpsAverage = 1.00 / e.passedTime;
-    } else {
-      _fpsAverage = 0.05 / e.passedTime + 0.95 * _fpsAverage;
-    }
-
-    html.querySelector('#fpsMeter').innerHtml = 'fps: ${_fpsAverage.round()}';
-  }
-  
+//  num _fpsAverage = null;
+//
+//  _onEnterFrame(EnterFrameEvent e) {
+//
+//    if (_fpsAverage == null) {
+//      _fpsAverage = 1.00 / e.passedTime;
+//    } else {
+//      _fpsAverage = 0.05 / e.passedTime + 0.95 * _fpsAverage;
+//    }
+//
+//    html.querySelector('#fpsMeter').innerHtml = 'fps: ${_fpsAverage.round()}';
+//  }
+//  
   bool advanceTime(num time) {
     if (gameStarted == false) return true;
     if (moneyTimer>moneyTimerMax) {
