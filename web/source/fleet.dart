@@ -130,6 +130,7 @@ class Fleet extends Sprite {
       
       Console c = b._loadConsole();
       c.startConfirm("Buy a new boat for \$700?", Console.BUY_CONFIRM);
+      b._removePrompt();
     }
     else {
       Boat b = addBoat(TEAMBSARDINE, dockB[i].location.x+5, dockB[i].location.y-dockHeight/2, 0);
@@ -141,6 +142,7 @@ class Fleet extends Sprite {
       
       Console c = b._loadConsole();
       c.startConfirm("Buy a new boat for \$700?", Console.BUY_CONFIRM);
+      b._removePrompt();
     }
   }
   
