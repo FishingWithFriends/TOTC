@@ -194,7 +194,6 @@ class Slider extends Sprite implements Touchable{
   @override
   bool containsTouch(Contact event) {
     num tX, tY;
-    print("hi");
     if (_teamA==true) {
       tX = (event.touchX-x)*-1;
       tY = (event.touchY-y)*-1;

@@ -75,6 +75,7 @@ class Fleet extends Sprite {
     boats.add(boat);
     _game.tlayer.touchables.add(boat);
     addChild(boat);
+    boat._promptUser();
     _juggler.add(boat);
     
     return boat;

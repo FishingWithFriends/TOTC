@@ -105,7 +105,6 @@ class Game extends Sprite implements Animatable{
       int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
       int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
       _maskTween = new Tween(_mask, 2.5, TransitionFunction.linear);
-      print(sardineCount);print(tunaCount);print(sharkCount);
       if (sardineCount < 50 && tunaCount < 10 && sharkCount<2)
         _maskTween.animate.alpha.to(1);
       else if (sardineCount < Ecosystem.MAX_SARDINE-250 || tunaCount < Ecosystem.MAX_TUNA-40 || sharkCount<2)
