@@ -44,11 +44,11 @@ class Graph extends Sprite {
       _statusText.text = "Your ecosystem is about to collapse!";
     else if (sardineCount < Ecosystem.MAX_SARDINE-150 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3)
       _statusText.text = "Your ecosystem is not doing well! Let the fish grow more!";
-    else if (sardineCount < Ecosystem.MAX_SARDINE-100 && (tunaCount > Ecosystem.MAX_TUNA-15 || sharkCount>2)) 
+    else if (sardineCount < Ecosystem.MAX_SARDINE-150 && (tunaCount > Ecosystem.MAX_TUNA-25 || sharkCount>2)) 
       _statusText.text = "There are not enough sardines! The tuna will starve.";
-    else if (tunaCount < Ecosystem.MAX_TUNA-20 && (sardineCount > Ecosystem.MAX_SARDINE-100 || sharkCount>2))
+    else if (tunaCount < Ecosystem.MAX_TUNA-25 && (sardineCount > Ecosystem.MAX_SARDINE-150 || sharkCount>2))
       _statusText.text = "There are not enough tuna! The sharks will starve.";
-    else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-15 || sardineCount>Ecosystem.MAX_SARDINE-100))
+    else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-15 || sardineCount>Ecosystem.MAX_SARDINE-150))
       _statusText.text = "There are not enough sharks! The sardines will starve.";
     else _statusText.text = "You're doing great! The ecosystem is healthy.";
   }

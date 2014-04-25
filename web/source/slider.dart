@@ -145,7 +145,6 @@ class Slider extends Sprite implements Touchable{
   
   void _promptUser() {
     if (_game.sliderPrompt>1 && _showingPrompt==false) {
-      _game.sliderPrompt--;
       _showingPrompt = true;
       
       _arrow = new Bitmap(_resourceManager.getBitmapData("Arrow"));
@@ -177,13 +176,13 @@ class Slider extends Sprite implements Touchable{
   void _promptUserFinished() {
     if (_showingPrompt==true) {
       _showingPrompt=false;
-    Tween t = new Tween(_arrow, 1, TransitionFunction.linear);
-    t.animate.alpha.to(0);
-    _fleet._juggler.add(t);
-    Tween t2 = new Tween(_text, 1, TransitionFunction.linear);
-    t2.animate.alpha.to(0);
-    _fleet._juggler.add(t2);
-    t2.onComplete = _removePrompt;
+      Tween t = new Tween(_arrow, 1, TransitionFunction.linear);
+      t.animate.alpha.to(0);
+      _fleet._juggler.add(t);
+      Tween t2 = new Tween(_text, 1, TransitionFunction.linear);
+      t2.animate.alpha.to(0);
+      _fleet._juggler.add(t2);
+      t2.onComplete = _removePrompt;
     }
   }
   
