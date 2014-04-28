@@ -109,12 +109,7 @@ class Game extends Sprite implements Animatable{
     moneyTimer = 0;
     int a = int.parse(teamAMoneyText.text.substring(1));
     int b = int.parse(teamBMoneyText.text.substring(1));
-    
-    print(a);
-    print(b);
-    print(teamAMoney);
-    print(teamBMoney);
-    
+
     if (a==teamAMoney) teamAMoneyText.textColor = Color.LightYellow;
     if (b==teamBMoney) teamBMoneyText.textColor = Color.LightYellow;
     
@@ -175,7 +170,13 @@ class Game extends Sprite implements Animatable{
     }
     else if (phase==REGROWTH_PHASE) {
       phase = BUY_PHASE;
-      _buyPhase();
+      
+      teamAMoneyText.alpha = 1;
+      teamBMoneyText.alpha = 1;
+      _fleet.alpha = 1;
+      
+      if (contains(_teamAGraph)) removeChild(_teamAGraph);
+      if (contains(_teamBGraph)) removeChild(_teamBGraph);
       
       timerGraphicA.graphics.fillColor(Color.Green);
       timerGraphicA.width = BUY_TIMER_WIDTH;
@@ -210,19 +211,6 @@ class Game extends Sprite implements Animatable{
     _teamBGraph.y = height*3/4;
     addChild(_teamAGraph);
     addChild(_teamBGraph);
-  }
-  
-  void _buyPhase() {
-    teamAMoneyText.alpha = 1;
-    teamBMoneyText.alpha = 1;
-    _fleet.alpha = 1;
-    
-    if (contains(_teamAGraph)) removeChild(_teamAGraph);
-    if (contains(_teamBGraph)) removeChild(_teamBGraph);
-  }
-  
-  void _removeMask() {
-    if (contains(_mask)) removeChild(_mask);
   }
   
   void _loadTextAndShapes() {
