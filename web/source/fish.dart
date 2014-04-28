@@ -153,35 +153,10 @@ class Fish extends Bitmap implements Animatable {
   }
   
   void _catchFish(Boat b) {
-    num shP, saP, tP;
-    if (b._teamA==true) {
-      shP = _fleet.teamASharkPercent;
-      saP = _fleet.teamASardinePercent;
-      tP = _fleet.teamATunaPercent;
-    } else {
-      shP = _fleet.teamBSharkPercent;
-      saP = _fleet.teamBSardinePercent;
-      tP = _fleet.teamBTunaPercent;
+    if(b.catchType==type) {
+      b.increaseFishNet(type);
+      _ecosystem.removeFish(this, Ecosystem.CAUGHT);
     }
-    bool caught = false;
-    int caughtType = 0;
-    int r = _random.nextInt(100);
-    if (type==Ecosystem.SARDINE) {
-      if (r<saP) {
-        b.increaseFishNet(Ecosystem.SARDINE);
-        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
-      }
-    } else if (type==Ecosystem.SHARK) {
-      if (r<shP) {
-        b.increaseFishNet(Ecosystem.SHARK);
-        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
-      }
-    } else if (type==Ecosystem.TUNA) {
-      if (r<tP) {
-        b.increaseFishNet(Ecosystem.TUNA);
-        _ecosystem.removeFish(this, Ecosystem.CAUGHT);
-      }
-  }
   }
   
   num _averageRotation(List<Fish> fishes) {
