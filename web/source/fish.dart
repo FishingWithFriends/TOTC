@@ -201,6 +201,7 @@ class Fish extends Bitmap implements Animatable {
           }
         }
       }
+      if (fishes.length>4) break;
     }
     if (_tooClose(fishes)) return rotation+(_random.nextInt(2) - 1)*_rotationSpeed;
     else return _averageRotation(fishes);
