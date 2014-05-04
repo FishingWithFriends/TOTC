@@ -29,8 +29,8 @@ class Game extends Sprite implements Animatable{
   
   TextField teamAMoneyText;
   TextField teamBMoneyText;
-  int teamAMoney = 0;
-  int teamBMoney = 0;
+  int teamAMoney = 1000;
+  int teamBMoney = 1000;
   bool moneyChanged = false;
   int moneyTimer = 0;
   int moneyTimerMax = 2;
@@ -154,14 +154,13 @@ class Game extends Sprite implements Animatable{
     if (phase==FISHING_PHASE) {
       phase = REGROWTH_PHASE;
       _fleet.returnBoats();
-      
-      teamAMoneyText.alpha = 0;
-      teamBMoneyText.alpha = 0;
+
       _fleet.alpha = 0;
       _graphTimer = 0;
       
       timerGraphicA.graphics.fillColor(Color.DarkRed);
       timerGraphicA.width = REGROWTH_TIMER_WIDTH;
+      timerGraphicA.x = width-REGROWTH_TIMER_WIDTH-50;
       timerTextA.text = "Regrowth season";
       
       timerGraphicB.graphics.fillColor(Color.DarkRed);
@@ -169,6 +168,8 @@ class Game extends Sprite implements Animatable{
       timerTextB.text = "Regrowth season";
       Offseason o = new Offseason(_resourceManager, _juggler, this, _fleet);
       addChild(o);
+      swapChildren(o, teamAMoneyText);
+      swapChildren(teamAMoneyText, teamBMoneyText);
     }
     else if (phase==REGROWTH_PHASE) {
       phase = BUY_PHASE;
@@ -182,6 +183,7 @@ class Game extends Sprite implements Animatable{
       
       timerGraphicA.graphics.fillColor(Color.Green);
       timerGraphicA.width = BUY_TIMER_WIDTH;
+      timerGraphicA.x = width-BUY_TIMER_WIDTH-50;
       timerTextA.text = "Offseason";
       
       timerGraphicB.graphics.fillColor(Color.Green);
@@ -217,14 +219,14 @@ class Game extends Sprite implements Animatable{
   
   void _loadTextAndShapes() {
     TextFormat format = new TextFormat("Arial", 40, Color.LightYellow, align: "center", bold:true);
-    teamAMoneyText = new TextField("\$0", format);
+    teamAMoneyText = new TextField("\$$teamAMoney", format);
     teamAMoneyText..width = 300
                   ..x = width~/2+teamAMoneyText.width~/2
                   ..y = 60
                   ..rotation = math.PI;
     addChild(teamAMoneyText);
     
-    teamBMoneyText = new TextField("\$0", format);
+    teamBMoneyText = new TextField("\$$teamBMoney", format);
     teamBMoneyText..width = 300
                   ..x = width~/2-teamBMoneyText.width~/2
                   ..y = height-60;

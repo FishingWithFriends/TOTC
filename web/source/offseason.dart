@@ -9,7 +9,8 @@ class Offseason extends Sprite {
   
   Circle _teamACircle, _teamBCircle;
   Bitmap _background;
-  Sprite _offseasonDock;
+  Sprite offseasonDock;
+  Sprite teamAHit, teamBHit;
   Map<int, Boat> _boatsA = new Map<int, Boat>();
   Map<int, Boat> _boatsB = new Map<int, Boat>();
   
@@ -23,35 +24,51 @@ class Offseason extends Sprite {
     _background.width = _game.width;
     _background.height = _game.height;
     
-    _offseasonDock = new Sprite();
+    offseasonDock = new Sprite();
     Bitmap dock = new Bitmap(_resourceManager.getBitmapData("OffseasonDock"));
     BitmapData.load('images/offseason_dock.png').then((bitmapData) {
-      _offseasonDock.x = _game.width/2-bitmapData.width/2;
-      _offseasonDock.y = _game.height/2-bitmapData.height/2;
+      offseasonDock.x = _game.width/2-bitmapData.width/2;
+      offseasonDock.y = _game.height/2-bitmapData.height/2;
     });
     
     int offset = 70;
-    _teamACircle = new Circle(_resourceManager, _juggler, _game, true, _boatsA, _boatsB, _fleet);
-    _teamBCircle = new Circle(_resourceManager, _juggler, _game, false, _boatsA, _boatsB, _fleet);
+    _teamACircle = new Circle(_resourceManager, _juggler, _game, true, _boatsA, _boatsB, _fleet, this);
+    _teamBCircle = new Circle(_resourceManager, _juggler, _game, false, _boatsA, _boatsB, _fleet, this);
     _teamACircle.x = offset;
     _teamACircle.y = offset;
     _teamACircle.rotation = math.PI;
     _teamBCircle.x = _game.width-offset;
     _teamBCircle.y = _game.height-offset;
     
-    _game.tlayer.touchables.add(_teamACircle);
     _game.tlayer.touchables.add(_teamBCircle);
+    _game.tlayer.touchables.add(_teamACircle);
     
     addChild(_background);
-    addChild(_offseasonDock);
+    addChild(offseasonDock);
     addChild(_teamACircle);
     addChild(_teamBCircle);
-    _offseasonDock.addChild(dock);
+    offseasonDock.addChild(dock);
     
     _fillDocks();
   }
   
   void _fillDocks() {
+    teamAHit = new Sprite();
+    teamBHit = new Sprite();
+    Shape aHit = new Shape();
+    Shape bHit = new Shape();
+    
+    teamAHit.x = 0;
+    teamAHit.y = 0;
+    teamBHit.x = offseasonDock.width/2;
+    teamBHit.y = 0;
+    aHit.graphics.rect(0, 0, offseasonDock.width/2, offseasonDock.height);
+    bHit.graphics.rect(0, 0, offseasonDock.width/2, offseasonDock.height);
+    aHit.graphics.fillColor(Color.Transparent);
+    bHit.graphics.fillColor(Color.Transparent);
+    teamAHit.addChild(aHit);
+    teamBHit.addChild(bHit);
+    
     int aCounter = 0;
     int bCounter = 0;
     for (int i=0; i<_fleet.boats.length; i++) {
@@ -60,38 +77,40 @@ class Offseason extends Sprite {
       if (fleetBoat._teamA == true) {
         _boatsA[i] = boat;
         if (aCounter==0) {
-          boat.x = _offseasonDock.width/2-100;
-          boat.y = _offseasonDock.height/2-135;
+          boat.x = offseasonDock.width/2-100;
+          boat.y = offseasonDock.height/2-135;
           boat.rotation = math.PI*4/5;
         } else if (aCounter==1) {
-          boat.x = _offseasonDock.width/2-165;
-          boat.y = _offseasonDock.height/2-10;
+          boat.x = offseasonDock.width/2-165;
+          boat.y = offseasonDock.height/2-10;
           boat.rotation = math.PI/2;
         } else if (aCounter==2) {
-          boat.x = _offseasonDock.width/2-110;
-          boat.y = _offseasonDock.height/2+110;
+          boat.x = offseasonDock.width/2-110;
+          boat.y = offseasonDock.height/2+110;
           boat.rotation = math.PI*2.7/8;
         }
         aCounter++;
       } else {
         _boatsB[i] = boat;
         if (bCounter==0) {
-          boat.x = _offseasonDock.width/2+50;
-          boat.y = _offseasonDock.height/2+70;
+          boat.x = offseasonDock.width/2+50;
+          boat.y = offseasonDock.height/2+70;
           boat.rotation = -math.PI/5;
         } else if (bCounter==1) {
-          boat.x = _offseasonDock.width/2+95;
-          boat.y = _offseasonDock.height/2-65;
+          boat.x = offseasonDock.width/2+95;
+          boat.y = offseasonDock.height/2-65;
           boat.rotation = -math.PI/2;
         } else if (bCounter==2) {
-          boat.x = _offseasonDock.width/2+55;
-          boat.y = _offseasonDock.height/2-175;
+          boat.x = offseasonDock.width/2+55;
+          boat.y = offseasonDock.height/2-175;
           boat.rotation = -math.PI*4/5;
         }
         bCounter++;
       }
-      _offseasonDock.addChild(boat);
+      offseasonDock.addChild(boat);
     }
+    offseasonDock.addChild(teamAHit);
+    offseasonDock.addChild(teamBHit);
   }
 } 
 
@@ -101,17 +120,25 @@ class Circle extends Sprite implements Touchable {
   static const TUNA = 3;
   static const SARDINE = 4;
   static const SHARK = 5;
+  static const OKAY = 6;
+  static const CONFIRM = 7;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
   Game _game;
   Fleet _fleet;
+  Offseason _offseason;
   Map<int, Boat> _boatsA, _boatsB;
   
   Bitmap _circle;
   SimpleButton _circleButton, _capacityButton, _speedButton, _tunaButton, _sardineButton, _sharkButton, _tempButton;
+  SimpleButton _yesButton;
+  SimpleButton _noButton;
+  TextField _confirmText;
+  Sprite _box;
   
   bool _teamA;
+  bool _teamAA;
   bool _upgradeMode = true;
   
   Tween _rotateTween;
@@ -121,11 +148,15 @@ class Circle extends Sprite implements Touchable {
   num _circleWidth;
   
   Boat _touchedBoat = null;
+  int _confirmMode = 0;
+  int _boxConfirmMode = 0;
+  bool _boxUp = false;
   
-  Circle(ResourceManager resourceManager, Juggler juggler, Game game, bool teamA, Map<int, Boat> boatsA, Map<int, Boat> boatsB, Fleet fleet) {
+  Circle(ResourceManager resourceManager, Juggler juggler, Game game, bool teamA, Map<int, Boat> boatsA, Map<int, Boat> boatsB, Fleet fleet, Offseason offseason) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _game = game;
+    _offseason = offseason;
     _fleet = fleet;
     _teamA = teamA;
     _boatsA = boatsA;
@@ -146,36 +177,40 @@ class Circle extends Sprite implements Touchable {
     _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
 
     _capacityButton = _returnCapacityButton();
+    _capacityButton.alpha = 1;
     _capacityButton.addEventListener(MouseEvent.MOUSE_DOWN, _capacityPressed);
     _capacityButton.addEventListener(TouchEvent.TOUCH_TAP, _capacityPressed);
     _capacityButton.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityPressed);
     
     _speedButton = _returnSpeedButton();
+    _speedButton.alpha = 1;
     _speedButton.addEventListener(MouseEvent.MOUSE_DOWN, _speedPressed);
     _speedButton.addEventListener(TouchEvent.TOUCH_TAP, _speedPressed);
     _speedButton.addEventListener(TouchEvent.TOUCH_BEGIN, _speedPressed);
     
     _tunaButton = _returnTunaButton();
+    _tunaButton.alpha = 1;
     _tunaButton.addEventListener(MouseEvent.MOUSE_DOWN, _tunaPressed);
     _tunaButton.addEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
     _tunaButton.addEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
     
     _sardineButton = _returnSardineButton();
+    _sardineButton.alpha = 1;
     _sardineButton.addEventListener(MouseEvent.MOUSE_DOWN, _sardinePressed);
     _sardineButton.addEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
     _sardineButton.addEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
     
     _sharkButton = _returnSharkButton();
+    _sharkButton.alpha = 1;
     _sharkButton.addEventListener(MouseEvent.MOUSE_DOWN, _sharkPressed);
     _sharkButton.addEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
     _sharkButton.addEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
-    
     
     BitmapData.load('images/teamACircle.png').then((bitmapData) {
        _circle.pivotX = bitmapData.width/2;
        _circle.pivotY = bitmapData.height/2;
        
-       num w = width/1.3;
+       num w = bitmapData.width/1.3;
        _capacityButton.x = math.cos(math.PI*9/8)*w;
        _capacityButton.y = math.sin(math.PI*9/8)*w;
        _speedButton.x = math.cos(math.PI*8/6)*w;
@@ -262,35 +297,141 @@ class Circle extends Sprite implements Touchable {
                             new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")));
   }
   
-  Boat _boatTouched() {print("called");
-    if (_teamA==true) {
-      _boatsA.forEach((int i, Boat b) {
-        if (_tempButton.hitTestObject(b)) {
-          return _fleet.boats[i];
-        }
-      });
-    } else {
-      _boatsB.forEach((int i, Boat b) {
-        if (_tempButton.hitTestObject(b)) {print(_fleet.boats[i]);
-          return _fleet.boats[i];
-        }
-      });
+  num _calculateAmount() {
+    int mode = _touchMode;
+    if (_touchMode == 0) mode = _boxConfirmMode;
+    
+    if (mode==SPEED) {
+      return (_touchedBoat.speedLevel+1)*200;
+    } else if (mode==CAPACITY) {
+      return (_touchedBoat.capacityLevel+1)*300;
+    } else if (mode==SARDINE) {
+      return 500;
+    } else if (mode==SHARK) {
+      return 2000;
+    } else if (mode==TUNA) {
+      return 800;
     }
-    return null;
+    return 0;
+  }
+  
+  void _clearConsole() {
+    if (contains(_box)) removeChild(_box);
+  }
+  
+  void _yesClicked(var e) {
+    if (_confirmMode==OKAY) _clearConsole();
+    else if (_confirmMode==CONFIRM) {
+      num amount = _calculateAmount();
+      if (_teamA==true) {
+        _game.teamAMoney = _game.teamAMoney - amount;
+      }
+      else {
+        _game.teamBMoney = _game.teamBMoney - amount;
+      }
+      _game.moneyChanged = true;
+      if (_boxConfirmMode==SPEED) {
+        _touchedBoat.increaseSpeed();
+      } else if (_boxConfirmMode==CAPACITY) {
+        _touchedBoat.increaseCapacity();
+      }
+    }
+    _boxUp = false;
+    _clearConsole();
+    _touchedBoat = null;
+    _boxConfirmMode = 0;
+  }
+  
+  void _noClicked(var e) {
+    _boxUp = false;
+    _touchMode = 0;
+    _touchedBoat = null;
+    _clearConsole();
+  }
+  
+  void _startWarning(String s, num boxX, num boxY) {
+    _clearConsole();
+    
+    _boxConfirmMode = _touchMode;
+    _touchMode = 0;
+    _box = new Sprite();
+    _box.addChild(new Bitmap (_resourceManager.getBitmapData("Console")));
+    _box.alpha = 1;
+    
+    TextFormat format = new TextFormat("Arial", 24, Color.Yellow, align: "center");
+    _confirmText = new TextField(s, format);
+    
+    if (_confirmMode==OKAY) {
+      _yesButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("OkayUp")), 
+                                    new Bitmap(_resourceManager.getBitmapData("OkayUp")),
+                                    new Bitmap(_resourceManager.getBitmapData("OkayDown")), 
+                                    new Bitmap(_resourceManager.getBitmapData("OkayDown")));
+      _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
+      _yesButton.addEventListener(TouchEvent.TOUCH_BEGIN, _yesClicked);
+      _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
+      
+      _yesButton.x = 110;
+      _yesButton.y = 115;
+    } else if (_confirmMode==CONFIRM) {
+      _yesButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("YesUp")), 
+                                     new Bitmap(_resourceManager.getBitmapData("YesUp")),
+                                     new Bitmap(_resourceManager.getBitmapData("YesDown")), 
+                                     new Bitmap(_resourceManager.getBitmapData("YesDown")));
+      _noButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("NoUp")), 
+                                     new Bitmap(_resourceManager.getBitmapData("NoUp")),
+                                     new Bitmap(_resourceManager.getBitmapData("NoDown")), 
+                                     new Bitmap(_resourceManager.getBitmapData("NoDown")));
+      _yesButton.addEventListener(MouseEvent.MOUSE_UP, _yesClicked);
+      _yesButton.addEventListener(TouchEvent.TOUCH_BEGIN, _yesClicked);
+      _yesButton.addEventListener(TouchEvent.TOUCH_TAP, _yesClicked);
+      _noButton.addEventListener(MouseEvent.MOUSE_UP, _noClicked);
+      _noButton.addEventListener(TouchEvent.TOUCH_BEGIN, _noClicked);
+      _noButton.addEventListener(TouchEvent.TOUCH_TAP, _noClicked);
+      
+      _yesButton.x = 45;
+      _yesButton.y = 115;
+      _noButton.x = 180;
+      _noButton.y = 115;
+    }
+    BitmapData.load('images/console.png').then((bitmapData) {
+      num w = bitmapData.width;
+      num h = bitmapData.height;
+      
+      if (_upgradeMode==true) {
+        _box.x = boxX-w/2; 
+        _box.y = boxY;
+      } else {
+        _box.x = -(boxX-w/2);
+        _box.y = -boxY;
+        _box.rotation = math.PI;
+      }
+      
+      _confirmText.wordWrap = true;
+      _confirmText.x = 10;
+      _confirmText.y = 15;
+      _confirmText.width = w-_confirmText.x*2;
+      _confirmText.height = 250;
+    });
+    
+    addChild(_box);
+    _box.addChild(_confirmText);
+    _box.addChild(_yesButton);
+    if (_confirmMode==CONFIRM) _box.addChild(_noButton);
   }
   
   bool containsTouch(Contact event) {
-    if (_touchMode == 0) return false;
+    if (_touchMode == 0 || _boxUp == true) return false;
     else return true;
   }
   
   bool touchDown(Contact event) {
+    _clearConsole();
     return true;
   }
 
   void touchDrag(Contact event) {
     _touchedBoat = null;
-    if (contains(_tempButton)) removeChild(_tempButton);
+    if (contains(_tempButton)){removeChild(_tempButton);}
     if (_touchMode == CAPACITY) _tempButton = _returnCapacityButton();
     if (_touchMode == SPEED) _tempButton = _returnSpeedButton();
     if (_touchMode == TUNA) _tempButton = _returnTunaButton();
@@ -316,20 +457,32 @@ class Circle extends Sprite implements Touchable {
         _tempButton.y = _game.height-event.touchY-offset;
       }
     }
-    if (_teamA==true) {
-      _boatsA.forEach((int i, Boat b) {
-        if (_tempButton.hitTestObject(b.boat)) {
-          _touchedBoat = _fleet.boats[i];
-        }
-      });
+    if (_upgradeMode==true) {
+      if (_teamA==true) {
+        _boatsA.forEach((int i, Boat b) {
+          if (_tempButton.hitTestObject(b.boat)) {
+            _touchedBoat = _fleet.boats[i];
+          }
+        });
+      } else {
+        _boatsB.forEach((int i, Boat b) {
+          if (_tempButton.hitTestObject(b.boat)) {
+            _touchedBoat = _fleet.boats[i];
+          }
+        });
+      }
+      if (_touchedBoat != null) _tempButton.alpha = .5;
     } else {
-      _boatsB.forEach((int i, Boat b) {
-        if (_tempButton.hitTestObject(b.boat)) {
-          _touchedBoat = _fleet.boats[i];
+      if (_teamA==true) {
+        if (_tempButton.hitTestObject(_offseason.teamAHit)) {
+          _tempButton.alpha = .5;
         }
-      });
+      } else {
+        if (_tempButton.hitTestObject(_offseason.teamBHit)) {
+          _tempButton.alpha = .5;
+        }
+      }
     }
-    if (_touchedBoat != null) _tempButton.alpha = .5;
   }
 
   void touchSlide(Contact event) {
@@ -338,12 +491,41 @@ class Circle extends Sprite implements Touchable {
 
   void touchUp(Contact event) {
     if (contains(_tempButton)) removeChild(_tempButton);
-    
-    if (_touchedBoat != null) {
-      if (_touchMode != 0) {
-        if (_touchMode==SPEED) _touchedBoat.increaseSpeed();
+    if (_boxUp == false && _tempButton.alpha == .5 && _touchMode != 0) {
+      num touchX, touchY, money;
+      if (_teamA == true) {
+        touchX = -event.touchX;
+        touchY = -event.touchY;
+        money = _game.teamAMoney;
+      } else {
+        touchX = -_game.width+event.touchX;
+        touchY = -_game.height+event.touchY;
+        money = _game.teamBMoney;
       }
-    }
-    _touchMode = 0;
+      num amount = _calculateAmount();
+      if (money<amount) _confirmMode = OKAY;
+      else _confirmMode = CONFIRM;
+      
+      if (_touchedBoat != null) {
+        if (_touchMode==SPEED) {
+          if (money<amount) _startWarning("You need \$$amount to increase speed. Fish more!", touchX, touchY);
+          else _startWarning("Increase speed for \$$amount?", touchX, touchY);
+        } else if (_touchMode==CAPACITY) {
+          if (money<amount) _startWarning("You need \$$amount to increase net size. Fish more!", touchX, touchY);
+          else _startWarning("Increase net size for \$$amount?", touchX, touchY);
+        }
+      } else {
+        if (_touchMode==SARDINE) {
+          if (money<amount) _startWarning("You need \$$amount to buy a sardine boat. Fish more!", touchX, touchY);
+          else _startWarning("Buy sardine boat \$$amount?", touchX, touchY);
+        } else if (_touchMode==SHARK) {
+          if (money<amount) _startWarning("You need \$$amount to buy shark boat. Fish more!", touchX, touchY);
+          else _startWarning("Buy shark boat for \$$amount?", touchX, touchY);
+        } else if (_touchMode==TUNA) {
+          if (money<amount) _startWarning("You need \$$amount to buy tuna boat. Fish more!", touchX, touchY);
+          else _startWarning("Buy tuna boat for \$$amount?", touchX, touchY);
+        }
+      } 
+    } else if (_tempButton.alpha==1) _touchMode = 0;
   }
 }
