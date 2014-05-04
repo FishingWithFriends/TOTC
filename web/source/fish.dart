@@ -134,7 +134,7 @@ class Fish extends Bitmap implements Animatable {
       Boat b = _boats[i];
       num rotDiff = (b.netHitBox.rotation-rotation).abs();
       if (_catchTimer>_catchTimerMax) {
-      if (b.canCatch && hitTestObject(b.netHitBox) && _ecosystem.game.gameStarted==true) {
+      if (b.canCatch && hitTestObject(b.netHitBox) && _ecosystem.game.gameStarted==true && b.catchType==type) {
         _catchFish(b);
         _catchTimer = 0;
         return true;

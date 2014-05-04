@@ -37,8 +37,8 @@ class Fleet extends Sprite {
         dockB[i] = new Dock(_game, this, i, false);
         addChild(dockB[i]);
       }
-      addBoat(TEAMASARDINE, dockA[0].location.x+5, dockA[0].location.y+dockHeight/2, math.PI);
-      addBoat(TEAMBSARDINE, dockB[0].location.x+5, dockB[0].location.y-dockHeight/2, 0);
+      addBoat(TEAMASARDINE);
+      addBoat(TEAMBSARDINE);
     });
   }
   
@@ -55,13 +55,22 @@ class Fleet extends Sprite {
     boats.remove(boat);
   }
   
-  Boat addBoat(int type, num x, num y, num rot) {
+  Boat addBoat(int type) {
     Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
-    boat.x = x;
-    boat.y = y;
-    boat.rotation = rot;
-    if (type==TEAMASARDINE) boat._dock = findEmptyDock(true);
-    else boat._dock = findEmptyDock(false);
+    Dock emptyDock;
+    if (type==TEAMASARDINE||type==TEAMASHARK||type==TEAMATUNA) {
+      emptyDock = findEmptyDock(true);
+      boat.x = emptyDock.location.x+5;
+      boat.y = emptyDock.location.y+dockHeight/2;
+      boat.rotation = math.PI;
+    }
+    else {
+      emptyDock = findEmptyDock(false);
+      boat.x = emptyDock.location.x+5;
+      boat.y = emptyDock.location.y-dockHeight/2;
+      boat.rotation = 0;
+    }
+    boat._dock = emptyDock;
     boat._dock.filled=true;
     boats.add(boat);
     _game.tlayer.touchables.add(boat);

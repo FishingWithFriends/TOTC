@@ -24,13 +24,6 @@ class Offseason extends Sprite {
     _background.width = _game.width;
     _background.height = _game.height;
     
-    offseasonDock = new Sprite();
-    Bitmap dock = new Bitmap(_resourceManager.getBitmapData("OffseasonDock"));
-    BitmapData.load('images/offseason_dock.png').then((bitmapData) {
-      offseasonDock.x = _game.width/2-bitmapData.width/2;
-      offseasonDock.y = _game.height/2-bitmapData.height/2;
-    });
-    
     int offset = 70;
     _teamACircle = new Circle(_resourceManager, _juggler, _game, true, _boatsA, _boatsB, _fleet, this);
     _teamBCircle = new Circle(_resourceManager, _juggler, _game, false, _boatsA, _boatsB, _fleet, this);
@@ -43,16 +36,28 @@ class Offseason extends Sprite {
     _game.tlayer.touchables.add(_teamBCircle);
     _game.tlayer.touchables.add(_teamACircle);
     
+    offseasonDock = new Sprite();
+    Bitmap dock = new Bitmap(_resourceManager.getBitmapData("OffseasonDock"));
+    BitmapData.load('images/offseason_dock.png').then((bitmapData) {
+      offseasonDock.x = _game.width/2-bitmapData.width/2;
+      offseasonDock.y = _game.height/2-bitmapData.height/2;
+    });
+    addChild(offseasonDock);
+    offseasonDock.addChild(dock);
+    clearAndRefillDock();
+    
     addChild(_background);
     addChild(offseasonDock);
     addChild(_teamACircle);
     addChild(_teamBCircle);
-    offseasonDock.addChild(dock);
-    
-    _fillDocks();
   }
   
-  void _fillDocks() {
+  void clearAndRefillDock() {
+    if (offseasonDock.numChildren>1) offseasonDock.removeChildren(1, offseasonDock.numChildren-1);
+    fillDocks();
+  }
+  
+  void fillDocks() {
     teamAHit = new Sprite();
     teamBHit = new Sprite();
     Shape aHit = new Shape();
@@ -77,32 +82,48 @@ class Offseason extends Sprite {
       if (fleetBoat._teamA == true) {
         _boatsA[i] = boat;
         if (aCounter==0) {
-          boat.x = offseasonDock.width/2-100;
-          boat.y = offseasonDock.height/2-135;
+          boat.x = offseasonDock.width/2-120;
+          boat.y = offseasonDock.height/2-145;
           boat.rotation = math.PI*4/5;
         } else if (aCounter==1) {
-          boat.x = offseasonDock.width/2-165;
-          boat.y = offseasonDock.height/2-10;
+          boat.x = offseasonDock.width/2-260;
+          boat.y = offseasonDock.height/2-155;
           boat.rotation = math.PI/2;
+          if (fleetBoat._type==Fleet.TEAMASARDINE) {
+            boat.x +=25;
+            boat.y +=15;
+          }
+          if (fleetBoat._type==Fleet.TEAMATUNA){
+            boat.y += 10;
+          }
         } else if (aCounter==2) {
-          boat.x = offseasonDock.width/2-110;
-          boat.y = offseasonDock.height/2+110;
+          boat.x = offseasonDock.width/2-310;
+          boat.y = offseasonDock.height/2-25;
           boat.rotation = math.PI*2.7/8;
+          if (fleetBoat._type==Fleet.TEAMASARDINE){
+            boat.rotation -= math.PI/6;
+            boat.x += 50;
+          }
+          if (fleetBoat._type==Fleet.TEAMATUNA){
+            boat.x += 40;
+            boat.y += 25;
+          }
         }
         aCounter++;
       } else {
         _boatsB[i] = boat;
         if (bCounter==0) {
-          boat.x = offseasonDock.width/2+50;
-          boat.y = offseasonDock.height/2+70;
+          boat.x = offseasonDock.width/2+55;
+          boat.y = offseasonDock.height/2+75;
           boat.rotation = -math.PI/5;
+          
         } else if (bCounter==1) {
-          boat.x = offseasonDock.width/2+95;
-          boat.y = offseasonDock.height/2-65;
+          boat.x = offseasonDock.width/2+30;
+          boat.y = offseasonDock.height/2-140;
           boat.rotation = -math.PI/2;
         } else if (bCounter==2) {
-          boat.x = offseasonDock.width/2+55;
-          boat.y = offseasonDock.height/2-175;
+          boat.x = offseasonDock.width/2-70;
+          boat.y = offseasonDock.height/2-270;
           boat.rotation = -math.PI*4/5;
         }
         bCounter++;
@@ -151,6 +172,7 @@ class Circle extends Sprite implements Touchable {
   int _confirmMode = 0;
   int _boxConfirmMode = 0;
   bool _boxUp = false;
+  num _boxX, _boxY;
   
   Circle(ResourceManager resourceManager, Juggler juggler, Game game, bool teamA, Map<int, Boat> boatsA, Map<int, Boat> boatsB, Fleet fleet, Offseason offseason) {
     _resourceManager = resourceManager;
@@ -323,23 +345,50 @@ class Circle extends Sprite implements Touchable {
     if (_confirmMode==OKAY) _clearConsole();
     else if (_confirmMode==CONFIRM) {
       num amount = _calculateAmount();
-      if (_teamA==true) {
-        _game.teamAMoney = _game.teamAMoney - amount;
+      
+      int count = 0;
+      for (int i=0; i<_fleet.boats.length; i++) {
+        if (_fleet.boats[i]._teamA==_teamA) count++;
       }
-      else {
-        _game.teamBMoney = _game.teamBMoney - amount;
-      }
-      _game.moneyChanged = true;
-      if (_boxConfirmMode==SPEED) {
-        _touchedBoat.increaseSpeed();
-      } else if (_boxConfirmMode==CAPACITY) {
-        _touchedBoat.increaseCapacity();
+      if (count>2 && (_boxConfirmMode==SHARK || _boxConfirmMode==TUNA || _boxConfirmMode==SARDINE)) {
+        _confirmMode = OKAY;
+        _boxUp = false;
+        _clearConsole();
+        _touchedBoat = null;
+        _boxConfirmMode = 0;
+        _startWarning("You can only have 3 boats. Maybe sell one!", _boxX, _boxY);
+      } else {
+        if (_teamA==true) {
+          _game.teamAMoney = _game.teamAMoney - amount;
+        }
+        else {
+          _game.teamBMoney = _game.teamBMoney - amount;
+        }
+        _game.moneyChanged = true;
+        if (_boxConfirmMode==SPEED) {
+          _touchedBoat.increaseSpeed();
+        } else if (_boxConfirmMode==CAPACITY) {
+          _touchedBoat.increaseCapacity();
+        } else {
+          if (_boxConfirmMode==SHARK) {
+            if (_teamA==true) _fleet.addBoat(Fleet.TEAMASHARK);
+            else _fleet.addBoat(Fleet.TEAMBSHARK);
+          } else if (_boxConfirmMode==TUNA) {
+            if (_teamA==true) _fleet.addBoat(Fleet.TEAMATUNA);
+            else _fleet.addBoat(Fleet.TEAMBTUNA);
+          } else if (_boxConfirmMode==SARDINE) {
+            if (_teamA==true) _fleet.addBoat(Fleet.TEAMASARDINE);
+            else _fleet.addBoat(Fleet.TEAMBSARDINE);
+          }
+          if (_boxConfirmMode != SPEED && _boxConfirmMode != CAPACITY) 
+            _offseason.clearAndRefillDock();
+        }
+        _boxUp = false;
+        _clearConsole();
+        _touchedBoat = null;
+        _boxConfirmMode = 0;
       }
     }
-    _boxUp = false;
-    _clearConsole();
-    _touchedBoat = null;
-    _boxConfirmMode = 0;
   }
   
   void _noClicked(var e) {
@@ -349,9 +398,11 @@ class Circle extends Sprite implements Touchable {
     _clearConsole();
   }
   
-  void _startWarning(String s, num boxX, num boxY) {
+  void _startWarning(String s, num boxX, num boxY) {print("called");
     _clearConsole();
     
+    _boxX = boxX;
+    _boxY = boxY;
     _boxConfirmMode = _touchMode;
     _touchMode = 0;
     _box = new Sprite();

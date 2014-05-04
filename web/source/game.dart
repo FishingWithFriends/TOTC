@@ -6,15 +6,17 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 35;
-  static const BUY_TIMER_WIDTH = 35;
-  static const REGROWTH_TIMER_WIDTH = 155;
+  static const FISHING_TIMER_WIDTH = 350;
+  static const BUY_TIMER_WIDTH = 150;
+  static const REGROWTH_TIMER_WIDTH = 150;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
   
   Fleet _fleet;
   Ecosystem _ecosystem;
+  Offseason _offseason;
+  Bitmap _background;
   
   TouchManager tmanager = new TouchManager();
   TouchLayer tlayer = new TouchLayer();
@@ -29,8 +31,8 @@ class Game extends Sprite implements Animatable{
   
   TextField teamAMoneyText;
   TextField teamBMoneyText;
-  int teamAMoney = 1000;
-  int teamBMoney = 1000;
+  int teamAMoney = 10000;
+  int teamBMoney = 10000;
   bool moneyChanged = false;
   int moneyTimer = 0;
   int moneyTimerMax = 2;
@@ -60,18 +62,18 @@ class Game extends Sprite implements Animatable{
     tmanager.registerEvents(this);
     tmanager.addTouchLayer(tlayer);
     
-    Bitmap background = new Bitmap(_resourceManager.getBitmapData("Background"));
+    _background = new Bitmap(_resourceManager.getBitmapData("Background"));
     _mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
     _fleet = new Fleet(_resourceManager, _juggler, this);
     _ecosystem = new Ecosystem(_resourceManager, _juggler, this, _fleet);
 
-    background.width = width;
-    background.height = height;
+    _background.width = width;
+    _background.height = height;
     _mask.alpha = 0;
     _mask.width = width;
     _mask.height = height;
 
-    addChild(background);
+    addChild(_background);
     addChild(_ecosystem);
     addChild(_mask);
     addChild(_fleet);
@@ -82,8 +84,6 @@ class Game extends Sprite implements Animatable{
   bool advanceTime(num time) {
     if (gameStarted == false) return true;
     
-    if (!_juggler.contains(_maskTween)) _setMask();
-    
     if (moneyTimer>moneyTimerMax && moneyChanged==true) _updateMoney();
     else moneyTimer++;
     
@@ -92,6 +92,7 @@ class Game extends Sprite implements Animatable{
     
     if (phase==REGROWTH_PHASE)
       if (_graphTimer>_graphTimerMax) _redrawGraph();
+      else _graphTimer++;
     
     return true;
   }
@@ -157,7 +158,7 @@ class Game extends Sprite implements Animatable{
 
       _fleet.alpha = 0;
       _graphTimer = 0;
-      
+
       timerGraphicA.graphics.fillColor(Color.DarkRed);
       timerGraphicA.width = REGROWTH_TIMER_WIDTH;
       timerGraphicA.x = width-REGROWTH_TIMER_WIDTH-50;
@@ -166,10 +167,6 @@ class Game extends Sprite implements Animatable{
       timerGraphicB.graphics.fillColor(Color.DarkRed);
       timerGraphicB.width = REGROWTH_TIMER_WIDTH;
       timerTextB.text = "Regrowth season";
-      Offseason o = new Offseason(_resourceManager, _juggler, this, _fleet);
-      addChild(o);
-      swapChildren(o, teamAMoneyText);
-      swapChildren(teamAMoneyText, teamBMoneyText);
     }
     else if (phase==REGROWTH_PHASE) {
       phase = BUY_PHASE;
@@ -189,6 +186,22 @@ class Game extends Sprite implements Animatable{
       timerGraphicB.graphics.fillColor(Color.Green);
       timerGraphicB.width = BUY_TIMER_WIDTH;
       timerTextB.text = "Offseason";
+    
+      _removeOffseason();
+      _offseason.y = -height;
+      addChild(_offseason);
+      swapChildren(_offseason, teamAMoneyText);
+      swapChildren(teamAMoneyText, teamBMoneyText);
+      
+      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInCubic);
+      t1.animate.y.to(0);
+      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInCubic);
+      t2.animate.y.to(height);
+      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInCubic);
+      t3.animate.y.to(height);
+      _juggler.add(t1);
+      _juggler.add(t2);
+      _juggler.add(t3);
     } else if (phase==BUY_PHASE) {
       phase = FISHING_PHASE;
       _fleet.reactivateBoats();
@@ -200,7 +213,23 @@ class Game extends Sprite implements Animatable{
       timerGraphicB.graphics.fillColor(Color.Green);
       timerGraphicB.width = FISHING_TIMER_WIDTH;
       timerTextB.text = "Fishing season";
+
+      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInCubic);
+      t1.animate.y.to(-height);
+      t1.onComplete = _removeOffseason;
+      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInCubic);
+      t2.animate.y.to(0);
+      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInCubic);
+      t3.animate.y.to(0);
+      _juggler.add(t1);
+      _juggler.add(t2);
+      _juggler.add(t3);
     }
+  }
+  
+  void _removeOffseason() {
+    if (contains(_offseason)) removeChild(_offseason);
+          _offseason = new Offseason(_resourceManager, _juggler, this, _fleet);
   }
   
   void _redrawGraph() {
@@ -213,6 +242,7 @@ class Game extends Sprite implements Animatable{
     _teamBGraph = new Graph(_resourceManager, _juggler, this, _ecosystem, true);
     _teamBGraph.x = width/2 - _teamBGraph.width/2;
     _teamBGraph.y = height*3/4;
+    _graphTimer = 0;
     addChild(_teamAGraph);
     addChild(_teamBGraph);
   }

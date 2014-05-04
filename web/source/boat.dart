@@ -88,7 +88,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     netCapacityMax = BASE_NET_CAPACITY;
     
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE) catchType = Ecosystem.SARDINE;
-    if (type==Fleet.TEAMASARDINE) _teamA = true;
+    if (type==Fleet.TEAMATUNA || type==Fleet.TEAMBTUNA) catchType = Ecosystem.TUNA;
+    if (type==Fleet.TEAMASHARK || type==Fleet.TEAMBSHARK) catchType = Ecosystem.SHARK;
+    if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMATUNA || type==Fleet.TEAMASHARK) _teamA = true;
     else _teamA = false;
     
     _netNames = _nets.frameNames;
@@ -293,13 +295,21 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _setBoatUp(){
-    if (_type==Fleet.TEAMASARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatAUp"));
-    if (_type==Fleet.TEAMBSARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBUp"));
+    if (_type==Fleet.TEAMASARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatASardineUp"));
+    if (_type==Fleet.TEAMBSARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBSardineUp"));
+    if (_type==Fleet.TEAMATUNA) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatATunaUp"));
+    if (_type==Fleet.TEAMBTUNA) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBTunaUp"));
+    if (_type==Fleet.TEAMASHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatASharkUp"));
+    if (_type==Fleet.TEAMBSHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBSharkUp"));
   }
   
   void _setBoatDown() {
-    if (_type==Fleet.TEAMASARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatADown"));
-    if (_type==Fleet.TEAMBSARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBDown"));
+    if (_type==Fleet.TEAMASARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatASardineDown"));
+    if (_type==Fleet.TEAMBSARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBSardineDown"));
+    if (_type==Fleet.TEAMATUNA) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatATunaDown"));
+    if (_type==Fleet.TEAMBTUNA) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBTunaDown"));
+    if (_type==Fleet.TEAMASHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatASharkDown"));
+    if (_type==Fleet.TEAMBSHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBSharkDown"));
   }
   
   bool _setNewLocation() {
