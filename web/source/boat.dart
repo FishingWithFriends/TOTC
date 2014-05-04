@@ -160,23 +160,6 @@ class Boat extends Sprite implements Touchable, Animatable {
   void clearConsole() {
     if (_fleet.contains(_console)) _fleet.removeChild(_console);
   }
-   
-  Console _loadConsole() {
-    _fleet.clearOtherConsoles(_teamA);
-    if (_fleet.contains(_console)) _fleet.removeChild(_console);
-    
-    _console = new Console(_resourceManager, _juggler, _game, _fleet, this);
-    if (_teamA) {
-      _console.x = x+_fleet.consoleWidth/2;
-      _console.y = 2.8*_fleet.dockHeight;
-      _console.rotation = math.PI;
-    } else {
-      _console.x = x-_fleet.consoleWidth/2;
-      _console.y = _game.height-2.8*_fleet.dockHeight;
-    }
-    _fleet.addChild(_console);
-    return _console;
-  }
   
   void increaseFishNet(int n) {
     int worth;
@@ -225,12 +208,6 @@ class Boat extends Sprite implements Touchable, Animatable {
     t.animate.alpha.to(0);
     t.onComplete = _netUnloaded;
     _juggler.add(t);
-    
-    if (_game.phase==Game.BUY_PHASE) {
-      _canLoadConsole = true;
-      _loadConsole();
-      _fleet.addButtons();
-    }
   }
   
   void _netUnloaded() {
@@ -351,8 +328,8 @@ class Boat extends Sprite implements Touchable, Animatable {
         }
       }  
     }
-    if ((x>0 && x<_fleet.consoleWidth+Fleet.DOCK_SEPARATION*2 && y<_fleet.dockHeight*1.3 && y>0) ||
-        (x<_game.width && x>_game.width-_fleet.consoleWidth-Fleet.DOCK_SEPARATION*2 && y>_game.height-_fleet.dockHeight*1.3 && y<_game.height))
+    if ((x>0 && x<Fleet.DOCK_SEPARATION+Fleet.DOCK_SEPARATION*2 && y<_fleet.dockHeight*1.3 && y>0) ||
+        (x<_game.width && x>_game.width-Fleet.DOCK_SEPARATION-Fleet.DOCK_SEPARATION*2 && y>_game.height-_fleet.dockHeight*1.3 && y<_game.height))
       return true;
     return false;
   }
@@ -585,10 +562,6 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool touchDown(Contact event) {
-    if (_canLoadConsole==true) {
-      _loadConsole();
-      return true;
-    }
     if (_inDock==true && _game.phase==Game.FISHING_PHASE) {
       _game.gameStarted = true;
       if(_showingPrompt==true) _promptUserFinished();

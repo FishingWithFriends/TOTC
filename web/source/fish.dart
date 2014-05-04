@@ -81,35 +81,12 @@ class Fish extends Bitmap implements Animatable {
   }
   
   bool advanceTime(num time) {
-    for (int i=0; i<_boats.length; i++) {
-      Boat b = _boats[i];
-      num rotDiff = (b.netHitBox.rotation-rotation).abs();
-      if (_catchTimer>_catchTimerMax) {
-      if (b.canCatch && hitTestObject(b.netHitBox) && _ecosystem.game.gameStarted==true) {
-        _catchFish(b);
-        _catchTimer = 0;
-        return true;
-        } 
-      } else _catchTimer++;
-    }
-    if (_foodType == Ecosystem.MAGIC) {
-      if (_magicTimer>_magicTimerMax) {
-        _hunger = 0;
-        
-        if (_ecosystem._fishCount[Ecosystem.SHARK]>3) _magicTimerMax = 250;
-        else _magicTimerMax = _random.nextInt(100) + 425-_ecosystem._fishCount[Ecosystem.SHARK]*100;
-        
-        _magicTimer = 0;
-      } else _magicTimer++;
-    }
-    if (_hunger > _hungerMax) {
-      _ecosystem.removeFish(this, Ecosystem.STARVATION);
-      return true;
-    } else _hunger++;
+    if (_checkBoatCollision()==true) return true;
+    if (_updateHunger()==true) return true;
     
     _dartTimer++;
-    if (_rotateTimer < _timerMax) _rotateTimer++;
-    else {
+    _rotateTimer++;
+    if (_rotateTimer > _timerMax) {
       _timerMax = _random.nextInt(5) + 10;
       _rotateTimer = 0;
       
@@ -150,6 +127,39 @@ class Fish extends Bitmap implements Animatable {
     else y = _ecosystem.game.height;
     
     return true;
+  }
+  
+  bool _checkBoatCollision() {
+    for (int i=0; i<_boats.length; i++) {
+      Boat b = _boats[i];
+      num rotDiff = (b.netHitBox.rotation-rotation).abs();
+      if (_catchTimer>_catchTimerMax) {
+      if (b.canCatch && hitTestObject(b.netHitBox) && _ecosystem.game.gameStarted==true) {
+        _catchFish(b);
+        _catchTimer = 0;
+        return true;
+        } 
+      } else _catchTimer++;
+    }
+    return false;
+  }
+  
+  bool _updateHunger() {
+    if (_foodType == Ecosystem.MAGIC) {
+      if (_magicTimer>_magicTimerMax) {
+        _hunger = 0;
+        
+        if (_ecosystem._fishCount[Ecosystem.SHARK]>3) _magicTimerMax = 250;
+        else _magicTimerMax = _random.nextInt(100) + 425-_ecosystem._fishCount[Ecosystem.SHARK]*100;
+        
+        _magicTimer = 0;
+      } else _magicTimer++;
+    }
+    if (_hunger > _hungerMax) {
+      _ecosystem.removeFish(this, Ecosystem.STARVATION);
+      return true;
+    } else _hunger++;
+    return false;
   }
   
   void _catchFish(Boat b) {
@@ -195,23 +205,19 @@ class Fish extends Bitmap implements Animatable {
         }
         if (fishType == type) {
           if (_flocking) {
-            fishes.add(_fishes[i]);
-          } else {
-            return rotation;
-          }
+            if (_tooClose(_fishes[i])) return rotation+(_random.nextInt(2) - 1)*_rotationSpeed;
+            if (fishes.length>20) break;
+            else fishes.add(_fishes[i]);
+          } else return rotation;
         }
       }
-      if (fishes.length>4) break;
     }
-    if (_tooClose(fishes)) return rotation+(_random.nextInt(2) - 1)*_rotationSpeed;
-    else return _averageRotation(fishes);
+    return _averageRotation(fishes);
   }
   
-  bool _tooClose(List <Fish> fishes) {
-    for(int i=0; i<fishes.length; i++) {
-      if (_distanceTo(fishes[i]) < _minSeparation) return true;
-    }
-    return false;
+  bool _tooClose(Fish fish) {
+    if (_distanceTo(fish) < _minSeparation) return true;
+    else return false;
   }
   
   num _distanceTo(Fish f) {
