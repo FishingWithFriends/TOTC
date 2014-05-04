@@ -21,6 +21,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   Game _game;
   
   bool _teamA;
+  bool nothing = false;
   
   Sprite _console;
   
@@ -563,12 +564,14 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool containsTouch(Contact e) {
-    if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
-      return true;
-    } else {
-      if (_game.phase==Game.FISHING_PHASE || _game.gameStarted == false) _promptUser();
-      return false;
-    }
+    if (nothing==false) {
+      if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
+        return true;
+      } else {
+        if (_game.phase==Game.FISHING_PHASE || _game.gameStarted == false) _promptUser();
+        return false;
+      }
+    } else return false;
   }
    
   bool touchDown(Contact event) {

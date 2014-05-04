@@ -10,7 +10,8 @@ class Offseason extends Sprite {
   Circle _teamACircle, _teamBCircle;
   Bitmap _background;
   Sprite _offseasonDock;
-  List<Boat> _boats = new List<Boat>();
+  Map<int, Boat> _boatsA = new Map<int, Boat>();
+  Map<int, Boat> _boatsB = new Map<int, Boat>();
   
   Offseason(ResourceManager resourceManager, Juggler juggler, Game game, Fleet fleet) {
     _resourceManager = resourceManager;
@@ -30,8 +31,8 @@ class Offseason extends Sprite {
     });
     
     int offset = 70;
-    _teamACircle = new Circle(_resourceManager, _juggler, _game, true);
-    _teamBCircle = new Circle(_resourceManager, _juggler, _game, false);
+    _teamACircle = new Circle(_resourceManager, _juggler, _game, true, _boatsA, _boatsB, _fleet);
+    _teamBCircle = new Circle(_resourceManager, _juggler, _game, false, _boatsA, _boatsB, _fleet);
     _teamACircle.x = offset;
     _teamACircle.y = offset;
     _teamACircle.rotation = math.PI;
@@ -51,7 +52,46 @@ class Offseason extends Sprite {
   }
   
   void _fillDocks() {
-    
+    int aCounter = 0;
+    int bCounter = 0;
+    for (int i=0; i<_fleet.boats.length; i++) {
+      Boat fleetBoat = _fleet.boats[i];
+      Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet);
+      if (fleetBoat._teamA == true) {
+        _boatsA[i] = boat;
+        if (aCounter==0) {
+          boat.x = _offseasonDock.width/2-100;
+          boat.y = _offseasonDock.height/2-135;
+          boat.rotation = math.PI*4/5;
+        } else if (aCounter==1) {
+          boat.x = _offseasonDock.width/2-165;
+          boat.y = _offseasonDock.height/2-10;
+          boat.rotation = math.PI/2;
+        } else if (aCounter==2) {
+          boat.x = _offseasonDock.width/2-110;
+          boat.y = _offseasonDock.height/2+110;
+          boat.rotation = math.PI*2.7/8;
+        }
+        aCounter++;
+      } else {
+        _boatsB[i] = boat;
+        if (bCounter==0) {
+          boat.x = _offseasonDock.width/2+50;
+          boat.y = _offseasonDock.height/2+70;
+          boat.rotation = -math.PI/5;
+        } else if (bCounter==1) {
+          boat.x = _offseasonDock.width/2+95;
+          boat.y = _offseasonDock.height/2-65;
+          boat.rotation = -math.PI/2;
+        } else if (bCounter==2) {
+          boat.x = _offseasonDock.width/2+55;
+          boat.y = _offseasonDock.height/2-175;
+          boat.rotation = -math.PI*4/5;
+        }
+        bCounter++;
+      }
+      _offseasonDock.addChild(boat);
+    }
   }
 } 
 
@@ -65,6 +105,8 @@ class Circle extends Sprite implements Touchable {
   ResourceManager _resourceManager;
   Juggler _juggler;
   Game _game;
+  Fleet _fleet;
+  Map<int, Boat> _boatsA, _boatsB;
   
   Bitmap _circle;
   SimpleButton _circleButton, _capacityButton, _speedButton, _tunaButton, _sardineButton, _sharkButton, _tempButton;
@@ -78,11 +120,16 @@ class Circle extends Sprite implements Touchable {
   int _touchMode = 0;
   num _circleWidth;
   
-  Circle(ResourceManager resourceManager, Juggler juggler, Game game, bool teamA) {
+  Boat _touchedBoat = null;
+  
+  Circle(ResourceManager resourceManager, Juggler juggler, Game game, bool teamA, Map<int, Boat> boatsA, Map<int, Boat> boatsB, Fleet fleet) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _game = game;
+    _fleet = fleet;
     _teamA = teamA;
+    _boatsA = boatsA;
+    _boatsB = boatsB;
     
     if (teamA==true) _upgradeRotation = math.PI;
     else _upgradeRotation = 0;
@@ -215,6 +262,23 @@ class Circle extends Sprite implements Touchable {
                             new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")));
   }
   
+  Boat _boatTouched() {print("called");
+    if (_teamA==true) {
+      _boatsA.forEach((int i, Boat b) {
+        if (_tempButton.hitTestObject(b)) {
+          return _fleet.boats[i];
+        }
+      });
+    } else {
+      _boatsB.forEach((int i, Boat b) {
+        if (_tempButton.hitTestObject(b)) {print(_fleet.boats[i]);
+          return _fleet.boats[i];
+        }
+      });
+    }
+    return null;
+  }
+  
   bool containsTouch(Contact event) {
     if (_touchMode == 0) return false;
     else return true;
@@ -225,6 +289,7 @@ class Circle extends Sprite implements Touchable {
   }
 
   void touchDrag(Contact event) {
+    _touchedBoat = null;
     if (contains(_tempButton)) removeChild(_tempButton);
     if (_touchMode == CAPACITY) _tempButton = _returnCapacityButton();
     if (_touchMode == SPEED) _tempButton = _returnSpeedButton();
@@ -250,9 +315,21 @@ class Circle extends Sprite implements Touchable {
         _tempButton.x = _game.width-event.touchX-offset;
         _tempButton.y = _game.height-event.touchY-offset;
       }
-      
-      
     }
+    if (_teamA==true) {
+      _boatsA.forEach((int i, Boat b) {
+        if (_tempButton.hitTestObject(b.boat)) {
+          _touchedBoat = _fleet.boats[i];
+        }
+      });
+    } else {
+      _boatsB.forEach((int i, Boat b) {
+        if (_tempButton.hitTestObject(b.boat)) {
+          _touchedBoat = _fleet.boats[i];
+        }
+      });
+    }
+    if (_touchedBoat != null) _tempButton.alpha = .5;
   }
 
   void touchSlide(Contact event) {
@@ -261,6 +338,12 @@ class Circle extends Sprite implements Touchable {
 
   void touchUp(Contact event) {
     if (contains(_tempButton)) removeChild(_tempButton);
+    
+    if (_touchedBoat != null) {
+      if (_touchMode != 0) {
+        if (_touchMode==SPEED) _touchedBoat.increaseSpeed();
+      }
+    }
     _touchMode = 0;
   }
 }

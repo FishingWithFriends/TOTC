@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 25;
-  static const BUY_TIMER_WIDTH = 125;
-  static const REGROWTH_TIMER_WIDTH = 25;
+  static const FISHING_TIMER_WIDTH = 35;
+  static const BUY_TIMER_WIDTH = 35;
+  static const REGROWTH_TIMER_WIDTH = 155;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -167,6 +167,8 @@ class Game extends Sprite implements Animatable{
       timerGraphicB.graphics.fillColor(Color.DarkRed);
       timerGraphicB.width = REGROWTH_TIMER_WIDTH;
       timerTextB.text = "Regrowth season";
+      Offseason o = new Offseason(_resourceManager, _juggler, this, _fleet);
+      addChild(o);
     }
     else if (phase==REGROWTH_PHASE) {
       phase = BUY_PHASE;
