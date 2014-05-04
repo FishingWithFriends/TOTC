@@ -107,6 +107,16 @@ class Boat extends Sprite implements Touchable, Animatable {
     _newY = y;
   }
   
+  void setX(num newX) {
+    x = newX;
+  }
+  void setY(num newY) {
+    y = newY;
+  }
+  void setRot(num newRot) {
+    rotation = newRot;
+  }
+  
    void _bitmapLoaded(Event e) {
      pivotX = width/2;
      pivotY = height/2;

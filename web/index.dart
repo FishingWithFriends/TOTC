@@ -17,6 +17,7 @@ part 'source/movement.dart';
 part 'source/console.dart';
 part 'source/slider.dart';
 part 'source/graph.dart';
+part 'source/offseason.dart';
 
 void main() {
   int height = html.window.innerHeight-20;
@@ -37,6 +38,7 @@ void main() {
   resourceManager.addBitmapData("BoatBUp", "images/boat_b_up.png");
   resourceManager.addTextureAtlas("Nets", "images/nets.json", TextureAtlasFormat.JSONARRAY);
   resourceManager.addBitmapData("Background", "images/background.png");
+  resourceManager.addBitmapData("OffseasonBackground", "images/offseason_background.png");
   resourceManager.addBitmapData("Mask", "images/mask.png");
   resourceManager.addBitmapData("Tuna", "images/tuna.png");
   resourceManager.addBitmapData("Shark", "images/shark.png");
@@ -60,6 +62,16 @@ void main() {
   resourceManager.addBitmapData("YesUp", "images/yes_up.png");
   resourceManager.addBitmapData("GraphBackground", "images/graph.png");
   resourceManager.addBitmapData("Arrow", "images/arrow.png");
+  resourceManager.addBitmapData("TeamACircle", "images/teamACircle.png");
+  resourceManager.addBitmapData("TeamBCircle", "images/teamBCircle.png");
+  resourceManager.addBitmapData("CircleButtonUp", "images/circleUIButton.png");
+  resourceManager.addBitmapData("CircleButtonDown", "images/circleUIButtonDown.png");
+  resourceManager.addBitmapData("SardineBoatButton", "images/sardineBoatIcon.png");
+  resourceManager.addBitmapData("TunaBoatButton", "images/tunaBoatIcon.png");
+  resourceManager.addBitmapData("SharkBoatButton", "images/sharkBoatIcon.png");
+  resourceManager.addBitmapData("CapacityUpgradeButton", "images/capUpgradeIcon.png");
+  resourceManager.addBitmapData("SpeedUpgradeButton", "images/speedUpgradeIcon.png");
+  resourceManager.addBitmapData("OffseasonDock", "images/offseason_dock.png");
   
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
