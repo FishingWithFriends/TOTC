@@ -139,27 +139,27 @@ class Ecosystem extends Sprite {
     num grade;
     String string;
     List ret = new List(2);
-    if (sardineCount < 50 && tunaCount < 10 && sharkCount<2) {
+    if (sardineCount < 50 && tunaCount < 8 && sharkCount<2) {
       string = "You have destroyed the ecosystem.";
       grade = 0;
     }
-    else if (sardineCount < Ecosystem.MAX_SARDINE-250 || tunaCount < Ecosystem.MAX_TUNA-40 || sharkCount<2) {
+    else if (sardineCount < 200 || tunaCount < 15 || sharkCount<2) {
       string = "Your ecosystem is about to collapse!";
       grade = .2;
     }
-    else if (sardineCount < Ecosystem.MAX_SARDINE-150 && tunaCount < Ecosystem.MAX_TUNA-25 && sharkCount<3) {
+    else if (sardineCount < 350 && tunaCount < 40 && sharkCount<3) {
       string = "Your ecosystem is not doing well! Let the fish grow more!";
       grade = .4;
     }
-    else if (sardineCount < Ecosystem.MAX_SARDINE-150 && (tunaCount > Ecosystem.MAX_TUNA-25 || sharkCount>2)) { 
+    else if (sardineCount < 350 && (tunaCount > 40 || sharkCount>2)) { 
       string = "There are not enough sardines! The tuna will starve.";
       grade = .7;
     }
-    else if (tunaCount < Ecosystem.MAX_TUNA-25 && (sardineCount > Ecosystem.MAX_SARDINE-150 || sharkCount>2)) {
+    else if (tunaCount < 40 && (sardineCount > 350 || sharkCount>2)) {
       string = "There are not enough tuna! The sharks will starve.";
       grade = .7;
     }
-    else if (sardineCount < 2 && (tunaCount > Ecosystem.MAX_TUNA-15 || sardineCount>Ecosystem.MAX_SARDINE-150)) {
+    else if (sharkCount < 2 && (tunaCount > 40 || sardineCount>350)) {
       string = "There are not enough sharks! The sardines will starve.";
       grade = .7;
     }
