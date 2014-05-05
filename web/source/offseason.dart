@@ -30,8 +30,10 @@ class Offseason extends Sprite {
     _teamACircle.x = offset;
     _teamACircle.y = offset;
     _teamACircle.rotation = math.PI;
+    _teamACircle.alpha = 0;
     _teamBCircle.x = _game.width-offset;
     _teamBCircle.y = _game.height-offset;
+    _teamBCircle.alpha = 0;
     
     _game.tlayer.touchables.add(_teamBCircle);
     _game.tlayer.touchables.add(_teamACircle);
@@ -57,6 +59,11 @@ class Offseason extends Sprite {
     fillDocks();
   }
   
+  void showCircles() {
+    _teamACircle.alpha = 1;
+    _teamBCircle.alpha = 1;
+  }
+  
   void fillDocks() {
     teamAHit = new Sprite();
     teamBHit = new Sprite();
@@ -74,46 +81,64 @@ class Offseason extends Sprite {
     teamAHit.addChild(aHit);
     teamBHit.addChild(bHit);
     
-    int aCounter = 0;
-    int bCounter = 0;
-    for (int i=0; i<_fleet.boats.length; i++) {
-      Boat fleetBoat = _fleet.boats[i];
-      Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet);
-      if (fleetBoat._teamA == true) {
-        _boatsA[i] = boat;
-        if (aCounter==0) {
-          boat.x = offseasonDock.width/2-120;
-          boat.y = offseasonDock.height/2-145;
-          boat.rotation = math.PI*4/5;
-        } else if (aCounter==1) {
-          boat.x = offseasonDock.width/2-260;
-          boat.y = offseasonDock.height/2-155;
-          boat.rotation = math.PI/2;
-        } else if (aCounter==2) {
-          boat.x = offseasonDock.width/2-310;
-          boat.y = offseasonDock.height/2-25;
-          boat.rotation = math.PI*2.7/8;
-        }
-        aCounter++;
-      } else {
-        _boatsB[i] = boat;
-        if (bCounter==0) {
-          boat.x = offseasonDock.width/2+55;
-          boat.y = offseasonDock.height/2+75;
-          boat.rotation = -math.PI/5;
-        } else if (bCounter==1) {
-          boat.x = offseasonDock.width/2+30;
-          boat.y = offseasonDock.height/2-140;
-          boat.rotation = -math.PI/2;
-        } else if (bCounter==2) {
-          boat.x = offseasonDock.width/2-70;
-          boat.y = offseasonDock.height/2-270;
-          boat.rotation = -math.PI*4/5;
-        }
-        bCounter++;
-      }
-      offseasonDock.addChild(boat);
-    }
+    BitmapData.load('images/boat_sardine_a.png').then((sardineBoat) {
+      BitmapData.load('images/boat_tuna_a.png').then((tunaBoat) {
+        BitmapData.load('images/boat_shark_a.png').then((sharkBoat) {
+          int aCounter = 0;
+          int bCounter = 0;
+          num w = offseasonDock.width;
+          num h = offseasonDock.height;
+          for (int i=0; i<_fleet.boats.length; i++) {
+            Boat fleetBoat = _fleet.boats[i];
+            Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet);
+            if (fleetBoat._teamA == true) {
+              _boatsA[i] = boat;
+              if (fleetBoat._type==Fleet.TEAMASARDINE||fleetBoat._type==Fleet.TEAMBSARDINE) {
+                boat.pivotX = sardineBoat.width/2;
+                boat.pivotY = sardineBoat.height/2;
+              } else if (fleetBoat._type==Fleet.TEAMATUNA||fleetBoat._type==Fleet.TEAMBTUNA) {
+                boat.pivotX = tunaBoat.width/2;
+                boat.pivotY = tunaBoat.height/2;
+              } else if (fleetBoat._type==Fleet.TEAMASHARK||fleetBoat._type==Fleet.TEAMBSHARK) {
+                boat.pivotX = sharkBoat.width/2;
+                boat.pivotY = sharkBoat.height/2;
+              }
+              if (aCounter==0) {
+                boat.x = w/2-95;
+                boat.y = h/2-120;
+                boat.rotation = math.PI*4/5;
+              } else if (aCounter==1) {
+                boat.x = w/2-150;
+                boat.y = h/2-5;
+                boat.rotation = math.PI/2;
+              } else if (aCounter==2) {
+                boat.x = w/2-85;
+                boat.y = h/2+115;
+                boat.rotation = math.PI*1/6;
+              }
+              aCounter++;
+            } else {
+              _boatsB[i] = boat;
+              if (bCounter==0) {
+                boat.x = w/2+65;
+                boat.y = h/2+100;
+                boat.rotation = -math.PI/5;
+              } else if (bCounter==1) {
+                boat.x = w/2+120;
+                boat.y = h/2+0;
+                boat.rotation = -math.PI/2;
+              } else if (bCounter==2) {
+                boat.x = w/2+70;
+                boat.y = h/2-115;
+                boat.rotation = -math.PI*4/5;
+              }
+              bCounter++;
+            }
+            offseasonDock.addChild(boat);
+          }
+        });
+      });
+    });
     offseasonDock.addChild(teamAHit);
     offseasonDock.addChild(teamBHit);
   }
