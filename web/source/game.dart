@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 350;
+  static const FISHING_TIMER_WIDTH = 50;
   static const BUY_TIMER_WIDTH = 150;
-  static const REGROWTH_TIMER_WIDTH = 150;
+  static const REGROWTH_TIMER_WIDTH = 50;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -193,12 +193,12 @@ class Game extends Sprite implements Animatable{
       swapChildren(_offseason, teamAMoneyText);
       swapChildren(teamAMoneyText, teamBMoneyText);
       
-      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInCubic);
+      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
       t1.animate.y.to(0);
       t1.onComplete = _offseason.showCircles;
-      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInCubic);
+      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInQuartic);
       t2.animate.y.to(height);
-      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInCubic);
+      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInQuartic);
       t3.animate.y.to(height);
       _juggler.add(t1);
       _juggler.add(t2);
@@ -215,12 +215,12 @@ class Game extends Sprite implements Animatable{
       timerGraphicB.width = FISHING_TIMER_WIDTH;
       timerTextB.text = "Fishing season";
 
-      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInCubic);
+      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
       t1.animate.y.to(-height);
       t1.onComplete = _removeOffseason;
-      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInCubic);
+      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInQuartic);
       t2.animate.y.to(0);
-      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInCubic);
+      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInQuartic);
       t3.animate.y.to(0);
       _juggler.add(t1);
       _juggler.add(t2);

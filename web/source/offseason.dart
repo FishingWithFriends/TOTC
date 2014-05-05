@@ -270,7 +270,7 @@ class Circle extends Sprite implements Touchable {
   
   void _circlePressed(var e) {
     if (_juggler.contains(_rotateTween)) _juggler.remove(_rotateTween);
-    _rotateTween = new Tween(this, 1, TransitionFunction.easeOutBounce);
+    _rotateTween = new Tween(this, .6, TransitionFunction.easeOutBounce);
     if (_upgradeMode==true) {
       _upgradeMode = false;
       _rotateTween.animate.rotation.to(_upgradeRotation+math.PI);
