@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 350;
-  static const BUY_TIMER_WIDTH = 150;
-  static const REGROWTH_TIMER_WIDTH = 150;
+  static const FISHING_TIMER_WIDTH = 100;
+  static const BUY_TIMER_WIDTH = 100;
+  static const REGROWTH_TIMER_WIDTH = 100;
   
   ResourceManager _resourceManager;
   Juggler _juggler;

@@ -89,25 +89,10 @@ class Offseason extends Sprite {
           boat.x = offseasonDock.width/2-260;
           boat.y = offseasonDock.height/2-155;
           boat.rotation = math.PI/2;
-          if (fleetBoat._type==Fleet.TEAMASARDINE) {
-            boat.x +=25;
-            boat.y +=15;
-          }
-          if (fleetBoat._type==Fleet.TEAMATUNA){
-            boat.y += 10;
-          }
         } else if (aCounter==2) {
           boat.x = offseasonDock.width/2-310;
           boat.y = offseasonDock.height/2-25;
           boat.rotation = math.PI*2.7/8;
-          if (fleetBoat._type==Fleet.TEAMASARDINE){
-            boat.rotation -= math.PI/6;
-            boat.x += 50;
-          }
-          if (fleetBoat._type==Fleet.TEAMATUNA){
-            boat.x += 40;
-            boat.y += 25;
-          }
         }
         aCounter++;
       } else {
@@ -116,7 +101,6 @@ class Offseason extends Sprite {
           boat.x = offseasonDock.width/2+55;
           boat.y = offseasonDock.height/2+75;
           boat.rotation = -math.PI/5;
-          
         } else if (bCounter==1) {
           boat.x = offseasonDock.width/2+30;
           boat.y = offseasonDock.height/2-140;
@@ -398,7 +382,7 @@ class Circle extends Sprite implements Touchable {
     _clearConsole();
   }
   
-  void _startWarning(String s, num boxX, num boxY) {print("called");
+  void _startWarning(String s, num boxX, num boxY) {
     _clearConsole();
     
     _boxX = boxX;
@@ -542,7 +526,8 @@ class Circle extends Sprite implements Touchable {
 
   void touchUp(Contact event) {
     if (contains(_tempButton)) removeChild(_tempButton);
-    if (_boxUp == false && _tempButton.alpha == .5 && _touchMode != 0) {
+    if (_tempButton==null) return;
+    if (_boxUp == false &&  _tempButton.alpha == .5 && _touchMode != 0) {
       num touchX, touchY, money;
       if (_teamA == true) {
         touchX = -event.touchX;
