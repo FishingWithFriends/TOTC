@@ -72,8 +72,10 @@ void main() {
   resourceManager.addBitmapData("Arrow", "images/arrow.png");
   resourceManager.addBitmapData("TeamACircle", "images/teamACircle.png");
   resourceManager.addBitmapData("TeamBCircle", "images/teamBCircle.png");
-  resourceManager.addBitmapData("CircleButtonUp", "images/circleUIButton.png");
-  resourceManager.addBitmapData("CircleButtonDown", "images/circleUIButtonDown.png");
+  resourceManager.addBitmapData("CircleButtonUpA", "images/circleUIButtonA.png");
+  resourceManager.addBitmapData("CircleButtonDownA", "images/circleUIButtonDownA.png");
+  resourceManager.addBitmapData("CircleButtonUpB", "images/circleUIButtonB.png");
+  resourceManager.addBitmapData("CircleButtonDownB", "images/circleUIButtonDownB.png");
   resourceManager.addBitmapData("SardineBoatButton", "images/sardineBoatIcon.png");
   resourceManager.addBitmapData("TunaBoatButton", "images/tunaBoatIcon.png");
   resourceManager.addBitmapData("SharkBoatButton", "images/sharkBoatIcon.png");

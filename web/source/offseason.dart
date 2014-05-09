@@ -196,13 +196,32 @@ class Circle extends Sprite implements Touchable {
     if (teamA==true) _upgradeRotation = math.PI;
     else _upgradeRotation = 0;
     
-    if (_teamA==true) _circle = new Bitmap(_resourceManager.getBitmapData("TeamACircle"));
-    else _circle = new Bitmap(_resourceManager.getBitmapData("TeamBCircle"));
+    if (_teamA==true){
+      _circle = new Bitmap(_resourceManager.getBitmapData("TeamACircle"));
+      _circleButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CircleButtonUpA")), 
+                                       new Bitmap(_resourceManager.getBitmapData("CircleButtonUpA")),
+                                       new Bitmap(_resourceManager.getBitmapData("CircleButtonDownA")), 
+                                       new Bitmap(_resourceManager.getBitmapData("CircleButtonDownA")));
+      
+      BitmapData.load('images/circleUIButtonA.png').then((bitmapData) {
+        _circleButton.pivotX = bitmapData.width/2;
+        _circleButton.pivotY = bitmapData.height/2;
+      });
+    }
+    else {
+      _circle = new Bitmap(_resourceManager.getBitmapData("TeamBCircle"));
+      _circleButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CircleButtonUpB")), 
+                                       new Bitmap(_resourceManager.getBitmapData("CircleButtonUpB")),
+                                       new Bitmap(_resourceManager.getBitmapData("CircleButtonDownB")), 
+                                       new Bitmap(_resourceManager.getBitmapData("CircleButtonDownB")));
+      
+      BitmapData.load('images/circleUIButtonB.png').then((bitmapData) {
+        _circleButton.pivotX = bitmapData.width/2;
+        _circleButton.pivotY = bitmapData.height/2;
+      });
     
-    _circleButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CircleButtonUp")), 
-                                     new Bitmap(_resourceManager.getBitmapData("CircleButtonUp")),
-                                     new Bitmap(_resourceManager.getBitmapData("CircleButtonDown")), 
-                                     new Bitmap(_resourceManager.getBitmapData("CircleButtonDown")));
+    }
+
     _circleButton.addEventListener(MouseEvent.MOUSE_UP, _circlePressed);
     _circleButton.addEventListener(TouchEvent.TOUCH_TAP, _circlePressed);
     _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
@@ -254,10 +273,7 @@ class Circle extends Sprite implements Touchable {
        _sharkButton.x = math.cos(math.PI*2/6)*w;
        _sharkButton.y = math.sin(math.PI*2/6)*w;
      });
-     BitmapData.load('images/circleUIButton.png').then((bitmapData) {
-       _circleButton.pivotX = bitmapData.width/2;
-       _circleButton.pivotY = bitmapData.height/2;
-     });
+
     
     addChild(_circle);
     addChild(_circleButton);
