@@ -6,9 +6,14 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 50;
+  static const FISHING_TIMER_WIDTH = 200;
   static const BUY_TIMER_WIDTH = 150;
   static const REGROWTH_TIMER_WIDTH = 50;
+  
+  static const timerPieRadius = 60;
+  static const TUNA = 0;
+  static const SARDINE = 1;
+  static const SHARK = 2;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -41,7 +46,8 @@ class Game extends Sprite implements Animatable{
   int _graphTimerMax = 25;
   int _graphTimer=0;
   
-  Shape timerGraphicA,timerGraphicB;
+  Shape timerGraphicA,timerGraphicB, timerPie;
+  Shape sardineBar, tunaBar, sharkBar;
   TextField timerTextA, timerTextB;
   
   int phase = FISHING_PHASE;
@@ -93,6 +99,11 @@ class Game extends Sprite implements Animatable{
     if (phase==REGROWTH_PHASE)
       if (_graphTimer>_graphTimerMax) _redrawGraph();
       else _graphTimer++;
+    
+    
+    sardineBar.height = _ecosystem._fishCount[SARDINE];
+    tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
+    sharkBar.height = _ecosystem._fishCount[SHARK]* 4;
     
     return true;
   }
@@ -148,7 +159,36 @@ class Game extends Sprite implements Animatable{
       timerGraphicA.x += 2;
       timerGraphicB.width -= 2;
       timer = 0;
+      
+      timerPie.graphics.clear();
+      if (phase==FISHING_PHASE) {
+
+        timerPie..graphics.beginPath()
+            ..graphics.lineTo(0, timerPieRadius)
+            ..graphics.lineTo(timerPieRadius, timerPieRadius)
+            ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/FISHING_TIMER_WIDTH, false)
+            ..graphics.closePath();
+      }
+      else if(phase==BUY_PHASE){
+
+        timerPie..graphics.beginPath()
+            ..graphics.lineTo(0, timerPieRadius)
+            ..graphics.lineTo(timerPieRadius, timerPieRadius)
+            ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/BUY_TIMER_WIDTH, false)
+            ..graphics.closePath();
+      }
+      else if(phase==REGROWTH_PHASE){
+        timerPie..graphics.beginPath()
+            ..graphics.lineTo(0, timerPieRadius)
+            ..graphics.lineTo(timerPieRadius, timerPieRadius)
+            ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/REGROWTH_TIMER_WIDTH, false)
+            ..graphics.closePath();
+      }
+      timerPie.graphics.fillColor(Color.Black);
+
     } else timer++;
+    
+
   }
   
   void _nextSeason() {
@@ -174,7 +214,7 @@ class Game extends Sprite implements Animatable{
       teamAMoneyText.alpha = 1;
       teamBMoneyText.alpha = 1;
       _fleet.alpha = 1;
-      
+      _fleet.hideDock();
       if (contains(_teamAGraph)) removeChild(_teamAGraph);
       if (contains(_teamBGraph)) removeChild(_teamBGraph);
       
@@ -206,7 +246,7 @@ class Game extends Sprite implements Animatable{
     } else if (phase==BUY_PHASE) {
       phase = FISHING_PHASE;
       _fleet.reactivateBoats();
-      
+      _fleet.showDock();
       timerGraphicA.graphics.fillColor(Color.Green);
       timerGraphicA.width = FISHING_TIMER_WIDTH;
       timerTextA.text = "Fishing season";
@@ -286,10 +326,42 @@ class Game extends Sprite implements Animatable{
                  ..graphics.fillColor(Color.LightGreen);
     addChild(timerGraphicB);
     
+    timerPie = new Shape();
+    timerPie..graphics.beginPath()
+            ..x = width - 75
+            ..y = 75
+            ..graphics.lineTo(0, timerPieRadius)
+            ..graphics.lineTo(timerPieRadius, timerPieRadius)
+            ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI, false)
+            ..graphics.closePath()
+            ..graphics.fillColor(Color.Black);
+    addChild(timerPie);    
+    
     timerTextB = new TextField("Fishing season", format);
     timerTextB.x = 50;
     timerTextB.y = height-45;
     timerTextB.width = 200;
     addChild(timerTextB);
+    
+    sardineBar = new Shape();
+    sardineBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SARDINE])
+              ..x  = 20
+              ..y = height - 50
+              ..graphics.fillColor(Color.Green);
+    addChild(sardineBar);
+    
+    tunaBar = new Shape();
+    tunaBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[TUNA]*2)
+              ..x  = 35
+              ..y = height - 50
+              ..graphics.fillColor(Color.Red);
+    addChild(tunaBar);
+    
+    sharkBar = new Shape();
+    sharkBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SHARK]*4)
+              ..x  = 50
+              ..y = height - 50
+              ..graphics.fillColor(Color.Yellow);
+    addChild(sharkBar);
   }
 }

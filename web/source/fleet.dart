@@ -115,6 +115,24 @@ class Fleet extends Sprite {
       }
     }
   }
+  
+  void hideDock(){
+    for (int i=0;i<4;i++) {
+      dockA[i].alpha = 0;
+    }
+    for (int i=0;i<4;i++) {
+      dockB[i].alpha = 0;
+    }
+  }
+  
+  void showDock(){
+    for (int i=0;i<4;i++) {
+      dockA[i].alpha = 1;
+    }
+    for (int i=0;i<4;i++) {
+      dockB[i].alpha = 1;
+    }
+  }
 }
 
 class Dock extends Sprite{
