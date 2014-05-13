@@ -260,18 +260,18 @@ class Circle extends Sprite implements Touchable {
        _circle.pivotX = bitmapData.width/2;
        _circle.pivotY = bitmapData.height/2;
        
-       num w = bitmapData.width/1.3;
+       num w = bitmapData.width*.375;
        _capacityButton.x = math.cos(math.PI*9/8)*w;
        _capacityButton.y = math.sin(math.PI*9/8)*w;
        _speedButton.x = math.cos(math.PI*8/6)*w;
        _speedButton.y = math.sin(math.PI*8/6)*w;
-       w = width/2;
-       _tunaButton.x = math.cos(0)*w;
-       _tunaButton.y = math.sin(0)*w;
-       _sardineButton.x = math.cos(math.PI*1/6.5)*w;
-       _sardineButton.y = math.sin(math.PI*1/6.5)*w;
-       _sharkButton.x = math.cos(math.PI*2/6)*w;
-       _sharkButton.y = math.sin(math.PI*2/6)*w;
+       w = width*.1875;
+       _tunaButton.x = math.cos(-math.PI*1/16)*w;
+       _tunaButton.y = math.sin(-math.PI*1/16)*w;
+       _sardineButton.x = math.cos(math.PI*1.5/6)*w;
+       _sardineButton.y = math.sin(math.PI*1.5/6)*w;
+       _sharkButton.x = math.cos(math.PI*3.75/6)*w;
+       _sharkButton.y = math.sin(math.PI*3.75/6)*w;
      });
 
     

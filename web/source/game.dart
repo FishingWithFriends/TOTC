@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 200;
-  static const BUY_TIMER_WIDTH = 150;
-  static const REGROWTH_TIMER_WIDTH = 50;
+  static const FISHING_TIMER_WIDTH = 150;
+  static const BUY_TIMER_WIDTH = 500;
+  static const REGROWTH_TIMER_WIDTH = 15;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -184,7 +184,7 @@ class Game extends Sprite implements Animatable{
             ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/REGROWTH_TIMER_WIDTH, false)
             ..graphics.closePath();
       }
-      timerPie.graphics.fillColor(Color.Black);
+      timerPie.graphics.fillColor(Color.Yellow);
 
     } else timer++;
     
@@ -329,12 +329,13 @@ class Game extends Sprite implements Animatable{
     timerPie = new Shape();
     timerPie..graphics.beginPath()
             ..x = width - 75
-            ..y = 75
+            ..y = height/2- timerPieRadius
             ..graphics.lineTo(0, timerPieRadius)
             ..graphics.lineTo(timerPieRadius, timerPieRadius)
             ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI, false)
             ..graphics.closePath()
-            ..graphics.fillColor(Color.Black);
+            ..graphics.fillColor(Color.Yellow)
+            ..alpha = .70;
     addChild(timerPie);    
     
     timerTextB = new TextField("Fishing season", format);

@@ -32,17 +32,17 @@ void main() {
   renderLoop.addStage(stage);
 
   var resourceManager = new ResourceManager();
-  resourceManager.addBitmapData("BoatASardineDown", "images/boat_sardine_a.png");
+  resourceManager.addBitmapData("BoatASardineDown", "images/boat_sardine_a_touched.png");
   resourceManager.addBitmapData("BoatASardineUp", "images/boat_sardine_a.png");
-  resourceManager.addBitmapData("BoatATunaDown", "images/boat_tuna_a.png");
+  resourceManager.addBitmapData("BoatATunaDown", "images/boat_tuna_a_touched.png");
   resourceManager.addBitmapData("BoatATunaUp", "images/boat_tuna_a.png");
-  resourceManager.addBitmapData("BoatASharkDown", "images/boat_shark_a.png");
+  resourceManager.addBitmapData("BoatASharkDown", "images/boat_shark_a_touched.png");
   resourceManager.addBitmapData("BoatASharkUp", "images/boat_shark_a.png");
-  resourceManager.addBitmapData("BoatBSardineDown", "images/boat_sardine_b.png");
+  resourceManager.addBitmapData("BoatBSardineDown", "images/boat_sardine_b_touched.png");
   resourceManager.addBitmapData("BoatBSardineUp", "images/boat_sardine_b.png");
-  resourceManager.addBitmapData("BoatBTunaDown", "images/boat_tuna_b.png");
+  resourceManager.addBitmapData("BoatBTunaDown", "images/boat_tuna_b_touched.png");
   resourceManager.addBitmapData("BoatBTunaUp", "images/boat_tuna_b.png");
-  resourceManager.addBitmapData("BoatBSharkDown", "images/boat_shark_b.png");
+  resourceManager.addBitmapData("BoatBSharkDown", "images/boat_shark_b_touched.png");
   resourceManager.addBitmapData("BoatBSharkUp", "images/boat_shark_b.png");
   resourceManager.addTextureAtlas("Nets", "images/nets.json", TextureAtlasFormat.JSONARRAY);
   resourceManager.addBitmapData("Background", "images/background.png");
