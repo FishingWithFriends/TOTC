@@ -198,6 +198,17 @@ class Boat extends Sprite implements Touchable, Animatable {
       _net = new Bitmap(_nets.getBitmapData(_netNames[i]));
       _net.addEventListener(Event.ADDED, _netLoaded);
       addChildAt(_net, 0);
+      
+      if(_turnMode == LEFT){
+        _net.skewX = -.4;
+      }
+      else if(_turnMode == RIGHT){
+        _net.skewX = .4;
+      }
+      else if (_turnMode == STRAIGHT){
+
+      }
+      
     }
   }
   
