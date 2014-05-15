@@ -54,28 +54,22 @@ class Matrix {
 
   //-------------------------------------------------------------------------------------------------
 
-  Point transformPoint(Point p) {
+  Point<num> deltaTransformPoint(math.Point<num> p) {
     var x = p.x.toDouble();
     var y = p.y.toDouble();
-    return new Point(x * _a + y * _c + _tx, x * _b + y * _d + _ty);
+    return new Point<num>(x * _a + y * _c, x * _b + y * _d);
+  }
+
+  Point<num> transformPoint(math.Point<num> p) {
+    var x = p.x.toDouble();
+    var y = p.y.toDouble();
+    return new Point<num>(x * _a + y * _c + _tx, x * _b + y * _d + _ty);
   }
 
   Vector transformVector(Vector v) {
     var x = v.x.toDouble();
     var y = v.y.toDouble();
     return new Vector(x * _a + y * _c + _tx, x * _b + y * _d + _ty);
-  }
-
-  Point deltaTransformPoint(Point p) {
-    var x = p.x.toDouble();
-    var y = p.y.toDouble();
-    return new Point(x * _a + y * _c, x * _b + y * _d);
-  }
-
-  Point _transformHtmlPoint(html.Point p) {
-    var x = p.x.toDouble();
-    var y = p.y.toDouble();
-    return new Point(x * _a + y * _c + _tx, x * _b + y * _d + _ty);
   }
 
   //-------------------------------------------------------------------------------------------------

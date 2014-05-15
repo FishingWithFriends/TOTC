@@ -1,146 +1,174 @@
 part of stagexl;
 
-class Rectangle {
-  num x;
-  num y;
-  num width;
-  num height;
+class Rectangle<T extends num> implements math.MutableRectangle<T> {
 
-  Rectangle(this.x, this.y, this.width, this.height);
+  T left;
+  T top;
+  T width;
+  T height;
 
-  Rectangle.zero() : this(0, 0, 0, 0);
+  Rectangle(this.left, this.top, this.width, this.height);
 
-  Rectangle.from(Rectangle r) : this(r.x, r.y, r.width, r.height);
+  Rectangle.from(math.Rectangle<T> r) : this(r.left, r.top, r.width, r.height);
 
-  Rectangle clone() => new Rectangle(x, y, width, height);
+  Rectangle<T> clone() => new Rectangle<T>(left, top, width, height);
 
-  String toString() => "Rectangle [x=${x}, y=${y}, width=${width}, height=${height}]";
+  String toString() => "Rectangle<$T> [left=${left}, top=${top}, width=${width}, height=${height}]";
 
   //-----------------------------------------------------------------------------------------------
   //-----------------------------------------------------------------------------------------------
 
-  num get left => x;
-      set left(num value) { x = value; }
+  T get right => left + width;
+  T get bottom => top + height;
 
-  num get top => y;
-      set top(num value) { y = value; }
+  Point<T> get topLeft => new Point<T>(left, top);
+  Point<T> get topRight => new Point<T>(right, top);
+  Point<T> get bottomLeft => new Point<T>(left, bottom);
+  Point<T> get bottomRight => new Point<T>(right, bottom);
 
-  num get right => x + width;
-      set right(num value) { width = value - x; }
+  Point<T> get size => new Point<T>(width, height);
+  Point<num> get center => new Point<num>(left + width / 2, top + height / 2);
 
-  num get bottom => y + height;
-      set bottom(num value) { height = value - y; }
+  void set right(T value) {
+    width = value - left;
+  }
 
-  Point get topLeft => new Point(x, y);
-        set topLeft(Point point) {
-          width = width + x - point.x;
-          height = height + y - point.y;
-          x = point.x;
-          y = point.y;
-        }
+  void set bottom(T value) {
+    height = value - top;
+  }
 
-  Point get bottomRight => new Point(x + width, y + height);
-        set bottomRight(Point point) {
-          width = point.x - x;
-          height = point.y - y;
-        }
+  void set topLeft(Point<T> point) {
+    width = width + left - point.x;
+    height = height + top - point.y;
+    left = point.x;
+    top = point.y;
+  }
 
-  Point get size => new Point(width, height);
-        set size(Point point) {
-          width = point.x;
-          height = point.y;
-        }
+  void set bottomRight(Point<T> point) {
+    width = point.x - left;
+    height = point.y - top;
+  }
 
-  Point get center => new Point(x + width / 2, y + height / 2);
+  void set size(Point<T> point) {
+    width = point.x;
+    height = point.y;
+  }
 
   //-----------------------------------------------------------------------------------------------
 
   bool contains(num px, num py) {
-    return x <= px && y <= py && right > px && bottom > py;
+    return left <= px && top <= py && right > px && bottom > py;
   }
 
-  bool containsPoint(Point p) {
+  bool containsPoint(math.Point<num> p) {
     return contains(p.x, p.y);
   }
 
-  bool containsRect(Rectangle r) {
-    return x <= r.x && y <= r.y && x + width >= r.right && y + height >= r.bottom;
+  bool equals(math.Rectangle<num> r) {
+    return left == r.left && top == r.top && width == r.width && height == r.height;
   }
 
-  bool equals(Rectangle r) {
-    return x == r.x && y == r.y && width == r.width && height == r.height;
-  }
-
-  bool intersects(Rectangle r) {
-    return this.left < r.right && this.right > r.left && this.top < r.bottom && this.bottom > r.top;
+  bool intersects(math.Rectangle<num> r) {
+    return left < r.right && right > r.left && top < r.bottom && bottom > r.top;
   }
 
   bool get isEmpty {
-    return width == 0 && height == 0;
+    return width <= 0 || height <= 0;
+  }
+
+  /**
+   * Returns a new rectangle which completely contains `this` and [other].
+   */
+  Rectangle<T> boundingBox(math.Rectangle<T> other) {
+    T rLeft = min(left, other.left);
+    T rTop = min(top, other.top);
+    T rRight = max(right, other.right);
+    T rBottom = max(bottom, other.bottom);
+    return new Rectangle<T>(rLeft, rTop, rRight - rLeft, rBottom - rTop);
+  }
+
+  /**
+   * Tests whether `this` entirely contains [another].
+   */
+  bool containsRectangle(math.Rectangle<num> r) {
+    return left <= r.left && top <= r.top && right >= r.right && bottom >= r.bottom;
   }
 
   //-----------------------------------------------------------------------------------------------
 
-  void copyFrom(Rectangle r) {
-    setTo(r.x, r.y, r.width, r.height);
+  void copyFrom(math.Rectangle<T> r) {
+    setTo(r.left, r.top, r.width, r.height);
   }
 
-  void inflate(num dx, num dy) {
+  void inflate(T dx, T dy) {
     width += dx;
     height += dy;
   }
 
-  void inflatePoint(Point p) {
+  void inflatePoint(math.Point<T> p) {
     inflate(p.x, p.y);
   }
 
-  void offset(num dx, num dy) {
-    x += dx;
-    y += dy;
+  void offset(T dx, T dy) {
+    left += dx;
+    top += dy;
   }
 
-  void offsetPoint(Point p) {
+  void offsetPoint(Point<T> p) {
     offset(p.x, p.y);
   }
 
-  void setEmpty() {
-    setTo(0, 0, 0, 0);
-  }
-
-  void setTo(num rx, num ry, num rwidth, num rheight) {
-    x = rx;
-    y = ry;
+  void setTo(T rx, T ry, T rwidth, T rheight) {
+    left = rx;
+    top = ry;
     width = rwidth;
     height = rheight;
   }
 
-  Rectangle intersection(Rectangle rect) {
-    if (!intersects(rect))
-      return new Rectangle.zero();
-
-    num rLeft = max(left, rect.left);
-    num rTop = max(top, rect.top);
-    num rRight = min(right, rect.right);
-    num rBottom = min(bottom, rect.bottom);
-
-    return new Rectangle(rLeft, rRight, rRight - rLeft, rBottom - rTop);
+  Rectangle<T> intersection(math.Rectangle<T> rect) {
+    T rLeft = max(left, rect.left);
+    T rTop = max(top, rect.top);
+    T rRight = min(right, rect.right);
+    T rBottom = min(bottom, rect.bottom);
+    return new Rectangle<T>(rLeft, rTop, rRight - rLeft, rBottom - rTop);
   }
 
-  Rectangle union(Rectangle rect) {
-    num rLeft = min(left, rect.left);
-    num rTop = min(top, rect.top);
-    num rRight = max(right, rect.right);
-    num rBottom = max(bottom, rect.bottom);
-
-    return new Rectangle(rLeft, rTop, rRight - rLeft, rBottom - rTop);
-  }
-
-  Rectangle align() {
+  Rectangle<int> align() {
     int rLeft = left.floor();
     int rTop = top.floor();
     int rRight = right.ceil();
     int rBottom = bottom.ceil();
-
-    return new Rectangle(rLeft, rTop, rRight - rLeft, rBottom - rTop);
+    return new Rectangle<int>(rLeft, rTop, rRight - rLeft, rBottom - rTop);
   }
+
+  //-----------------------------------------------------------------------------------------------
+
+  /// Use [left] instead.
+  @deprecated
+  T get x => left;
+
+  /// Use [left] instead.
+  @deprecated
+  void set x(T value) {
+    left = value;
+  }
+
+  /// Use [top] instead.
+  @deprecated
+  T get y => top;
+
+  /// Use [top] instead.
+  @deprecated
+  void set y(T value) {
+    top = value;
+  }
+
+  /// Use [containsRectangle] instead.
+  @deprecated
+  bool containsRect(math.Rectangle<num> r) => containsRectangle(r);
+
+  /// Use [boundingBox] instead.
+  @deprecated
+  Rectangle<T> union(math.Rectangle<T> rect) => boundingBox(rect);
+
 }

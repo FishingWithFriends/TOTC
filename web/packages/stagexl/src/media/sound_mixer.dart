@@ -82,6 +82,7 @@ class SoundMixer {
     if (valid.indexOf(audio.canPlayType("audio/mpeg", "")) != -1) supportedTypes.add("mp3");
     if (valid.indexOf(audio.canPlayType("audio/mp4", "")) != -1) supportedTypes.add("mp4");
     if (valid.indexOf(audio.canPlayType("audio/ogg", "")) != -1) supportedTypes.add("ogg");
+    if (valid.indexOf(audio.canPlayType("audio/ac3", "")) != -1) supportedTypes.add("ac3");
     if (valid.indexOf(audio.canPlayType("audio/wav", "")) != -1) supportedTypes.add("wav");
 
     print("StageXL audio types   : ${supportedTypes}");
@@ -91,35 +92,31 @@ class SoundMixer {
 
   //-------------------------------------------------------------------------------------------------
 
-  static List<String> _getOptimalAudioUrls(String originalUrl, SoundLoadOptions soundLoadOptions) {
+  static List<String> _getOptimalAudioUrls(String primaryUrl, SoundLoadOptions soundLoadOptions) {
 
-    var regex = new RegExp(r"(mp3|mp4|ogg|wav)$", multiLine:false, caseSensitive:true);
     var availableTypes = _supportedTypes.toList();
-    var match = regex.firstMatch(originalUrl);
-    var urls = new List<String>();
-
-    if (match == null) {
-      throw new ArgumentError("Unsupported file extension.");
-    }
-
-    if (availableTypes.length == 0) {
-      throw new UnsupportedError("This browser supports no known audio codec.");
-    }
-
     if (!soundLoadOptions.mp3) availableTypes.remove("mp3");
     if (!soundLoadOptions.mp4) availableTypes.remove("mp4");
     if (!soundLoadOptions.ogg) availableTypes.remove("ogg");
+    if (!soundLoadOptions.ac3) availableTypes.remove("ac3");
     if (!soundLoadOptions.wav) availableTypes.remove("wav");
 
-    var fileType = match.group(1);
+    var urls = new List<String>();
+    var regex = new RegExp(r"([A-Za-z0-9]+)$", multiLine:false, caseSensitive:true);
+    var primaryMatch = regex.firstMatch(primaryUrl);
+    if (primaryMatch == null) return urls;
+    if (availableTypes.remove(primaryMatch.group(1))) urls.add(primaryUrl);
 
-    if (availableTypes.contains(fileType)) {
-      urls.add(originalUrl);
-      availableTypes.remove(fileType);
-    }
-
-    for(var availableType in availableTypes) {
-      urls.add(originalUrl.replaceAll(regex, availableType));
+    if (soundLoadOptions.alternativeUrls != null) {
+      for(var alternativeUrl in soundLoadOptions.alternativeUrls) {
+        var alternativeMatch = regex.firstMatch(alternativeUrl);
+        if (alternativeMatch == null) continue;
+        if (availableTypes.contains(alternativeMatch.group(1))) urls.add(alternativeUrl);
+      }
+    } else {
+      for(var availableType in availableTypes) {
+        urls.add(primaryUrl.replaceAll(regex, availableType));
+      }
     }
 
     return urls;

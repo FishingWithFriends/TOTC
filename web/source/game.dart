@@ -7,13 +7,17 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_PHASE = 3;
   
   static const FISHING_TIMER_WIDTH = 150;
-  static const BUY_TIMER_WIDTH = 500;
+  static const BUY_TIMER_WIDTH = 150;
   static const REGROWTH_TIMER_WIDTH = 15;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
   static const SARDINE = 1;
   static const SHARK = 2;
+  
+  //Timer Type
+  
+  
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -101,14 +105,14 @@ class Game extends Sprite implements Animatable{
       if (_graphTimer>_graphTimerMax) _redrawGraph();
       else _graphTimer++;
     
-    
-    sardineBar.height = _ecosystem._fishCount[SARDINE];
+    //Update the population bar graph size
+    sardineBar.height = _ecosystem._fishCount[SARDINE]/2;
     sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
     
-    tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
+    tunaBar.height = _ecosystem._fishCount[TUNA] * 3;
     tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height;
     
-    sharkBar.height = _ecosystem._fishCount[SHARK]* 4;
+    sharkBar.height = _ecosystem._fishCount[SHARK]* 8;
     sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height;
     
     return true;
@@ -352,7 +356,7 @@ class Game extends Sprite implements Animatable{
     addChild(timerPie);    
     
     sardineBar = new Shape();
-    sardineBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SARDINE])
+    sardineBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SARDINE]/2)
               ..x  = 20
               ..y = height - 50
               ..graphics.fillColor(Color.Green);
@@ -364,7 +368,7 @@ class Game extends Sprite implements Animatable{
     addChild(sardineIcon);
     
     tunaBar = new Shape();
-    tunaBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[TUNA]*2)
+    tunaBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[TUNA]*3)
               ..x  = 35
               ..y = height - 50
               ..graphics.fillColor(Color.Red);
@@ -376,7 +380,7 @@ class Game extends Sprite implements Animatable{
     addChild(tunaIcon);
     
     sharkBar = new Shape();
-    sharkBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SHARK]*4)
+    sharkBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SHARK]*8)
               ..x  = 50
               ..y = height - 50
               ..graphics.fillColor(Color.Yellow);

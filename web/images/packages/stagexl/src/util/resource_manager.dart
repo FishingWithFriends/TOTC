@@ -9,6 +9,11 @@ class ResourceManager extends EventDispatcher {
 
   //-----------------------------------------------------------------------------------------------
 
+  bool _containsResource(String kind, String name) {
+    var key = "$kind.$name";
+    return _resources.containsKey(key);
+  }
+
   _addResource(String kind, String name, String url, Future loader) {
 
     var key = "$kind.$name";
@@ -78,12 +83,26 @@ class ResourceManager extends EventDispatcher {
 
   //-----------------------------------------------------------------------------------------------
 
+  bool containsBitmapData(String name) => _containsResource("BitmapData", name);
+  bool containsSound(String name) => _containsResource("Sound", name);
+  bool containsSoundSprite(String name) => _containsResource("SoundSprite", name);
+  bool containsTextureAtlas(String name) => _containsResource("TextureAtlas", name);
+  bool containsTextFile(String name) => _containsResource("TextFile", name);
+  bool containsText(String name) => _containsResource("Text", name);
+  bool containsCustomObject(String name) => _containsResource("CustomObject", name);
+
+  //-----------------------------------------------------------------------------------------------
+
   void addBitmapData(String name, String url, [BitmapDataLoadOptions bitmapDataLoadOptions = null]) {
     _addResource("BitmapData", name, url, BitmapData.load(url, bitmapDataLoadOptions));
   }
 
   void addSound(String name, String url, [SoundLoadOptions soundFileSupport = null]) {
     _addResource("Sound", name, url, Sound.load(url, soundFileSupport));
+  }
+
+  void addSoundSprite(String name, String url) {
+    _addResource("SoundSprite", name, url, SoundSprite.load(url));
   }
 
   void addTextureAtlas(String name, String url, String textureAtlasFormat) {
@@ -116,6 +135,12 @@ class ResourceManager extends EventDispatcher {
   Sound getSound(String name) {
     var value = _getResourceValue("Sound", name);
     if (value is! Sound) throw "dart2js_hint";
+    return value;
+  }
+
+  SoundSprite getSoundSprite(String name) {
+    var value = _getResourceValue("SoundSprite", name);
+    if (value is! SoundSprite) throw "dart2js_hint";
     return value;
   }
 

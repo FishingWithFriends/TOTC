@@ -2,7 +2,7 @@ part of stagexl;
 
 class _ContextState {
   final Matrix matrix = new Matrix.fromIdentity();
-  double alpha = 1.0;
+  num alpha = 1.0;
   String compositeOperation = CompositeOperation.SOURCE_OVER;
 
   _ContextState _nextContextState;
@@ -78,7 +78,7 @@ class RenderState {
 
     cs2.matrix.copyFromAndConcat(matrix, cs1.matrix);
     cs2.compositeOperation = (composite is String) ? composite : cs1.compositeOperation;
-    cs2.alpha = alpha * cs1.alpha.toDouble();
+    cs2.alpha = alpha * cs1.alpha;
 
     _currentContextState = cs2;
     displayObject._renderInternal(this);

@@ -19,7 +19,7 @@ abstract class Mask {
     return new _CirlceMask(x, y, radius);
   }
 
-  factory Mask.custom(List<Point> points) {
+  factory Mask.custom(List<Point<num>> points) {
     return new _CustomMask(points);
   }
 
@@ -39,9 +39,10 @@ abstract class Mask {
 
 class _RectangleMask extends Mask {
 
-  final Rectangle _rectangle;
+  final Rectangle<num> _rectangle;
 
-  _RectangleMask(num x, num y, num width, num height) : _rectangle = new Rectangle(x, y, width, height);
+  _RectangleMask(num x, num y, num width, num height) :
+    _rectangle = new Rectangle<num>(x, y, width, height);
 
   bool hitTest(num x, num y) => _rectangle.contains(x, y);
 
@@ -50,7 +51,7 @@ class _RectangleMask extends Mask {
     if (renderState.renderContext is RenderContextCanvas) {
       var renderContext = renderState.renderContext as RenderContextCanvas;
       var context = renderContext.rawContext;
-      context.rect(_rectangle.x, _rectangle.y, _rectangle.width, _rectangle.height);
+      context.rect(_rectangle.left, _rectangle.top, _rectangle.width, _rectangle.height);
     } else {
       var l = _rectangle.left;
       var t = _rectangle.top;
@@ -66,9 +67,9 @@ class _RectangleMask extends Mask {
 
 class _CirlceMask extends Mask {
 
-  final Circle _circle;
+  final Circle<num> _circle;
 
-  _CirlceMask(num x, num y, num radius) : _circle = new Circle(x, y, radius);
+  _CirlceMask(num x, num y, num radius) : _circle = new Circle<num>(x, y, radius);
 
   bool hitTest(num x, num y) => _circle.contains(x, y);
 
@@ -89,7 +90,7 @@ class _CirlceMask extends Mask {
       var tx = centerX - centerX * cosR + centerY * sinR;
       var ty = centerY - centerX * sinR - centerY * cosR;
 
-      for(int s = 0; s <= steps; s++) {
+      for (int s = 0; s <= steps; s++) {
         var nextX = currentX * cosR - currentY * sinR + tx;
         var nextY = currentX * sinR + currentY * cosR + ty;
         renderState.renderTriangle(centerX, centerY, currentX, currentY, nextX, nextY, Color.Magenta);
@@ -105,10 +106,10 @@ class _CirlceMask extends Mask {
 class _CustomMask extends Mask {
 
   final Polygon _polygon;
-  Rectangle _polygonBounds;
+  Rectangle<num> _polygonBounds;
   List<int> _polygonTriangles;
 
-  _CustomMask(List<Point> points) : _polygon = new Polygon(points) {
+  _CustomMask(List<Point<num>> points) : _polygon = new Polygon(points) {
     _polygonBounds = _polygon.getBounds();
     _polygonTriangles = _polygon.triangulate();
   }
@@ -122,12 +123,12 @@ class _CustomMask extends Mask {
     if (renderState.renderContext is RenderContextCanvas) {
       var renderContext = renderState.renderContext as RenderContextCanvas;
       var context = renderContext.rawContext;
-      for(int i = 0; i <= points.length; i++) {
-        var point =  points[i % points.length];
+      for (int i = 0; i <= points.length; i++) {
+        var point = points[i % points.length];
         context.lineTo(point.x, point.y);
       }
     } else {
-      for(int i = 0; i <= triangles.length - 3; i += 3) {
+      for (int i = 0; i <= triangles.length - 3; i += 3) {
         var p1 = points[triangles[i + 0]];
         var p2 = points[triangles[i + 1]];
         var p3 = points[triangles[i + 2]];

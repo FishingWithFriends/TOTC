@@ -35,7 +35,7 @@ class ColorMatrixFilter extends BitmapFilter {
       [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
       [0, 0, 0, 0]);
 
-  factory ColorMatrixFilter.adjust({num brightness: 0, num contrast: 0, num saturation: 0, num hue: 0}) {
+  factory ColorMatrixFilter.adjust({num hue: 0, num saturation: 0, num brightness: 0, num contrast: 0}) {
     var colorMatrixFilter = new ColorMatrixFilter.identity();
     colorMatrixFilter.adjustHue(hue);
     colorMatrixFilter.adjustSaturation(saturation);
@@ -101,6 +101,20 @@ class ColorMatrixFilter extends BitmapFilter {
     _concat([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], [v, v, v, 0]);
   }
 
+  void adjustColoration(int color, [num strength = 1.0]) {
+
+    num r = _colorGetR(color) * strength / 255.0;
+    num g = _colorGetG(color) * strength / 255.0;
+    num b = _colorGetB(color) * strength / 255.0;
+    num i = 1.0 - strength;
+
+    _concat([
+        r * _lumaR + i, r * _lumaG, r * _lumaB, 0.0,
+        g * _lumaR, g * _lumaG + i, g * _lumaB, 0.0,
+        b * _lumaR, b * _lumaG, b * _lumaB + i, 0.0,
+        0.0, 0.0, 0.0, 1.0], [0, 0, 0, 0]);
+  }
+
   //-------------------------------------------------------------------------------------------------
 
   void _concat(List<num> colorMatrix, List<num> colorOffset) {
@@ -134,7 +148,7 @@ class ColorMatrixFilter extends BitmapFilter {
 
   //-------------------------------------------------------------------------------------------------
 
-  void apply(BitmapData bitmapData, [Rectangle rectangle]) {
+  void apply(BitmapData bitmapData, [Rectangle<int> rectangle]) {
 
     //dstR = (m[ 0] * srcR) + (m[ 1] * srcG) + (m[ 2] * srcB) + (m[ 3] * srcA) + o[0]
     //dstG = (m[ 4] * srcR) + (m[ 5] * srcG) + (m[ 6] * srcB) + (m[ 7] * srcA) + o[1]
@@ -191,19 +205,21 @@ class ColorMatrixFilter extends BitmapFilter {
   void renderFilter(RenderState renderState, RenderTextureQuad renderTextureQuad, int pass) {
     RenderContextWebGL renderContext = renderState.renderContext;
     RenderTexture renderTexture = renderTextureQuad.renderTexture;
-    renderContext.activateRenderProgram(_colorMatrixProgram);
+    _ColorMatrixProgram colorMatrixProgram = _ColorMatrixProgram.instance;
+
+    renderContext.activateRenderProgram(colorMatrixProgram);
     renderContext.activateRenderTexture(renderTexture);
-    _colorMatrixProgram.configure(this);
-    _colorMatrixProgram.renderQuad(renderState, renderTextureQuad);
+    colorMatrixProgram.configure(this);
+    colorMatrixProgram.renderQuad(renderState, renderTextureQuad);
   }
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-final _colorMatrixProgram = new _ColorMatrixProgram();
-
 class _ColorMatrixProgram extends _BitmapFilterProgram {
+
+  static final _ColorMatrixProgram instance = new _ColorMatrixProgram();
 
   String get fragmentShaderSource => """
       precision mediump float;

@@ -21,15 +21,15 @@ class DisplacementMapFilter extends BitmapFilter {
 
   BitmapFilter clone() => new DisplacementMapFilter(bitmapData, matrix.clone(), scaleX, scaleY);
 
-  Rectangle get overlap {
-    var x = (0.5 * scaleX).abs().ceil();
-    var y = (0.5 * scaleY).abs().ceil();
-    return new Rectangle(-x, -y, x + x, y + y);
+  Rectangle<int> get overlap {
+    int x = (0.5 * scaleX).abs().ceil();
+    int y = (0.5 * scaleY).abs().ceil();
+    return new Rectangle<int>(-x, -y, x + x, y + y);
   }
 
   //-----------------------------------------------------------------------------------------------
 
-  void apply(BitmapData bitmapData, [Rectangle rectangle]) {
+  void apply(BitmapData bitmapData, [Rectangle<int> rectangle]) {
 
     RenderTextureQuad renderTextureQuad = rectangle == null
         ? bitmapData.renderTextureQuad
@@ -96,20 +96,22 @@ class DisplacementMapFilter extends BitmapFilter {
   void renderFilter(RenderState renderState, RenderTextureQuad renderTextureQuad, int pass) {
     RenderContextWebGL renderContext = renderState.renderContext;
     RenderTexture renderTexture = renderTextureQuad.renderTexture;
-    renderContext.activateRenderProgram(_displacementMapProgram);
+    _DisplacementMapProgram displacementMapProgram = _DisplacementMapProgram.instance;
+
+    renderContext.activateRenderProgram(displacementMapProgram);
     renderContext.activateRenderTexture(renderTexture);
     bitmapData.renderTexture.activate(renderContext, gl.TEXTURE1);
-    _displacementMapProgram.configure(this, renderTextureQuad);
-    _displacementMapProgram.renderQuad(renderState, renderTextureQuad);
+    displacementMapProgram.configure(this, renderTextureQuad);
+    displacementMapProgram.renderQuad(renderState, renderTextureQuad);
   }
 }
 
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-final _displacementMapProgram = new _DisplacementMapProgram();
-
 class _DisplacementMapProgram extends _BitmapFilterProgram {
+
+  static final _DisplacementMapProgram instance = new _DisplacementMapProgram();
 
   String get fragmentShaderSource => """
       precision mediump float;

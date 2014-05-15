@@ -1,84 +1,106 @@
 part of stagexl;
 
-class Point {
-  num x;
-  num y;
+class Point<T extends num> implements math.Point<T> {
+
+  T x;
+  T y;
 
   Point(this.x, this.y);
 
-  Point.zero() : this(0, 0);
+  Point.from(math.Point<T> p) : this(p.x, p.y);
 
-  Point.from(Point p) : this(p.x, p.y);
+  Point<T> clone() => new Point<T>(x, y);
 
-  Point clone() => new Point(x, y);
-
-  String toString() => "Point [x=${x}, y=${y}]";
+  String toString() => "Point<$T> [x=${x}, y=${y}]";
 
   //-------------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------------
 
-  static num distance(Point p1, Point p2) => p1.distanceTo(p2);
+  static num distance(math.Point<num> p1, math.Point<num> p2) => p1.distanceTo(p2);
 
-  static Point interpolate(Point p1, Point p2, num f) =>
-    new Point(p2.x + (p1.x - p2.x) * f, p2.y + (p1.y - p2.y) * f);
+  static Point<num> interpolate(math.Point<num> p1, math.Point<num> p2, num f) =>
+    new Point<num>(p2.x + (p1.x - p2.x) * f, p2.y + (p1.y - p2.y) * f);
 
-  static Point polar(num len, num angle) =>
-    new Point(len * cos(angle), len * sin(angle));
-
-  //-------------------------------------------------------------------------------------------------
-
-  num get length => sqrt(x * x + y * y);
+  static Point<num> polar(num len, num angle) =>
+    new Point<num>(len * cos(angle), len * sin(angle));
 
   //-------------------------------------------------------------------------------------------------
 
-  Point add(Point p) {
-    return new Point(x + p.x, y + p.y);
+  /// The distance from the origin (0, 0) coordinates to this Point.
+  ///
+  /// This property is deprecated. Use [magnitude] instead.
+  @deprecated
+  num get length => magnitude;
+
+  /**
+   * Get the straight line (Euclidean) distance between the origin (0, 0) and
+   * this point.
+   */
+  double get magnitude => sqrt(x * x + y * y);
+
+  Point<T> operator +(math.Point<T> point) => add(point);
+  Point<T> operator -(math.Point<T> point) => subtract(point);
+
+  /**
+   * Scale this point by [factor] as if it were a vector.
+   *
+   * *Important* *Note*: This function accepts a `num` as its argument only so
+   * that you can scale Point<double> objects by an `int` factor. Because the
+   * star operator always returns the same type of Point that originally called
+   * it, passing in a double [factor] on a `Point<int>` _causes_ _a_
+   * _runtime_ _error_ in checked mode.
+   */
+  Point<T> operator *(num factor) {
+    return new Point<T>(x * factor, y * factor);
   }
 
-  Point subtract(Point p) {
-    return new Point(x - p.x, y - p.y);
+  //-------------------------------------------------------------------------------------------------
+
+  /// Adds the coordinates of another Point to the coordinates of this Point
+  /// and returns a new Point.
+  Point<T> add(math.Point<T> point) => new Point<T>(x + point.x, y + point.y);
+
+  /// Subtracts the coordinates of another Point from the coordinates of this
+  /// Point to returns a new Point.
+  Point<T> subtract(math.Point<T> point) => new Point<T>(x - point.x, y - point.y);
+
+  /// Determines whether another points are equal this Point.
+
+  bool equals(Point point) => x == point.x && y == point.y;
+
+  /// Copies the coordinates from another Point into this Point.
+  void copyFrom(math.Point<T> point) {
+    x = point.x;
+    y = point.y;
   }
 
-  copyFrom(Point p) {
-    setTo(p.x, p.y);
-  }
-
-  setTo(num px, num py) {
+  /// Sets the coordinates of this Point to the specified values.
+  void setTo(T px, T py) {
     x = px;
     y = py;
   }
 
-  bool equals(Point p) {
-    return x == p.x && y == p.y;
-  }
-
-  normalize(num length) {
-    num currentLength = this.length;
-    x = x * length / currentLength;
-    y = y * length / currentLength;
-  }
-
-  offset(num dx, num dy) {
+  /// Offsets this Point by the specified amount.
+  void offset(T dx, T dy) {
     x += dx;
     y += dy;
   }
 
-  transform(Matrix matrix) {
-    num currentX = x;
-    num currentY = y;
+  /// Calculates the distance from this Point to another Point.
 
-    x = currentX * matrix.a + currentY * matrix.c + matrix.tx;
-    y = currentX * matrix.b + currentY * matrix.d + matrix.ty;
+  num distanceTo(math.Point<num> point) {
+    return sqrt(squaredDistanceTo(point));
   }
 
-  copyFromAndTransfrom(Point p, Matrix matrix) {
-    x = p.x * matrix.a + p.y * matrix.c + matrix.tx;
-    y = p.x * matrix.b + p.y * matrix.d + matrix.ty;
-  }
-
-  num distanceTo(Point other) {
-    num dx = x - other.x;
-    num dy = y - other.y;
-    return sqrt(dx * dx + dy * dy);
+  /**
+   * Returns the squared distance between `this` and [other].
+   *
+   * Squared distances can be used for comparisons when the actual value is not
+   * required.
+   */
+  T squaredDistanceTo(math.Point<T> other) {
+    var dx = x - other.x;
+    var dy = y - other.y;
+    return dx * dx + dy * dy;
   }
 }

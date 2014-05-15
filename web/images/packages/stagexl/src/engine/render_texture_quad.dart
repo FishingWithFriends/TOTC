@@ -162,7 +162,7 @@ class RenderTextureQuad {
   int _minInt(int a, int b) => a < b ? a : b;
   int _maxInt(int a, int b) => a > b ? a : b;
 
-  RenderTextureQuad clip(Rectangle rectangle) {
+  RenderTextureQuad clip(Rectangle<int> rectangle) {
 
     int left = _minInt(_offsetX + _textureWidth, _maxInt(_offsetX, rectangle.left));
     int top = _minInt(_offsetY + _textureHeight, _maxInt(_offsetY, rectangle.top));
@@ -180,17 +180,17 @@ class RenderTextureQuad {
 
   //-----------------------------------------------------------------------------------------------
 
-  RenderTextureQuad cut(Rectangle rectangle) {
+  RenderTextureQuad cut(Rectangle<int> rectangle) {
     var renderTextureQuad = clip(rectangle);
-    renderTextureQuad._offsetX -= rectangle.x;
-    renderTextureQuad._offsetY -= rectangle.y;
+    renderTextureQuad._offsetX -= rectangle.left;
+    renderTextureQuad._offsetY -= rectangle.top;
     return renderTextureQuad;
   }
 
   //-----------------------------------------------------------------------------------------------
   //-----------------------------------------------------------------------------------------------
 
-  Rectangle get _imageDataRectangle {
+  Rectangle<int> get _imageDataRectangle {
     num storePixelRatio = _renderTexture.storePixelRatio;
     num backingStorePixelRatio = _backingStorePixelRatio;
     num pixelRatio = storePixelRatio / backingStorePixelRatio;
@@ -204,7 +204,7 @@ class RenderTextureQuad {
     right = (right * pixelRatio).round();
     bottom = (bottom * pixelRatio).round();
 
-    return new Rectangle(left, top, right - left, bottom - top);
+    return new Rectangle<int>(left, top, right - left, bottom - top);
   }
 
   ImageData createImageData() {
@@ -218,9 +218,9 @@ class RenderTextureQuad {
     var context = _renderTexture.canvas.context2D;
     var backingStorePixelRatio = _backingStorePixelRatio;
     if (backingStorePixelRatio > 1.0) {
-      return context.getImageDataHD(rect.x, rect.y, rect.width, rect.height);
+      return context.getImageDataHD(rect.left, rect.top, rect.width, rect.height);
     } else {
-      return context.getImageData(rect.x, rect.y, rect.width, rect.height);
+      return context.getImageData(rect.left, rect.top, rect.width, rect.height);
     }
   }
 
@@ -229,9 +229,9 @@ class RenderTextureQuad {
     var context = _renderTexture.canvas.context2D;
     var backingStorePixelRatio = _backingStorePixelRatio;
     if (backingStorePixelRatio > 1.0) {
-      context.putImageDataHD(imageData, rect.x, rect.y);
+      context.putImageDataHD(imageData, rect.left, rect.top);
     } else {
-      context.putImageData(imageData, rect.x, rect.y);
+      context.putImageData(imageData, rect.left, rect.top);
     }
   }
 
