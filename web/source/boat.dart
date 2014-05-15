@@ -542,15 +542,16 @@ class Boat extends Sprite implements Touchable, Animatable {
     Tween t = new Tween(_arrow, 1, TransitionFunction.linear);
     t.animate.alpha.to(0);
     _fleet._juggler.add(t);
-    Tween t2 = new Tween(_text, 1, TransitionFunction.linear);
-    t2.animate.alpha.to(0);
-    _fleet._juggler.add(t2);
-    t2.onComplete = _removePrompt;
+//    Tween t2 = new Tween(_text, 1, TransitionFunction.linear);
+//    t2.animate.alpha.to(0);
+//    _fleet._juggler.add(t2);
+//    t2.onComplete = _removePrompt;
+    t.onComplete = _removePrompt;
   }
   
   void _removePrompt() {
     _showingPrompt = false;
-    if (_fleet.contains(_text)) _fleet.removeChild(_text);
+//    if (_fleet.contains(_text)) _fleet.removeChild(_text);
     if (_fleet.contains(_arrow)) _fleet.removeChild(_arrow);
   }
   
