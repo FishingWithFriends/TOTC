@@ -16,8 +16,10 @@ class Game extends Sprite implements Animatable{
   static const SHARK = 2;
   
   //Timer Type
-  
-  
+  static const BAR_TIMER = 0;
+  static const PIE_TIMER = 1;
+  num timerType = PIE_TIMER;
+  Bitmap pieTimerBitmap;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -194,7 +196,7 @@ class Game extends Sprite implements Animatable{
             ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/REGROWTH_TIMER_WIDTH, false)
             ..graphics.closePath();
       }
-      timerPie.graphics.fillColor(Color.Yellow);
+      timerPie.graphics.fillColor(Color.Black);
 
     } else timer++;
     
@@ -313,13 +315,15 @@ class Game extends Sprite implements Animatable{
                   ..y = height-60;
     addChild(teamBMoneyText);
     
+    
+    //Text and Shapes for Bar Timers
     timerGraphicA = new Shape();
     timerGraphicA..graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10)
                  ..x = width-FISHING_TIMER_WIDTH-50
                  ..width = FISHING_TIMER_WIDTH
                  ..y = 20
                  ..graphics.fillColor(Color.LightGreen);
-    addChild(timerGraphicA);
+    
     
     format = new TextFormat("Arial", 14, Color.LightYellow, align: "left");
     timerTextA = new TextField("Fishing season", format);
@@ -327,38 +331,61 @@ class Game extends Sprite implements Animatable{
               ..y = 55
               ..rotation = math.PI
               ..width = 200;
-    addChild(timerTextA);
+    
 
     timerGraphicB = new Shape();
     timerGraphicB..graphics.rect(0, 0, FISHING_TIMER_WIDTH, 10)
                  ..x = 50
                  ..y = height-20
                  ..graphics.fillColor(Color.LightGreen);
-    addChild(timerGraphicB);
+    
     
 
     timerTextB = new TextField("Fishing season", format);
     timerTextB.x = 50;
     timerTextB.y = height-45;
     timerTextB.width = 200;
-    addChild(timerTextB);
+    
+    
+    
+    //Text and Shapes for Pie Timer
     
     timerPie = new Shape();
     timerPie..graphics.beginPath()
-            ..x = width - 75
-            ..y = height/2- timerPieRadius
+            ..x = width - 100
+            ..y = 50
             ..graphics.lineTo(0, timerPieRadius)
             ..graphics.lineTo(timerPieRadius, timerPieRadius)
             ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI, false)
             ..graphics.closePath()
-            ..graphics.fillColor(Color.Yellow)
+            ..graphics.fillColor(Color.Black)
             ..alpha = .70;
-    addChild(timerPie);    
+        
+    pieTimerBitmap = new Bitmap(_resourceManager.getBitmapData("timer"));
+    pieTimerBitmap.rotation = math.PI/4;
+    pieTimerBitmap.alpha = timerPie.alpha+10;
+    pieTimerBitmap.x = timerPie.x +22;
+    pieTimerBitmap.y = timerPie.y - 62;
+
     
+    if(timerType == BAR_TIMER){
+      addChild(timerGraphicA);
+      addChild(timerTextA);
+      addChild(timerGraphicB);
+      addChild(timerTextB);
+    }
+    else if(timerType == PIE_TIMER){
+      addChild(timerPie);
+      addChild(pieTimerBitmap);
+    }
+    
+    
+    //Text and Shapes for population bar graph
     sardineBar = new Shape();
-    sardineBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SARDINE]/2)
+    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]/2)
               ..x  = 20
-              ..y = height - 50
+              ..y = height - 20
+              ..alpha = .6
               ..graphics.fillColor(Color.Green);
     addChild(sardineBar);
     
@@ -368,9 +395,10 @@ class Game extends Sprite implements Animatable{
     addChild(sardineIcon);
     
     tunaBar = new Shape();
-    tunaBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[TUNA]*3)
-              ..x  = 35
-              ..y = height - 50
+    tunaBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*3)
+              ..x  = 50
+              ..y = height - 20
+              ..alpha = .6
               ..graphics.fillColor(Color.Red);
     addChild(tunaBar);
     
@@ -380,9 +408,10 @@ class Game extends Sprite implements Animatable{
     addChild(tunaIcon);
     
     sharkBar = new Shape();
-    sharkBar..graphics.rect(0, 0, 15, -_ecosystem._fishCount[SHARK]*8)
-              ..x  = 50
-              ..y = height - 50
+    sharkBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*8)
+              ..x  = 80
+              ..y = height - 20
+              ..alpha = .6
               ..graphics.fillColor(Color.Yellow);
     addChild(sharkBar);
     

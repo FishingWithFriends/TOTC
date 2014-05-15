@@ -512,26 +512,27 @@ class Boat extends Sprite implements Touchable, Animatable {
       _showingPrompt = true;
       
       _arrow = new Bitmap(_resourceManager.getBitmapData("Arrow"));
-      TextFormat format = new TextFormat("Arial", 20, Color.Red, align: "left");
-      _text = new TextField("Touch boat to begin!", format);
-      _text.width = 200;
+      _arrow.alpha = .6;
+//      TextFormat format = new TextFormat("Arial", 20, Color.Red, align: "left");
+//      _text = new TextField("Touch boat to begin!", format);
+//      _text.width = 200;
       
       if (_teamA==true) {
-        _arrow.y = y+240;
-        _arrow.x = x-80;
+        _arrow.y = y+200;
+        _arrow.x = x-50;
         _arrow.rotation = -math.PI/2;
-        _text.x = x+90;
-        _text.y = y+260;
-        _text.rotation = math.PI;
+//        _text.x = x+90;
+//        _text.y = y+260;
+//        _text.rotation = math.PI;
       } else {
-        _arrow.y = y-240;
-        _arrow.x = x+80;
+        _arrow.y = y-200;
+        _arrow.x = x+50;
         _arrow.rotation = math.PI/2;
-        _text.x = x-90;
-        _text.y = y-260;
-        _text.rotation = 0;
+//        _text.x = x-90;
+//        _text.y = y-260;
+//        _text.rotation = 0;
       }
-      _fleet.addChild(_text);
+//      _fleet.addChild(_text);
       _fleet.addChild(_arrow);
     }
   }

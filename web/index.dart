@@ -85,6 +85,7 @@ void main() {
   resourceManager.addBitmapData("sardineIcon", "images/sardineIcon.png");
   resourceManager.addBitmapData("tunaIcon", "images/tunaIcon.png");
   resourceManager.addBitmapData("sharkIcon", "images/sharkIcon.png");
+  resourceManager.addBitmapData("timer", "images/timer.png");
   
   
   
