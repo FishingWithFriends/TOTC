@@ -82,6 +82,10 @@ void main() {
   resourceManager.addBitmapData("CapacityUpgradeButton", "images/capUpgradeIcon.png");
   resourceManager.addBitmapData("SpeedUpgradeButton", "images/speedUpgradeIcon.png");
   resourceManager.addBitmapData("OffseasonDock", "images/offseason_dock.png");
+  resourceManager.addBitmapData("sardineIcon", "images/sardineIcon.png");
+  resourceManager.addBitmapData("tunaIcon", "images/tunaIcon.png");
+  resourceManager.addBitmapData("sharkIcon", "images/sharkIcon.png");
+  
   
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
