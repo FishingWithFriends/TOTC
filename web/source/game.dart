@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 150;
-  static const BUY_TIMER_WIDTH = 150;
-  static const REGROWTH_TIMER_WIDTH = 15;
+  static const FISHING_TIMER_WIDTH = 15;
+  static const BUY_TIMER_WIDTH = 15;
+  static const REGROWTH_TIMER_WIDTH = 150;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -18,7 +18,7 @@ class Game extends Sprite implements Animatable{
   //Timer Type
   static const BAR_TIMER = 0;
   static const PIE_TIMER = 1;
-  num timerType = PIE_TIMER;
+  num timerType = PIE_TIMER; // TOGGLE VARIABLE
   Bitmap pieTimerBitmap;
   
   ResourceManager _resourceManager;
@@ -48,9 +48,16 @@ class Game extends Sprite implements Animatable{
   int moneyTimer = 0;
   int moneyTimerMax = 2;
 
+  //REGROWTH INFO
+  static const LINE_GRAPH_INFO = 0;
+  static const BADGE_STAR_INFO = 1;
+  num regrowthInfoType = BADGE_STAR_INFO; // TOGGLE VARIABLE
+  
   Graph _teamAGraph, _teamBGraph;
   int _graphTimerMax = 25;
   int _graphTimer=0;
+  
+  EcosystemBadge badge;
   
   Shape timerGraphicA,timerGraphicB, timerPie;
   Shape sardineBar, tunaBar, sharkBar;
@@ -65,6 +72,8 @@ class Game extends Sprite implements Animatable{
   
   // Slider _teamASlider, _teamBSlider;
   // int sliderPrompt = 6;
+  
+ 
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -86,6 +95,8 @@ class Game extends Sprite implements Animatable{
     _mask.width = width;
     _mask.height = height;
 
+    badge = new EcosystemBadge(_resourceManager, _juggler, this, _ecosystem);
+    
     addChild(_background);
     addChild(_ecosystem);
     addChild(_mask);
@@ -103,9 +114,18 @@ class Game extends Sprite implements Animatable{
     if (timerGraphicA.width<4) _nextSeason();
     else _decreaseTimer();
     
-    if (phase==REGROWTH_PHASE)
-      if (_graphTimer>_graphTimerMax) _redrawGraph();
-      else _graphTimer++;
+    
+    //Display growth information
+    if (phase==REGROWTH_PHASE){
+      
+      if(regrowthInfoType == LINE_GRAPH_INFO){
+        if (_graphTimer>_graphTimerMax) _redrawGraph();
+        else _graphTimer++;
+      }
+      else if (regrowthInfoType == BADGE_STAR_INFO){
+
+      }
+    }
     
     //Update the population bar graph size
     sardineBar.height = _ecosystem._fishCount[SARDINE]/2;
@@ -219,14 +239,21 @@ class Game extends Sprite implements Animatable{
       timerGraphicB.graphics.fillColor(Color.DarkRed);
       timerGraphicB.width = REGROWTH_TIMER_WIDTH;
       timerTextB.text = "Regrowth season";
+      
+      addChild(badge);
+      badge.showBadge();
+      
     }
     else if (phase==REGROWTH_PHASE) {
       phase = BUY_PHASE;
+      
+     
       
       teamAMoneyText.alpha = 1;
       teamBMoneyText.alpha = 1;
       _fleet.alpha = 1;
       _fleet.hideDock();
+      if (contains(badge)) removeChild(badge);
       if (contains(_teamAGraph)) removeChild(_teamAGraph);
       if (contains(_teamBGraph)) removeChild(_teamBGraph);
       

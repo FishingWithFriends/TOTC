@@ -18,6 +18,7 @@ part 'source/console.dart';
 part 'source/slider.dart';
 part 'source/graph.dart';
 part 'source/offseason.dart';
+part 'source/regrowthUI.dart';
 
 void main() {
   int height = html.window.innerHeight-20;
@@ -86,7 +87,12 @@ void main() {
   resourceManager.addBitmapData("tunaIcon", "images/tunaIcon.png");
   resourceManager.addBitmapData("sharkIcon", "images/sharkIcon.png");
   resourceManager.addBitmapData("timer", "images/timer.png");
-  
+  resourceManager.addBitmapData("foodWeb", "images/foodWeb.png");
+  resourceManager.addBitmapData("stars0", "images/stars0.png");
+  resourceManager.addBitmapData("stars1", "images/stars1.png");
+  resourceManager.addBitmapData("stars2", "images/stars2.png");
+  resourceManager.addBitmapData("stars3", "images/stars3.png");
+
   
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
