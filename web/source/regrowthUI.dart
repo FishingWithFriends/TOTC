@@ -18,6 +18,14 @@ class EcosystemBadge extends Sprite implements Animatable{
   var _tunaStatusText;
   var _sharkStatusText;
   
+  TextField _sardineStatusTextFieldTop;
+  TextField _tunaStatusTextFieldTop;
+  TextField _sharkStatusTextFieldTop;
+
+  TextField _sardineStatusTextFieldBottom;
+  TextField _tunaStatusTextFieldBottom;
+  TextField _sharkStatusTextFieldBottom;
+  
   int rating, animatedRating;
       
   EcosystemBadge(this._resourceManager, this._juggler, this._game, this._ecosystem) {
@@ -32,7 +40,7 @@ class EcosystemBadge extends Sprite implements Animatable{
   
   void showBadge(){
     
-    rating = 2;
+    rating = determineRating();
     animatedRating = 0;
     Tween t1 = new Tween(foodWeb, 1, TransitionFunction.linear);
           t1.animate.alpha.to(1);
@@ -43,19 +51,18 @@ class EcosystemBadge extends Sprite implements Animatable{
     _juggler.add(t2);
     
     
-    
-    for(int i = 0; i < rating; i++){
-      
-    }
-    
   }
   
   void hideBadge(){
-//    if(contains(foodWeb)) removeChild(foodWeb);
+    foodWeb.alpha = 0;
+    stars0.alpha = 0;
+    stars1.alpha = 0;
+    stars2.alpha = 0;
+    stars3.alpha = 0;
   }
   
   void showStars(){
-    if(animatedRating == rating) return;
+    if(animatedRating == rating) showText();
     else{
       
       Bitmap toShow;
@@ -73,37 +80,86 @@ class EcosystemBadge extends Sprite implements Animatable{
     
   }
   
+  void showText(){
+
+    _sardineStatusTextFieldTop.text = _sardineStatusText;
+    _tunaStatusTextFieldTop.text = _tunaStatusText;
+    _sharkStatusTextFieldTop.text = _sharkStatusText;
+    
+    _sardineStatusTextFieldBottom.text = _sardineStatusText;
+    _tunaStatusTextFieldBottom.text = _tunaStatusText;
+    _sharkStatusTextFieldBottom.text = _sharkStatusText;
+    
+    Tween t1 = new Tween(_sardineStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+    t1.animate.alpha.to(1);
+    
+    Tween t2 = new Tween(_tunaStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+    t2.animate.alpha.to(1);
+        
+    Tween t3 = new Tween(_sharkStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+    t3.animate.alpha.to(1);
+    
+    Tween t4 = new Tween(_sardineStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+    t4.animate.alpha.to(1);
+    
+    Tween t5 = new Tween(_tunaStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+    t5.animate.alpha.to(1);
+    
+    Tween t6 = new Tween(_sharkStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+    t6.animate.alpha.to(1);
+            
+    
+    _juggler.add(t1);
+    _juggler.add(t2);
+    _juggler.add(t3);
+    _juggler.add(t4);
+    _juggler.add(t5);
+    _juggler.add(t6);
+    
+  }
+  
   int determineRating(){
-    int rating;
+    int rating = 3;
     
     int sardineCount = _ecosystem._fishCount[Ecosystem.SARDINE];
     int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
     int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
 
-    if (sardineCount < 50)
+    if (sardineCount < 50){
       _sardineStatusText = "Sardine populuation is endangered";
-    else if (sardineCount > Ecosystem.MAX_SARDINE-250)
+      rating--;
+    }
+    else if (sardineCount > Ecosystem.MAX_SARDINE-250){
       _sardineStatusText = "Sardines are overpopulated";
+      rating--;
+    }
     else
-      _sardineStatusText = null;
+      _sardineStatusText = "";
     
-    if (tunaCount < 50)
+    if (tunaCount < 50){
       _tunaStatusText = "Tuna populuation is endangered";
-    else if (tunaCount > Ecosystem.MAX_TUNA-250)
+      rating--;
+    }
+    else if (tunaCount > Ecosystem.MAX_TUNA-15){
       _tunaStatusText = "Tunas are overpopulated";
+      rating--;
+    }
     else
-      _tunaStatusText = null;
+      _tunaStatusText = "";
     
-    if (sharkCount < 50)
+    if (sharkCount < 50){
       _sharkStatusText = "Shark populuation is endangered";
-    else if (sharkCount > Ecosystem.MAX_SARDINE-250)
+      rating--;
+    }
+    else if (sharkCount > Ecosystem.SHARK-1){
       _sharkStatusText = "Sharks are overpopulated";
+      rating--;
+    }
     else
-      _sharkStatusText = null;
+      _sharkStatusText = "";
     
-    
-    
-    return 2;
+
+    return rating;
   }
   
   
@@ -149,6 +205,54 @@ class EcosystemBadge extends Sprite implements Animatable{
            ..y = _game.height/2
            ..alpha = 0;
     addChild(stars3);
+    
+    TextFormat format = new TextFormat("Arial", 22, Color.Red, align: "left", bold: true);
+    
+    _sardineStatusTextFieldTop = new TextField("", format);
+    _sardineStatusTextFieldTop..width = 1000
+                           ..alpha = 0
+                           ..x = _game.width/2-215
+                           ..y = _game.height/2-200;
+    addChild(_sardineStatusTextFieldTop);
+    
+    _tunaStatusTextFieldTop = new TextField("", format);
+    _tunaStatusTextFieldTop..width = 1000
+                           ..alpha = 0
+                           ..x = _game.width/2-215
+                           ..y = _game.height/2-220;
+    addChild(_tunaStatusTextFieldTop);
+    
+    _sharkStatusTextFieldTop = new TextField("", format);
+    _sharkStatusTextFieldTop..width = 1000
+                           ..alpha = 0
+                           ..x = _game.width/2-215
+                           ..y = _game.height/2-240;
+    addChild(_sharkStatusTextFieldTop);
+
+    
+    _sardineStatusTextFieldBottom = new TextField("", format);
+    _sardineStatusTextFieldBottom..width = 1000
+                           ..alpha = 0
+                           ..rotation = math.PI
+                           ..x = _game.width/2+215
+                           ..y = _game.height/2+200;
+    addChild(_sardineStatusTextFieldBottom);
+    
+    _tunaStatusTextFieldBottom = new TextField("", format);
+    _tunaStatusTextFieldBottom..width = 1000
+                           ..alpha = 0
+                           ..rotation = math.PI
+                           ..x = _game.width/2+215
+                           ..y = _game.height/2+220;
+    addChild(_tunaStatusTextFieldBottom);
+    
+    _sharkStatusTextFieldBottom = new TextField("", format);
+    _sharkStatusTextFieldBottom..width = 1000
+                           ..alpha = 0
+                           ..rotation = math.PI
+                           ..x = _game.width/2+215
+                           ..y = _game.height/2+240;
+    addChild(_sharkStatusTextFieldBottom);
     
   }
 }

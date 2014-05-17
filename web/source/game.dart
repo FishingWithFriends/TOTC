@@ -254,6 +254,7 @@ class Game extends Sprite implements Animatable{
       _fleet.alpha = 1;
       _fleet.hideDock();
       if (contains(badge)) removeChild(badge);
+      badge.hideBadge();
       if (contains(_teamAGraph)) removeChild(_teamAGraph);
       if (contains(_teamBGraph)) removeChild(_teamBGraph);
       
