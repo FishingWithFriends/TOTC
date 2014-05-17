@@ -60,8 +60,25 @@ class Offseason extends Sprite {
   }
   
   void showCircles() {
-    _teamACircle.alpha = 1;
-    _teamBCircle.alpha = 1;
+    
+    Tween t1 = new Tween(_teamACircle, .5, TransitionFunction.linear);
+    t1.animate.alpha.to(1);
+    _juggler.add(t1);
+    
+    Tween t2 = new Tween(_teamBCircle, .5, TransitionFunction.linear);
+    t2.animate.alpha.to(1);
+    _juggler.add(t2);
+  }
+  
+  void hideCircles() {
+    
+    Tween t1 = new Tween(_teamACircle, .5, TransitionFunction.linear);
+    t1.animate.alpha.to(0);
+    _juggler.add(t1);
+    
+    Tween t2 = new Tween(_teamBCircle, .5, TransitionFunction.linear);
+    t2.animate.alpha.to(0);
+    _juggler.add(t2);
   }
   
   void fillDocks() {

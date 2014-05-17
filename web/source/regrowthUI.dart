@@ -2,6 +2,9 @@ part of TOTC;
 
 class EcosystemBadge extends Sprite implements Animatable{
   
+  static const TEAMA = 0;
+  static const TEAMB = 1;
+  
   ResourceManager _resourceManager;
   Juggler _juggler;
   Game _game;
@@ -26,10 +29,17 @@ class EcosystemBadge extends Sprite implements Animatable{
   TextField _tunaStatusTextFieldBottom;
   TextField _sharkStatusTextFieldBottom;
   
+  ScoreCounter teamACounter;
+  ScoreCounter teamBCounter;
+  
   int rating, animatedRating;
       
   EcosystemBadge(this._resourceManager, this._juggler, this._game, this._ecosystem) {
   
+    teamACounter = new ScoreCounter(_resourceManager, _juggler, _game, this, TEAMA);
+    teamBCounter = new ScoreCounter(_resourceManager, _juggler, _game, this, TEAMB);
+    addChild(teamACounter);
+    addChild(teamBCounter);
     initalizeObjects();
 
   }
@@ -59,6 +69,9 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars1.alpha = 0;
     stars2.alpha = 0;
     stars3.alpha = 0;
+    
+    teamACounter.hideCounter();
+    teamBCounter.hideCounter();
   }
   
   void showStars(){
@@ -108,6 +121,9 @@ class EcosystemBadge extends Sprite implements Animatable{
     Tween t6 = new Tween(_sharkStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
     t6.animate.alpha.to(1);
             
+    
+    t1.onComplete = teamACounter.showCounter;
+    t2.onComplete = teamBCounter.showCounter;
     
     _juggler.add(t1);
     _juggler.add(t2);
@@ -255,4 +271,137 @@ class EcosystemBadge extends Sprite implements Animatable{
     addChild(_sharkStatusTextFieldBottom);
     
   }
+  
+}
+
+class ScoreCounter extends Sprite{
+  
+  static const TEAMA = 0;
+  static const TEAMB = 1;
+  
+  ResourceManager _resourceManager;
+  Juggler _juggler;
+  Game _game;
+  EcosystemBadge _ecosystemBadge;
+  
+  int teamType;
+  
+  Shape uiBox;
+  TextField scorePrompt;
+  TextField multiplier;
+  TextField total;
+  
+  int profit, starMult, totalVal;
+  
+  ScoreCounter(this._resourceManager, this._juggler, this._game, this._ecosystemBadge, this.teamType){
+    
+    num rotationVal;
+    int boxX, boxY, r1,r2,r3, offsetX, offsetY;
+    
+    
+    if(teamType == TEAMA){
+      rotationVal = 3*math.PI/4;
+      boxX = 500;
+      boxY = 75;
+      r1 = 250;
+      r2 = 225;
+      r3 = 200;
+      offsetX = 0;
+      offsetY = 0;
+    }
+    else if(teamType == TEAMB){
+      rotationVal = -math.PI/4;
+      boxX = _game.width - 500;
+      boxY = _game.height - 75;
+      r1 = 250;
+      r2 = 225;
+      r3 = 200;
+      offsetX = _game.width;
+      offsetY = _game.height;
+    }    
+      
+    uiBox = new Shape();
+    uiBox..graphics.rect(300, 200, 300, 100)
+         ..graphics.fillColor(Color.Black)
+         ..pivotX = uiBox.width/2
+         ..pivotY = uiBox.height/2
+         ..rotation = rotationVal
+         ..x = boxX
+         ..y = boxY
+         ..alpha = 0;
+   addChild(uiBox);
+   
+   TextFormat format = new TextFormat("Arial", 18, Color.White, align: "right", bold: true);
+   
+   scorePrompt = new TextField("", format);
+   scorePrompt..alpha = 0
+              ..width = uiBox.width
+              ..pivotX = scorePrompt.width/2
+              ..rotation = rotationVal
+              ..x =offsetX - r1*math.cos(rotationVal)
+              ..y =offsetY + r1*math.sin(rotationVal);
+   addChild(scorePrompt);
+   
+   multiplier = new TextField("", format);
+   multiplier..alpha = 0
+             ..width = uiBox.width
+             ..pivotX = multiplier.width/2
+             ..rotation = rotationVal
+             ..x = offsetX - r2*math.cos(rotationVal)
+             ..y = offsetY + r2*math.sin(rotationVal);
+   addChild(multiplier);
+   
+   total = new TextField("", format);
+   total..alpha = 0
+        ..width = uiBox.width
+        ..pivotX = total.width/2
+        ..rotation = rotationVal
+        ..x =offsetX - r3*math.cos(rotationVal)
+        ..y =offsetY + r3*math.sin(rotationVal);
+   addChild(total);
+  }
+  
+  void showCounter(){
+    
+    Tween t1 = new Tween(uiBox, 1, TransitionFunction.linear);
+    t1.animate.alpha.to(.6);
+    _juggler.add(t1);
+    
+    
+    if(teamType == TEAMA) profit = _game.teamARoundProfit;
+    else if(teamType == TEAMB) profit = _game.teamBRoundProfit;
+    
+    scorePrompt.text = "Profit from previous season: ${profit}";
+    Tween t2 = new Tween(scorePrompt, 1, TransitionFunction.linear);
+    t2.animate.alpha.to(1);
+    t2.onComplete = showMultiplier;
+    _juggler.add(t2);
+    
+  }
+  
+  void showMultiplier(){
+    starMult = _ecosystemBadge.rating;
+    multiplier.text = "Ecosystem Star Health: x ${starMult}";
+    Tween t1 = new Tween(multiplier, 1, TransitionFunction.linear);
+    t1.animate.alpha.to(1);
+    t1.onComplete = showTotal;
+    _juggler.add(t1);
+  }
+  
+  void showTotal(){
+    totalVal = profit * starMult;
+    total.text = "Total:  ${totalVal}";
+    Tween t1 = new Tween(total, 1, TransitionFunction.linear);
+    t1.animate.alpha.to(1);
+    _juggler.add(t1);
+  }
+  
+  void hideCounter(){
+    uiBox.alpha = 0;
+    scorePrompt.alpha = 0;
+    multiplier.alpha = 0;
+    total.alpha = 0;
+  }
+  
+  
 }

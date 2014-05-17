@@ -219,8 +219,14 @@ class Boat extends Sprite implements Touchable, Animatable {
     _inDock = true;
     canCatch = false;
     
-    if (_teamA==true) _game.teamAMoney = _game.teamAMoney+_netMoney;
-    else _game.teamBMoney = _game.teamBMoney+_netMoney;
+    if (_teamA==true){
+      _game.teamAMoney = _game.teamAMoney+_netMoney;
+      _game.teamARoundProfit += _netMoney;
+    }
+    else{
+      _game.teamBMoney = _game.teamBMoney+_netMoney;
+      _game.teamBRoundProfit += _netMoney;
+    }
     _game.moneyChanged = true;
     
     _tempNet = new Bitmap(_nets.getBitmapData(_netNames[0]));

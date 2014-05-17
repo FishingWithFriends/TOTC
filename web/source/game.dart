@@ -6,9 +6,9 @@ class Game extends Sprite implements Animatable{
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   
-  static const FISHING_TIMER_WIDTH = 15;
-  static const BUY_TIMER_WIDTH = 15;
-  static const REGROWTH_TIMER_WIDTH = 150;
+  static const FISHING_TIMER_WIDTH = 100;
+  static const BUY_TIMER_WIDTH = 100;
+  static const REGROWTH_TIMER_WIDTH = 100;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -44,6 +44,8 @@ class Game extends Sprite implements Animatable{
   TextField teamBMoneyText;
   int teamAMoney = 10000;
   int teamBMoney = 10000;
+  int teamARoundProfit = 0;
+  int teamBRoundProfit = 0;
   bool moneyChanged = false;
   int moneyTimer = 0;
   int moneyTimerMax = 2;
@@ -69,6 +71,8 @@ class Game extends Sprite implements Animatable{
   int fishingTimerTick = 10;
   int buyTimerTick = 15;
   int regrowthTimerTick = 15;
+  
+  bool transition;
   
   // Slider _teamASlider, _teamBSlider;
   // int sliderPrompt = 6;
@@ -103,6 +107,8 @@ class Game extends Sprite implements Animatable{
     addChild(_fleet);
 
     _loadTextAndShapes();
+    
+    transition = false;
   }
 
   bool advanceTime(num time) {
@@ -111,7 +117,7 @@ class Game extends Sprite implements Animatable{
     if (moneyTimer>moneyTimerMax && moneyChanged==true) _updateMoney();
     else moneyTimer++;
     
-    if (timerGraphicA.width<4) _nextSeason();
+    if (timerGraphicA.width<4 && !transition) _nextSeason();
     else _decreaseTimer();
     
     
@@ -225,7 +231,9 @@ class Game extends Sprite implements Animatable{
   
   void _nextSeason() {
     if (phase==FISHING_PHASE) {
+      transition = true;
       phase = REGROWTH_PHASE;
+      print("growing");
       _fleet.returnBoats();
 
       _fleet.alpha = 0;
@@ -240,51 +248,32 @@ class Game extends Sprite implements Animatable{
       timerGraphicB.width = REGROWTH_TIMER_WIDTH;
       timerTextB.text = "Regrowth season";
       
+      badge.alpha = 1;
       addChild(badge);
       badge.showBadge();
-      
+      transition = false;
     }
     else if (phase==REGROWTH_PHASE) {
+      transition = true;
       phase = BUY_PHASE;
+      print("buying");
       
-     
-      
-      teamAMoneyText.alpha = 1;
-      teamBMoneyText.alpha = 1;
-      _fleet.alpha = 1;
-      _fleet.hideDock();
-      if (contains(badge)) removeChild(badge);
-      badge.hideBadge();
-      if (contains(_teamAGraph)) removeChild(_teamAGraph);
-      if (contains(_teamBGraph)) removeChild(_teamBGraph);
-      
-      timerGraphicA.graphics.fillColor(Color.Green);
-      timerGraphicA.width = BUY_TIMER_WIDTH;
-      timerGraphicA.x = width-BUY_TIMER_WIDTH-50;
-      timerTextA.text = "Offseason";
-      
-      timerGraphicB.graphics.fillColor(Color.Green);
-      timerGraphicB.width = BUY_TIMER_WIDTH;
-      timerTextB.text = "Offseason";
-    
-      _removeOffseason();
-      _offseason.y = -height;
-      addChild(_offseason);
-      swapChildren(_offseason, teamAMoneyText);
-      swapChildren(teamAMoneyText, teamBMoneyText);
-      
-      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
-      t1.animate.y.to(0);
-      t1.onComplete = _offseason.showCircles;
-      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInQuartic);
-      t2.animate.y.to(height);
-      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInQuartic);
-      t3.animate.y.to(height);
+      Tween t1 = new Tween (badge, 2, TransitionFunction.linear);
+      t1.animate.alpha.to(0);
+      t1.onComplete = toBuyPhaseTransitionStageOne;
       _juggler.add(t1);
-      _juggler.add(t2);
-      _juggler.add(t3);
+      
+
     } else if (phase==BUY_PHASE) {
+      transition = true;
       phase = FISHING_PHASE;
+      print("fishing");
+      
+      teamARoundProfit = 0;
+      teamBRoundProfit = 0;
+      
+    _fleet.alpha = 1;
+      
       _fleet.reactivateBoats();
       _fleet.showDock();
       timerGraphicA.graphics.fillColor(Color.Green);
@@ -305,8 +294,61 @@ class Game extends Sprite implements Animatable{
       _juggler.add(t1);
       _juggler.add(t2);
       _juggler.add(t3);
+      transition = false;
     }
   }
+  
+  void toBuyPhaseTransitionStageOne(){
+    _fleet.hideDock();
+    
+    
+    if (contains(badge)) removeChild(badge);
+    badge.hideBadge();
+    
+    if (contains(_teamAGraph)) removeChild(_teamAGraph);
+    if (contains(_teamBGraph)) removeChild(_teamBGraph);
+    
+    timerGraphicA.graphics.fillColor(Color.Green);
+    timerGraphicA.width = BUY_TIMER_WIDTH;
+    timerGraphicA.x = width-BUY_TIMER_WIDTH-50;
+    timerTextA.text = "Offseason";
+    
+    timerGraphicB.graphics.fillColor(Color.Green);
+    timerGraphicB.width = BUY_TIMER_WIDTH;
+    timerTextB.text = "Offseason";
+    
+    _removeOffseason();
+    _offseason.y = -height;
+    addChild(_offseason);
+    swapChildren(_offseason, teamAMoneyText);
+    swapChildren(teamAMoneyText, teamBMoneyText);
+    
+    Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
+    t1.animate.y.to(0);
+    t1.onComplete = toBuyPhaseTransitionStageTwo;
+    Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInQuartic);
+    t2.animate.y.to(height);
+    Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInQuartic);
+    t3.animate.y.to(height);
+    _juggler.add(t1);
+    _juggler.add(t2);
+    _juggler.add(t3);
+    
+  }
+  void toBuyPhaseTransitionStageTwo(){
+    _offseason.showCircles();
+
+    Tween t1 = new Tween(teamAMoneyText, .5, TransitionFunction.linear);
+    t1.animate.alpha.to(1);
+    _juggler.add(t1);
+    
+    Tween t2 = new Tween(teamBMoneyText, .5, TransitionFunction.linear);
+    t2.animate.alpha.to(1);
+    _juggler.add(t2);
+    
+    transition = false;
+  }
+ 
   
   void _removeOffseason() {
     if (contains(_offseason)) removeChild(_offseason);
