@@ -14,6 +14,10 @@ class Offseason extends Sprite {
   Map<int, Boat> _boatsA = new Map<int, Boat>();
   Map<int, Boat> _boatsB = new Map<int, Boat>();
   
+  Bitmap dock;
+  
+  List<Boat> offseasonBoats = new List<Boat>();
+  
   Offseason(ResourceManager resourceManager, Juggler juggler, Game game, Fleet fleet) {
     _resourceManager = resourceManager;
     _juggler = juggler;
@@ -39,7 +43,7 @@ class Offseason extends Sprite {
     _game.tlayer.touchables.add(_teamACircle);
     
     offseasonDock = new Sprite();
-    Bitmap dock = new Bitmap(_resourceManager.getBitmapData("OffseasonDock"));
+    dock = new Bitmap(_resourceManager.getBitmapData("OffseasonDock"));
     BitmapData.load('images/offseason_dock.png').then((bitmapData) {
       offseasonDock.x = _game.width/2-bitmapData.width/2;
       offseasonDock.y = _game.height/2-bitmapData.height/2;
@@ -108,6 +112,7 @@ class Offseason extends Sprite {
           for (int i=0; i<_fleet.boats.length; i++) {
             Boat fleetBoat = _fleet.boats[i];
             Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet);
+            offseasonBoats.add(boat);
             if (fleetBoat._teamA == true) {
               _boatsA[i] = boat;
               if (fleetBoat._type==Fleet.TEAMASARDINE||fleetBoat._type==Fleet.TEAMBSARDINE) {
@@ -158,6 +163,28 @@ class Offseason extends Sprite {
     });
     offseasonDock.addChild(teamAHit);
     offseasonDock.addChild(teamBHit);
+  }
+  
+  void sendBoatsToFish(){
+    for(int i = 0; i < offseasonBoats.length; i++){
+      Tween t1 = new Tween(offseasonBoats[i], .25, TransitionFunction.linear);
+      t1.animate.rotation.to(math.PI);
+      _juggler.add(t1);
+      
+      Tween t2 = new Tween(offseasonBoats[i], 1.25, TransitionFunction.easeInQuadratic);
+      t2.animate.y.to(_game.height+100);
+      t2.onComplete = hideBoats;
+      _juggler.add(t2);
+      
+    }
+    
+  }
+  
+  void hideBoats(){
+    for(int i = 0; i < offseasonBoats.length; i++){
+      offseasonBoats[i].alpha = 0;
+    }
+    
   }
 } 
 

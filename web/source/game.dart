@@ -263,6 +263,9 @@ class Game extends Sprite implements Animatable{
       t1.onComplete = toBuyPhaseTransitionStageOne;
       _juggler.add(t1);
       
+      Tween t2 = new Tween(_ecosystem, 2, TransitionFunction.linear);
+      t2.animate.alpha.to(0);
+      _juggler.add(t2);
 
     } else if (phase==BUY_PHASE) {
       transition = true;
@@ -272,29 +275,12 @@ class Game extends Sprite implements Animatable{
       teamARoundProfit = 0;
       teamBRoundProfit = 0;
       
-    _fleet.alpha = 1;
-      
-      _fleet.reactivateBoats();
-      _fleet.showDock();
-      timerGraphicA.graphics.fillColor(Color.Green);
-      timerGraphicA.width = FISHING_TIMER_WIDTH;
-      timerTextA.text = "Fishing season";
-
-      timerGraphicB.graphics.fillColor(Color.Green);
-      timerGraphicB.width = FISHING_TIMER_WIDTH;
-      timerTextB.text = "Fishing season";
-
-      Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
-      t1.animate.y.to(-height);
-      t1.onComplete = _removeOffseason;
-      Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInQuartic);
-      t2.animate.y.to(0);
-      Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInQuartic);
-      t3.animate.y.to(0);
+      _offseason.hideCircles();
+      Tween t1 = new Tween(_offseason.dock, .5, TransitionFunction.linear);
+      t1.animate.alpha.to(0);
+      t1.onComplete = toFishingPhaseStageOne;
       _juggler.add(t1);
-      _juggler.add(t2);
-      _juggler.add(t3);
-      transition = false;
+      
     }
   }
   
@@ -347,6 +333,53 @@ class Game extends Sprite implements Animatable{
     _juggler.add(t2);
     
     transition = false;
+  }
+  
+  void toFishingPhaseStageOne(){
+    
+
+
+      timerGraphicA.graphics.fillColor(Color.Green);
+      timerGraphicA.width = FISHING_TIMER_WIDTH;
+      timerTextA.text = "Fishing season";
+
+      timerGraphicB.graphics.fillColor(Color.Green);
+      timerGraphicB.width = FISHING_TIMER_WIDTH;
+      timerTextB.text = "Fishing season";
+
+      _offseason.sendBoatsToFish();
+      
+      Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
+
+  }
+  
+  void toFishingPhaseStageTwo(){
+     
+    Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
+    t1.animate.y.to(-height);
+    t1.onComplete = _removeOffseason;
+    Tween t2 = new Tween(_ecosystem, 2.5, TransitionFunction.easeInQuartic);
+    t2.animate.y.to(0);
+    t2.onComplete = toFishingPhaseStageThree;
+    Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInQuartic);
+    t3.animate.y.to(0);
+    _juggler.add(t1);
+    _juggler.add(t2);
+    _juggler.add(t3);
+    transition = false;
+      
+  }
+  
+  void toFishingPhaseStageThree(){
+    _fleet.reactivateBoats();
+    _fleet.showDock();
+    Tween t1 = new Tween(_fleet, 1.5, TransitionFunction.linear);
+    t1.animate.alpha.to(1);
+    _juggler.add(t1);
+    
+    Tween t2 = new Tween(_ecosystem, 1.5, TransitionFunction.linear);
+    t2.animate.alpha.to(0);
+    _juggler.add(t2);
   }
  
   
