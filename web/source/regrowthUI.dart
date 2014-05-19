@@ -16,6 +16,10 @@ class EcosystemBadge extends Sprite implements Animatable{
   Bitmap stars2;
   Bitmap stars3;
   
+  Bitmap badgeSardine;
+  Bitmap badgeTuna;
+  Bitmap badgeShark;
+  
   
   var _sardineStatusText;
   var _tunaStatusText;
@@ -33,7 +37,9 @@ class EcosystemBadge extends Sprite implements Animatable{
   ScoreCounter teamBCounter;
   
   int rating, animatedRating;
-      
+  
+  bool showStatusText = false;
+  
   EcosystemBadge(this._resourceManager, this._juggler, this._game, this._ecosystem) {
   
     teamACounter = new ScoreCounter(_resourceManager, _juggler, _game, this, TEAMA);
@@ -56,7 +62,7 @@ class EcosystemBadge extends Sprite implements Animatable{
           t1.animate.alpha.to(1);
     Tween t2 = new Tween(stars0, 1, TransitionFunction.linear);
           t2.animate.alpha.to(1);
-          t2.onComplete = showStars;
+          t2.onComplete = showText;
     _juggler.add(t1);
     _juggler.add(t2);
     
@@ -70,12 +76,19 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars2.alpha = 0;
     stars3.alpha = 0;
     
+    badgeSardine.alpha = 0;
+    badgeTuna.alpha = 0;
+    badgeShark.alpha = 0;
+    
     teamACounter.hideCounter();
     teamBCounter.hideCounter();
   }
   
   void showStars(){
-    if(animatedRating == rating) showText();
+    if(animatedRating == rating){
+      Timer temp = new Timer(const Duration(seconds:1), teamBCounter.showCounter);
+      Timer temp2 = new Timer(const Duration(seconds:1), teamACounter.showCounter);
+    }
     else{
       
       Bitmap toShow;
@@ -95,42 +108,76 @@ class EcosystemBadge extends Sprite implements Animatable{
   
   void showText(){
 
-    _sardineStatusTextFieldTop.text = _sardineStatusText;
-    _tunaStatusTextFieldTop.text = _tunaStatusText;
-    _sharkStatusTextFieldTop.text = _sharkStatusText;
     
-    _sardineStatusTextFieldBottom.text = _sardineStatusText;
-    _tunaStatusTextFieldBottom.text = _tunaStatusText;
-    _sharkStatusTextFieldBottom.text = _sharkStatusText;
-    
-    Tween t1 = new Tween(_sardineStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
-    t1.animate.alpha.to(1);
-    
-    Tween t2 = new Tween(_tunaStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
-    t2.animate.alpha.to(1);
-        
-    Tween t3 = new Tween(_sharkStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
-    t3.animate.alpha.to(1);
-    
-    Tween t4 = new Tween(_sardineStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
-    t4.animate.alpha.to(1);
-    
-    Tween t5 = new Tween(_tunaStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
-    t5.animate.alpha.to(1);
-    
-    Tween t6 = new Tween(_sharkStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
-    t6.animate.alpha.to(1);
+    if(showStatusText){
+
+      _sardineStatusTextFieldTop.text = _sardineStatusText;
+      
+      _sardineStatusTextFieldBottom.text = _sardineStatusText;
+      
+      Tween t1 = new Tween(_sardineStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+      t1.animate.alpha.to(1);
+      
+      Tween t4 = new Tween(_sardineStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+      t4.animate.alpha.to(1);
+      
+      
+      _juggler.add(t1);
+      _juggler.add(t4);
+    }
             
+    Tween t7 = new Tween(badgeSardine, 1, TransitionFunction.easeInOutQuartic);
+    t7.animate.alpha.to(1);
     
-    t1.onComplete = teamACounter.showCounter;
-    t2.onComplete = teamBCounter.showCounter;
+    t7.onComplete = showTextTwo;
+    _juggler.add(t7);
     
-    _juggler.add(t1);
-    _juggler.add(t2);
-    _juggler.add(t3);
-    _juggler.add(t4);
-    _juggler.add(t5);
-    _juggler.add(t6);
+  }
+  void showTextTwo(){
+
+    
+    if(showStatusText){
+      _tunaStatusTextFieldTop.text = _tunaStatusText;
+      _tunaStatusTextFieldBottom.text = _tunaStatusText;
+      
+      Tween t2 = new Tween(_tunaStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+      t2.animate.alpha.to(1);
+          
+      Tween t5 = new Tween(_tunaStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+      t5.animate.alpha.to(1);
+      _juggler.add(t2);
+      _juggler.add(t5);
+    }
+    
+    Tween t8 = new Tween(badgeTuna, 1, TransitionFunction.easeInOutQuadratic);
+    t8.animate.alpha.to(1);
+    
+    t8.onComplete = showTextThree;
+    
+    _juggler.add(t8);    
+  }
+  void showTextThree(){
+
+    
+    if(showStatusText){
+      _sharkStatusTextFieldTop.text = _sharkStatusText;
+      _sharkStatusTextFieldBottom.text = _sharkStatusText;
+      Tween t3 = new Tween(_sharkStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+      t3.animate.alpha.to(1);
+      
+      Tween t6 = new Tween(_sharkStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+      t6.animate.alpha.to(1);
+      
+      _juggler.add(t3);
+      _juggler.add(t6);
+    }
+            
+    Tween t9 = new Tween(badgeShark, 1, TransitionFunction.easeInOutQuadratic);
+    t9.animate.alpha.to(1);
+    
+    t9.onComplete = showStars;
+
+    _juggler.add(t9);
     
   }
   
@@ -143,37 +190,65 @@ class EcosystemBadge extends Sprite implements Animatable{
 
     if (sardineCount < 50){
       _sardineStatusText = "Sardine populuation is endangered";
+      badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
     }
     else if (sardineCount > Ecosystem.MAX_SARDINE-250){
       _sardineStatusText = "Sardines are overpopulated";
+      badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
     }
-    else
+    else if(sardineCount <= 0){
+      _sardineStatusText = "Sardines are extinct";
+      badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
+      rating--;
+    }
+    else{
       _sardineStatusText = "";
+      badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
+    }
+    
     
     if (tunaCount < 50){
       _tunaStatusText = "Tuna populuation is endangered";
+      badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
     }
     else if (tunaCount > Ecosystem.MAX_TUNA-15){
       _tunaStatusText = "Tunas are overpopulated";
+      badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
     }
-    else
+    else if (tunaCount <= 0){
+      _tunaStatusText = "Tunas are extinct!";
+      badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
+      rating--;
+    }
+    else{
       _tunaStatusText = "";
+      badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
+    }
     
-    if (sharkCount < 50){
+    
+    if (sharkCount < 2){
       _sharkStatusText = "Shark populuation is endangered";
+      badgeShark.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
     }
     else if (sharkCount > Ecosystem.SHARK-1){
       _sharkStatusText = "Sharks are overpopulated";
+      badgeShark.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
     }
-    else
+    else if(sharkCount <= 0){
+      _sharkStatusText = "Sharks are extinct";
+      badgeShark.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
+      rating--;
+    }
+    else{
       _sharkStatusText = "";
-    
+      badgeShark.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
+    }
 
     return rating;
   }
@@ -191,7 +266,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars0 = new Bitmap(_resourceManager.getBitmapData('stars0'));
     stars0..pivotX = stars0.width/2
            ..pivotY = stars0.height/2
-           ..x = _game.width/2
+           ..x = _game.width/2+15
            ..y = _game.height/2
            ..alpha = 0;
     addChild(stars0);
@@ -200,7 +275,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars1 = new Bitmap(_resourceManager.getBitmapData('stars1'));
     stars1..pivotX = stars1.width/2
            ..pivotY = stars1.height/2
-           ..x = _game.width/2
+           ..x = _game.width/2+15
            ..y = _game.height/2
            ..alpha = 0;
     addChild(stars1);
@@ -209,7 +284,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars2 = new Bitmap(_resourceManager.getBitmapData('stars2'));
     stars2..pivotX = stars2.width/2
            ..pivotY = stars2.height/2
-           ..x = _game.width/2
+           ..x = _game.width/2+15
            ..y = _game.height/2
            ..alpha = 0;
     addChild(stars2);
@@ -217,7 +292,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars3 = new Bitmap(_resourceManager.getBitmapData('stars3'));
     stars3..pivotX = stars3.width/2
            ..pivotY = stars3.height/2
-           ..x = _game.width/2
+           ..x = _game.width/2+15
            ..y = _game.height/2
            ..alpha = 0;
     addChild(stars3);
@@ -269,6 +344,36 @@ class EcosystemBadge extends Sprite implements Animatable{
                            ..x = _game.width/2+215
                            ..y = _game.height/2+240;
     addChild(_sharkStatusTextFieldBottom);
+   
+    badgeSardine = new Bitmap(_resourceManager.getBitmapData("badgeLeastConcern"));
+    badgeSardine..pivotX = badgeSardine.width/2
+                ..pivotY = badgeSardine.height/2
+                ..x = _game.width/2
+                ..y = _game.height/2+150
+                ..alpha = 0
+                ..rotation = -math.PI/4;
+    addChild(badgeSardine);
+    
+
+    badgeTuna = new Bitmap(_resourceManager.getBitmapData("badgeLeastConcern"));
+    badgeTuna..pivotX = badgeTuna.width/2
+                ..pivotY = badgeTuna.height/2
+                ..x = _game.width/2 - 150
+                ..y = _game.height/2+30
+                ..alpha = 0
+                ..rotation = -math.PI/4;
+    addChild(badgeTuna);
+    
+
+    badgeShark = new Bitmap(_resourceManager.getBitmapData("badgeLeastConcern"));
+    badgeShark..pivotX = badgeShark.width/2
+                ..pivotY = badgeShark.height/2
+                ..x = _game.width/2+ 30
+                ..y = _game.height/2-140
+                ..alpha = 0
+                ..rotation = -math.PI/4;
+    addChild(badgeShark);
+    
     
   }
   
@@ -359,6 +464,8 @@ class ScoreCounter extends Sprite{
         ..x =offsetX - r3*math.cos(rotationVal)
         ..y =offsetY + r3*math.sin(rotationVal);
    addChild(total);
+   
+   
   }
   
   void showCounter(){

@@ -92,8 +92,10 @@ void main() {
   resourceManager.addBitmapData("stars1", "images/stars1.png");
   resourceManager.addBitmapData("stars2", "images/stars2.png");
   resourceManager.addBitmapData("stars3", "images/stars3.png");
-
-  
+  resourceManager.addBitmapData("badgeExtinct", "images/extinctBadge.png");
+  resourceManager.addBitmapData("badgeLeastConcern", "images/leastConcernBadge.png");
+  resourceManager.addBitmapData("badgeOverpopulated", "images/overpopulatedBadge.png");
+  resourceManager.addBitmapData("badgeEndangered", "images/endangeredBadge.png");
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
   

@@ -38,7 +38,9 @@ class Fleet extends Sprite {
         addChild(dockB[i]);
       }
       addBoat(TEAMASARDINE);
+      addBoat(TEAMATUNA);
       addBoat(TEAMBSARDINE);
+      addBoat(TEAMBTUNA);
     });
   }
   
