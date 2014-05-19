@@ -128,7 +128,9 @@ class Game extends Sprite implements Animatable{
     
     //Update Timer and initiate phase change
     if (timerGraphicA.width<4 && !transition) _nextSeason();
-    else _decreaseTimer();
+    else {
+      if (!transition)_decreaseTimer();
+    }
     
     
     //Display growth information
