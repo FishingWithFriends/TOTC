@@ -77,7 +77,7 @@ class Game extends Sprite implements Animatable{
   // Slider _teamASlider, _teamBSlider;
   // int sliderPrompt = 6;
   
- 
+  List<DisplayObject> uiObjects = new List<DisplayObject>(); 
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -306,8 +306,9 @@ class Game extends Sprite implements Animatable{
     _removeOffseason();
     _offseason.y = -height;
     addChild(_offseason);
-    swapChildren(_offseason, teamAMoneyText);
-    swapChildren(teamAMoneyText, teamBMoneyText);
+    
+    arrangeUILayers();
+
     
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(0);
@@ -373,12 +374,12 @@ class Game extends Sprite implements Animatable{
   void toFishingPhaseStageThree(){
     _fleet.reactivateBoats();
     _fleet.showDock();
-    Tween t1 = new Tween(_fleet, 1.5, TransitionFunction.linear);
+    Tween t1 = new Tween(_fleet, 1, TransitionFunction.linear);
     t1.animate.alpha.to(1);
     _juggler.add(t1);
     
-    Tween t2 = new Tween(_ecosystem, 1.5, TransitionFunction.linear);
-    t2.animate.alpha.to(0);
+    Tween t2 = new Tween(_ecosystem, 1, TransitionFunction.linear);
+    t2.animate.alpha.to(1);
     _juggler.add(t2);
   }
  
@@ -406,18 +407,19 @@ class Game extends Sprite implements Animatable{
   void _loadTextAndShapes() {
     TextFormat format = new TextFormat("Arial", 40, Color.LightYellow, align: "center", bold:true);
     teamAMoneyText = new TextField("\$$teamAMoney", format);
-    teamAMoneyText..width = 300
+    teamAMoneyText..width = 150
                   ..x = width~/2+teamAMoneyText.width~/2
                   ..y = 60
                   ..rotation = math.PI;
     addChild(teamAMoneyText);
+    uiObjects.add(teamAMoneyText);
     
     teamBMoneyText = new TextField("\$$teamBMoney", format);
-    teamBMoneyText..width = 300
+    teamBMoneyText..width = 150
                   ..x = width~/2-teamBMoneyText.width~/2
                   ..y = height-60;
     addChild(teamBMoneyText);
-    
+    uiObjects.add(teamBMoneyText);
     
     //Text and Shapes for Bar Timers
     timerGraphicA = new Shape();
@@ -476,10 +478,18 @@ class Game extends Sprite implements Animatable{
       addChild(timerTextA);
       addChild(timerGraphicB);
       addChild(timerTextB);
+      
+      uiObjects.add(timerGraphicA);
+      uiObjects.add(timerTextA);
+      uiObjects.add(timerGraphicB);
+      uiObjects.add(timerTextB);
     }
     else if(timerType == PIE_TIMER){
       addChild(timerPie);
       addChild(pieTimerBitmap);
+      
+      uiObjects.add(timerPie);
+      uiObjects.add(pieTimerBitmap);
     }
     
     
@@ -491,11 +501,14 @@ class Game extends Sprite implements Animatable{
               ..alpha = .6
               ..graphics.fillColor(Color.Green);
     addChild(sardineBar);
+    uiObjects.add(sardineBar);
     
     sardineIcon = new Bitmap(_resourceManager.getBitmapData("sardineIcon"));
     sardineIcon.x = sardineBar.x;
     sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height; 
     addChild(sardineIcon);
+    uiObjects.add(sardineIcon);
+    
     
     tunaBar = new Shape();
     tunaBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*3)
@@ -504,11 +517,13 @@ class Game extends Sprite implements Animatable{
               ..alpha = .6
               ..graphics.fillColor(Color.Red);
     addChild(tunaBar);
+    uiObjects.add(tunaBar);
     
     tunaIcon = new Bitmap(_resourceManager.getBitmapData("tunaIcon"));
     tunaIcon.x = tunaBar.x;
     tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height; 
     addChild(tunaIcon);
+    uiObjects.add(tunaIcon);
     
     sharkBar = new Shape();
     sharkBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*8)
@@ -517,11 +532,35 @@ class Game extends Sprite implements Animatable{
               ..alpha = .6
               ..graphics.fillColor(Color.Yellow);
     addChild(sharkBar);
+    uiObjects.add(sharkBar);
     
     sharkIcon = new Bitmap(_resourceManager.getBitmapData("sharkIcon"));
     sharkIcon.x = sharkBar.x;
     sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height; 
     addChild(sharkIcon);
+    uiObjects.add(sharkIcon);
     
+  }
+  
+  void arrangeUILayers(){
+    
+    num offseasonIndex = getChildIndex(_offseason);
+    num minUIelementIndex = offseasonIndex;
+    DisplayObject toSwap = null;
+    
+    for(int i = 0; i < uiObjects.length;i++){
+      if(getChildIndex(uiObjects[i]) < minUIelementIndex){
+        minUIelementIndex = getChildIndex(uiObjects[i]);
+        toSwap = uiObjects[i];
+      }
+    }
+    
+    if(toSwap == null) return;
+    else{
+      swapChildren(_offseason, toSwap);
+    }
+    
+    
+
   }
 }
