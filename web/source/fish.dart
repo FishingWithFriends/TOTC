@@ -206,7 +206,6 @@ class Fish extends Bitmap implements Animatable {
         if (fishType == type) {
           if (_flocking) {
             if (_tooClose(_fishes[i])) return rotation+(_random.nextInt(2) - 1)*_rotationSpeed;
-            if (fishes.length>20) break;
             else fishes.add(_fishes[i]);
           } else return rotation;
         }
