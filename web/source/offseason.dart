@@ -478,7 +478,7 @@ class Circle extends Sprite implements Touchable {
     _box.addChild(new Bitmap (_resourceManager.getBitmapData("Console")));
     _box.alpha = 1;
     
-    TextFormat format = new TextFormat("Arial", 24, Color.Yellow, align: "center");
+    TextFormat format = new TextFormat("Arial", 24, Color.Black, align: "center");
     _confirmText = new TextField(s, format);
     
     if (_confirmMode==OKAY) {

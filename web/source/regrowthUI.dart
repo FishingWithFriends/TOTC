@@ -393,7 +393,17 @@ class ScoreCounter extends Sprite{
     total.text = "Total:  ${totalVal}";
     Tween t1 = new Tween(total, 1, TransitionFunction.linear);
     t1.animate.alpha.to(1);
+    t1.onComplete = addToTotal;
     _juggler.add(t1);
+  }
+  
+  void addToTotal(){
+    if(teamType == TEAMA){
+      _game.teamAScore += totalVal;
+    }
+    else if (teamType == TEAMB){
+      _game.teamBScore += totalVal;
+    }
   }
   
   void hideCounter(){

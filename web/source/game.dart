@@ -40,10 +40,12 @@ class Game extends Sprite implements Animatable{
   Bitmap _mask;
   Tween _maskTween;
   
-  TextField teamAMoneyText;
-  TextField teamBMoneyText;
+  TextField teamAMoneyText, teamBMoneyText;
+  TextField teamAScoreText, teamBScoreText;
   int teamAMoney = 10000;
   int teamBMoney = 10000;
+  int teamAScore = 0;
+  int teamBScore = 0;
   int teamARoundProfit = 0;
   int teamBRoundProfit = 0;
   bool moneyChanged = false;
@@ -114,9 +116,17 @@ class Game extends Sprite implements Animatable{
   bool advanceTime(num time) {
     if (gameStarted == false) return true;
     
+    
+    //Update Team Money
     if (moneyTimer>moneyTimerMax && moneyChanged==true) _updateMoney();
     else moneyTimer++;
     
+    //Update Team Score
+    teamAScoreText.text = "Score: ${teamAScore}";
+    teamBScoreText.text = "Score: ${teamBScore}";
+    
+    
+    //Update Timer and initiate phase change
     if (timerGraphicA.width<4 && !transition) _nextSeason();
     else _decreaseTimer();
     
@@ -405,6 +415,8 @@ class Game extends Sprite implements Animatable{
   }
   
   void _loadTextAndShapes() {
+    
+    //Text Elements for Team Money
     TextFormat format = new TextFormat("Arial", 40, Color.LightYellow, align: "center", bold:true);
     teamAMoneyText = new TextField("\$$teamAMoney", format);
     teamAMoneyText..width = 150
@@ -420,6 +432,24 @@ class Game extends Sprite implements Animatable{
                   ..y = height-60;
     addChild(teamBMoneyText);
     uiObjects.add(teamBMoneyText);
+    
+    //Text Elements for Team Cummulative Score
+    teamAScoreText = new TextField("Score: ${teamAScore}", format);
+    teamAScoreText..width = 200
+                  ..x = width/2 - teamAMoneyText.width/2+10
+                  ..y = 60
+                  ..rotation = math.PI;
+    addChild(teamAScoreText);
+    uiObjects.add(teamAScoreText);
+
+    teamBScoreText = new TextField("Score: ${teamAScore}", format);
+    teamBScoreText..width = 200
+                  ..x = width/2 + teamBMoneyText.width/2+10
+                  ..y = height - 60;
+    addChild(teamBScoreText);
+    uiObjects.add(teamBScoreText);
+    
+    
     
     //Text and Shapes for Bar Timers
     timerGraphicA = new Shape();
