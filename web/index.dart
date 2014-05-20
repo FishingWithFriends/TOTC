@@ -19,6 +19,7 @@ part 'source/slider.dart';
 part 'source/graph.dart';
 part 'source/offseason.dart';
 part 'source/regrowthUI.dart';
+part 'source/endgame.dart';
 
 void main() {
   int height = html.window.innerHeight-20;
@@ -96,6 +97,10 @@ void main() {
   resourceManager.addBitmapData("badgeLeastConcern", "images/leastConcernBadge.png");
   resourceManager.addBitmapData("badgeOverpopulated", "images/overpopulatedBadge.png");
   resourceManager.addBitmapData("badgeEndangered", "images/endangeredBadge.png");
+  resourceManager.addBitmapData("endgameWinIcon", "images/endgameWinIcon.png");
+  resourceManager.addBitmapData("endgameSardineIcon", "images/endgameSardineIcon.png");
+  resourceManager.addBitmapData("endgameTunaIcon", "images/endgameTunaIcon.png");
+  resourceManager.addBitmapData("endgameSharkIcon", "images/endgameSharkIcon.png");
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
   

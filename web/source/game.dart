@@ -5,9 +5,12 @@ class Game extends Sprite implements Animatable{
   static const FISHING_PHASE = 1;
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
+  static const ENDGAME_PHASE = 4;
+  
+  static const MAX_ROUNDS = 0;
   
   static const FISHING_TIMER_WIDTH = 35;
-  static const REGROWTH_TIMER_WIDTH = 120;
+  static const REGROWTH_TIMER_WIDTH = 35;
   static const BUY_TIMER_WIDTH = 35;
   
   static const timerPieRadius = 60;
@@ -28,6 +31,7 @@ class Game extends Sprite implements Animatable{
   Ecosystem _ecosystem;
   Offseason _offseason;
   Bitmap _background;
+  Endgame _endgame;
   
   TouchManager tmanager = new TouchManager();
   TouchLayer tlayer = new TouchLayer();
@@ -51,6 +55,7 @@ class Game extends Sprite implements Animatable{
   bool moneyChanged = false;
   int moneyTimer = 0;
   int moneyTimerMax = 2;
+  int round = 0;
 
   //REGROWTH INFO
   static const LINE_GRAPH_INFO = 0;
@@ -94,6 +99,7 @@ class Game extends Sprite implements Animatable{
     _mask = new Bitmap(_resourceManager.getBitmapData("Mask"));
     _fleet = new Fleet(_resourceManager, _juggler, this);
     _ecosystem = new Ecosystem(_resourceManager, _juggler, this, _fleet);
+    _endgame = new Endgame(_resourceManager, _juggler, this, _ecosystem);
 
     _background.width = width;
     _background.height = height;
@@ -107,6 +113,7 @@ class Game extends Sprite implements Animatable{
     addChild(_ecosystem);
     addChild(_mask);
     addChild(_fleet);
+    addChild(_endgame);
 
     _loadTextAndShapes();
     
@@ -241,11 +248,19 @@ class Game extends Sprite implements Animatable{
 
   }
   
+  bool endgame(){
+    if(round >=MAX_ROUNDS || _ecosystem._fishCount[SARDINE] <=0 || _ecosystem._fishCount[TUNA] <=0 || _ecosystem._fishCount[SHARK] <=0){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  
   void _nextSeason() {
     if (phase==FISHING_PHASE) {
       transition = true;
       phase = REGROWTH_PHASE;
-      print("growing");
       _fleet.returnBoats();
 
       _fleet.alpha = 0;
@@ -266,23 +281,47 @@ class Game extends Sprite implements Animatable{
       transition = false;
     }
     else if (phase==REGROWTH_PHASE) {
-      transition = true;
-      phase = BUY_PHASE;
-      print("buying");
       
-      Tween t1 = new Tween (badge, 2, TransitionFunction.linear);
-      t1.animate.alpha.to(0);
-      t1.onComplete = toBuyPhaseTransitionStageOne;
-      _juggler.add(t1);
-      
-      Tween t2 = new Tween(_ecosystem, 2, TransitionFunction.linear);
-      t2.animate.alpha.to(0);
-      _juggler.add(t2);
+      if(endgame()){
+        transition = true;
+        phase = ENDGAME_PHASE;
+        
+        
+        
+        Tween t1 = new Tween (badge, 2, TransitionFunction.linear);
+        t1.animate.alpha.to(0);
+        t1.onComplete = toEndGameTransitionStageOne;
+        _juggler.add(t1);
+        
+        Tween t2 = new Tween(_ecosystem, 2, TransitionFunction.linear);
+        t2.animate.alpha.to(0);
+        _juggler.add(t2);
+        
+        for(int i = 0; i < uiObjects.length; i++){
+          Tween t3 = new Tween(uiObjects[i], 2, TransitionFunction.linear);
+          t3.animate.alpha.to(0);
+          _juggler.add(t3);
+        }
+        
+      }
+      else{
+        
+        transition = true;
+        phase = BUY_PHASE;
+        
+        Tween t1 = new Tween (badge, 2, TransitionFunction.linear);
+        t1.animate.alpha.to(0);
+        t1.onComplete = toBuyPhaseTransitionStageOne;
+        _juggler.add(t1);
+        
+        Tween t2 = new Tween(_ecosystem, 2, TransitionFunction.linear);
+        t2.animate.alpha.to(0);
+        _juggler.add(t2);
+      }
 
     } else if (phase==BUY_PHASE) {
       transition = true;
       phase = FISHING_PHASE;
-      print("fishing");
       
       teamARoundProfit = 0;
       teamBRoundProfit = 0;
@@ -292,6 +331,12 @@ class Game extends Sprite implements Animatable{
       t1.animate.alpha.to(0);
       t1.onComplete = toFishingPhaseStageOne;
       _juggler.add(t1);
+      
+    }
+    
+    else if(phase == ENDGAME_PHASE){
+
+      
       
     }
   }
@@ -395,6 +440,11 @@ class Game extends Sprite implements Animatable{
     _juggler.add(t2);
   }
  
+  void toEndGameTransitionStageOne(){
+    _endgame.alpha = 1;
+    _endgame.showGameOverReason();
+  }
+  
   
   void _removeOffseason() {
     if (contains(_offseason)) removeChild(_offseason);
