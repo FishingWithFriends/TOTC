@@ -3,3 +3,4 @@ description: A sample web application
 dependencies:
   browser: any
   stagexl: ">=0.9.2+1 <0.10.0"
+  stagexl_particle: ">=0.3.1 <0.4.0"

@@ -9,7 +9,7 @@ class Game extends Sprite implements Animatable{
   
   static const MAX_ROUNDS = 0;
   
-  static const FISHING_TIMER_WIDTH = 35;
+  static const FISHING_TIMER_WIDTH = 200;
   static const REGROWTH_TIMER_WIDTH = 35;
   static const BUY_TIMER_WIDTH = 35;
   

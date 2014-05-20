@@ -67,6 +67,10 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool _touched = false;
   num _newX, _newY;
   
+  var particleConfig;
+  ParticleEmitter particleEmitter;
+  
+ 
   Boat(ResourceManager resourceManager, Juggler juggler, int type, Game game, Fleet f) {
     _resourceManager = resourceManager;
     _juggler = juggler;
@@ -75,6 +79,59 @@ class Boat extends Sprite implements Touchable, Animatable {
     _game = game;
     _nets = resourceManager.getTextureAtlas('Nets');
     random = new math.Random();
+    
+    particleConfig = {
+                      "maxParticles": 152,
+                      "duration": 0,
+                      "lifeSpan": 1.95,
+                      "lifespanVariance": 0,
+                      "startSize": 24,
+                      "startSizeVariance": 20,
+                      "finishSize": 70,
+                      "finishSizeVariance": 0,
+                      "shape": "circle",
+                      "emitterType": 0,
+                      "location": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "locationVariance": {
+                        "x": 5,
+                        "y": 0
+                      },
+                      "speed": 50,
+                      "speedVariance": 0,
+                      "angle": 90,
+                      "angleVariance": 21,
+                      "gravity": {
+                        "x": 0,
+                        "y": 0
+                      },
+                      "radialAcceleration": 0,
+                      "radialAccelerationVariance": 0,
+                      "tangentialAcceleration": 0,
+                      "tangentialAccelerationVariance": 0,
+                      "minRadius": 0,
+                      "maxRadius": 100,
+                      "maxRadiusVariance": 0,
+                      "rotatePerSecond": 0,
+                      "rotatePerSecondVariance": 0,
+                      "compositeOperation": "source-over",
+                      "startColor": {
+                        "red": 0.9,
+                        "green": 0.9,
+                        "blue": 1,
+                        "alpha": 0.25
+                      },
+                      "finishColor": {
+                        "red": 0.9,
+                        "green": 0.9,
+                        "blue": 1,
+                        "alpha": 0
+                      }
+                    };
+    particleEmitter = new ParticleEmitter(particleConfig);
+    
     
     _inDock = true;
     canCatch = false;
@@ -108,6 +165,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     _newX = x;
     _newY = y;
+    particleEmitter.setEmitterLocation(x+boat.width/2, y+boat.height/2);
   }
   
   void setX(num newX) {
@@ -620,6 +678,11 @@ class Boat extends Sprite implements Touchable, Animatable {
       _setBoatDown();
       boat.addChild(_boatImage);
       _dragging = true;
+      
+      addChild(particleEmitter);
+      swapChildren(boat, particleEmitter);
+      _juggler.add(particleEmitter);
+      
     }
     if (canCatch==false && _canMove==false) _promptBoatFull();
     return true;
@@ -632,6 +695,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     _juggler.remove(_boatMove);
     _juggler.remove(_boatRotate);
     boat.removeChild(_boatImage);
+    
+    if(contains(particleEmitter)) removeChild(particleEmitter);
+    _juggler.remove(particleEmitter);
     
     _setBoatUp();
     boat.addChild(_boatImage);

@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'dart:async';
 
 import 'package:stagexl/stagexl.dart';
+import 'package:stagexl_particle/stagexl_particle.dart';
 
 part 'source/game.dart';
 part 'source/touch.dart';
