@@ -67,6 +67,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool _touched = false;
   num _newX, _newY;
   
+  bool offseasonBoat = false;
+  
   var particleConfig;
   ParticleEmitter particleEmitter;
   
@@ -651,14 +653,24 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool containsTouch(Contact e) {
-    if (nothing==false) {
+    if (nothing==false && !offseasonBoat) {
       if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
         return true;
       } else {
         if (_game.phase==Game.FISHING_PHASE || _game.gameStarted == false) _promptUser();
         return false;
       }
-    } else return false;
+    } //else return false;
+    
+    if(offseasonBoat){
+      if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    else return false;
   }
    
   bool touchDown(Contact event) {
@@ -685,6 +697,13 @@ class Boat extends Sprite implements Touchable, Animatable {
       
     }
     if (canCatch==false && _canMove==false) _promptBoatFull();
+
+    
+    if(offseasonBoat){
+      x = event.touchX;
+      y = event.touchY;
+    }
+    
     return true;
   }
    
@@ -708,6 +727,12 @@ class Boat extends Sprite implements Touchable, Animatable {
       _newX = event.touchX;
       _newY = event.touchY;
     }
+    
+    if(offseasonBoat){
+      x = event.touchX;
+      y = event.touchY;
+    }
+    
   }
    
   void touchSlide(Contact event) { }

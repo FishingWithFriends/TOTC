@@ -107,12 +107,14 @@ class Offseason extends Sprite {
         BitmapData.load('images/boat_shark_a.png').then((sharkBoat) {
           int aCounter = 0;
           int bCounter = 0;
-          num w = offseasonDock.width;
-          num h = offseasonDock.height;
+          num w = _game.width;
+          num h = _game.height;
           for (int i=0; i<_fleet.boats.length; i++) {
             Boat fleetBoat = _fleet.boats[i];
             Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet);
             offseasonBoats.add(boat);
+            boat.offseasonBoat = true;
+            
             if (fleetBoat._teamA == true) {
               _boatsA[i] = boat;
               if (fleetBoat._type==Fleet.TEAMASARDINE||fleetBoat._type==Fleet.TEAMBSARDINE) {
@@ -156,7 +158,9 @@ class Offseason extends Sprite {
               }
               bCounter++;
             }
-            offseasonDock.addChild(boat);
+            _game.tlayer.touchables.add(boat);
+//            offseasonDock.addChild(boat);
+            addChild(boat);
           }
         });
       });
