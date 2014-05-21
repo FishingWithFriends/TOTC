@@ -7,9 +7,9 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_PHASE = 3;
   static const ENDGAME_PHASE = 4;
   
-  static const MAX_ROUNDS = 0;
+  static const MAX_ROUNDS = 6;
   
-  static const FISHING_TIMER_WIDTH = 200;
+  static const FISHING_TIMER_WIDTH = 35;
   static const REGROWTH_TIMER_WIDTH = 35;
   static const BUY_TIMER_WIDTH = 35;
   
@@ -46,6 +46,8 @@ class Game extends Sprite implements Animatable{
   
   TextField teamAMoneyText, teamBMoneyText;
   TextField teamAScoreText, teamBScoreText;
+  TextField roundTitle, roundNumber, seasonTitle;
+  
   int teamAMoney = 10000;
   int teamBMoney = 10000;
   int teamAScore = 0;
@@ -408,11 +410,17 @@ class Game extends Sprite implements Animatable{
       _offseason.sendBoatsToFish();
       
       Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
+      
+      Tween t1 = new Tween(roundNumber, .5, TransitionFunction.linear);
+      t1.animate.alpha.to(0);
+      _juggler.add(t1);
 
   }
   
   void toFishingPhaseStageTwo(){
-     
+    
+    
+    
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(-height);
     t1.onComplete = _removeOffseason;
@@ -421,9 +429,18 @@ class Game extends Sprite implements Animatable{
     t2.onComplete = toFishingPhaseStageThree;
     Tween t3 = new Tween(_background, 2.5, TransitionFunction.easeInQuartic);
     t3.animate.y.to(0);
+    
+    round++;
+    roundNumber.text = "${round}";
+    
+    Tween t4 = new Tween(roundNumber, .5, TransitionFunction.linear);
+    t4.animate.alpha.to(1);
+    
+    
     _juggler.add(t1);
     _juggler.add(t2);
     _juggler.add(t3);
+    _juggler.add(t4);
     transition = false;
       
   }
@@ -553,7 +570,34 @@ class Game extends Sprite implements Animatable{
     pieTimerBitmap.alpha = timerPie.alpha+10;
     pieTimerBitmap.x = timerPie.x +22;
     pieTimerBitmap.y = timerPie.y - 62;
-
+    
+    format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
+    
+    roundTitle = new TextField("Round:", format);
+    roundTitle..x = width - 65
+              ..y = 75
+              ..alpha = .7
+              ..width = 300
+              ..pivotX = roundTitle.width/2
+              ..rotation = math.PI/4;
+    
+    format = new TextFormat("Arial", 50, Color.White, align: "center", bold:true);
+    roundNumber = new TextField("${round}", format);
+    roundNumber..x = width - 75
+               ..y = 85
+               ..alpha = .7
+               ..width = 300
+               ..pivotX = roundNumber.width/2
+               ..rotation = math.PI/4; 
+    
+    format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
+    seasonTitle = new TextField("season here", format);
+    seasonTitle..x = width - 115
+               ..y = 125
+               ..alpha = .7
+               ..width = 300
+               ..pivotX = seasonTitle.width/2
+               ..rotation = math.PI/4; 
     
     if(timerType == BAR_TIMER){
       addChild(timerGraphicA);
@@ -569,9 +613,15 @@ class Game extends Sprite implements Animatable{
     else if(timerType == PIE_TIMER){
       addChild(timerPie);
       addChild(pieTimerBitmap);
+      addChild(roundTitle);
+      addChild(roundNumber);
+      addChild(seasonTitle);
       
       uiObjects.add(timerPie);
       uiObjects.add(pieTimerBitmap);
+      uiObjects.add(roundTitle);
+      uiObjects.add(roundNumber);
+      uiObjects.add(seasonTitle);
     }
     
     
