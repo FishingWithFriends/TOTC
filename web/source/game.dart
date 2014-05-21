@@ -434,7 +434,7 @@ class Game extends Sprite implements Animatable{
     roundNumber.text = "${round}";
     
     Tween t4 = new Tween(roundNumber, .5, TransitionFunction.linear);
-    t4.animate.alpha.to(1);
+    t4.animate.alpha.to(.7);
     
     
     _juggler.add(t1);
