@@ -9,9 +9,9 @@ class Game extends Sprite implements Animatable{
   
   static const MAX_ROUNDS = 6;
   
-  static const FISHING_TIMER_WIDTH = 35;
+  static const FISHING_TIMER_WIDTH = 75;
   static const REGROWTH_TIMER_WIDTH = 35;
-  static const BUY_TIMER_WIDTH = 35;
+  static const BUY_TIMER_WIDTH = 50;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -266,6 +266,7 @@ class Game extends Sprite implements Animatable{
       _fleet.returnBoats();
 
       _fleet.alpha = 0;
+      _fleet.removeBoatsFromTouchables();
       _graphTimer = 0;
 
       timerGraphicA.graphics.fillColor(Color.DarkRed);
@@ -441,13 +442,14 @@ class Game extends Sprite implements Animatable{
     _juggler.add(t2);
     _juggler.add(t3);
     _juggler.add(t4);
-    transition = false;
+
       
   }
   
   void toFishingPhaseStageThree(){
     _fleet.reactivateBoats();
     _fleet.showDock();
+    _fleet.addBoatsToTouchables();
     Tween t1 = new Tween(_fleet, 1, TransitionFunction.linear);
     t1.animate.alpha.to(1);
     _juggler.add(t1);
@@ -455,6 +457,7 @@ class Game extends Sprite implements Animatable{
     Tween t2 = new Tween(_ecosystem, 1, TransitionFunction.linear);
     t2.animate.alpha.to(1);
     _juggler.add(t2);
+    transition = false;
   }
  
   void toEndGameTransitionStageOne(){

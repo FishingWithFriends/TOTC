@@ -41,6 +41,8 @@ class Fleet extends Sprite {
       addBoat(TEAMATUNA);
       addBoat(TEAMBSARDINE);
       addBoat(TEAMBTUNA);
+      
+      addBoatsToTouchables();
     });
   }
   
@@ -75,7 +77,7 @@ class Fleet extends Sprite {
     boat._dock = emptyDock;
     boat._dock.filled=true;
     boats.add(boat);
-    _game.tlayer.touchables.add(boat);
+//    _game.tlayer.touchables.add(boat);
     addChild(boat);
     boat._promptUser();
     _juggler.add(boat);
@@ -135,6 +137,21 @@ class Fleet extends Sprite {
       dockB[i].alpha = 1;
     }
   }
+  
+  void removeBoatsFromTouchables(){
+    for(int i = 0; i < boats.length; i++){
+      if(_game.tlayer.touchables.contains(boats[i])){
+        _game.tlayer.touchables.remove(boats[i]);
+      }
+    }  
+  }
+  
+  void addBoatsToTouchables(){
+    for(int i = 0; i < boats.length; i++){
+      _game.tlayer.touchables.add(boats[i]);
+    }
+  }
+  
 }
 
 class Dock extends Sprite{
