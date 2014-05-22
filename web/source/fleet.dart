@@ -30,12 +30,16 @@ class Fleet extends Sprite {
       dockHeight = bitmapData.height;
 
       addBoat(TEAMASARDINE);
-      addBoat(TEAMATUNA);
       addBoat(TEAMBSARDINE);
+      
+      addBoat(TEAMATUNA);
       addBoat(TEAMBTUNA);
       
       addBoatsToTouchables();
       returnBoats();
+      for (int i=0; i<boats.length; i++) {
+        boats[i]._promptUser();
+      }
     });
   }
   
@@ -52,7 +56,7 @@ class Fleet extends Sprite {
 
     boats.add(boat);
     addChild(boat);
-    boat._promptUser();
+//    boat._promptUser();
     _juggler.add(boat);
     
     return boat;
@@ -64,10 +68,9 @@ class Fleet extends Sprite {
       Point toSet = positionFishPhase(boats[i]);
       boats[i].x = toSet.x;
       boats[i].y = toSet.y;
-      if(boats[i]._teamA){
-        boats[i].rotation = math.PI;
+      if(boats[i]._teamA) boats[i].rotation = math.PI;
+      else boats[i].rotation = 0;
       boats[i]._boatReady();
-      }
     }
   }
   

@@ -287,6 +287,11 @@ class Game extends Sprite implements Animatable{
         _fleet.boats[i]._unloadNet();
       }
       
+      if(round == 0){
+        for(int i = 0; i < _fleet.boats.length; i++){
+          _fleet.boats[i]._promptUserFinished();
+        }
+      }
     }
     else if (phase==REGROWTH_PHASE) {
       

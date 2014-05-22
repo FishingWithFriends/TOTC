@@ -317,7 +317,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _goStraight();
 //    _inDock = false;
     _canMove = true;
-    canCatch = true;
+    canCatch = false;
     _autoMove = false;
   }
   
@@ -471,86 +471,6 @@ class Boat extends Sprite implements Touchable, Animatable {
       _juggler.add(_netSkew);
     }
   }
-//  void _goToDock() {
-//    _autoMove = true;
-//    _dragging = false;
-//    _goStraight();
-//    _juggler.remove(_boatMove);
-//    _juggler.remove(_boatRotate);
-//    boat.removeChild(_boatImage);
-//    _setBoatUp();
-//    boat.addChild(_boatImage);
-//    
-//    num totalSeconds = 0;
-//    num nextX = x;
-//    num nextY = y;
-//    num nextRot = rotation;
-//    if ((_teamA == true && y<_fleet.dockHeight) ||
-//        (_teamA == false && y>_game.height-_fleet.dockHeight)) {
-//      Point aboveDockP;
-//      num newRot;
-//      if (_teamA) {
-//        aboveDockP = new Point(x, _fleet.dockHeight+80);
-//        newRot = math.PI;
-//      }
-//      else {
-//        aboveDockP = new Point(x, _game.height-_fleet.dockHeight-80);
-//        newRot = 0;
-//      }
-//      num secondsToRot = (rotation-newRot).abs()/rotSpeed/35;
-//      _rotateTo(newRot, secondsToRot, 0, null);
-//      
-//      num travelDistance = new Point(x, y).distanceTo(new Point(aboveDockP.x, aboveDockP.y));
-//      num secondsToMove = (travelDistance/speed).abs()/30;
-//      _moveTo(aboveDockP.x, aboveDockP.y, secondsToMove, secondsToRot, null);
-//      
-//      nextX = aboveDockP.x;
-//      nextY = aboveDockP.y;
-//      nextRot = newRot;
-//      totalSeconds = totalSeconds+secondsToRot+secondsToMove;
-//    }
-//    
-//    Point frontOfDock = new Point(0,0);
-//    if (_teamA) {
-//      frontOfDock.y = _fleet.dockHeight+80;
-//      frontOfDock.x = frontOfDock.x;
-//    }
-//    else {
-//      frontOfDock.y = _game.height-_fleet.dockHeight-80;
-//      frontOfDock.x = frontOfDock.x;
-//    }
-//    num cx = frontOfDock.x - nextX;
-//    num cy = frontOfDock.y - nextY;
-//    num newAngle = Movement.findMinimumAngle(nextRot, math.atan2(cy, cx)+math.PI/2);
-//    num secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
-//    _rotateTo(newAngle, secondsToRot, totalSeconds, null);
-//    
-//    num travelDistance = new Point(nextX, nextY).distanceTo(new Point(frontOfDock.x, frontOfDock.y));
-//    num secondsToMove = (travelDistance/speed).abs()/30;
-//    _moveTo(frontOfDock.x, frontOfDock.y, secondsToMove, totalSeconds+secondsToRot, null);
-//    
-//    nextX = frontOfDock.x;
-//    nextY = frontOfDock.y;
-//    nextRot = newAngle;
-//    totalSeconds = totalSeconds+secondsToRot+secondsToMove;
-//    
-//    Point insideDock;
-//    if (_teamA) {
-//      insideDock = new Point(nextX+5, nextY-140);
-//      newAngle = 0;
-//    }
-//    else {
-//      insideDock = new Point(nextX+5, nextY+140);
-//      newAngle = math.PI;
-//    }
-//    newAngle = Movement.findMinimumAngle(nextRot, newAngle);
-//    secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
-//    _rotateTo(newAngle, secondsToRot, totalSeconds, null);
-//    
-//    travelDistance = new Point(nextX, nextY).distanceTo(new Point(insideDock.x, insideDock.y));
-//    secondsToMove = (travelDistance/speed).abs()/30;
-//    _moveTo(insideDock.x, insideDock.y, secondsToMove, totalSeconds+secondsToRot, _unloadNet);
-//  }
   
   void _rotateTo(num newRot, num secondsToRot, num delay, var fnc) {
     Tween t1 = new Tween(this, secondsToRot, TransitionFunction.linear);
@@ -572,31 +492,27 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _promptUser() {
-    if (_fleet.touchReminders>1 && _showingPrompt==false) {
+    if (_fleet.touchReminders>=1 && _showingPrompt==false) {
       _fleet.touchReminders--;
       _showingPrompt = true;
       
       _arrow = new Bitmap(_resourceManager.getBitmapData("Arrow"));
       _arrow.alpha = .6;
-//      TextFormat format = new TextFormat("Arial", 20, Color.Red, align: "left");
-//      _text = new TextField("Touch boat to begin!", format);
-//      _text.width = 200;
+      _arrow.pivotX = _arrow.width/2;
+      _arrow.pivotY = _arrow.height/2;
+
       
       if (_teamA==true) {
-        _arrow.y = y+200;
-        _arrow.x = x-50;
+        _arrow.y = 150;
+        _arrow.x = this.x;
         _arrow.rotation = -math.PI/2;
-//        _text.x = x+90;
-//        _text.y = y+260;
-//        _text.rotation = math.PI;
+
       } else {
-        _arrow.y = y-200;
-        _arrow.x = x+50;
+        _arrow.y = _game.height - 150;
+        _arrow.x =  this.x;
         _arrow.rotation = math.PI/2;
-//        _text.x = x-90;
-//        _text.rotation = 0;
+
       }
-//      _fleet.addChild(_text);
       _fleet.addChild(_arrow);
     }
   }
@@ -606,17 +522,12 @@ class Boat extends Sprite implements Touchable, Animatable {
     Tween t = new Tween(_arrow, 1, TransitionFunction.linear);
     t.animate.alpha.to(0);
     _fleet._juggler.add(t);
-//    Tween t2 = new Tween(_text, 1, TransitionFunction.linear);
-//    t2.animate.alpha.to(0);
-//    _fleet._juggler.add(t2);
-//    t2.onComplete = _removePrompt;
     t.onComplete = _removePrompt;
   }
   
   void _removePrompt() {
     _showingPrompt = false;
-//    if (_fleet.contains(_text)) _fleet.removeChild(_text);
-    if (_fleet.contains(_arrow)) _fleet.removeChild(_arrow);
+    if (contains(_arrow)) _fleet.removeChild(_arrow);
   }
   
   void _promptBoatFull() {
@@ -655,7 +566,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
         return true;
       } else {
-        if (_game.phase==Game.FISHING_PHASE || _game.gameStarted == false) _promptUser();
+        if (_game.phase==Game.FISHING_PHASE || _game.gameStarted == false);
         return false;
       }
     } //else return false;
@@ -672,52 +583,45 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool touchDown(Contact event) {
-    if (!_game.gameStarted && _game.phase==Game.FISHING_PHASE) {
-      _game.gameStarted = true;
-      if(_showingPrompt==true) _promptUserFinished();
-//      _leaveDock();
-      return true;
-    }
-    if (_canMove==true) {
-      if(_showingPrompt==true) _promptUserFinished();
-      canCatch = true;
-      _newX = event.touchX;
-      _newY = event.touchY;
-      
-      boat.removeChild(_boatImage);
-      _setBoatDown();
-      boat.addChild(_boatImage);
-      _dragging = true;
-      
-      addChild(particleEmitter);
-      swapChildren(boat, particleEmitter);
-      _juggler.add(particleEmitter);
-      
-    }
-    if (canCatch==false && _canMove==false) _promptBoatFull();
-
     
     if(offseasonBoat){
       x = event.touchX;
       y = event.touchY;
     }
+    else{
+    
+      if (!_game.gameStarted && _game.phase==Game.FISHING_PHASE) {
+        _game.gameStarted = true;
+        if(_showingPrompt==true) _promptUserFinished();
+  //      _leaveDock();
+  //      return true;
+      }
+      if (_canMove==true) {
+        if(_showingPrompt==true) _promptUserFinished();
+        canCatch = true;
+        _newX = event.touchX;
+        _newY = event.touchY;
+        
+        boat.removeChild(_boatImage);
+        _setBoatDown();
+        boat.addChild(_boatImage);
+        _dragging = true;
+        
+        addChild(particleEmitter);
+        swapChildren(boat, particleEmitter);
+        _juggler.add(particleEmitter);
+        
+      }
+      if (canCatch==false && _canMove==false) _promptBoatFull();
+
+    }
+
     
     return true;
   }
    
   void touchUp(Contact event) {
     _dragging = false;
-    canCatch = false;
-    _goStraight();
-    _juggler.remove(_boatMove);
-    _juggler.remove(_boatRotate);
-    boat.removeChild(_boatImage);
-    
-    if(contains(particleEmitter)) removeChild(particleEmitter);
-    _juggler.remove(particleEmitter);
-    
-    _setBoatUp();
-    boat.addChild(_boatImage);
     
     if(offseasonBoat){
       
@@ -732,6 +636,21 @@ class Boat extends Sprite implements Touchable, Animatable {
         _juggler.add(t1);
       }
     }
+    else{
+      canCatch = false;
+      _goStraight();
+      _juggler.remove(_boatMove);
+      _juggler.remove(_boatRotate);
+      boat.removeChild(_boatImage);
+      
+      if(contains(particleEmitter)) removeChild(particleEmitter);
+      _juggler.remove(particleEmitter);
+      
+      _setBoatUp();
+      boat.addChild(_boatImage);
+    }
+    
+
   }
    
   void touchDrag(Contact event) {
