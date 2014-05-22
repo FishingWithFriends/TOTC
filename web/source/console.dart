@@ -170,13 +170,13 @@ class Console extends Sprite {
   void _yesClicked(var e) {
     if (_confirmMode == ONLY_CONFIRM) startBuy();
     if (_confirmMode == ONLY_CONFIRM_DESTROY) {
-      _fleet.sellBoat(_boat);
+//      _fleet.sellBoat(_boat);
     }
     if (_confirmMode == SELL_CONFIRM) {
       if (_boat._teamA==true) _game.teamAMoney = _game.teamAMoney+700;
       else _game.teamBMoney = _game.teamBMoney+700;
       _game.moneyChanged = true;
-      _fleet.sellBoat(_boat);
+//      _fleet.sellBoat(_boat);
     }
     if (_confirmMode == SPEED_CONFIRM) {
       num amount = (_boat.speedLevel+1)*200;
@@ -224,7 +224,7 @@ class Console extends Sprite {
           _game.teamAMoney = _game.teamAMoney-700;
           _boat.alpha = 1;
           _boat._canLoadConsole = true;
-          _fleet.addButtons();
+//          _fleet.addButtons();
           startBuy();
         }
       } else {
@@ -236,7 +236,7 @@ class Console extends Sprite {
           _game.teamBMoney = _game.teamBMoney-700;
           _boat.alpha = 1;
           _boat._canLoadConsole = true;
-          _fleet.addButtons();
+//          _fleet.addButtons();
           startBuy();
         }
       }
@@ -246,7 +246,7 @@ class Console extends Sprite {
   
   void _noClicked(var e) {
     if (_confirmMode == BUY_CONFIRM) {
-      _fleet.sellBoat(_boat);
+//      _fleet.sellBoat(_boat);
     }
     else startBuy();
   }

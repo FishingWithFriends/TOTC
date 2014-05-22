@@ -282,6 +282,11 @@ class Game extends Sprite implements Animatable{
       addChild(badge);
       badge.showBadge();
       transition = false;
+      
+      for(int i = 0; i < _fleet.boats.length; i++){
+        _fleet.boats[i]._unloadNet();
+      }
+      
     }
     else if (phase==REGROWTH_PHASE) {
       
@@ -345,7 +350,7 @@ class Game extends Sprite implements Animatable{
   }
   
   void toBuyPhaseTransitionStageOne(){
-    _fleet.hideDock();
+//    _fleet.hideDock();
     
     
     if (contains(badge)) removeChild(badge);
@@ -448,7 +453,8 @@ class Game extends Sprite implements Animatable{
   
   void toFishingPhaseStageThree(){
     _fleet.reactivateBoats();
-    _fleet.showDock();
+    _fleet.returnBoats();
+//    _fleet.showDock();
     _fleet.addBoatsToTouchables();
     Tween t1 = new Tween(_fleet, 1, TransitionFunction.linear);
     t1.animate.alpha.to(1);

@@ -17,8 +17,7 @@ class Fleet extends Sprite {
   Ecosystem _ecosystem;
   
   List<Boat> boats = new List<Boat>();
-  Map<int, Dock> dockA = new Map<int, Dock>();
-  Map<int, Dock> dockB = new Map<int, Dock>();
+
   num dockHeight;
   int touchReminders = 4;
 
@@ -29,55 +28,29 @@ class Fleet extends Sprite {
 
     BitmapData.load("images/dock.png").then((bitmapData) {
       dockHeight = bitmapData.height;
-      for (int i=0;i<4;i++) {
-        dockA[i] = new Dock(_game, this, i, true);
-        addChild(dockA[i]);
-      }
-      for (int i=0;i<4;i++) {
-        dockB[i] = new Dock(_game, this, i, false);
-        addChild(dockB[i]);
-      }
+
       addBoat(TEAMASARDINE);
       addBoat(TEAMATUNA);
       addBoat(TEAMBSARDINE);
       addBoat(TEAMBTUNA);
       
       addBoatsToTouchables();
+      returnBoats();
     });
   }
   
-  void sellBoat(Boat boat) {
-    for (int i=0; i<boats.length; i++) {
-      if (boats[i]._teamA==boat._teamA && boats[i].alpha==0 && boats[i] != boat) sellBoat(boats[i]);
-    }
-    removeChild(boat);
-    _juggler.remove(boat);
-    _game.tlayer.touchables.remove(boat);
-    if (boat._dock != null) 
-      boat._dock.filled = false;
-    boat.clearConsole();
-    boats.remove(boat);
+  
+  void sellBoat(int index){
+   
+    if(contains(boats[index])) removeChild(boats[index]);
+    boats.removeAt(index);
+    
   }
   
   Boat addBoat(int type) {
     Boat boat = new Boat(_resourceManager, _juggler, type, _game, this);
-    Dock emptyDock;
-    if (type==TEAMASARDINE||type==TEAMASHARK||type==TEAMATUNA) {
-      emptyDock = findEmptyDock(true);
-      boat.x = emptyDock.location.x+5;
-      boat.y = emptyDock.location.y+dockHeight/2;
-      boat.rotation = math.PI;
-    }
-    else {
-      emptyDock = findEmptyDock(false);
-      boat.x = emptyDock.location.x+5;
-      boat.y = emptyDock.location.y-dockHeight/2;
-      boat.rotation = 0;
-    }
-    boat._dock = emptyDock;
-    boat._dock.filled=true;
+
     boats.add(boat);
-//    _game.tlayer.touchables.add(boat);
     addChild(boat);
     boat._promptUser();
     _juggler.add(boat);
@@ -87,57 +60,25 @@ class Fleet extends Sprite {
   
   void returnBoats() {
     for (int i=0; i<boats.length; i++) {
-      boats[i].returnToDock();
+//      boats[i].returnToDock();
+      Point toSet = positionFishPhase(boats[i]);
+      boats[i].x = toSet.x;
+      boats[i].y = toSet.y;
+      if(boats[i]._teamA){
+        boats[i].rotation = math.PI;
+      boats[i]._boatReady();
+      }
     }
   }
   
   void reactivateBoats() {
     for (int i=0; i<boats.length; i++) {
-      if (boats[i].alpha==0) sellBoat(boats[i]);
+      if (boats[i].alpha==0);// sellBoat(boats[i]);
       else boats[i].fishingSeasonStart();
     }
   }
   
-  Dock findEmptyDock(teamA) {
-    while (dockB[3].location == null) {}
-    Dock dock;
-    if (teamA) {
-      for (int i=0; i<3; i++) {
-        dock = dockA[i];
-        if (dock.filled == false) {
-          dock.filled = true;
-          return dock;
-        }
-      }
-    } else {
-      for (int i=0; i<3; i++) {
-        dock = dockB[i];
-        if (dock.filled == false) {
-          dock.filled = true;
-          return dock;
-        }
-      }
-    }
-  }
-  
-  void hideDock(){
-    for (int i=0;i<4;i++) {
-      dockA[i].alpha = 0;
-    }
-    for (int i=0;i<4;i++) {
-      dockB[i].alpha = 0;
-    }
-  }
-  
-  void showDock(){
-    for (int i=0;i<4;i++) {
-      dockA[i].alpha = 1;
-    }
-    for (int i=0;i<4;i++) {
-      dockB[i].alpha = 1;
-    }
-  }
-  
+
   void removeBoatsFromTouchables(){
     for(int i = 0; i < boats.length; i++){
       if(_game.tlayer.touchables.contains(boats[i])){
@@ -152,37 +93,61 @@ class Fleet extends Sprite {
     }
   }
   
-}
-
-class Dock extends Sprite{
-  Point location;
-  bool filled;
-  Game _game;
-  Fleet _fleet;
-  int pos;
+  Point positionFishPhase(Boat boat){
+  Point position = new Point(0,0);
   
-  Dock(Game game, Fleet fleet, int n, bool teamA) {
-    filled = false;
-    _game = game;
-    _fleet = fleet;
-    
-    pos = n;
-    
-    if (teamA) location = new Point(Fleet.DOCK_SEPARATION+n*Fleet.DOCK_SEPARATION, Fleet.LARGE_DOCK_HEIGHT);
-    else location = new Point(_game.width-Fleet.DOCK_SEPARATION-n*Fleet.DOCK_SEPARATION, _game.height-Fleet.LARGE_DOCK_HEIGHT);
-    
-    BitmapData.load('images/dock.png').then((bitmapData) {
-      Bitmap bitmap = new Bitmap(bitmapData);
-      if (teamA == true) {
-        bitmap.x = location.x-Fleet.DOCK_SEPARATION/2;
-        bitmap.y = location.y;
-      } else {
-        bitmap.x = location.x+Fleet.DOCK_SEPARATION/2;
-        bitmap.y = location.y-_fleet.dockHeight;
+  if(boat._teamA){
+    int aCount = 0;
+    for(int i = 0; i < boats.length; i++){
+      if(boat == boats[i]){  
+        if(aCount ==0){
+          position.x = 50;
+          position.y = 50;
+        }
+        else if(aCount == 1){
+          position.x = 150;
+          position.y = 50;
+        }
+        else if(aCount == 2){
+          position.x = 250;
+          position.y = 50;
+        }
+        
+        return position;
       }
-      addChild(bitmap);
-      
-      if (n == 3) filled = true;
-    });
+      if(boats[i]._teamA){
+        aCount++;
+      }
+    }
   }
+  
+  else{
+    int bCount = 0;
+        for(int i = 0; i < boats.length; i++){
+          if(boat == boats[i]){  
+            if(bCount ==0){
+              position.x = _game.width-50;
+              position.y = _game.height - 50;
+            }
+            else if(bCount == 1){
+              position.x = _game.width-150;
+              position.y = _game.height - 50;
+            }
+            else if(bCount == 2){
+              position.x = _game.width-250;
+              position.y = _game.height - 50;
+            }
+            
+            return position;
+          }
+          if(!boats[i]._teamA){
+            bCount++;
+          }
+        }
+  }
+  
+  
+  return position;
+  }
+  
 }

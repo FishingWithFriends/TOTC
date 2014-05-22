@@ -74,7 +74,10 @@ class Offseason extends Sprite {
   }
   
   void clearAndRefillDock() {
-    if (offseasonDock.numChildren>1) offseasonDock.removeChildren(1, offseasonDock.numChildren-1);
+//    if (offseasonDock.numChildren>1) offseasonDock.removeChildren(1, offseasonDock.numChildren-1);
+    for(int i = 0; i < offseasonBoats.length; i++){
+      if(contains(offseasonBoats[i])) removeChild(offseasonBoats[i]);
+    }
     fillDocks();
   }
   
@@ -213,8 +216,35 @@ class Offseason extends Sprite {
     for(int i = 0; i < offseasonBoats.length; i++){
       offseasonBoats[i].alpha = 0;
     }
-    
   }
+  
+  
+  void sellBoat(Boat boat){
+    int index;
+    if(boat._teamA == true){
+      _boatsA.forEach((int i, Boat b){
+        if(b == boat){
+          index = i;
+
+        }
+      });
+      _boatsA.remove(index);
+    }
+    else{
+      _boatsB.forEach((int i, Boat b){
+              if(b == boat){
+                index = i;
+
+              }
+            });
+      _boatsB.remove(index);
+    }
+    _fleet.sellBoat(index);
+    offseasonBoats.remove(boat);
+    if(contains(boat)) removeChild(boat);
+    clearAndRefillDock();
+  }
+  
 } 
 
 class Circle extends Sprite implements Touchable {

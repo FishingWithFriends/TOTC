@@ -30,7 +30,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   int _netCapacity;
   
   var random;
-  Dock _dock;
+//  Dock _dock;
   
   num speedLevel;
   num capacityLevel;
@@ -54,9 +54,9 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool canCatch;
   bool _canMove;
   bool _autoMove;
-  bool _inDock;
+//  bool _inDock;
   bool _canLoadConsole = false;
-  bool _leavingDock;
+//  bool _leavingDock;
   
   bool _showingFullPrompt = false;
   bool _showingPrompt = false;
@@ -137,9 +137,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     particleEmitter = new ParticleEmitter(particleConfig);
     
     
-    _inDock = true;
+//    _inDock = true;
     canCatch = false;
-    _canMove = false;
+    _canMove = true;
     _autoMove = false;
     
     speedLevel = 0;
@@ -208,9 +208,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     }
     if (_netCapacity > netCapacityMax) {
       canCatch = false;
-      _leavingDock = false;
+//      _leavingDock = false;
       _canMove = false;
-      _goToDock();
+//      _goToDock();
       return true;
     }
     if (_dragging && !_inProximity(_newX, _newY, PROXIMITY*.8)) {
@@ -277,9 +277,11 @@ class Boat extends Sprite implements Touchable, Animatable {
   void _unloadNet() {
     _goStraight();
     _canMove = false;
-    _autoMove = true;
-    _inDock = true;
     canCatch = false;
+//    _autoMove = true;
+//    _inDock = true;
+
+    
     
     if (_teamA==true){
       _game.teamAMoney = _game.teamAMoney+_netMoney;
@@ -307,71 +309,67 @@ class Boat extends Sprite implements Touchable, Animatable {
     _netMoney = 0;
     _netCapacity = 0;
     _changeNetGraphic();
+    canCatch = false;
+    _canMove = true;
   }
   
   void _boatReady() {
     _goStraight();
-    _inDock = false;
+//    _inDock = false;
     _canMove = true;
+    canCatch = true;
     _autoMove = false;
-    if (_dock != null) 
-      _dock.filled = false;
-    _dock = null;
   }
   
-  void _leaveDock() {
-    _leavingDock = true;
-    _canMove = false;
-    _autoMove = true;
-    _inDock = false;
-    canCatch = false;
-    if (_teamA) {
-      _moveTo(x, y+250, 1.25, 0, null);
-      num newRot = Movement.findMinimumAngle(rotation, math.PI*3/4);
-      _rotateTo(newRot, (rotation-newRot).abs()/1.25, 1.25, _boatReady);
-    }
-    else {
-      _moveTo(x, y-250, 1.25, 0, null);
-      num newRot = Movement.findMinimumAngle(rotation, -math.PI*1/4);
-      _rotateTo(newRot, (rotation-newRot).abs()/1.25, 1.25, _boatReady);
-    }
-  }
+//  void _leaveDock() {
+//    _leavingDock = true;
+//    _canMove = false;
+//    _autoMove = true;
+//    _inDock = false;
+//    canCatch = false;
+//    if (_teamA) {
+//      _moveTo(x, y+250, 1.25, 0, null);
+//      num newRot = Movement.findMinimumAngle(rotation, math.PI*3/4);
+//      _rotateTo(newRot, (rotation-newRot).abs()/1.25, 1.25, _boatReady);
+//    }
+//    else {
+//      _moveTo(x, y-250, 1.25, 0, null);
+//      num newRot = Movement.findMinimumAngle(rotation, -math.PI*1/4);
+//      _rotateTo(newRot, (rotation-newRot).abs()/1.25, 1.25, _boatReady);
+//    }
+//  }
   
   void fishingSeasonStart() {
-    _inDock = true;
-    canCatch = false;
+//    _inDock = true;
+    canCatch = true;
     _canLoadConsole = false;
     clearConsole();
   }
   
-  void returnToDock() {
-    _juggler.removeTweens(this);
-    if(_showingPrompt==true) _promptUserFinished();
-    if (_dock != null) _dock.filled = false;
-    _dock = null;
-    
-    Tween t1 = new Tween(this, 0, TransitionFunction.linear);
-    t1.animate.alpha.to(0);
-    _juggler.add(t1);
-    
-    _dock = _fleet.findEmptyDock(_teamA);
-    Point frontOfDock = new Point(_dock.location.x, _dock.location.y);
-    Tween t2 = new Tween(this, 0, TransitionFunction.linear);
-    t2.animate.x.to(frontOfDock.x+5);
-    t2.animate.y.to(frontOfDock.y);
-    if (_teamA) {
-      t2.animate.rotation.to(math.PI);
-      t2.animate.y.to(frontOfDock.y+_fleet.dockHeight/2);
-    }
-    else { 
-      t2.animate.rotation.to(0);
-      t2.animate.y.to(frontOfDock.y-_fleet.dockHeight/2);
-    }
-    t2.delay = 0;
-    t2.animate.alpha.to(1);
-    t2.onComplete = _unloadNet;
-    _juggler.add(t2);
-  }
+//  void returnToDock() {
+//    _juggler.removeTweens(this);
+//    if(_showingPrompt==true) _promptUserFinished();
+//       
+//    Tween t1 = new Tween(this, 0, TransitionFunction.linear);
+//    t1.animate.alpha.to(0);
+//    _juggler.add(t1);
+//    Point frontOfDock = new Point(0,0);
+//    Tween t2 = new Tween(this, 0, TransitionFunction.linear);
+//    t2.animate.x.to(frontOfDock.x+5);
+//    t2.animate.y.to(frontOfDock.y);
+//    if (_teamA) {
+//      t2.animate.rotation.to(math.PI);
+//      t2.animate.y.to(frontOfDock.y+_fleet.dockHeight/2);
+//    }
+//    else { 
+//      t2.animate.rotation.to(0);
+//      t2.animate.y.to(frontOfDock.y-_fleet.dockHeight/2);
+//    }
+//    t2.delay = 0;
+//    t2.animate.alpha.to(1);
+//    t2.onComplete = _unloadNet;
+//    _juggler.add(t2);
+//  }
   
   void _setBoatUp(){
     if (_type==Fleet.TEAMASARDINE) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatASardineUp"));
@@ -428,9 +426,9 @@ class Boat extends Sprite implements Touchable, Animatable {
         }
       }  
     }
-    if ((x>0 && x<Fleet.DOCK_SEPARATION+Fleet.DOCK_SEPARATION*2 && y<_fleet.dockHeight*1.3 && y>0) ||
-        (x<_game.width && x>_game.width-Fleet.DOCK_SEPARATION-Fleet.DOCK_SEPARATION*2 && y>_game.height-_fleet.dockHeight*1.3 && y<_game.height))
-      return true;
+//    if ((x>0 && x<Fleet.DOCK_SEPARATION+Fleet.DOCK_SEPARATION*2 && y<_fleet.dockHeight*1.3 && y>0) ||
+//        (x<_game.width && x>_game.width-Fleet.DOCK_SEPARATION-Fleet.DOCK_SEPARATION*2 && y>_game.height-_fleet.dockHeight*1.3 && y<_game.height))
+//      return true;
     return false;
   }
   
@@ -473,87 +471,86 @@ class Boat extends Sprite implements Touchable, Animatable {
       _juggler.add(_netSkew);
     }
   }
-  void _goToDock() {
-    _autoMove = true;
-    _dragging = false;
-    _goStraight();
-    _juggler.remove(_boatMove);
-    _juggler.remove(_boatRotate);
-    boat.removeChild(_boatImage);
-    _setBoatUp();
-    boat.addChild(_boatImage);
-    
-    num totalSeconds = 0;
-    num nextX = x;
-    num nextY = y;
-    num nextRot = rotation;
-    if ((_teamA == true && y<_fleet.dockHeight) ||
-        (_teamA == false && y>_game.height-_fleet.dockHeight)) {
-      Point aboveDockP;
-      num newRot;
-      if (_teamA) {
-        aboveDockP = new Point(x, _fleet.dockHeight+80);
-        newRot = math.PI;
-      }
-      else {
-        aboveDockP = new Point(x, _game.height-_fleet.dockHeight-80);
-        newRot = 0;
-      }
-      num secondsToRot = (rotation-newRot).abs()/rotSpeed/35;
-      _rotateTo(newRot, secondsToRot, 0, null);
-      
-      num travelDistance = new Point(x, y).distanceTo(new Point(aboveDockP.x, aboveDockP.y));
-      num secondsToMove = (travelDistance/speed).abs()/30;
-      _moveTo(aboveDockP.x, aboveDockP.y, secondsToMove, secondsToRot, null);
-      
-      nextX = aboveDockP.x;
-      nextY = aboveDockP.y;
-      nextRot = newRot;
-      totalSeconds = totalSeconds+secondsToRot+secondsToMove;
-    }
-    
-    _dock = _fleet.findEmptyDock(_teamA);
-    Point frontOfDock = new Point(_dock.location.x, _dock.location.y);
-    if (_teamA) {
-      frontOfDock.y = _fleet.dockHeight+80;
-      frontOfDock.x = frontOfDock.x;
-    }
-    else {
-      frontOfDock.y = _game.height-_fleet.dockHeight-80;
-      frontOfDock.x = frontOfDock.x;
-    }
-    num cx = frontOfDock.x - nextX;
-    num cy = frontOfDock.y - nextY;
-    num newAngle = Movement.findMinimumAngle(nextRot, math.atan2(cy, cx)+math.PI/2);
-    num secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
-    _rotateTo(newAngle, secondsToRot, totalSeconds, null);
-    
-    num travelDistance = new Point(nextX, nextY).distanceTo(new Point(frontOfDock.x, frontOfDock.y));
-    num secondsToMove = (travelDistance/speed).abs()/30;
-    _moveTo(frontOfDock.x, frontOfDock.y, secondsToMove, totalSeconds+secondsToRot, null);
-    
-    nextX = frontOfDock.x;
-    nextY = frontOfDock.y;
-    nextRot = newAngle;
-    totalSeconds = totalSeconds+secondsToRot+secondsToMove;
-    
-    Point insideDock;
-    if (_teamA) {
-      insideDock = new Point(nextX+5, nextY-140);
-      newAngle = 0;
-    }
-    else {
-      insideDock = new Point(nextX+5, nextY+140);
-      newAngle = math.PI;
-    }
-    newAngle = Movement.findMinimumAngle(nextRot, newAngle);
-    secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
-    _rotateTo(newAngle, secondsToRot, totalSeconds, null);
-    
-    travelDistance = new Point(nextX, nextY).distanceTo(new Point(insideDock.x, insideDock.y));
-    secondsToMove = (travelDistance/speed).abs()/30;
-    _moveTo(insideDock.x, insideDock.y, secondsToMove, totalSeconds+secondsToRot, _unloadNet);
-  }
+//  void _goToDock() {
+//    _autoMove = true;
+//    _dragging = false;
+//    _goStraight();
+//    _juggler.remove(_boatMove);
+//    _juggler.remove(_boatRotate);
+//    boat.removeChild(_boatImage);
+//    _setBoatUp();
+//    boat.addChild(_boatImage);
+//    
+//    num totalSeconds = 0;
+//    num nextX = x;
+//    num nextY = y;
+//    num nextRot = rotation;
+//    if ((_teamA == true && y<_fleet.dockHeight) ||
+//        (_teamA == false && y>_game.height-_fleet.dockHeight)) {
+//      Point aboveDockP;
+//      num newRot;
+//      if (_teamA) {
+//        aboveDockP = new Point(x, _fleet.dockHeight+80);
+//        newRot = math.PI;
+//      }
+//      else {
+//        aboveDockP = new Point(x, _game.height-_fleet.dockHeight-80);
+//        newRot = 0;
+//      }
+//      num secondsToRot = (rotation-newRot).abs()/rotSpeed/35;
+//      _rotateTo(newRot, secondsToRot, 0, null);
+//      
+//      num travelDistance = new Point(x, y).distanceTo(new Point(aboveDockP.x, aboveDockP.y));
+//      num secondsToMove = (travelDistance/speed).abs()/30;
+//      _moveTo(aboveDockP.x, aboveDockP.y, secondsToMove, secondsToRot, null);
+//      
+//      nextX = aboveDockP.x;
+//      nextY = aboveDockP.y;
+//      nextRot = newRot;
+//      totalSeconds = totalSeconds+secondsToRot+secondsToMove;
+//    }
+//    
+//    Point frontOfDock = new Point(0,0);
+//    if (_teamA) {
+//      frontOfDock.y = _fleet.dockHeight+80;
+//      frontOfDock.x = frontOfDock.x;
+//    }
+//    else {
+//      frontOfDock.y = _game.height-_fleet.dockHeight-80;
+//      frontOfDock.x = frontOfDock.x;
+//    }
+//    num cx = frontOfDock.x - nextX;
+//    num cy = frontOfDock.y - nextY;
+//    num newAngle = Movement.findMinimumAngle(nextRot, math.atan2(cy, cx)+math.PI/2);
+//    num secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
+//    _rotateTo(newAngle, secondsToRot, totalSeconds, null);
+//    
+//    num travelDistance = new Point(nextX, nextY).distanceTo(new Point(frontOfDock.x, frontOfDock.y));
+//    num secondsToMove = (travelDistance/speed).abs()/30;
+//    _moveTo(frontOfDock.x, frontOfDock.y, secondsToMove, totalSeconds+secondsToRot, null);
+//    
+//    nextX = frontOfDock.x;
+//    nextY = frontOfDock.y;
+//    nextRot = newAngle;
+//    totalSeconds = totalSeconds+secondsToRot+secondsToMove;
+//    
+//    Point insideDock;
+//    if (_teamA) {
+//      insideDock = new Point(nextX+5, nextY-140);
+//      newAngle = 0;
+//    }
+//    else {
+//      insideDock = new Point(nextX+5, nextY+140);
+//      newAngle = math.PI;
+//    }
+//    newAngle = Movement.findMinimumAngle(nextRot, newAngle);
+//    secondsToRot = (nextRot-newAngle).abs()/rotSpeed/35;
+//    _rotateTo(newAngle, secondsToRot, totalSeconds, null);
+//    
+//    travelDistance = new Point(nextX, nextY).distanceTo(new Point(insideDock.x, insideDock.y));
+//    secondsToMove = (travelDistance/speed).abs()/30;
+//    _moveTo(insideDock.x, insideDock.y, secondsToMove, totalSeconds+secondsToRot, _unloadNet);
+//  }
   
   void _rotateTo(num newRot, num secondsToRot, num delay, var fnc) {
     Tween t1 = new Tween(this, secondsToRot, TransitionFunction.linear);
@@ -575,7 +572,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _promptUser() {
-    if (_fleet.touchReminders>1 && _inDock==true && _showingPrompt==false) {
+    if (_fleet.touchReminders>1 && _showingPrompt==false) {
       _fleet.touchReminders--;
       _showingPrompt = true;
       
@@ -597,7 +594,6 @@ class Boat extends Sprite implements Touchable, Animatable {
         _arrow.x = x+50;
         _arrow.rotation = math.PI/2;
 //        _text.x = x-90;
-//        _text.y = y-260;
 //        _text.rotation = 0;
       }
 //      _fleet.addChild(_text);
@@ -629,8 +625,8 @@ class Boat extends Sprite implements Touchable, Animatable {
 
       TextFormat format = new TextFormat("Arial", 20, Color.LightYellow, align: "left");
       _fullText = new TextField("Your boat is full!", format);
-      if (_leavingDock==true) _fullText.text = "Leaving dock!";
-      _fullText.width = 200;
+//      if (_leavingDock==true) _fullText.text = "Leaving dock!";
+//      _fullText.width = 200;
 
       if (_teamA==true) {
         _fullText.x = x+50;
@@ -676,10 +672,10 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
    
   bool touchDown(Contact event) {
-    if (_inDock==true && _game.phase==Game.FISHING_PHASE) {
+    if (!_game.gameStarted && _game.phase==Game.FISHING_PHASE) {
       _game.gameStarted = true;
       if(_showingPrompt==true) _promptUserFinished();
-      _leaveDock();
+//      _leaveDock();
       return true;
     }
     if (_canMove==true) {
@@ -727,7 +723,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       
       if( _inProximity(_game._offseason.sellIslandTop.x, _game._offseason.sellIslandTop.y, _game._offseason.sellIslandTop.width)
           ||  _inProximity(_game._offseason.sellIslandBottom.x, _game._offseason.sellIslandBottom.y, _game._offseason.sellIslandBottom.width)){
-        
+        _game._offseason.sellBoat(this);
       }
       else{
         Tween t1 = new Tween(this, .25, TransitionFunction.easeInOutQuadratic);
