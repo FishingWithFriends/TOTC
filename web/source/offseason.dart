@@ -15,6 +15,8 @@ class Offseason extends Sprite {
   Map<int, Boat> _boatsB = new Map<int, Boat>();
   
   Bitmap dock;
+  Bitmap sellIslandTop;
+  Bitmap sellIslandBottom;
   
   List<Boat> offseasonBoats = new List<Boat>();
   
@@ -48,6 +50,17 @@ class Offseason extends Sprite {
       offseasonDock.x = _game.width/2-bitmapData.width/2;
       offseasonDock.y = _game.height/2-bitmapData.height/2;
     });
+    
+    sellIslandTop = new Bitmap(_resourceManager.getBitmapData("sellIsland"));
+    sellIslandTop..x = _game.width/2 + 350
+                 ..y = _game.height/2-350;
+    
+    sellIslandBottom = new Bitmap(_resourceManager.getBitmapData("sellIsland"));
+    sellIslandBottom..x = _game.width/2 - 350
+                 ..y = _game.height/2 + 350;
+                     
+    
+    
     addChild(offseasonDock);
     offseasonDock.addChild(dock);
     clearAndRefillDock();
@@ -56,6 +69,8 @@ class Offseason extends Sprite {
     addChild(offseasonDock);
     addChild(_teamACircle);
     addChild(_teamBCircle);
+    addChild(sellIslandTop);
+    addChild(sellIslandBottom);
   }
   
   void clearAndRefillDock() {
@@ -114,7 +129,7 @@ class Offseason extends Sprite {
             Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet);
             offseasonBoats.add(boat);
             boat.offseasonBoat = true;
-            
+            boat.mapIndex = i;
             if (fleetBoat._teamA == true) {
               _boatsA[i] = boat;
               if (fleetBoat._type==Fleet.TEAMASARDINE||fleetBoat._type==Fleet.TEAMBSARDINE) {
@@ -130,14 +145,18 @@ class Offseason extends Sprite {
               if (aCounter==0) {
                 boat.x = w/2-95;
                 boat.y = h/2-120;
+                boat._newX = w/2-95;
+                boat._newY = h/2-120;
                 boat.rotation = math.PI*4/5;
               } else if (aCounter==1) {
                 boat.x = w/2-150;
                 boat.y = h/2-5;
+                boat._newX = w/2-150;
+                boat._newY = h/2-5;
                 boat.rotation = math.PI/2;
               } else if (aCounter==2) {
-                boat.x = w/2-85;
-                boat.y = h/2+115;
+                boat._newX = w/2-85;
+                boat._newY = h/2+115;
                 boat.rotation = math.PI*1/6;
               }
               aCounter++;
@@ -146,14 +165,20 @@ class Offseason extends Sprite {
               if (bCounter==0) {
                 boat.x = w/2+65;
                 boat.y = h/2+100;
+                boat._newX = w/2+65;
+                boat._newY = h/2+100;
                 boat.rotation = -math.PI/5;
               } else if (bCounter==1) {
                 boat.x = w/2+120;
                 boat.y = h/2+0;
+                boat._newX = w/2+120;
+                boat._newY = h/2+0;
                 boat.rotation = -math.PI/2;
               } else if (bCounter==2) {
                 boat.x = w/2+70;
                 boat.y = h/2-115;
+                boat._newX = w/2+70;
+                boat._newY = h/2-115;
                 boat.rotation = -math.PI*4/5;
               }
               bCounter++;

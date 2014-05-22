@@ -72,6 +72,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   var particleConfig;
   ParticleEmitter particleEmitter;
   
+  int mapIndex = null;
+  
  
   Boat(ResourceManager resourceManager, Juggler juggler, int type, Game game, Fleet f) {
     _resourceManager = resourceManager;
@@ -720,6 +722,20 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     _setBoatUp();
     boat.addChild(_boatImage);
+    
+    if(offseasonBoat){
+      
+      if( _inProximity(_game._offseason.sellIslandTop.x, _game._offseason.sellIslandTop.y, _game._offseason.sellIslandTop.width)
+          ||  _inProximity(_game._offseason.sellIslandBottom.x, _game._offseason.sellIslandBottom.y, _game._offseason.sellIslandBottom.width)){
+        
+      }
+      else{
+        Tween t1 = new Tween(this, .25, TransitionFunction.easeInOutQuadratic);
+        t1.animate.x.to(_newX);
+        t1.animate.y.to(_newY);
+        _juggler.add(t1);
+      }
+    }
   }
    
   void touchDrag(Contact event) {

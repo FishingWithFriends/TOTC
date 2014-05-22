@@ -102,7 +102,7 @@ void main() {
   resourceManager.addBitmapData("endgameSardineIcon", "images/endgameSardineIcon.png");
   resourceManager.addBitmapData("endgameTunaIcon", "images/endgameTunaIcon.png");
   resourceManager.addBitmapData("endgameSharkIcon", "images/endgameSharkIcon.png");
-  
+  resourceManager.addBitmapData("sellIsland", "images/sell_island.png");  
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
   
   resourceManager.load().then((res) {
