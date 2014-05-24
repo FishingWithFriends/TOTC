@@ -66,11 +66,12 @@ class Offseason extends Sprite {
     clearAndRefillDock();
     
     addChild(_background);
+    addChild(sellIslandTop);
+    addChild(sellIslandBottom);
     addChild(offseasonDock);
     addChild(_teamACircle);
     addChild(_teamBCircle);
-    addChild(sellIslandTop);
-    addChild(sellIslandBottom);
+
   }
   
   void clearAndRefillDock() {
@@ -79,6 +80,15 @@ class Offseason extends Sprite {
       if(contains(offseasonBoats[i])) removeChild(offseasonBoats[i]);
     }
     fillDocks();
+//    arrangeUICircle();
+  }
+  
+  void arrangeUICircle(){
+    if(contains(_teamACircle)) removeChild(_teamACircle);
+    if(contains(_teamBCircle)) removeChild(_teamBCircle);
+    
+    addChild(_teamACircle);
+    addChild(_teamBCircle);
   }
   
   void showCircles() {
@@ -188,7 +198,8 @@ class Offseason extends Sprite {
             }
             _game.tlayer.touchables.add(boat);
 //            offseasonDock.addChild(boat);
-            addChild(boat);
+            int index = getChildIndex(offseasonDock)+1;
+            addChildAt(boat, index+i);
           }
         });
       });
@@ -285,6 +296,7 @@ class Circle extends Sprite implements Touchable {
   int _boxConfirmMode = 0;
   bool _boxUp = false;
   num _boxX, _boxY;
+  bool _boxDisplayed = false;
   
   Circle(ResourceManager resourceManager, Juggler juggler, Game game, bool teamA, Map<int, Boat> boatsA, Map<int, Boat> boatsB, Fleet fleet, Offseason offseason) {
     _resourceManager = resourceManager;
@@ -467,6 +479,7 @@ class Circle extends Sprite implements Touchable {
   
   void _clearConsole() {
     if (contains(_box)) removeChild(_box);
+    _boxDisplayed = false;
   }
   
   void _yesClicked(var e) {
@@ -595,6 +608,7 @@ class Circle extends Sprite implements Touchable {
     addChild(_box);
     _box.addChild(_confirmText);
     _box.addChild(_yesButton);
+    _boxDisplayed = true;
     if (_confirmMode==CONFIRM) _box.addChild(_noButton);
   }
   

@@ -585,9 +585,21 @@ class Boat extends Sprite implements Touchable, Animatable {
   bool touchDown(Contact event) {
     
     if(offseasonBoat){
-      x = event.touchX;
-      y = event.touchY;
-    }
+          if(_teamA){
+            if(!_game._offseason._teamACircle._boxDisplayed){
+              x = event.touchX;
+              y = event.touchY;
+            }
+
+          }
+          else{
+            if(!_game._offseason._teamBCircle._boxDisplayed){
+              x = event.touchX;
+              y = event.touchY;
+            }
+          }
+        
+        }
     else{
     
       if (!_game.gameStarted && _game.phase==Game.FISHING_PHASE) {
@@ -660,10 +672,21 @@ class Boat extends Sprite implements Touchable, Animatable {
     }
     
     if(offseasonBoat){
-      x = event.touchX;
-      y = event.touchY;
-    }
+      if(_teamA){
+        if(!_game._offseason._teamACircle._boxDisplayed){
+          x = event.touchX;
+          y = event.touchY;
+        }
+
+      }
+      else{
+        if(!_game._offseason._teamBCircle._boxDisplayed){
+          x = event.touchX;
+          y = event.touchY;
+        }
+      }
     
+    }
   }
    
   void touchSlide(Contact event) { }
