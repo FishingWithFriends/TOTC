@@ -97,59 +97,59 @@ class Fleet extends Sprite {
   }
   
   Point positionFishPhase(Boat boat){
-  Point position = new Point(0,0);
-  
-  if(boat._teamA){
-    int aCount = 0;
-    for(int i = 0; i < boats.length; i++){
-      if(boat == boats[i]){  
-        if(aCount ==0){
-          position.x = 50;
-          position.y = 50;
+    Point position = new Point(0,0);
+    
+    if(boat._teamA){
+      int aCount = 0;
+      for(int i = 0; i < boats.length; i++){
+        if(boat == boats[i]){  
+          if(aCount ==0){
+            position.x = 50;
+            position.y = 50;
+          }
+          else if(aCount == 1){
+            position.x = 150;
+            position.y = 50;
+          }
+          else if(aCount == 2){
+            position.x = 250;
+            position.y = 50;
+          }
+          
+          return position;
         }
-        else if(aCount == 1){
-          position.x = 150;
-          position.y = 50;
+        if(boats[i]._teamA){
+          aCount++;
         }
-        else if(aCount == 2){
-          position.x = 250;
-          position.y = 50;
-        }
-        
-        return position;
-      }
-      if(boats[i]._teamA){
-        aCount++;
       }
     }
-  }
-  
-  else{
-    int bCount = 0;
-        for(int i = 0; i < boats.length; i++){
-          if(boat == boats[i]){  
-            if(bCount ==0){
-              position.x = _game.width-50;
-              position.y = _game.height - 50;
+    
+    else{
+      int bCount = 0;
+          for(int i = 0; i < boats.length; i++){
+            if(boat == boats[i]){  
+              if(bCount ==0){
+                position.x = _game.width-50;
+                position.y = _game.height - 50;
+              }
+              else if(bCount == 1){
+                position.x = _game.width-150;
+                position.y = _game.height - 50;
+              }
+              else if(bCount == 2){
+                position.x = _game.width-250;
+                position.y = _game.height - 50;
+              }
+              
+              return position;
             }
-            else if(bCount == 1){
-              position.x = _game.width-150;
-              position.y = _game.height - 50;
+            if(!boats[i]._teamA){
+              bCount++;
             }
-            else if(bCount == 2){
-              position.x = _game.width-250;
-              position.y = _game.height - 50;
-            }
-            
-            return position;
           }
-          if(!boats[i]._teamA){
-            bCount++;
-          }
-        }
-  }
-  
-  
+    }
+    
+    
   return position;
   }
   

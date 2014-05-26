@@ -572,15 +572,15 @@ class Game extends Sprite implements Animatable{
                   ..x = width/2 - teamAMoneyText.width/2+10
                   ..y = 60
                   ..rotation = math.PI;
-    addChild(teamAScoreText);
-    uiObjects.add(teamAScoreText);
+//    addChild(teamAScoreText);
+//    uiObjects.add(teamAScoreText);
 
     teamBScoreText = new TextField("Score: ${teamAScore}", format);
     teamBScoreText..width = 200
                   ..x = width/2 + teamBMoneyText.width/2+10
                   ..y = height - 60;
-    addChild(teamBScoreText);
-    uiObjects.add(teamBScoreText);
+//    addChild(teamBScoreText);
+//    uiObjects.add(teamBScoreText);
     
     
     

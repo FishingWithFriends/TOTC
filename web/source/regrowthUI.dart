@@ -397,7 +397,7 @@ class ScoreCounter extends Sprite{
   
   int teamType;
   
-  Shape uiBox;
+  Shape uiBox, teamBase;
   TextField scorePrompt;
   TextField multiplier;
   TextField total;
@@ -408,40 +408,64 @@ class ScoreCounter extends Sprite{
     
     num rotationVal;
     int boxX, boxY, r1,r2,r3, offsetX, offsetY;
-    
-    
-    if(teamType == TEAMA){
-      rotationVal = 3*math.PI/4;
-      boxX = 500;
-      boxY = 75;
-      r1 = 250;
-      r2 = 225;
-      r3 = 200;
-      offsetX = 0;
-      offsetY = 0;
-    }
-    else if(teamType == TEAMB){
-      rotationVal = -math.PI/4;
-      boxX = _game.width - 500;
-      boxY = _game.height - 75;
-      r1 = 250;
-      r2 = 225;
-      r3 = 200;
-      offsetX = _game.width;
-      offsetY = _game.height;
-    }    
-      
-    uiBox = new Shape();
-    uiBox..graphics.rect(300, 200, 300, 100)
-         ..graphics.fillColor(Color.Black)
-         ..pivotX = uiBox.width/2
-         ..pivotY = uiBox.height/2
-         ..rotation = rotationVal
-         ..x = boxX
-         ..y = boxY
-         ..alpha = 0;
-   addChild(uiBox);
+    int baseX, baseY;
+    int fillColor;
+
+        if(teamType == TEAMA){
+          baseX = 0;
+          baseY = 0;
+          r1 = 400;
+          fillColor = Color.Green;
+         
+        }
+        else if(teamType == TEAMB){
+          baseX = _game.width;
+          baseY = _game.height;
+          r1 = 400;
+          fillColor = Color.Red;
+              
+        }    
+        
+   teamBase = new Shape();
+   teamBase..graphics.arc(baseX, baseY, r1, 0, 2*math.PI, false)
+            ..graphics.fillColor(fillColor)
+            ..alpha = 0;
+   addChild(teamBase);
    
+   if(teamType == TEAMA){
+     rotationVal = 3*math.PI/4;
+     boxX = 500;
+     boxY = 75;
+     r1 = 250;
+     r2 = 225;
+     r3 = 200;
+     offsetX = 0;
+     offsetY = 0;
+   }
+   else if(teamType == TEAMB){
+     rotationVal = -math.PI/4;
+     boxX = _game.width - 500;
+     boxY = _game.height - 75;
+     r1 = 250;
+     r2 = 225;
+     r3 = 200;
+     offsetX = _game.width;
+     offsetY = _game.height;
+   }    
+   
+   uiBox = new Shape();
+   uiBox..graphics.rect(300, 200, 300, 100)
+        ..graphics.fillColor(Color.Black)
+        ..pivotX = uiBox.width/2
+        ..pivotY = uiBox.height/2
+        ..rotation = rotationVal
+        ..x = boxX
+        ..y = boxY
+        ..alpha = 0;
+//   addChild(uiBox);
+
+       
+       
    TextFormat format = new TextFormat("Arial", 18, Color.White, align: "right", bold: true);
    
    scorePrompt = new TextField("", format);
@@ -471,7 +495,8 @@ class ScoreCounter extends Sprite{
         ..y =offsetY + r3*math.sin(rotationVal);
    addChild(total);
    
-   
+
+
   }
   
   void showCounter(){
@@ -479,6 +504,10 @@ class ScoreCounter extends Sprite{
     Tween t1 = new Tween(uiBox, 1, TransitionFunction.linear);
     t1.animate.alpha.to(.6);
     _juggler.add(t1);
+    
+    Tween t3 = new Tween(teamBase, 1, TransitionFunction.linear);
+    t3.animate.alpha.to(.6);
+    _juggler.add(t3);
     
     
     if(teamType == TEAMA) profit = _game.teamARoundProfit;
@@ -521,6 +550,7 @@ class ScoreCounter extends Sprite{
   
   void hideCounter(){
     uiBox.alpha = 0;
+    teamBase.alpha = 0;
     scorePrompt.alpha = 0;
     multiplier.alpha = 0;
     total.alpha = 0;
