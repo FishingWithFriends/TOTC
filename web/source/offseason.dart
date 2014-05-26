@@ -55,11 +55,13 @@ class Offseason extends Sprite {
     
     sellIslandTop = new Bitmap(_resourceManager.getBitmapData("sellIsland"));
     sellIslandTop..x = _game.width/2 + 350
-                 ..y = _game.height/2-350;
+                 ..y = _game.height/2-350
+                 ..alpha = 0;
     
     sellIslandBottom = new Bitmap(_resourceManager.getBitmapData("sellIsland"));
     sellIslandBottom..x = _game.width/2 - 350
-                 ..y = _game.height/2 + 350;
+                 ..y = _game.height/2 + 350
+                 ..alpha = 0;
                      
     sellBoatSound = _resourceManager.getSound("chaChing");
     
@@ -102,6 +104,14 @@ class Offseason extends Sprite {
     Tween t2 = new Tween(_teamBCircle, .5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
     _juggler.add(t2);
+    
+    Tween t3 = new Tween(sellIslandTop, .5, TransitionFunction.linear);
+    t3.animate.alpha.to(1);
+    _juggler.add(t3);
+    
+    Tween t4 = new Tween(sellIslandBottom, .5, TransitionFunction.linear);
+    t4.animate.alpha.to(1);
+    _juggler.add(t4);
   }
   
   void hideCircles() {
@@ -399,10 +409,10 @@ class Circle extends Sprite implements Touchable {
        _speedButton.x = math.cos(math.PI*8/6)*w;
        _speedButton.y = math.sin(math.PI*8/6)*w;
        w = width*.1875;
-       _tunaButton.x = math.cos(-math.PI*1/16)*w;
-       _tunaButton.y = math.sin(-math.PI*1/16)*w;
-       _sardineButton.x = math.cos(math.PI*1.5/6)*w;
-       _sardineButton.y = math.sin(math.PI*1.5/6)*w;
+       _sardineButton.x = math.cos(-math.PI*1/16)*w;
+       _sardineButton.y = math.sin(-math.PI*1/16)*w;
+       _tunaButton.x = math.cos(math.PI*1.5/6)*w;
+       _tunaButton.y = math.sin(math.PI*1.5/6)*w;
        _sharkButton.x = math.cos(math.PI*3.75/6)*w;
        _sharkButton.y = math.sin(math.PI*3.75/6)*w;
      });

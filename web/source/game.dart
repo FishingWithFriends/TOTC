@@ -284,6 +284,7 @@ class Game extends Sprite implements Animatable{
           ..graphics.closePath();
     }
     timerPie.graphics.fillColor(Color.Black);
+    arrangeTimerUI();
   }
 
   
@@ -440,7 +441,6 @@ class Game extends Sprite implements Animatable{
   }
   void toBuyPhaseTransitionStageTwo(){
     _offseason.showCircles();
-
     Tween t1 = new Tween(teamAMoneyText, .5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
     _juggler.add(t1);
@@ -756,9 +756,29 @@ class Game extends Sprite implements Animatable{
       swapChildren(_offseason, toSwap);
     }
     
-    if(getChildIndex(timerPie) < getChildIndex(pieTimerBitmap)){
-      swapChildren(timerPie, pieTimerBitmap);
+  }
+  void arrangeTimerUI(){
+    int min = getChildIndex(timerPie);
+    DisplayObject lowest;
+    if( min > getChildIndex(pieTimerBitmap)){
+      min = getChildIndex(pieTimerBitmap);
+      lowest = pieTimerBitmap;
     }
-
+    if(min >  getChildIndex(roundNumber)){
+      min = getChildIndex(roundNumber);
+      lowest = roundNumber;
+    }
+    if(min > getChildIndex(seasonTitle)){
+      min = getChildIndex(seasonTitle);
+      lowest = seasonTitle;
+    }
+    if(min > getChildIndex(roundTitle)){
+      min = getChildIndex(roundTitle);
+      lowest = roundTitle;
+      
+    }
+    if(lowest != null){
+      swapChildren(timerPie, lowest);
+    }
   }
 }
