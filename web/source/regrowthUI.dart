@@ -38,6 +38,9 @@ class EcosystemBadge extends Sprite implements Animatable{
   
   int rating, animatedRating;
   
+  Sound badgeSound;
+  Sound starSound;
+  
   bool showStatusText = false;
   
   EcosystemBadge(this._resourceManager, this._juggler, this._game, this._ecosystem) {
@@ -47,7 +50,9 @@ class EcosystemBadge extends Sprite implements Animatable{
     addChild(teamACounter);
     addChild(teamBCounter);
     initalizeObjects();
-
+    
+    badgeSound = _resourceManager.getSound("badgeSound");
+    starSound = _resourceManager.getSound("starSound");
   }
   
   bool advanceTime(num time){
@@ -99,6 +104,7 @@ class EcosystemBadge extends Sprite implements Animatable{
       
       Tween t1 = new Tween(toShow, 1, TransitionFunction.easeInOutQuadratic);
       t1.animate.alpha.to(1);
+      starSound.play();
       t1.onComplete = showStars;
       _juggler.add(t1);
       animatedRating++;
@@ -128,7 +134,7 @@ class EcosystemBadge extends Sprite implements Animatable{
             
     Tween t7 = new Tween(badgeSardine, 1, TransitionFunction.easeInOutQuartic);
     t7.animate.alpha.to(1);
-    
+    badgeSound.play();
     t7.onComplete = showTextTwo;
     _juggler.add(t7);
     
@@ -151,7 +157,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     
     Tween t8 = new Tween(badgeTuna, 1, TransitionFunction.easeInOutQuadratic);
     t8.animate.alpha.to(1);
-    
+    badgeSound.play();
     t8.onComplete = showTextThree;
     
     _juggler.add(t8);    
@@ -174,7 +180,7 @@ class EcosystemBadge extends Sprite implements Animatable{
             
     Tween t9 = new Tween(badgeShark, 1, TransitionFunction.easeInOutQuadratic);
     t9.animate.alpha.to(1);
-    
+    badgeSound.play();
     t9.onComplete = showStars;
 
     _juggler.add(t9);

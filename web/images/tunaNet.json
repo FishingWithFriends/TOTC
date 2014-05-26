@@ -2,83 +2,83 @@
 
 {
 	"filename": "tunaNet0.png",
-	"frame": {"x":2,"y":2,"w":151,"h":148},
+	"frame": {"x":2,"y":2,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet1.png",
-	"frame": {"x":155,"y":2,"w":151,"h":148},
+	"frame": {"x":114,"y":2,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet2.png",
-	"frame": {"x":308,"y":2,"w":151,"h":148},
+	"frame": {"x":226,"y":2,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet3.png",
-	"frame": {"x":2,"y":152,"w":151,"h":148},
+	"frame": {"x":2,"y":112,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet4.png",
-	"frame": {"x":155,"y":152,"w":151,"h":148},
+	"frame": {"x":114,"y":112,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet5.png",
-	"frame": {"x":308,"y":152,"w":151,"h":148},
+	"frame": {"x":226,"y":112,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet6.png",
-	"frame": {"x":2,"y":302,"w":151,"h":148},
+	"frame": {"x":2,"y":222,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet7.png",
-	"frame": {"x":155,"y":302,"w":151,"h":148},
+	"frame": {"x":114,"y":222,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 },
 {
 	"filename": "tunaNet8.png",
-	"frame": {"x":308,"y":302,"w":151,"h":148},
+	"frame": {"x":226,"y":222,"w":110,"h":108},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":148},
-	"sourceSize": {"w":151,"h":148}
+	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":108},
+	"sourceSize": {"w":110,"h":108}
 }],
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker ",
 	"version": "1.0",
 	"image": "tunaNet.png",
 	"format": "RGBA8888",
-	"size": {"w":461,"h":452},
+	"size": {"w":338,"h":332},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:63c47f013fb3db49b7a7ff0af7626c17:2f57b062ba13cc61c9e4a75bca78afd0:fa7e1d7cc7bce33650d7351ebfdedf28$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d960f1bfeff0f4243e7020b11e1a533f:de56c71dca5b40e26aee0c9344418b4a:fa7e1d7cc7bce33650d7351ebfdedf28$"
 }
 }

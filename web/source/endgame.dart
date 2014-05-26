@@ -37,6 +37,7 @@ class Endgame extends Sprite implements Animatable{
     endgameIcon..alpha = 0
                ..pivotX = endgameIcon.width/2
                ..pivotY = endgameIcon.height/2
+               ..rotation = -math.PI/4
                ..x = _game.width/2
                ..y = _game.height/2;
     

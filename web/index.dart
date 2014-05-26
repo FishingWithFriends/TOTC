@@ -113,7 +113,8 @@ void main() {
   resourceManager.addSound("buySplash", "sounds/buy_splash.ogg");
   resourceManager.addSound("itemSuction", "sounds/item_suction.ogg");
   resourceManager.addSound("timerSound", "sounds/round_timer.ogg");
-    
+  resourceManager.addSound("badgeSound", "sounds/badge_sound.ogg");
+  resourceManager.addSound("starSound", "sounds/star_sound.ogg");
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
   
   resourceManager.load().then((res) {

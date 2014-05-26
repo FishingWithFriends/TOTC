@@ -384,6 +384,13 @@ class Game extends Sprite implements Animatable{
       t1.onComplete = toFishingPhaseStageOne;
       _juggler.add(t1);
       
+      Tween t2 = new Tween(_offseason.sellIslandTop, .5, TransitionFunction.linear);
+      t2.animate.alpha.to(0);
+      _juggler.add(t2);
+      
+      Tween t3 = new Tween(_offseason.sellIslandBottom, .5, TransitionFunction.linear);
+      t3.animate.alpha.to(0);
+      _juggler.add(t3);
     }
     
     else if(phase == ENDGAME_PHASE){

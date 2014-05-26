@@ -284,6 +284,8 @@ class Circle extends Sprite implements Touchable {
   TextField _confirmText;
   Sprite _box;
   
+  TextField pushA, pushB;
+  
   Sound clicked;
   Sound swoosh;
   Sound buySplash;
@@ -294,6 +296,7 @@ class Circle extends Sprite implements Touchable {
   bool _upgradeMode = true;
   
   Tween _rotateTween;
+  Tween _rotateTween2;
   num _upgradeRotation;
   
   int _touchMode = 0;
@@ -334,6 +337,7 @@ class Circle extends Sprite implements Touchable {
       BitmapData.load('images/circleUIButtonA.png').then((bitmapData) {
         _circleButton.pivotX = bitmapData.width/2;
         _circleButton.pivotY = bitmapData.height/2;
+        _circleButton.rotation = 7*math.PI/4;
       });
     }
     else {
@@ -346,6 +350,7 @@ class Circle extends Sprite implements Touchable {
       BitmapData.load('images/circleUIButtonB.png').then((bitmapData) {
         _circleButton.pivotX = bitmapData.width/2;
         _circleButton.pivotY = bitmapData.height/2;
+        _circleButton.rotation = -math.PI/4;
       });
     
     }
@@ -414,16 +419,21 @@ class Circle extends Sprite implements Touchable {
   
   void _circlePressed(var e) {
     if (_juggler.contains(_rotateTween)) _juggler.remove(_rotateTween);
+    if (_juggler.contains(_rotateTween2)) _juggler.remove(_rotateTween2);
     _rotateTween = new Tween(this, .6, TransitionFunction.easeOutBounce);
+    _rotateTween2 = new Tween(_circleButton, .6, TransitionFunction.easeOutBounce);
     if (_upgradeMode==true) {
       _upgradeMode = false;
       _rotateTween.animate.rotation.to(_upgradeRotation+math.PI);
+      _rotateTween2.animate.rotation.by(-math.PI);
     }
     else {
       _upgradeMode = true;
       _rotateTween.animate.rotation.to(_upgradeRotation);
+      _rotateTween2.animate.rotation.by(math.PI);
     }
     _juggler.add(_rotateTween);
+    _juggler.add(_rotateTween2);
     swoosh.play();
   }
   
