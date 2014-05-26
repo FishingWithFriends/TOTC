@@ -18,6 +18,8 @@ class Offseason extends Sprite {
   Bitmap sellIslandTop;
   Bitmap sellIslandBottom;
   
+  Sound sellBoatSound;
+  
   List<Boat> offseasonBoats = new List<Boat>();
   
   Offseason(ResourceManager resourceManager, Juggler juggler, Game game, Fleet fleet) {
@@ -59,7 +61,7 @@ class Offseason extends Sprite {
     sellIslandBottom..x = _game.width/2 - 350
                  ..y = _game.height/2 + 350;
                      
-    
+    sellBoatSound = _resourceManager.getSound("chaChing");
     
     addChild(offseasonDock);
     offseasonDock.addChild(dock);
@@ -250,6 +252,7 @@ class Offseason extends Sprite {
             });
       _boatsB.remove(index);
     }
+    sellBoatSound.play();
     _fleet.sellBoat(index);
     offseasonBoats.remove(boat);
     if(contains(boat)) removeChild(boat);
@@ -281,6 +284,11 @@ class Circle extends Sprite implements Touchable {
   TextField _confirmText;
   Sprite _box;
   
+  Sound clicked;
+  Sound swoosh;
+  Sound buySplash;
+  Sound itemSuction;
+  
   bool _teamA;
   bool _teamAA;
   bool _upgradeMode = true;
@@ -307,6 +315,11 @@ class Circle extends Sprite implements Touchable {
     _teamA = teamA;
     _boatsA = boatsA;
     _boatsB = boatsB;
+    
+    clicked = _resourceManager.getSound("buttonClick");
+    swoosh = _resourceManager.getSound("circleUISwoosh");
+    buySplash = _resourceManager.getSound("buySplash");
+    itemSuction = _resourceManager.getSound("itemSuction");
     
     if (teamA==true) _upgradeRotation = math.PI;
     else _upgradeRotation = 0;
@@ -411,22 +424,28 @@ class Circle extends Sprite implements Touchable {
       _rotateTween.animate.rotation.to(_upgradeRotation);
     }
     _juggler.add(_rotateTween);
+    swoosh.play();
   }
   
   void _speedPressed(var e) {
     _touchMode = SPEED;
+    itemSuction.play();
   }
   void _capacityPressed(var e) {
     _touchMode = CAPACITY;
+    itemSuction.play();
   }
   void _tunaPressed(var e) {
     _touchMode = TUNA;
+    itemSuction.play();
   }
   void _sardinePressed(var e) {
     _touchMode = SARDINE;
+    itemSuction.play();
   }
   void _sharkPressed(var e) {
     _touchMode = SHARK;
+    itemSuction.play();
   }
   SimpleButton _returnSpeedButton() {
     return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SpeedUpgradeButton")), 
@@ -483,7 +502,10 @@ class Circle extends Sprite implements Touchable {
   }
   
   void _yesClicked(var e) {
-    if (_confirmMode==OKAY) _clearConsole();
+    if (_confirmMode==OKAY){
+      _clearConsole();
+      clicked.play();
+    }
     else if (_confirmMode==CONFIRM) {
       num amount = _calculateAmount();
       
@@ -523,8 +545,10 @@ class Circle extends Sprite implements Touchable {
           }
           if (_boxConfirmMode != SPEED && _boxConfirmMode != CAPACITY) 
             _offseason.clearAndRefillDock();
+            buySplash.play();
         }
         _boxUp = false;
+        clicked.play();
         _clearConsole();
         _touchedBoat = null;
         _boxConfirmMode = 0;
@@ -533,6 +557,7 @@ class Circle extends Sprite implements Touchable {
   }
   
   void _noClicked(var e) {
+    clicked.play();
     _boxUp = false;
     _touchMode = 0;
     _touchedBoat = null;

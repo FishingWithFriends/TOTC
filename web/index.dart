@@ -103,6 +103,14 @@ void main() {
   resourceManager.addBitmapData("endgameTunaIcon", "images/endgameTunaIcon.png");
   resourceManager.addBitmapData("endgameSharkIcon", "images/endgameSharkIcon.png");
   resourceManager.addBitmapData("sellIsland", "images/sell_island.png");  
+  
+  resourceManager.addSound("buttonClick", "sounds/button_click.ogg");
+  resourceManager.addSound("circleUISwoosh", "sounds/circle_swoosh.ogg");
+  resourceManager.addSound("chaChing", "sounds/cha_ching.ogg");
+  resourceManager.addSound("buySplash", "sounds/buy_splash.ogg");
+  resourceManager.addSound("itemSuction", "sounds/item_suction.ogg");
+  resourceManager.addSound("timerSound", "sounds/round_timer.ogg");
+    
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
   
   resourceManager.load().then((res) {

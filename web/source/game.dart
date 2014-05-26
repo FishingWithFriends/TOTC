@@ -9,9 +9,13 @@ class Game extends Sprite implements Animatable{
   
   static const MAX_ROUNDS = 6;
   
-  static const FISHING_TIMER_WIDTH = 75;
-  static const REGROWTH_TIMER_WIDTH = 35;
-  static const BUY_TIMER_WIDTH = 50;
+  static const FISHING_TIMER_WIDTH = 125;
+  static const REGROWTH_TIMER_WIDTH = 125;
+  static const BUY_TIMER_WIDTH = 125;
+  
+  static const FISHING_TIME = 10;
+  static const REGROWTH_TIME = 8;
+  static const BUYING_TIME = 10;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -82,7 +86,11 @@ class Game extends Sprite implements Animatable{
   int regrowthTimerTick = 15;
   
   bool transition;
+  bool timerActive;
+  Sound timerSound;
   
+  Timer clockUpdateTimer;
+  num clockCounter;
   // Slider _teamASlider, _teamBSlider;
   // int sliderPrompt = 6;
   
@@ -117,15 +125,22 @@ class Game extends Sprite implements Animatable{
     addChild(_fleet);
     addChild(_endgame);
 
+    timerSound = _resourceManager.getSound("timerSound");
+    
     _loadTextAndShapes();
     
     transition = false;
+    timerActive = false;
   }
 
   bool advanceTime(num time) {
     if (gameStarted == false) return true;
     
-    
+    if(!timerActive && gameStarted){
+      startTimer();
+      timerActive = true;
+    }
+
     //Update Team Money
     if (moneyTimer>moneyTimerMax && moneyChanged==true) _updateMoney();
     else moneyTimer++;
@@ -136,10 +151,10 @@ class Game extends Sprite implements Animatable{
     
     
     //Update Timer and initiate phase change
-    if (timerGraphicA.width<4 && !transition) _nextSeason();
-    else {
-      if (!transition)_decreaseTimer();
-    }
+//    if (timerGraphicA.width<=2 && !transition) _nextSeason();
+//    else {
+//      if (!transition)_decreaseTimer();
+//    }
     
     
     //Display growth information
@@ -210,45 +225,67 @@ class Game extends Sprite implements Animatable{
     }
   }
   
-  void _decreaseTimer() {
-    if ((phase==FISHING_PHASE && timer>fishingTimerTick) || 
-        (phase==BUY_PHASE && timer>buyTimerTick) || 
-        (phase==REGROWTH_PHASE && timer>regrowthTimerTick)) {
-      timerGraphicA.width -= 2;
-      timerGraphicA.x += 2;
-      timerGraphicB.width -= 2;
-      timer = 0;
-      
-      timerPie.graphics.clear();
-      if (phase==FISHING_PHASE) {
-
-        timerPie..graphics.beginPath()
-            ..graphics.lineTo(0, timerPieRadius)
-            ..graphics.lineTo(timerPieRadius, timerPieRadius)
-            ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/FISHING_TIMER_WIDTH, false)
-            ..graphics.closePath();
-      }
-      else if(phase==BUY_PHASE){
-
-        timerPie..graphics.beginPath()
-            ..graphics.lineTo(0, timerPieRadius)
-            ..graphics.lineTo(timerPieRadius, timerPieRadius)
-            ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/BUY_TIMER_WIDTH, false)
-            ..graphics.closePath();
-      }
-      else if(phase==REGROWTH_PHASE){
-        timerPie..graphics.beginPath()
-            ..graphics.lineTo(0, timerPieRadius)
-            ..graphics.lineTo(timerPieRadius, timerPieRadius)
-            ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (timerGraphicA.width+0.0)/REGROWTH_TIMER_WIDTH, false)
-            ..graphics.closePath();
-      }
-      timerPie.graphics.fillColor(Color.Black);
-
-    } else timer++;
+  
+  void startTimer(){
     
-
+    clockUpdateTimer = new Timer.periodic(new Duration(milliseconds:250), updateClock);
+    
+    if(phase == FISHING_PHASE){
+      new Timer(new Duration(milliseconds:FISHING_TIME*1000+250), _nextSeason );
+      new Timer(new Duration(milliseconds:FISHING_TIME*1000 -5000), timerSound.play);
+      clockCounter = FISHING_TIME*1000;
+      new Timer(new Duration(milliseconds:FISHING_TIME*1000+250), clockUpdateTimer.cancel);
+    }
+    else if(phase == REGROWTH_PHASE){
+      new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 +250), _nextSeason );
+      new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 -5000), timerSound.play);
+      clockCounter = REGROWTH_TIME*1000;
+      new Timer(new Duration(milliseconds:REGROWTH_TIME*1000+250), clockUpdateTimer.cancel);
+    }
+    else if(phase == BUY_PHASE){
+      new Timer(new Duration(milliseconds:BUYING_TIME*1000+250), _nextSeason );
+      new Timer(new Duration(milliseconds:BUYING_TIME*1000 -5000), timerSound.play);
+      clockCounter = BUYING_TIME*1000;
+      new Timer(new Duration(milliseconds:BUYING_TIME*1000+250), clockUpdateTimer.cancel);
+    }
+    
+//    clockUpdateTimer = new Timer.periodic(new Duration(milliseconds:250), updateClock);
+    
   }
+  
+  void updateClock(Timer updater){
+    clockCounter -= 250;
+//    if(clockCounter <= 0){
+//      updater.cancel();
+//      return;
+//    }
+    timerPie.graphics.clear();
+    if (phase==FISHING_PHASE) {
+
+      timerPie..graphics.beginPath()
+          ..graphics.lineTo(0, timerPieRadius)
+          ..graphics.lineTo(timerPieRadius, timerPieRadius)
+          ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (clockCounter+0.0)/(FISHING_TIME*1000), false)
+          ..graphics.closePath();
+    }
+    else if(phase==BUY_PHASE){
+
+      timerPie..graphics.beginPath()
+          ..graphics.lineTo(0, timerPieRadius)
+          ..graphics.lineTo(timerPieRadius, timerPieRadius)
+          ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (clockCounter+0.0)/(BUYING_TIME*1000), false)
+          ..graphics.closePath();
+    }
+    else if(phase==REGROWTH_PHASE){
+      timerPie..graphics.beginPath()
+          ..graphics.lineTo(0, timerPieRadius)
+          ..graphics.lineTo(timerPieRadius, timerPieRadius)
+          ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI * (clockCounter+0.0)/(REGROWTH_TIME*1000), false)
+          ..graphics.closePath();
+    }
+    timerPie.graphics.fillColor(Color.Black);
+  }
+
   
   bool endgame(){
     if(round >=MAX_ROUNDS || _ecosystem._fishCount[SARDINE] <=0 || _ecosystem._fishCount[TUNA] <=0 || _ecosystem._fishCount[SHARK] <=0){
@@ -282,6 +319,8 @@ class Game extends Sprite implements Animatable{
       addChild(badge);
       badge.showBadge();
       transition = false;
+//      timerActive = false;
+      startTimer();
       
       for(int i = 0; i < _fleet.boats.length; i++){
         _fleet.boats[i]._unloadNet();
@@ -404,6 +443,8 @@ class Game extends Sprite implements Animatable{
     _juggler.add(t2);
     
     transition = false;
+//    timerActive = false;
+    startTimer();
   }
   
   void toFishingPhaseStageOne(){
@@ -469,6 +510,8 @@ class Game extends Sprite implements Animatable{
     t2.animate.alpha.to(1);
     _juggler.add(t2);
     transition = false;
+//    timerActive = false;
+    startTimer();
   }
  
   void toEndGameTransitionStageOne(){
