@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "sardineNet0.png",
+	"filename": "sharkNet0.png",
 	"frame": {"x":2,"y":2,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet1.png",
+	"filename": "sharkNet1.png",
 	"frame": {"x":155,"y":2,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet2.png",
+	"filename": "sharkNet2.png",
 	"frame": {"x":308,"y":2,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet3.png",
+	"filename": "sharkNet3.png",
 	"frame": {"x":2,"y":152,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet4.png",
+	"filename": "sharkNet4.png",
 	"frame": {"x":155,"y":152,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet5.png",
+	"filename": "sharkNet5.png",
 	"frame": {"x":308,"y":152,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -49,7 +49,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet6.png",
+	"filename": "sharkNet6.png",
 	"frame": {"x":2,"y":302,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -57,7 +57,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet7.png",
+	"filename": "sharkNet7.png",
 	"frame": {"x":155,"y":302,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -65,7 +65,7 @@
 	"sourceSize": {"w":151,"h":148}
 },
 {
-	"filename": "sardineNet8.png",
+	"filename": "sharkNet8.png",
 	"frame": {"x":308,"y":302,"w":151,"h":148},
 	"rotated": false,
 	"trimmed": false,
@@ -75,10 +75,10 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker ",
 	"version": "1.0",
-	"image": "nets.png",
+	"image": "sharkNet.png",
 	"format": "RGBA8888",
 	"size": {"w":461,"h":452},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3ebe1dd036cb61a8aaa152bd171674b4:54f5940e631682721d5cac7b01c2b4d8:7bbb53d28449c0abdf0cbcb629837e36$"
+	"smartupdate": "$TexturePacker:SmartUpdate:42b1c540570a6416227548ba1a7d20ff:6dce5f4f2613a99a1a2786c2669ad0c1:7cc726c5957831cb51e6d98724405418$"
 }
 }

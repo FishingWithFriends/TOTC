@@ -48,6 +48,9 @@ void main() {
   resourceManager.addBitmapData("BoatBSharkDown", "images/boat_shark_b_touched.png");
   resourceManager.addBitmapData("BoatBSharkUp", "images/boat_shark_b.png");
   resourceManager.addTextureAtlas("Nets", "images/nets.json", TextureAtlasFormat.JSONARRAY);
+  resourceManager.addTextureAtlas("sardineNets", "images/sardineNet.json", TextureAtlasFormat.JSONARRAY);
+  resourceManager.addTextureAtlas("tunaNets", "images/tunaNet.json", TextureAtlasFormat.JSONARRAY);
+  resourceManager.addTextureAtlas("sharkNets", "images/sharkNet.json", TextureAtlasFormat.JSONARRAY);
   resourceManager.addBitmapData("Background", "images/background.png");
   resourceManager.addBitmapData("OffseasonBackground", "images/offseason_background.png");
   resourceManager.addBitmapData("Mask", "images/mask.png");

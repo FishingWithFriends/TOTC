@@ -81,7 +81,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     _type = type;
     _fleet = f;
     _game = game;
-    _nets = resourceManager.getTextureAtlas('Nets');
+
     random = new math.Random();
     
     particleConfig = {
@@ -148,9 +148,18 @@ class Boat extends Sprite implements Touchable, Animatable {
     rotSpeed = BASE_ROT_SPEED;
     netCapacityMax = BASE_NET_CAPACITY;
     
-    if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE) catchType = Ecosystem.SARDINE;
-    if (type==Fleet.TEAMATUNA || type==Fleet.TEAMBTUNA) catchType = Ecosystem.TUNA;
-    if (type==Fleet.TEAMASHARK || type==Fleet.TEAMBSHARK) catchType = Ecosystem.SHARK;
+    if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE){
+      catchType = Ecosystem.SARDINE;
+      _nets = resourceManager.getTextureAtlas('sardineNets');
+    }
+    if (type==Fleet.TEAMATUNA || type==Fleet.TEAMBTUNA){
+      catchType = Ecosystem.TUNA;
+      _nets = resourceManager.getTextureAtlas('tunaNets');
+    }
+    if (type==Fleet.TEAMASHARK || type==Fleet.TEAMBSHARK){
+      catchType = Ecosystem.SHARK;
+      _nets = resourceManager.getTextureAtlas('sharkNets');
+    }
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMATUNA || type==Fleet.TEAMASHARK) _teamA = true;
     else _teamA = false;
     

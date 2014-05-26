@@ -749,7 +749,9 @@ class Game extends Sprite implements Animatable{
       swapChildren(_offseason, toSwap);
     }
     
-    
+    if(getChildIndex(timerPie) < getChildIndex(pieTimerBitmap)){
+      swapChildren(timerPie, pieTimerBitmap);
+    }
 
   }
 }
