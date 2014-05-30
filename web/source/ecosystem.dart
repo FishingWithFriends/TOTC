@@ -8,9 +8,9 @@ class Ecosystem extends Sprite {
   static const EATEN = 4;
   static const STARVATION = 5;
   static const CAUGHT = 6;
-  static const MAX_SHARK = 5;
-  static const MAX_TUNA = 70;
-  static const MAX_SARDINE = 605;
+  static const MAX_SHARK = 25;
+  static const MAX_TUNA = 100;
+  static const MAX_SARDINE = 400;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -54,8 +54,8 @@ class Ecosystem extends Sprite {
     _fishCount[SARDINE] = 0;
     _fishCount[SHARK] = 0;
 
-    addFish(3, SHARK, true);
-    addFish(30, TUNA, true);
+    addFish(8, SHARK, true);
+    addFish(75, TUNA, true);
     addFish(350, SARDINE, true);
     
     new Timer.periodic(const Duration(seconds : 1), (timer) => _timerTick());
@@ -174,16 +174,16 @@ class Ecosystem extends Sprite {
   
   void _respawnFishes() {
     if (_fishCount[TUNA]<MAX_TUNA && _babies[TUNA]>0) {
-      addFish(3, TUNA, false);
-      _babies[TUNA] = _babies[TUNA] - 3;
+      addFish((_fishCount[TUNA]*.05).floor(), TUNA, false);
+      _babies[TUNA] = _babies[TUNA] - (_fishCount[TUNA]*.05).floor();
     }
     if (_fishCount[SARDINE]<MAX_SARDINE && _babies[SARDINE]>0) {
-      addFish(10, SARDINE, false);
-      _babies[SARDINE] = _babies[SARDINE] - 10;
+      addFish((_fishCount[SARDINE]*.025).floor(), SARDINE, false);
+      _babies[SARDINE] = _babies[SARDINE] - (_fishCount[SARDINE]*.025).floor();
     }
     if (_fishCount[SHARK]<MAX_SHARK && _babies[SHARK]>0) {
-      addFish(1, SHARK, false);
-      _babies[SHARK] = _babies[SHARK] - 1;
+      addFish((_fishCount[SHARK]*.1).ceil(), SHARK, false);
+      _babies[SHARK] = _babies[SHARK] - (_fishCount[SHARK]*.1).ceil();
    }
   }
   

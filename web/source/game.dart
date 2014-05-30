@@ -134,8 +134,18 @@ class Game extends Sprite implements Animatable{
   }
 
   bool advanceTime(num time) {
-    if (gameStarted == false) return true;
-    
+    if (gameStarted == false){
+      sardineBar.height = _ecosystem._fishCount[SARDINE]/2;
+      sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
+      print("${_ecosystem._fishCount[SARDINE]}, ${_ecosystem._fishCount[TUNA]},${ _ecosystem._fishCount[SHARK]}");
+      
+      tunaBar.height = _ecosystem._fishCount[TUNA] * 3;
+      tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height;
+      
+      sharkBar.height = _ecosystem._fishCount[SHARK]* 8;
+      sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height;
+      return true;
+    }
     if(!timerActive && gameStarted){
       startTimer();
       timerActive = true;
