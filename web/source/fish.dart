@@ -19,6 +19,12 @@ class Fish extends Bitmap implements Animatable {
   
   var _random = new math.Random();
   
+  static const hungerMilliTimerSardine = 1000;
+  static const hungerMilliTimerTuna = 1500;
+  static const hungerMilliTimerShark = 2000;
+  
+  Timer hungerTimer;
+  
   Fish (BitmapData bitmapData, List<Fish> fishes, int t, Ecosystem eco, Fleet fleet, List<Boat> boats) : super(bitmapData) {
     _fishes = fishes;
     type = t;
@@ -39,7 +45,7 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 5;
       _rotationSpeed = math.PI/60;
       
-      _hungerMax =_random.nextInt(150) + 750;
+      _hungerMax =75;
       _hunger = _random.nextInt(_hungerMax);
       _foodType = Ecosystem.SARDINE;
       _predType = Ecosystem.SHARK;
@@ -48,12 +54,14 @@ class Fish extends Bitmap implements Animatable {
       _dartRotationSpeed = math.PI/2;
       _flocking = true;
       _dartTimerMax = _random.nextInt(100) + 50;
+      hungerTimer = new Timer.periodic(const Duration(milliseconds : hungerMilliTimerTuna), (hungerTimer) => hungerTime());
+
     }
     if (type == Ecosystem.SHARK) {
       _v = .6;
       _minSeparation = 50;
       _rotationSpeed = math.PI/60;
-      _hungerMax = _random.nextInt(200) + 1000;
+      _hungerMax = 120;
       _hunger = _random.nextInt(_hungerMax);
       _foodType = Ecosystem.TUNA;
       _predType = -1;
@@ -62,12 +70,14 @@ class Fish extends Bitmap implements Animatable {
       _dartRotationSpeed = math.PI/8;
       _flocking = false;
       _dartTimerMax = _random.nextInt(100) + 50;
+      hungerTimer = new Timer.periodic(const Duration(milliseconds : hungerMilliTimerShark), (hungerTimer) => hungerTime());
+
     }
     if (type == Ecosystem.SARDINE) {
       _v = 1.5;
       _minSeparation = 1;
       _rotationSpeed = math.PI/8;
-      _hungerMax = 119;
+      _hungerMax = 75;
       _hunger = _random.nextInt(_hungerMax);
       _foodType = Ecosystem.MAGIC;
       _predType = Ecosystem.TUNA;
@@ -79,38 +89,148 @@ class Fish extends Bitmap implements Animatable {
       _magicTimer = 0;
       _magicTimerMax = _random.nextInt(125);
 //      _magicTimerMax = 105;
+      hungerTimer = new Timer.periodic(const Duration(milliseconds : hungerMilliTimerSardine), (hungerTimer) => hungerTime());
     }
+    
+
+  }
+  
+  
+  void hungerTime(){
+    if(_foodType == Ecosystem.MAGIC)
+    {
+      int rand = _random.nextInt(100);
+      if(rand - _ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE]*12 < 0){
+        if(_ecosystem.planktonCount > 0){
+          _hunger+= 1+ (_ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE]*1).floor();
+          _ecosystem.planktonCount--;
+        }
+      }
+        else{
+          _hunger--;
+        }
+      
+//      else if(rand - _ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE]*50 > 115){
+//        _hunger--;
+//      }
+    }
+      
+    
+    
+      if(_foodType == Ecosystem.SARDINE)
+      {
+        int rand = _random.nextInt(100);
+        if(rand -_ecosystem._fishCount[Ecosystem.SARDINE]/_ecosystem._fishCount[Ecosystem.TUNA]*12 < 0){
+          if(_ecosystem._fishCount[Ecosystem.SARDINE] > 0){
+            
+            Fish temp = null;
+            int i = 0;
+            while(temp == null){
+              
+              if(i > _ecosystem.fishes.length){
+                _hunger--;
+                return;
+              }
+              
+              if(_ecosystem.fishes[i].type == Ecosystem.SARDINE){
+                temp = _ecosystem.fishes[i];
+              }
+              else{
+                i++;
+              }
+            }
+            _hunger+=1+(_ecosystem._fishCount[Ecosystem.SARDINE]/_ecosystem._fishCount[Ecosystem.TUNA]*2).floor();
+//            _ecosystem.removeFish(temp, Ecosystem.STARVATION);
+            temp._hunger--;
+          }
+        }
+          else{
+            _hunger-=1+(_ecosystem._fishCount[Ecosystem.TUNA]/_ecosystem._fishCount[Ecosystem.SARDINE]).floor();
+          }
+        
+//        else if(rand - _ecosystem._fishCount[Ecosystem.SARDINE]/_ecosystem._fishCount[Ecosystem.TUNA]*50 > 85){
+//          _hunger-=1+(_ecosystem._fishCount[Ecosystem.TUNA]/_ecosystem._fishCount[Ecosystem.SARDINE]/5).floor();
+//        }
+      }
+      
+      if(_foodType == Ecosystem.TUNA)
+      {
+        int rand = _random.nextInt(100);
+        if(rand -_ecosystem._fishCount[Ecosystem.TUNA]/_ecosystem._fishCount[Ecosystem.SHARK]*50 < 50){
+          if(_ecosystem._fishCount[Ecosystem.TUNA] > 0){
+            
+            Fish temp = null;
+            int i = 0;
+            while(temp == null){
+              
+              if(i > _ecosystem.fishes.length){
+                _hunger--;
+                return;
+              }
+              
+              if(_ecosystem.fishes[i].type == Ecosystem.TUNA){
+                temp = _ecosystem.fishes[i];
+              }
+              else{
+                i++;
+              }
+            }
+            _hunger++;
+//            _ecosystem.removeFish(temp, Ecosystem.STARVATION);
+            temp._hunger--;
+          }
+        }
+          else{
+            _hunger-=1+(_ecosystem._fishCount[Ecosystem.SHARK]/_ecosystem._fishCount[Ecosystem.TUNA]).floor();
+          }
+//        else if(rand - _ecosystem._fishCount[Ecosystem.TUNA]/_ecosystem._fishCount[Ecosystem.SHARK]*50 > 100){
+//          _hunger--;
+//        }
+      }
   }
   
   bool advanceTime(num time) {
     if (_checkBoatCollision()==true) return true;
     if (_updateHunger()==true) return true;
     
-    if (_foodType == Ecosystem.MAGIC) {
-      if(300 <_ecosystem._fishCount[Ecosystem.SARDINE]){
-        if(_random.nextInt(100)+ 350/_ecosystem._fishCount[Ecosystem.SARDINE] < 2){
-          _hunger = 0;
-        }
-      }
-      else{
-        if(_random.nextInt(100)- (350/_ecosystem._fishCount[Ecosystem.SARDINE])*2 + 40/_ecosystem._fishCount[Ecosystem.TUNA]< 2){
-          _hunger = 0;
-        }
-      }
-    }
-    if (_foodType == Ecosystem.SARDINE) {
-      if(60 <_ecosystem._fishCount[Ecosystem.TUNA]){
-        if(_random.nextInt(100)+ 350/_ecosystem._fishCount[Ecosystem.SARDINE] < 2){
-          _hunger = 0;
-        }
-      }
-      else{
-        if(_random.nextInt(100)- (350/_ecosystem._fishCount[Ecosystem.SARDINE])*2 + 8/_ecosystem._fishCount[Ecosystem.SHARK]< 2){
-          _hunger = 0;
-        }
-      }
-    }
     
+//    if (_foodType == Ecosystem.MAGIC) {
+//      if(300 <_ecosystem._fishCount[Ecosystem.SARDINE] && _ecosystem._fishCount[Ecosystem.SARDINE] != 0 && _ecosystem._fishCount[Ecosystem.TUNA] != 0){
+//        if(_random.nextInt((100- 300/_ecosystem._fishCount[Ecosystem.SARDINE] + 60/_ecosystem._fishCount[Ecosystem.TUNA]).floor().abs())< 3){
+//          _hunger = 0;
+//        }
+//      }
+//      else{
+//        if(_random.nextInt((100+ 300/_ecosystem._fishCount[Ecosystem.SARDINE] + 60/_ecosystem._fishCount[Ecosystem.TUNA]).floor().abs())< 3){
+//          _hunger = 0;
+//        }
+//      }
+//    }
+//    if (_foodType == Ecosystem.SARDINE && _ecosystem._fishCount[Ecosystem.SARDINE] != 0 && _ecosystem._fishCount[Ecosystem.TUNA] != 0) {
+//      if(60 <_ecosystem._fishCount[Ecosystem.TUNA]){
+//        if(_random.nextInt((100- 60/_ecosystem._fishCount[Ecosystem.TUNA] - 300/_ecosystem._fishCount[Ecosystem.SARDINE]*12).floor().abs())< 2){
+//          _hunger = 0;
+//        }
+//      }
+//      else{
+//        if(_random.nextInt((100+ 60/_ecosystem._fishCount[Ecosystem.TUNA] - 300/_ecosystem._fishCount[Ecosystem.SARDINE]*5).floor().abs())< 2){
+//          _hunger = 0;
+//        }
+//      }
+//    }
+//    if (_foodType == Ecosystem.TUNA && _ecosystem._fishCount[Ecosystem.SHARK] != 0 && _ecosystem._fishCount[Ecosystem.TUNA] != 0) {
+//      if(8 <_ecosystem._fishCount[Ecosystem.SHARK]){
+//        if(_random.nextInt((150+ 8/_ecosystem._fishCount[Ecosystem.SHARK] - 60/_ecosystem._fishCount[Ecosystem.TUNA]).floor()).abs()< 2){
+//          _hunger = 0;
+//        }
+//      }
+//      else{
+//        if(_random.nextInt((150- 8/_ecosystem._fishCount[Ecosystem.SHARK] + 60/_ecosystem._fishCount[Ecosystem.TUNA]).floor()).abs()< 2){
+//          _hunger = 0;
+//        }
+//      }
+//    }
+//    
     
     _dartTimer++;
     _rotateTimer++;
@@ -120,7 +240,7 @@ class Fish extends Bitmap implements Animatable {
       
       var newRot = _rotationChange(_eyesightRadius);
       if (_pouncing) {
-        _hunger = 0;
+        _hunger++;
         _pouncing = false;
         _darting = false;
         x = ate.x;
@@ -184,10 +304,17 @@ class Fish extends Bitmap implements Animatable {
 //        _magicTimer = 0;
 //      } else _magicTimer++;
 //    }
-    if (_hunger > _hungerMax) {
+    
+//    if (_hunger > _hungerMax) {
+    if (_hunger <= 0) {
       _ecosystem.removeFish(this, Ecosystem.STARVATION);
       return true;
-    } else _hunger++;
+    }
+    if(_hunger > _hungerMax){
+      _ecosystem.addFish(1, this.type, true);
+      _hunger = 3;
+    }
+//    else _hunger++;
     return false;
   }
   
@@ -217,7 +344,7 @@ class Fish extends Bitmap implements Animatable {
       if (_distanceTo(_fishes[i]) < r 
           && _fishes[i] != this) {
         int fishType = _fishes[i].type;
-        if (_hunger > _hungerMax~/8 && fishType == _foodType && _dartTimer > _dartTimerMax) {
+        if (_hunger < _hungerMax && fishType == _foodType && _dartTimer > _dartTimerMax) {
           _dartTimer = 0;
           _darting = true;
           _pouncing = true;

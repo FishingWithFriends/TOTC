@@ -63,9 +63,9 @@ class EcosystemBadge extends Sprite implements Animatable{
     
     rating = determineRating();
     animatedRating = 0;
-    Tween t1 = new Tween(foodWeb, 1, TransitionFunction.linear);
+    Tween t1 = new Tween(foodWeb, .5, TransitionFunction.linear);
           t1.animate.alpha.to(1);
-    Tween t2 = new Tween(stars0, 1, TransitionFunction.linear);
+    Tween t2 = new Tween(stars0, .5, TransitionFunction.linear);
           t2.animate.alpha.to(1);
           t2.onComplete = showText;
     _juggler.add(t1);
@@ -102,7 +102,7 @@ class EcosystemBadge extends Sprite implements Animatable{
       else if(animatedRating == 1) toShow = stars2;
       else if(animatedRating == 2) toShow = stars3;
       
-      Tween t1 = new Tween(toShow, 1, TransitionFunction.easeInOutQuadratic);
+      Tween t1 = new Tween(toShow, .5, TransitionFunction.easeInOutQuadratic);
       t1.animate.alpha.to(1);
       starSound.play();
       t1.onComplete = showStars;
@@ -121,10 +121,10 @@ class EcosystemBadge extends Sprite implements Animatable{
       
       _sardineStatusTextFieldBottom.text = _sardineStatusText;
       
-      Tween t1 = new Tween(_sardineStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+      Tween t1 = new Tween(_sardineStatusTextFieldTop, .5, TransitionFunction.easeInOutQuadratic);
       t1.animate.alpha.to(1);
       
-      Tween t4 = new Tween(_sardineStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+      Tween t4 = new Tween(_sardineStatusTextFieldBottom, .5, TransitionFunction.easeInOutQuadratic);
       t4.animate.alpha.to(1);
       
       
@@ -132,7 +132,7 @@ class EcosystemBadge extends Sprite implements Animatable{
       _juggler.add(t4);
     }
             
-    Tween t7 = new Tween(badgeSardine, 1, TransitionFunction.easeInOutQuartic);
+    Tween t7 = new Tween(badgeSardine, .5, TransitionFunction.easeInOutQuartic);
     t7.animate.alpha.to(1);
     badgeSound.play();
     t7.onComplete = showTextTwo;
@@ -146,16 +146,16 @@ class EcosystemBadge extends Sprite implements Animatable{
       _tunaStatusTextFieldTop.text = _tunaStatusText;
       _tunaStatusTextFieldBottom.text = _tunaStatusText;
       
-      Tween t2 = new Tween(_tunaStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+      Tween t2 = new Tween(_tunaStatusTextFieldTop, .5, TransitionFunction.easeInOutQuadratic);
       t2.animate.alpha.to(1);
           
-      Tween t5 = new Tween(_tunaStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+      Tween t5 = new Tween(_tunaStatusTextFieldBottom, .5, TransitionFunction.easeInOutQuadratic);
       t5.animate.alpha.to(1);
       _juggler.add(t2);
       _juggler.add(t5);
     }
     
-    Tween t8 = new Tween(badgeTuna, 1, TransitionFunction.easeInOutQuadratic);
+    Tween t8 = new Tween(badgeTuna, .5, TransitionFunction.easeInOutQuadratic);
     t8.animate.alpha.to(1);
     badgeSound.play();
     t8.onComplete = showTextThree;
@@ -168,17 +168,17 @@ class EcosystemBadge extends Sprite implements Animatable{
     if(showStatusText){
       _sharkStatusTextFieldTop.text = _sharkStatusText;
       _sharkStatusTextFieldBottom.text = _sharkStatusText;
-      Tween t3 = new Tween(_sharkStatusTextFieldTop, 1, TransitionFunction.easeInOutQuadratic);
+      Tween t3 = new Tween(_sharkStatusTextFieldTop, .5, TransitionFunction.easeInOutQuadratic);
       t3.animate.alpha.to(1);
       
-      Tween t6 = new Tween(_sharkStatusTextFieldBottom, 1, TransitionFunction.easeInOutQuadratic);
+      Tween t6 = new Tween(_sharkStatusTextFieldBottom, .5, TransitionFunction.easeInOutQuadratic);
       t6.animate.alpha.to(1);
       
       _juggler.add(t3);
       _juggler.add(t6);
     }
             
-    Tween t9 = new Tween(badgeShark, 1, TransitionFunction.easeInOutQuadratic);
+    Tween t9 = new Tween(badgeShark, .5, TransitionFunction.easeInOutQuadratic);
     t9.animate.alpha.to(1);
     badgeSound.play();
     t9.onComplete = showStars;
@@ -199,7 +199,7 @@ class EcosystemBadge extends Sprite implements Animatable{
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
     }
-    else if (sardineCount > Ecosystem.MAX_SARDINE-250){
+    else if (sardineCount > Ecosystem.MAX_SARDINE-50){
       _sardineStatusText = "Sardines are overpopulated";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
@@ -215,7 +215,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     }
     
     
-    if (tunaCount < 50){
+    if (tunaCount < 15){
       _tunaStatusText = "Tuna populuation is endangered";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
@@ -241,7 +241,7 @@ class EcosystemBadge extends Sprite implements Animatable{
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
     }
-    else if (sharkCount > Ecosystem.SHARK-1){
+    else if (sharkCount > Ecosystem.MAX_SHARK-1){
       _sharkStatusText = "Sharks are overpopulated";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
@@ -401,13 +401,14 @@ class ScoreCounter extends Sprite{
   TextField scorePrompt;
   TextField multiplier;
   TextField total;
+  TextField sum;
   
   int profit, starMult, totalVal;
   
   ScoreCounter(this._resourceManager, this._juggler, this._game, this._ecosystemBadge, this.teamType){
     
     num rotationVal;
-    int boxX, boxY, r1,r2,r3, offsetX, offsetY;
+    int boxX, boxY, r1,r2,r3, r4, offsetX, offsetY;
     int baseX, baseY;
     int fillColor;
 
@@ -439,6 +440,7 @@ class ScoreCounter extends Sprite{
      r1 = 250;
      r2 = 225;
      r3 = 200;
+     r4 = 150;
      offsetX = 0;
      offsetY = 0;
    }
@@ -449,6 +451,7 @@ class ScoreCounter extends Sprite{
      r1 = 250;
      r2 = 225;
      r3 = 200;
+     r4 = 150;
      offsetX = _game.width;
      offsetY = _game.height;
    }    
@@ -495,17 +498,24 @@ class ScoreCounter extends Sprite{
         ..y =offsetY + r3*math.sin(rotationVal);
    addChild(total);
    
-
+   sum = new TextField("", format);
+   sum..alpha = 0
+        ..width = uiBox.width
+        ..pivotX = total.width/2
+        ..rotation = rotationVal
+        ..x =offsetX - r4*math.cos(rotationVal)
+        ..y =offsetY + r4*math.sin(rotationVal);
+   addChild(sum);
 
   }
   
   void showCounter(){
     
-    Tween t1 = new Tween(uiBox, 1, TransitionFunction.linear);
+    Tween t1 = new Tween(uiBox, .5, TransitionFunction.linear);
     t1.animate.alpha.to(.6);
     _juggler.add(t1);
     
-    Tween t3 = new Tween(teamBase, 1, TransitionFunction.linear);
+    Tween t3 = new Tween(teamBase, .5, TransitionFunction.linear);
     t3.animate.alpha.to(.6);
     _juggler.add(t3);
     
@@ -514,7 +524,7 @@ class ScoreCounter extends Sprite{
     else if(teamType == TEAMB) profit = _game.teamBRoundProfit;
     
     scorePrompt.text = "Profit from previous season: ${profit}";
-    Tween t2 = new Tween(scorePrompt, 1, TransitionFunction.linear);
+    Tween t2 = new Tween(scorePrompt, .5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
     t2.onComplete = showMultiplier;
     _juggler.add(t2);
@@ -524,7 +534,7 @@ class ScoreCounter extends Sprite{
   void showMultiplier(){
     starMult = _ecosystemBadge.rating;
     multiplier.text = "Ecosystem Star Health: x ${starMult}";
-    Tween t1 = new Tween(multiplier, 1, TransitionFunction.linear);
+    Tween t1 = new Tween(multiplier, .5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
     t1.onComplete = showTotal;
     _juggler.add(t1);
@@ -532,20 +542,32 @@ class ScoreCounter extends Sprite{
   
   void showTotal(){
     totalVal = profit * starMult;
-    total.text = "Total:  ${totalVal}";
-    Tween t1 = new Tween(total, 1, TransitionFunction.linear);
+    num val = addToTotal();
+    total.text = "Round Total:  ${totalVal}";
+    sum.text = "Current Score: ${val}";
+
+    Tween t1 = new Tween(total, .5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
-    t1.onComplete = addToTotal;
     _juggler.add(t1);
+    
+    Tween t2 = new Tween(sum, .5, TransitionFunction.linear);
+    t2.animate.alpha.to(1);
+    _juggler.add(t2);
+        
   }
   
-  void addToTotal(){
+  num addToTotal(){
+    num val;
     if(teamType == TEAMA){
-      _game.teamAScore += totalVal;
+      val = _game.teamAScore += totalVal;
     }
     else if (teamType == TEAMB){
-      _game.teamBScore += totalVal;
+      val = _game.teamBScore += totalVal;
     }
+    else{
+      val = 0;
+    }
+    return val;
   }
   
   void hideCounter(){
@@ -554,6 +576,7 @@ class ScoreCounter extends Sprite{
     scorePrompt.alpha = 0;
     multiplier.alpha = 0;
     total.alpha = 0;
+    sum.alpha = 0;
   }
   
   

@@ -503,15 +503,17 @@ class Circle extends Sprite implements Touchable {
     if (_touchMode == 0) mode = _boxConfirmMode;
     
     if (mode==SPEED) {
-      return (_touchedBoat.speedLevel+1)*200;
+//      return (_touchedBoat.speedLevel+1)*200;
+      return 100;
     } else if (mode==CAPACITY) {
-      return (_touchedBoat.capacityLevel+1)*300;
+//      return (_touchedBoat.capacityLevel+1)*300;
+      return 100;
     } else if (mode==SARDINE) {
-      return 500;
+      return 0;
     } else if (mode==SHARK) {
-      return 2000;
+      return 500;
     } else if (mode==TUNA) {
-      return 800;
+      return 0;
     }
     return 0;
   }

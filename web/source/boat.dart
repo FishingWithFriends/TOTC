@@ -6,7 +6,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   static const int RIGHT = 0;
   static const int LEFT = 1;
   static const int STRAIGHT = 2;
-  static const num BASE_SPEED = 3;
+  static const num BASE_SPEED = 5;
   static const num BASE_ROT_SPEED = .03;
   static const num BASE_NET_CAPACITY = 250;
   

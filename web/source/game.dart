@@ -13,9 +13,9 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-  static const FISHING_TIME = 10;
-  static const REGROWTH_TIME = 8;
-  static const BUYING_TIME = 10;
+  static const FISHING_TIME = 30;
+  static const REGROWTH_TIME = 12;
+  static const BUYING_TIME = 25;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -52,8 +52,8 @@ class Game extends Sprite implements Animatable{
   TextField teamAScoreText, teamBScoreText;
   TextField roundTitle, roundNumber, seasonTitle;
   
-  int teamAMoney = 10000;
-  int teamBMoney = 10000;
+  int teamAMoney = 300;
+  int teamBMoney = 300;
   int teamAScore = 0;
   int teamBScore = 0;
   int teamARoundProfit = 0;
@@ -81,8 +81,8 @@ class Game extends Sprite implements Animatable{
   
   int phase = FISHING_PHASE;
   int timer = 0;
-  int fishingTimerTick = 10;
-  int buyTimerTick = 15;
+  int fishingTimerTick = 25;
+  int buyTimerTick = 20;
   int regrowthTimerTick = 15;
   
   bool transition;
@@ -134,15 +134,16 @@ class Game extends Sprite implements Animatable{
   }
 
   bool advanceTime(num time) {
+    print("${_ecosystem.planktonCount}, ${_ecosystem._fishCount[SARDINE]}, ${_ecosystem._fishCount[TUNA]},${ _ecosystem._fishCount[SHARK]}");
+   
     if (gameStarted == false){
-      sardineBar.height = _ecosystem._fishCount[SARDINE]/2;
+      sardineBar.height = _ecosystem._fishCount[SARDINE];
       sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
-      print("${_ecosystem._fishCount[SARDINE]}, ${_ecosystem._fishCount[TUNA]},${ _ecosystem._fishCount[SHARK]}");
-      
-      tunaBar.height = _ecosystem._fishCount[TUNA] * 3;
+ 
+      tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
       tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height;
       
-      sharkBar.height = _ecosystem._fishCount[SHARK]* 8;
+      sharkBar.height = _ecosystem._fishCount[SHARK]* 4;
       sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height;
       return true;
     }
@@ -180,13 +181,13 @@ class Game extends Sprite implements Animatable{
     }
     
     //Update the population bar graph size
-    sardineBar.height = _ecosystem._fishCount[SARDINE]/2;
+    sardineBar.height = _ecosystem._fishCount[SARDINE];
     sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
     
-    tunaBar.height = _ecosystem._fishCount[TUNA] * 3;
+    tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
     tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height;
     
-    sharkBar.height = _ecosystem._fishCount[SHARK]* 8;
+    sharkBar.height = _ecosystem._fishCount[SHARK]* 4;
     sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height;
     
     return true;

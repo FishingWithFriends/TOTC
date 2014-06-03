@@ -34,6 +34,8 @@ class Ecosystem extends Sprite {
   int sharkBirthTimerMax = 45;
   int sharkBirthTimer = 0;
 
+  int planktonCount;
+  
   var random = new math.Random();
   
   Ecosystem(ResourceManager resourceManager, Juggler juggler, Game g, Fleet fleet) {
@@ -54,25 +56,36 @@ class Ecosystem extends Sprite {
     _fishCount[SARDINE] = 0;
     _fishCount[SHARK] = 0;
 
-    addFish(8, SHARK, true);
-    addFish(75, TUNA, true);
-    addFish(350, SARDINE, true);
+    planktonCount = 700;
     
-    new Timer.periodic(const Duration(seconds : 1), (timer) => _timerTick());
+    addFish(8, SHARK, true);
+    addFish(60, TUNA, true);
+    addFish(300, SARDINE, true);
+    
+    new Timer.periodic(const Duration(milliseconds : 250), (timer) => _timerTick());
   }
   
   void addFish(int n, int type, bool start) {
     if (n>0) {
       var fishImage;
       if (type == TUNA) {
+        if(_fishCount[TUNA] >= MAX_TUNA){
+          return;
+        }
         fishImage = _resourceManager.getBitmapData("Tuna");
         _fishCount[TUNA] = _fishCount[TUNA]+n;
       }
       if (type == SHARK) {
+        if(_fishCount[SHARK] >= MAX_SHARK){
+          return;
+        }
         fishImage = _resourceManager.getBitmapData("Shark");
         _fishCount[SHARK] = _fishCount[SHARK]+n;
       }
       if (type == SARDINE) {
+        if(_fishCount[SARDINE] >= MAX_SARDINE){
+          return;
+        }
         fishImage = _resourceManager.getBitmapData("Sardine");
         _fishCount[SARDINE] = _fishCount[SARDINE]+n;
       }
@@ -127,6 +140,7 @@ class Ecosystem extends Sprite {
     } else {
       removeChild(f);
     }
+    f.hungerTimer.cancel();
     _juggler.remove(f);    
     fishes.remove(f);
   } 
@@ -173,39 +187,59 @@ class Ecosystem extends Sprite {
   }
   
   void _respawnFishes() {
-    if (_fishCount[TUNA]<MAX_TUNA && _babies[TUNA]>0) {
-      addFish((_fishCount[TUNA]*.05).floor(), TUNA, false);
-      _babies[TUNA] = _babies[TUNA] - (_fishCount[TUNA]*.05).floor();
-    }
-    if (_fishCount[SARDINE]<MAX_SARDINE && _babies[SARDINE]>0) {
-      addFish((_fishCount[SARDINE]*.025).floor(), SARDINE, false);
-      _babies[SARDINE] = _babies[SARDINE] - (_fishCount[SARDINE]*.025).floor();
-    }
-    if (_fishCount[SHARK]<MAX_SHARK && _babies[SHARK]>0) {
-      addFish((_fishCount[SHARK]*.1).ceil(), SHARK, false);
-      _babies[SHARK] = _babies[SHARK] - (_fishCount[SHARK]*.1).ceil();
-   }
+    
+//    if (_fishCount[SARDINE]<MAX_SARDINE && random.nextInt(100)<99) {
+//      addFish((_fishCount[SARDINE]*.05).floor(), SARDINE, false);
+//    }
+////      _babies[SARDINE] = _babies[SARDINE] - (_fishCount[SARDINE]*.025).floor();
+//    if (_fishCount[TUNA]<MAX_TUNA && random.nextInt(100)<30) {
+//      addFish((_fishCount[TUNA]*.035).floor(), TUNA, false);
+////      _babies[TUNA] = _babies[TUNA] - (_fishCount[TUNA]*.025).floor();
+//    }
+//    if (_fishCount[SHARK]<MAX_SHARK && random.nextInt(100)<2) {
+//      if(random.nextInt(10)< 5){
+//        addFish((_fishCount[SHARK]*.1).ceil(), SHARK, false);
+//      }
+//      else{
+//        addFish((_fishCount[SHARK]*.1).floor(), SHARK, false);
+//      }
+////      _babies[SHARK] = _babies[SHARK] - (_fishCount[SHARK]*.1).ceil();
+//   }
   }
   
   void _birthFish() {
-    if (tunaBirthTimer>tunaBirthTimerMax && _babies[TUNA]<MAX_TUNA) {
-      _babies[TUNA] = _babies[TUNA]+_fishCount[TUNA]~/2;
-      tunaBirthTimer = 0;
-    } else tunaBirthTimer++;
-    if (sardineBirthTimer>sardineBirthTimerMax && _babies[SARDINE]<MAX_SARDINE) {
-      _babies[SARDINE] = _babies[SARDINE]+_fishCount[SARDINE]~/1.2;
-      sardineBirthTimer = 0;
-    } else sardineBirthTimer++;
-    if (sharkBirthTimer>sharkBirthTimerMax && _babies[SHARK]<MAX_SHARK) {
-      _babies[SHARK] = _babies[SHARK]+_fishCount[SHARK]~/2;
-      if (_babies[SHARK]==0 && _fishCount[SHARK]!=0) _babies[SHARK]=1;
-      sharkBirthTimer = 0;
-    } else sharkBirthTimer++;
+    
+    _babies[SARDINE]=1;
+    _babies[TUNA]=1;
+    _babies[SHARK]=1;
+                    
+    
+//    if (tunaBirthTimer>tunaBirthTimerMax && _babies[TUNA]<MAX_TUNA) {
+//      _babies[TUNA] = _babies[TUNA]+_fishCount[TUNA]~/2;
+//      tunaBirthTimer = 0;
+//    } else tunaBirthTimer++;
+//    if (sardineBirthTimer>sardineBirthTimerMax && _babies[SARDINE]<MAX_SARDINE) {
+//      _babies[SARDINE] = _babies[SARDINE]+_fishCount[SARDINE]~/1.2;
+//      sardineBirthTimer = 0;
+//    } else sardineBirthTimer++;
+//    if (sharkBirthTimer>sharkBirthTimerMax && _babies[SHARK]<MAX_SHARK) {
+//      _babies[SHARK] = _babies[SHARK]+_fishCount[SHARK]~/2;
+//      if (_babies[SHARK]==0 && _fishCount[SHARK]!=0) _babies[SHARK]=1;
+//      sharkBirthTimer = 0;
+//    } else sharkBirthTimer++;
   }
+  
+  void updateEcosystem(){
+    
+    
+  }
+  
   
   void _timerTick() {
     _respawnFishes();
     _birthFish();
+    
+    planktonCount += 45;
     
     if (game.gameStarted==true) {
       sardineGraph.add(_fishCount[SARDINE]);    
