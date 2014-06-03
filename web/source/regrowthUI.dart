@@ -194,7 +194,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
     int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
 
-    if (sardineCount < 50){
+    if (sardineCount < 50 && sardineCount > 0){
       _sardineStatusText = "Sardine populuation is endangered";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
@@ -215,12 +215,12 @@ class EcosystemBadge extends Sprite implements Animatable{
     }
     
     
-    if (tunaCount < 15){
+    if (tunaCount < 25 && tunaCount > 0){
       _tunaStatusText = "Tuna populuation is endangered";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
     }
-    else if (tunaCount > Ecosystem.MAX_TUNA-15){
+    else if (tunaCount > Ecosystem.MAX_TUNA-25){
       _tunaStatusText = "Tunas are overpopulated";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
@@ -236,12 +236,12 @@ class EcosystemBadge extends Sprite implements Animatable{
     }
     
     
-    if (sharkCount < 2){
+    if (sharkCount < 5 && sharkCount > 0){
       _sharkStatusText = "Shark populuation is endangered";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
     }
-    else if (sharkCount > Ecosystem.MAX_SHARK-1){
+    else if (sharkCount > 12){
       _sharkStatusText = "Sharks are overpopulated";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;

@@ -52,8 +52,8 @@ class Game extends Sprite implements Animatable{
   TextField teamAScoreText, teamBScoreText;
   TextField roundTitle, roundNumber, seasonTitle;
   
-  int teamAMoney = 300;
-  int teamBMoney = 300;
+  int teamAMoney = 3000;
+  int teamBMoney = 3000;
   int teamAScore = 0;
   int teamBScore = 0;
   int teamARoundProfit = 0;

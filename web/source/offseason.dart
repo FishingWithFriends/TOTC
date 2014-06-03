@@ -180,6 +180,8 @@ class Offseason extends Sprite {
                 boat._newY = h/2-5;
                 boat.rotation = math.PI/2;
               } else if (aCounter==2) {
+                boat.x = w/2-85;
+                boat.y = h/2 + 115;
                 boat._newX = w/2-85;
                 boat._newY = h/2+115;
                 boat.rotation = math.PI*1/6;

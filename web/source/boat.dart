@@ -546,7 +546,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       TextFormat format = new TextFormat("Arial", 20, Color.LightYellow, align: "left");
       _fullText = new TextField("Your boat is full!", format);
 //      if (_leavingDock==true) _fullText.text = "Leaving dock!";
-//      _fullText.width = 200;
+      _fullText.width = 200;
 
       if (_teamA==true) {
         _fullText.x = x+50;

@@ -76,6 +76,8 @@ class Endgame extends Sprite implements Animatable{
   }
 
   void showTeamUI(){
+    teamAui.teamFinalScoreText.text = "Final Score: ${_game.teamAScore}";
+    teamBui.teamFinalScoreText.text = "Final Score: ${_game.teamBScore}";
     Tween t1 = new Tween(teamAui, 1.5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
 
@@ -99,6 +101,7 @@ class Endgame extends Sprite implements Animatable{
   }
   
   void showBestScores(){
+    
     
     Tween t1 = new Tween(bestScoresA, .5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
@@ -125,6 +128,8 @@ class EndGameTeamUI extends Sprite{
   
   int teamType;
   
+  int teamScore;
+  
   Shape teamBase;
   TextField teamGameOverText;
   TextField teamFinalScoreText;
@@ -135,7 +140,7 @@ class EndGameTeamUI extends Sprite{
   
   void intializeObjects(){
     num rotationVal;
-    int baseX, baseY, r1,r2,r3, offsetX, offsetY, teamScore;
+    int baseX, baseY, r1,r2,r3, offsetX, offsetY;
     int fillColor;
     
     if(teamType == TEAMA){

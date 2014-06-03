@@ -239,7 +239,7 @@ class Ecosystem extends Sprite {
     _respawnFishes();
     _birthFish();
     
-    planktonCount += 45;
+    planktonCount += 35;
     
     if (game.gameStarted==true) {
       sardineGraph.add(_fishCount[SARDINE]);    
