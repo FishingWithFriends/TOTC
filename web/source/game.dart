@@ -13,9 +13,9 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-  static const FISHING_TIME = 5;
-  static const REGROWTH_TIME = 5;
-  static const BUYING_TIME = 250;
+  static const FISHING_TIME = 25;
+  static const REGROWTH_TIME = 10;
+  static const BUYING_TIME = 15;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -52,12 +52,15 @@ class Game extends Sprite implements Animatable{
   TextField teamAScoreText, teamBScoreText;
   TextField roundTitle, roundNumber, seasonTitle;
   
+  int starCount = 0;
   int teamAMoney = 3000;
   int teamBMoney = 3000;
   int teamAScore = 0;
   int teamBScore = 0;
   int teamARoundProfit = 0;
   int teamBRoundProfit = 0;
+  int teamATotalProfit = 0;
+  int teamBTotalProfit = 0;
   bool moneyChanged = false;
   int moneyTimer = 0;
   int moneyTimerMax = 2;

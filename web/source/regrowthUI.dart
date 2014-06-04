@@ -97,7 +97,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     else{
       
       Bitmap toShow;
-      
+      _game.starCount++;
       if(animatedRating == 0) toShow = stars1;
       else if(animatedRating == 1) toShow = stars2;
       else if(animatedRating == 2) toShow = stars3;
@@ -526,7 +526,24 @@ class ScoreCounter extends Sprite{
     scorePrompt.text = "Profit from previous season: ${profit}";
     Tween t2 = new Tween(scorePrompt, .5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
-    t2.onComplete = showMultiplier;
+    t2.onComplete = showTotalProfit;
+    _juggler.add(t2);
+    
+  }
+  
+  void showTotalProfit(){
+    if(teamType == TEAMA){
+      _game.teamATotalProfit += profit;
+      multiplier.text = "Total Profit: ${_game.teamATotalProfit}";
+    }
+    else if(teamType == TEAMB){
+      _game.teamBTotalProfit += profit;
+      multiplier.text = "Total Profit: ${_game.teamBTotalProfit}";
+    }
+    
+    Tween t2 = new Tween(multiplier, .5, TransitionFunction.linear);
+    t2.animate.alpha.to(1);
+//    t2.onComplete = showTotalProfit;
     _juggler.add(t2);
     
   }

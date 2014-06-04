@@ -291,7 +291,7 @@ class Circle extends Sprite implements Touchable {
   Map<int, Boat> _boatsA, _boatsB;
   
   Bitmap _circle;
-  SimpleButton _circleButton, _capacityButton, _speedButton, _tunaButton, _sardineButton, _sharkButton, _tempButton;
+  SimpleButton _circleButton, _capacitySmallButton, _capacityLargeButton, _tunaButton, _sardineButton, _sharkButton, _tempButton;
   SimpleButton _yesButton;
   SimpleButton _noButton;
   TextField _confirmText;
@@ -372,17 +372,17 @@ class Circle extends Sprite implements Touchable {
     _circleButton.addEventListener(TouchEvent.TOUCH_TAP, _circlePressed);
     _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
 
-    _capacityButton = _returnCapacityButton();
-    _capacityButton.alpha = 1;
-    _capacityButton.addEventListener(MouseEvent.MOUSE_DOWN, _capacityPressed);
-    _capacityButton.addEventListener(TouchEvent.TOUCH_TAP, _capacityPressed);
-    _capacityButton.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityPressed);
+    _capacitySmallButton = _returnCapacityButton();
+    _capacitySmallButton.alpha = 1;
+    _capacitySmallButton.addEventListener(MouseEvent.MOUSE_DOWN, _capacitySmallButtonPressed);
+    _capacitySmallButton.addEventListener(TouchEvent.TOUCH_TAP, _capacitySmallButtonPressed);
+    _capacitySmallButton.addEventListener(TouchEvent.TOUCH_BEGIN, _capacitySmallButtonPressed);
     
-    _speedButton = _returnSpeedButton();
-    _speedButton.alpha = 1;
-    _speedButton.addEventListener(MouseEvent.MOUSE_DOWN, _speedPressed);
-    _speedButton.addEventListener(TouchEvent.TOUCH_TAP, _speedPressed);
-    _speedButton.addEventListener(TouchEvent.TOUCH_BEGIN, _speedPressed);
+    _capacityLargeButton = _returnCapacityButtonLarge();
+    _capacityLargeButton.alpha = 1;
+    _capacityLargeButton.addEventListener(MouseEvent.MOUSE_DOWN, _capacityLargeButtonPressed);
+    _capacityLargeButton.addEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
+    _capacityLargeButton.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
     
     _tunaButton = _returnTunaButton();
     _tunaButton.alpha = 1;
@@ -407,10 +407,10 @@ class Circle extends Sprite implements Touchable {
        _circle.pivotY = bitmapData.height/2;
        
        num w = bitmapData.width*.375;
-       _capacityButton.x = math.cos(math.PI*9/8)*w;
-       _capacityButton.y = math.sin(math.PI*9/8)*w;
-       _speedButton.x = math.cos(math.PI*8/6)*w;
-       _speedButton.y = math.sin(math.PI*8/6)*w;
+       _capacitySmallButton.x = math.cos(math.PI*9/8)*w;
+       _capacitySmallButton.y = math.sin(math.PI*9/8)*w;
+       _capacityLargeButton.x = math.cos(math.PI*8/6)*w;
+       _capacityLargeButton.y = math.sin(math.PI*8/6)*w;
        w = width*.1875;
        _sardineButton.x = math.cos(-math.PI*1/16)*w;
        _sardineButton.y = math.sin(-math.PI*1/16)*w;
@@ -423,8 +423,8 @@ class Circle extends Sprite implements Touchable {
     
     addChild(_circle);
     addChild(_circleButton);
-    addChild(_speedButton);
-    addChild(_capacityButton);
+    addChild(_capacityLargeButton);
+    addChild(_capacitySmallButton);
     addChild(_tunaButton);
     addChild(_sardineButton);
     addChild(_sharkButton);
@@ -450,11 +450,13 @@ class Circle extends Sprite implements Touchable {
     swoosh.play();
   }
   
-  void _speedPressed(var e) {
+  void _capacityLargeButtonPressed(var e) {
     _touchMode = SPEED;
+    _fleet.largeCap(_teamA);
   }
-  void _capacityPressed(var e) {
+  void _capacitySmallButtonPressed(var e) {
     _touchMode = CAPACITY;
+    _fleet.smallCap(_teamA);
   }
   void _tunaPressed(var e) {
     _touchMode = TUNA;
@@ -462,23 +464,23 @@ class Circle extends Sprite implements Touchable {
   }
   void _sardinePressed(var e) {
     _touchMode = SARDINE;
-    _fleet.makeShark(_teamA);
+    _fleet.makeSardine(_teamA);
   }
   void _sharkPressed(var e) {
     _touchMode = SHARK;
-    _fleet.makeSardine(_teamA);
+    _fleet.makeShark(_teamA);
   }
-  SimpleButton _returnSpeedButton() {
-    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SpeedUpgradeButton")), 
-                           new Bitmap(_resourceManager.getBitmapData("SpeedUpgradeButton")),
-                           new Bitmap(_resourceManager.getBitmapData("SpeedUpgradeButton")), 
-                           new Bitmap(_resourceManager.getBitmapData("SpeedUpgradeButton")));
+  SimpleButton _returnCapacityButtonLarge() {
+    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")), 
+                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")),
+                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")), 
+                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")));
   }
   SimpleButton _returnCapacityButton() {
-    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButton")), 
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButton")),
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButton")), 
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButton")));
+    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")), 
+                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")),
+                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")), 
+                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")));
   }
   SimpleButton _returnTunaButton() {
     return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("TunaBoatButton")), 

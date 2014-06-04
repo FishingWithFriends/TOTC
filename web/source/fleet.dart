@@ -116,6 +116,22 @@ class Fleet extends Sprite {
     _game._offseason.clearAndRefillDock();
   }
   
+  void largeCap(bool teamA){
+    for(int i = 0; i < boats.length; i++){
+          if(boats[i]._teamA == teamA){
+            boats[i].largeCap();
+          }
+        }
+  }
+  
+  void smallCap(bool teamA){
+      for(int i = 0; i < boats.length; i++){
+            if(boats[i]._teamA == teamA){
+              boats[i].smallCap();
+            }
+          }
+    }
+  
   void returnBoats() {
     for (int i=0; i<boats.length; i++) {
 //      boats[i].returnToDock();

@@ -569,6 +569,15 @@ class Boat extends Sprite implements Touchable, Animatable {
     _showingFullPrompt = false;
     if (_fleet.contains(_fullText)) _fleet.removeChild(_fullText);
   }
+  
+  void smallCap(){
+    return;
+  }
+  
+  void largeCap(){
+    return;  
+  }
+  
    
   bool containsTouch(Contact e) {
     if (nothing==false && !offseasonBoat) {

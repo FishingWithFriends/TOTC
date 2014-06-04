@@ -85,7 +85,7 @@ void main() {
   resourceManager.addBitmapData("SardineBoatButton", "images/sardineBoatIcon.png");
   resourceManager.addBitmapData("TunaBoatButton", "images/tunaBoatIcon.png");
   resourceManager.addBitmapData("SharkBoatButton", "images/sharkBoatIcon.png");
-  resourceManager.addBitmapData("CapacityUpgradeButton", "images/capUpgradeIcon.png");
+  resourceManager.addBitmapData("CapacityUpgradeButtonSmall", "images/capUpgradeIcon.png");
   resourceManager.addBitmapData("SpeedUpgradeButton", "images/speedUpgradeIcon.png");
   resourceManager.addBitmapData("OffseasonDock", "images/offseason_dock.png");
   resourceManager.addBitmapData("sardineIcon", "images/sardineIcon.png");
@@ -105,7 +105,8 @@ void main() {
   resourceManager.addBitmapData("endgameSardineIcon", "images/endgameSardineIcon.png");
   resourceManager.addBitmapData("endgameTunaIcon", "images/endgameTunaIcon.png");
   resourceManager.addBitmapData("endgameSharkIcon", "images/endgameSharkIcon.png");
-  resourceManager.addBitmapData("sellIsland", "images/sell_island.png");  
+  resourceManager.addBitmapData("sellIsland", "images/sell_island.png");
+  resourceManager.addBitmapData("CapacityUpgradeButtonLarge", "images/capUpgradeIconBig.png");
   
   resourceManager.addSound("buttonClick", "sounds/button_click.ogg");
   resourceManager.addSound("circleUISwoosh", "sounds/circle_swoosh.ogg");
