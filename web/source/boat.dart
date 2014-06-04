@@ -6,9 +6,9 @@ class Boat extends Sprite implements Touchable, Animatable {
   static const int RIGHT = 0;
   static const int LEFT = 1;
   static const int STRAIGHT = 2;
-  static const num BASE_SPEED = 5;
-  static const num BASE_ROT_SPEED = .03;
-  static const num BASE_NET_CAPACITY = 250;
+  static const num BASE_SPEED = 8;
+  static const num BASE_ROT_SPEED = .09;
+  static const num BASE_NET_CAPACITY = 25000;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -85,7 +85,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     random = new math.Random();
     
     particleConfig = {
-                      "maxParticles": 152,
+                      "maxParticles": 50,
                       "duration": 0,
                       "lifeSpan": 1.95,
                       "lifespanVariance": 0,
@@ -103,7 +103,7 @@ class Boat extends Sprite implements Touchable, Animatable {
                         "x": 5,
                         "y": 0
                       },
-                      "speed": 50,
+                      "speed": 25,
                       "speedVariance": 0,
                       "angle": 90,
                       "angleVariance": 21,

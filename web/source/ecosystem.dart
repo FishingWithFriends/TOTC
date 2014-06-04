@@ -35,6 +35,8 @@ class Ecosystem extends Sprite {
   int sharkBirthTimer = 0;
 
   int planktonCount;
+  int tunaFoodCount;
+  int sharkFoodCount;
   
   var random = new math.Random();
   
@@ -56,13 +58,15 @@ class Ecosystem extends Sprite {
     _fishCount[SARDINE] = 0;
     _fishCount[SHARK] = 0;
 
-    planktonCount = 700;
+    planktonCount = 0;
+    tunaFoodCount = 0;
+    sharkFoodCount = 0;
     
     addFish(8, SHARK, true);
     addFish(60, TUNA, true);
     addFish(300, SARDINE, true);
     
-    new Timer.periodic(const Duration(milliseconds : 250), (timer) => _timerTick());
+    new Timer.periodic(const Duration(milliseconds : 1000), (timer) => _timerTick());
   }
   
   void addFish(int n, int type, bool start) {
@@ -239,7 +243,9 @@ class Ecosystem extends Sprite {
     _respawnFishes();
     _birthFish();
     
-    planktonCount += 35;
+    planktonCount += 300;
+    tunaFoodCount += 60;
+    sharkFoodCount += 10;
     
     if (game.gameStarted==true) {
       sardineGraph.add(_fishCount[SARDINE]);    

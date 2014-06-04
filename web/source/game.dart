@@ -13,7 +13,7 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-  static const FISHING_TIME = 30;
+  static const FISHING_TIME = 20;
   static const REGROWTH_TIME = 12;
   static const BUYING_TIME = 25;
   
@@ -134,7 +134,7 @@ class Game extends Sprite implements Animatable{
   }
 
   bool advanceTime(num time) {
-    print("${_ecosystem.planktonCount}, ${_ecosystem._fishCount[SARDINE]}, ${_ecosystem._fishCount[TUNA]},${ _ecosystem._fishCount[SHARK]}");
+    print("${_ecosystem.planktonCount}, ${_ecosystem._fishCount[SARDINE]}, || ${_ecosystem.tunaFoodCount}, ${_ecosystem._fishCount[TUNA]}, || ${_ecosystem.sharkFoodCount}, ${ _ecosystem._fishCount[SHARK]}");
    
     if (gameStarted == false){
       sardineBar.height = _ecosystem._fishCount[SARDINE];
