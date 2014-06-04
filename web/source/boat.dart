@@ -593,23 +593,23 @@ class Boat extends Sprite implements Touchable, Animatable {
    
   bool touchDown(Contact event) {
     
-    if(offseasonBoat){
-          if(_teamA){
-            if(!_game._offseason._teamACircle._boxDisplayed){
-              x = event.touchX;
-              y = event.touchY;
-            }
-
-          }
-          else{
-            if(!_game._offseason._teamBCircle._boxDisplayed){
-              x = event.touchX;
-              y = event.touchY;
-            }
-          }
-        
-        }
-    else{
+//    if(offseasonBoat){
+//          if(_teamA){
+//            if(!_game._offseason._teamACircle._boxDisplayed){
+//              x = event.touchX;
+//              y = event.touchY;
+//            }
+//
+//          }
+//          else{
+//            if(!_game._offseason._teamBCircle._boxDisplayed){
+//              x = event.touchX;
+//              y = event.touchY;
+//            }
+//          }
+//        
+//        }
+//    else{
     
       if (!_game.gameStarted && _game.phase==Game.FISHING_PHASE) {
         _game.gameStarted = true;
@@ -632,7 +632,7 @@ class Boat extends Sprite implements Touchable, Animatable {
         swapChildren(boat, particleEmitter);
         _juggler.add(particleEmitter);
         
-      }
+//      }
       if (canCatch==false && _canMove==false) _promptBoatFull();
 
     }
@@ -644,20 +644,20 @@ class Boat extends Sprite implements Touchable, Animatable {
   void touchUp(Contact event) {
     _dragging = false;
     
-    if(offseasonBoat){
-      
-      if( _inProximity(_game._offseason.sellIslandTop.x, _game._offseason.sellIslandTop.y, _game._offseason.sellIslandTop.width)
-          ||  _inProximity(_game._offseason.sellIslandBottom.x, _game._offseason.sellIslandBottom.y, _game._offseason.sellIslandBottom.width)){
-        _game._offseason.sellBoat(this);
-      }
-      else{
-        Tween t1 = new Tween(this, .25, TransitionFunction.easeInOutQuadratic);
-        t1.animate.x.to(_newX);
-        t1.animate.y.to(_newY);
-        _juggler.add(t1);
-      }
-    }
-    else{
+//    if(offseasonBoat){
+//      
+//      if( _inProximity(_game._offseason.sellIslandTop.x, _game._offseason.sellIslandTop.y, _game._offseason.sellIslandTop.width)
+//          ||  _inProximity(_game._offseason.sellIslandBottom.x, _game._offseason.sellIslandBottom.y, _game._offseason.sellIslandBottom.width)){
+//        _game._offseason.sellBoat(this);
+//      }
+//      else{
+//        Tween t1 = new Tween(this, .25, TransitionFunction.easeInOutQuadratic);
+//        t1.animate.x.to(_newX);
+//        t1.animate.y.to(_newY);
+//        _juggler.add(t1);
+//      }
+//    }
+//    else{
       canCatch = false;
       _goStraight();
       _juggler.remove(_boatMove);
@@ -669,7 +669,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       
       _setBoatUp();
       boat.addChild(_boatImage);
-    }
+//    }
     
 
   }
@@ -680,22 +680,22 @@ class Boat extends Sprite implements Touchable, Animatable {
       _newY = event.touchY;
     }
     
-    if(offseasonBoat){
-      if(_teamA){
-        if(!_game._offseason._teamACircle._boxDisplayed){
-          x = event.touchX;
-          y = event.touchY;
-        }
-
-      }
-      else{
-        if(!_game._offseason._teamBCircle._boxDisplayed){
-          x = event.touchX;
-          y = event.touchY;
-        }
-      }
-    
-    }
+//    if(offseasonBoat){
+//      if(_teamA){
+//        if(!_game._offseason._teamACircle._boxDisplayed){
+//          x = event.touchX;
+//          y = event.touchY;
+//        }
+//
+//      }
+//      else{
+//        if(!_game._offseason._teamBCircle._boxDisplayed){
+//          x = event.touchX;
+//          y = event.touchY;
+//        }
+//      }
+//    
+//    }
   }
    
   void touchSlide(Contact event) { }

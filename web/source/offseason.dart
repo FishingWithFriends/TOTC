@@ -70,8 +70,8 @@ class Offseason extends Sprite {
     clearAndRefillDock();
     
     addChild(_background);
-    addChild(sellIslandTop);
-    addChild(sellIslandBottom);
+//    addChild(sellIslandTop);
+//    addChild(sellIslandBottom);
     addChild(offseasonDock);
     addChild(_teamACircle);
     addChild(_teamBCircle);
@@ -83,6 +83,7 @@ class Offseason extends Sprite {
     for(int i = 0; i < offseasonBoats.length; i++){
       if(contains(offseasonBoats[i])) removeChild(offseasonBoats[i]);
     }
+    offseasonBoats.clear();
     fillDocks();
 //    arrangeUICircle();
   }
@@ -451,23 +452,21 @@ class Circle extends Sprite implements Touchable {
   
   void _speedPressed(var e) {
     _touchMode = SPEED;
-    itemSuction.play();
   }
   void _capacityPressed(var e) {
     _touchMode = CAPACITY;
-    itemSuction.play();
   }
   void _tunaPressed(var e) {
     _touchMode = TUNA;
-    itemSuction.play();
+    _fleet.makeTuna(_teamA);
   }
   void _sardinePressed(var e) {
     _touchMode = SARDINE;
-    itemSuction.play();
+    _fleet.makeShark(_teamA);
   }
   void _sharkPressed(var e) {
     _touchMode = SHARK;
-    itemSuction.play();
+    _fleet.makeSardine(_teamA);
   }
   SimpleButton _returnSpeedButton() {
     return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SpeedUpgradeButton")), 
@@ -667,64 +666,71 @@ class Circle extends Sprite implements Touchable {
   }
   
   bool touchDown(Contact event) {
-    _clearConsole();
+    
+//    if (contains(_tempButton)){removeChild(_tempButton);}
+//    if (_touchMode == CAPACITY) _tempButton = _returnCapacityButton();
+//    if (_touchMode == SPEED) _tempButton = _returnSpeedButton();
+//    if (_touchMode == TUNA) _fleet.makeTuna(_teamA);
+//    if (_touchMode == SARDINE) _fleet.makeSardine(_teamA);
+//    if (_touchMode == SHARK) _fleet.makeShark(_teamA);
+//    _clearConsole();
     return true;
   }
 
   void touchDrag(Contact event) {
-    _touchedBoat = null;
-    if (contains(_tempButton)){removeChild(_tempButton);}
-    if (_touchMode == CAPACITY) _tempButton = _returnCapacityButton();
-    if (_touchMode == SPEED) _tempButton = _returnSpeedButton();
-    if (_touchMode == TUNA) _tempButton = _returnTunaButton();
-    if (_touchMode == SARDINE) _tempButton = _returnSardineButton();
-    if (_touchMode == SHARK) _tempButton = _returnSharkButton();
-    addChild(_tempButton);
-    
-    if (_upgradeMode==true) {
-      if (_teamA == true) {
-        _tempButton.x = -event.touchX;
-        _tempButton.y = -event.touchY;
-      } else {
-        _tempButton.x = -_game.width+event.touchX;
-        _tempButton.y = -_game.height+event.touchY;
-      }
-    } else {
-      num offset = width/6.5;
-      if (_teamA == true) {
-        _tempButton.x = event.touchX-offset;
-        _tempButton.y = event.touchY-offset;
-      } else {
-        _tempButton.x = _game.width-event.touchX-offset;
-        _tempButton.y = _game.height-event.touchY-offset;
-      }
-    }
-    if (_upgradeMode==true) {
-      if (_teamA==true) {
-        _boatsA.forEach((int i, Boat b) {
-          if (_tempButton.hitTestObject(b.boat)) {
-            _touchedBoat = _fleet.boats[i];
-          }
-        });
-      } else {
-        _boatsB.forEach((int i, Boat b) {
-          if (_tempButton.hitTestObject(b.boat)) {
-            _touchedBoat = _fleet.boats[i];
-          }
-        });
-      }
-      if (_touchedBoat != null) _tempButton.alpha = .5;
-    } else {
-      if (_teamA==true) {
-        if (_tempButton.hitTestObject(_offseason.teamAHit)) {
-          _tempButton.alpha = .5;
-        }
-      } else {
-        if (_tempButton.hitTestObject(_offseason.teamBHit)) {
-          _tempButton.alpha = .5;
-        }
-      }
-    }
+//    _touchedBoat = null;
+//    if (contains(_tempButton)){removeChild(_tempButton);}
+//    if (_touchMode == CAPACITY) _tempButton = _returnCapacityButton();
+//    if (_touchMode == SPEED) _tempButton = _returnSpeedButton();
+//    if (_touchMode == TUNA) _tempButton = _returnTunaButton();
+//    if (_touchMode == SARDINE) _tempButton = _returnSardineButton();
+//    if (_touchMode == SHARK) _tempButton = _returnSharkButton();
+//    addChild(_tempButton);
+//    
+//    if (_upgradeMode==true) {
+//      if (_teamA == true) {
+//        _tempButton.x = -event.touchX;
+//        _tempButton.y = -event.touchY;
+//      } else {
+//        _tempButton.x = -_game.width+event.touchX;
+//        _tempButton.y = -_game.height+event.touchY;
+//      }
+//    } else {
+//      num offset = width/6.5;
+//      if (_teamA == true) {
+//        _tempButton.x = event.touchX-offset;
+//        _tempButton.y = event.touchY-offset;
+//      } else {
+//        _tempButton.x = _game.width-event.touchX-offset;
+//        _tempButton.y = _game.height-event.touchY-offset;
+//      }
+//    }
+//    if (_upgradeMode==true) {
+//      if (_teamA==true) {
+//        _boatsA.forEach((int i, Boat b) {
+//          if (_tempButton.hitTestObject(b.boat)) {
+//            _touchedBoat = _fleet.boats[i];
+//          }
+//        });
+//      } else {
+//        _boatsB.forEach((int i, Boat b) {
+//          if (_tempButton.hitTestObject(b.boat)) {
+//            _touchedBoat = _fleet.boats[i];
+//          }
+//        });
+//      }
+//      if (_touchedBoat != null) _tempButton.alpha = .5;
+//    } else {
+//      if (_teamA==true) {
+//        if (_tempButton.hitTestObject(_offseason.teamAHit)) {
+//          _tempButton.alpha = .5;
+//        }
+//      } else {
+//        if (_tempButton.hitTestObject(_offseason.teamBHit)) {
+//          _tempButton.alpha = .5;
+//        }
+//      }
+//    }
   }
 
   void touchSlide(Contact event) {
@@ -732,43 +738,43 @@ class Circle extends Sprite implements Touchable {
   }
 
   void touchUp(Contact event) {
-    if (contains(_tempButton)) removeChild(_tempButton);
-    if (_tempButton==null) return;
-    if (_boxUp == false &&  _tempButton.alpha == .5 && _touchMode != 0) {
-      num touchX, touchY, money;
-      if (_teamA == true) {
-        touchX = -event.touchX;
-        touchY = -event.touchY;
-        money = _game.teamAMoney;
-      } else {
-        touchX = -_game.width+event.touchX;
-        touchY = -_game.height+event.touchY;
-        money = _game.teamBMoney;
-      }
-      num amount = _calculateAmount();
-      if (money<amount) _confirmMode = OKAY;
-      else _confirmMode = CONFIRM;
-      
-      if (_touchedBoat != null) {
-        if (_touchMode==SPEED) {
-          if (money<amount) _startWarning("You need \$$amount to increase speed. Fish more!", touchX, touchY);
-          else _startWarning("Increase speed for \$$amount?", touchX, touchY);
-        } else if (_touchMode==CAPACITY) {
-          if (money<amount) _startWarning("You need \$$amount to increase net size. Fish more!", touchX, touchY);
-          else _startWarning("Increase net size for \$$amount?", touchX, touchY);
-        }
-      } else {
-        if (_touchMode==SARDINE) {
-          if (money<amount) _startWarning("You need \$$amount to buy a sardine boat. Fish more!", touchX, touchY);
-          else _startWarning("Buy sardine boat \$$amount?", touchX, touchY);
-        } else if (_touchMode==SHARK) {
-          if (money<amount) _startWarning("You need \$$amount to buy shark boat. Fish more!", touchX, touchY);
-          else _startWarning("Buy shark boat for \$$amount?", touchX, touchY);
-        } else if (_touchMode==TUNA) {
-          if (money<amount) _startWarning("You need \$$amount to buy tuna boat. Fish more!", touchX, touchY);
-          else _startWarning("Buy tuna boat for \$$amount?", touchX, touchY);
-        }
-      } 
-    } else if (_tempButton.alpha==1) _touchMode = 0;
+//    if (contains(_tempButton)) removeChild(_tempButton);
+////    if (_tempButton==null) return;
+//    if (_boxUp == false &&  _tempButton.alpha == .5 && _touchMode != 0) {
+//      num touchX, touchY, money;
+//      if (_teamA == true) {
+//        touchX = -event.touchX;
+//        touchY = -event.touchY;
+//        money = _game.teamAMoney;
+//      } else {
+//        touchX = -_game.width+event.touchX;
+//        touchY = -_game.height+event.touchY;
+//        money = _game.teamBMoney;
+//      }
+//      num amount = _calculateAmount();
+//      if (money<amount) _confirmMode = OKAY;
+//      else _confirmMode = CONFIRM;
+//      
+//      if (_touchedBoat != null) {
+//        if (_touchMode==SPEED) {
+//          if (money<amount) _startWarning("You need \$$amount to increase speed. Fish more!", touchX, touchY);
+//          else _startWarning("Increase speed for \$$amount?", touchX, touchY);
+//        } else if (_touchMode==CAPACITY) {
+//          if (money<amount) _startWarning("You need \$$amount to increase net size. Fish more!", touchX, touchY);
+//          else _startWarning("Increase net size for \$$amount?", touchX, touchY);
+//        }
+//      } else {
+//        if (_touchMode==SARDINE) {
+//          if (money<amount) _startWarning("You need \$$amount to buy a sardine boat. Fish more!", touchX, touchY);
+//          else _startWarning("Buy sardine boat \$$amount?", touchX, touchY);
+//        } else if (_touchMode==SHARK) {
+//          if (money<amount) _startWarning("You need \$$amount to buy shark boat. Fish more!", touchX, touchY);
+//          else _startWarning("Buy shark boat for \$$amount?", touchX, touchY);
+//        } else if (_touchMode==TUNA) {
+//          if (money<amount) _startWarning("You need \$$amount to buy tuna boat. Fish more!", touchX, touchY);
+//          else _startWarning("Buy tuna boat for \$$amount?", touchX, touchY);
+//        }
+//      } 
+//    } else if (_tempButton.alpha==1) _touchMode = 0;
   }
 }

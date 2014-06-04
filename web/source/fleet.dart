@@ -62,6 +62,60 @@ class Fleet extends Sprite {
     return boat;
   }
   
+  void makeSardine(bool teamA){
+    
+    for(int i = 0; i < boats.length; i++){
+      if(boats[i]._teamA == teamA){
+        sellBoat(i);
+        i--;
+      }
+    }
+    
+    if(teamA){
+      addBoat(TEAMASARDINE);
+      addBoat(TEAMASARDINE);
+    }
+    else{
+      addBoat(TEAMBSARDINE);
+      addBoat(TEAMBSARDINE);
+    }
+    _game._offseason.clearAndRefillDock();
+  }
+  void makeTuna(bool teamA){
+    for(int i = 0; i < boats.length; i++){
+      if(boats[i]._teamA == teamA){
+        sellBoat(i);
+        i--;
+      }
+    }
+    if(teamA){
+      addBoat(TEAMATUNA);
+      addBoat(TEAMATUNA);
+    }
+    else{
+      addBoat(TEAMBTUNA);
+      addBoat(TEAMBTUNA);
+    }
+    _game._offseason.clearAndRefillDock();
+  }
+  void makeShark(bool teamA){
+    for(int i = 0; i < boats.length; i++){
+      if(boats[i]._teamA == teamA){
+        sellBoat(i);
+        i--;
+      }
+    }
+    if(teamA){
+      addBoat(TEAMASHARK);
+      addBoat(TEAMASHARK);
+    }
+    else{
+      addBoat(TEAMBSHARK);
+      addBoat(TEAMBSHARK);
+    }
+    _game._offseason.clearAndRefillDock();
+  }
+  
   void returnBoats() {
     for (int i=0; i<boats.length; i++) {
 //      boats[i].returnToDock();
