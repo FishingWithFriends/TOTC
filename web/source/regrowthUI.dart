@@ -194,7 +194,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
     int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
 
-    if (sardineCount < 50 && sardineCount > 0){
+    if (sardineCount < 150 && sardineCount > 0){
       _sardineStatusText = "Sardine populuation is endangered";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
@@ -215,7 +215,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     }
     
     
-    if (tunaCount < 25 && tunaCount > 0){
+    if (tunaCount < 35 && tunaCount > 0){
       _tunaStatusText = "Tuna populuation is endangered";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
@@ -438,7 +438,7 @@ class ScoreCounter extends Sprite{
      boxX = 500;
      boxY = 75;
      r1 = 250;
-     r2 = 225;
+     r2 = 210;
      r3 = 200;
      r4 = 150;
      offsetX = 0;
@@ -449,7 +449,7 @@ class ScoreCounter extends Sprite{
      boxX = _game.width - 500;
      boxY = _game.height - 75;
      r1 = 250;
-     r2 = 225;
+     r2 = 210;
      r3 = 200;
      r4 = 150;
      offsetX = _game.width;
@@ -469,11 +469,11 @@ class ScoreCounter extends Sprite{
 
        
        
-   TextFormat format = new TextFormat("Arial", 18, Color.White, align: "right", bold: true);
+   TextFormat format = new TextFormat("Arial", 36, Color.White, align: "right", bold: true);
    
    scorePrompt = new TextField("", format);
    scorePrompt..alpha = 0
-              ..width = uiBox.width
+              ..width = uiBox.width+50
               ..pivotX = scorePrompt.width/2
               ..rotation = rotationVal
               ..x =offsetX - r1*math.cos(rotationVal)
@@ -523,7 +523,7 @@ class ScoreCounter extends Sprite{
     if(teamType == TEAMA) profit = _game.teamARoundProfit;
     else if(teamType == TEAMB) profit = _game.teamBRoundProfit;
     
-    scorePrompt.text = "Profit from previous season: ${profit}";
+    scorePrompt.text = "Season Profit: ${profit}";
     Tween t2 = new Tween(scorePrompt, .5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
     t2.onComplete = showTotalProfit;
@@ -534,11 +534,11 @@ class ScoreCounter extends Sprite{
   void showTotalProfit(){
     if(teamType == TEAMA){
       _game.teamATotalProfit += profit;
-      multiplier.text = "Total Profit: ${_game.teamATotalProfit}";
+      multiplier.text = "Total: ${_game.teamATotalProfit}";
     }
     else if(teamType == TEAMB){
       _game.teamBTotalProfit += profit;
-      multiplier.text = "Total Profit: ${_game.teamBTotalProfit}";
+      multiplier.text = "Total: ${_game.teamBTotalProfit}";
     }
     
     Tween t2 = new Tween(multiplier, .5, TransitionFunction.linear);

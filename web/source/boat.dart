@@ -552,8 +552,8 @@ class Boat extends Sprite implements Touchable, Animatable {
         _arrow.rotation = -math.PI/2 + this.rotation + math.PI;
 
       } else {
-        _arrow.y =  this.y - this.y/16;
-        _arrow.x =  this.x - this.x/14+60;
+        _arrow.y =  this.y - this.y/12;
+        _arrow.x =  this.x - this.x/10+20;
         _arrow.rotation = math.PI/2+ this.rotation;
 
       }
@@ -577,11 +577,12 @@ class Boat extends Sprite implements Touchable, Animatable {
   void _promptBoatFull() {
     if (_showingFullPrompt==false) {
       _showingFullPrompt = true;
-
+      print("trying to be full");
       TextFormat format = new TextFormat("Arial", 20, Color.LightYellow, align: "left");
       _fullText = new TextField("Your boat is full!", format);
 //      if (_leavingDock==true) _fullText.text = "Leaving dock!";
       _fullText.width = 200;
+      _fullText.alpha = 1;
 
       if (_teamA==true) {
         _fullText.x = x+50;
@@ -593,7 +594,7 @@ class Boat extends Sprite implements Touchable, Animatable {
         _fullText.rotation = 0;
       }
       _fleet.addChild(_fullText);
-      Tween t2 = new Tween(_fullText, 1, TransitionFunction.linear);
+      Tween t2 = new Tween(_fullText, 1.5, TransitionFunction.linear);
       t2.animate.alpha.to(0);
       t2.onComplete = _promptBoatFullDone;
       _fleet._juggler.add(t2);
@@ -703,9 +704,9 @@ class Boat extends Sprite implements Touchable, Animatable {
         boat.addChild(_boatImage);
         _dragging = true;
         
-        addChild(particleEmitter);
-        swapChildren(boat, particleEmitter);
-        _juggler.add(particleEmitter);
+//        addChild(particleEmitter);
+//        swapChildren(boat, particleEmitter);
+//        _juggler.add(particleEmitter);
         
 //      }
       if (canCatch==false && _canMove==false) _promptBoatFull();
@@ -739,8 +740,8 @@ class Boat extends Sprite implements Touchable, Animatable {
       _juggler.remove(_boatRotate);
       boat.removeChild(_boatImage);
       
-      if(contains(particleEmitter)) removeChild(particleEmitter);
-      _juggler.remove(particleEmitter);
+//      if(contains(particleEmitter)) removeChild(particleEmitter);
+//      _juggler.remove(particleEmitter);
       
       _setBoatUp();
       boat.addChild(_boatImage);

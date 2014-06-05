@@ -45,7 +45,7 @@ class Fish extends Bitmap implements Animatable {
       _minSeparation = 5;
       _rotationSpeed = math.PI/60;
       
-      _hungerMax =60;
+      _hungerMax =120;
       _hunger = _random.nextInt(_hungerMax);
       _foodType = Ecosystem.SARDINE;
       _predType = Ecosystem.SHARK;
@@ -61,7 +61,7 @@ class Fish extends Bitmap implements Animatable {
       _v = .6;
       _minSeparation = 50;
       _rotationSpeed = math.PI/60;
-      _hungerMax = 60;
+      _hungerMax = 120;
       _hunger = _random.nextInt(_hungerMax);
       _foodType = Ecosystem.TUNA;
       _predType = -1;
@@ -77,7 +77,7 @@ class Fish extends Bitmap implements Animatable {
       _v = 1.5;
       _minSeparation = 1;
       _rotationSpeed = math.PI/8;
-      _hungerMax = 60;
+      _hungerMax = 120;
       _hunger = _random.nextInt(_hungerMax);
       _foodType = Ecosystem.MAGIC;
       _predType = Ecosystem.TUNA;

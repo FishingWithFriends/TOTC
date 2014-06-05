@@ -13,7 +13,7 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-  static const FISHING_TIME = 10;
+  static const FISHING_TIME = 20;
   static const REGROWTH_TIME = 10;
   static const BUYING_TIME = 15;
   
