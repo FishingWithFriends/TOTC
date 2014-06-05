@@ -10,6 +10,9 @@ class Boat extends Sprite implements Touchable, Animatable {
   static const num BASE_ROT_SPEED = .09;
   static const num BASE_NET_CAPACITY = 25000;
   
+  static const int SMALLNET = 0;
+  static const int LARGENET = 1;
+  
   ResourceManager _resourceManager;
   Juggler _juggler;
   Tween _boatMove;
@@ -74,8 +77,9 @@ class Boat extends Sprite implements Touchable, Animatable {
   
   int mapIndex = null;
   
+  int netSize;
  
-  Boat(ResourceManager resourceManager, Juggler juggler, int type, Game game, Fleet f) {
+  Boat(ResourceManager resourceManager, Juggler juggler, int type, Game game, Fleet f, this.netSize) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _type = type;
@@ -150,15 +154,18 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE){
       catchType = Ecosystem.SARDINE;
-      _nets = resourceManager.getTextureAtlas('sardineNets');
+      if(netSize == LARGENET) _nets = resourceManager.getTextureAtlas('sardineNets');
+      else if(netSize == SMALLNET) _nets = resourceManager.getTextureAtlas('sardineNetsSmall');
     }
     if (type==Fleet.TEAMATUNA || type==Fleet.TEAMBTUNA){
       catchType = Ecosystem.TUNA;
-      _nets = resourceManager.getTextureAtlas('tunaNets');
+      if(netSize == LARGENET) _nets = resourceManager.getTextureAtlas('tunaNets');
+      else if(netSize == SMALLNET) _nets = resourceManager.getTextureAtlas('tunaNetsSmall');
     }
     if (type==Fleet.TEAMASHARK || type==Fleet.TEAMBSHARK){
       catchType = Ecosystem.SHARK;
-      _nets = resourceManager.getTextureAtlas('sharkNets');
+      if(netSize == LARGENET) _nets = resourceManager.getTextureAtlas('sharkNets');
+      else if(netSize == SMALLNET) _nets = resourceManager.getTextureAtlas('sharkNetsSmall');
     }
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMATUNA || type==Fleet.TEAMASHARK) _teamA = true;
     else _teamA = false;
@@ -512,14 +519,14 @@ class Boat extends Sprite implements Touchable, Animatable {
 
       
       if (_teamA==true) {
-        _arrow.y = 150;
-        _arrow.x = this.x;
-        _arrow.rotation = -math.PI/2;
+        _arrow.y = this.y + this.y/3;//100*math.sin(math.atan2(this.y, this.x));
+        _arrow.x = this.x + this.x/3;//100*math.cos(math.atan2(this.y, this.x));
+        _arrow.rotation = -math.PI/2 + this.rotation + math.PI;
 
       } else {
-        _arrow.y = _game.height - 150;
-        _arrow.x =  this.x;
-        _arrow.rotation = math.PI/2;
+        _arrow.y =  this.y - this.y/16;
+        _arrow.x =  this.x - this.x/14+60;
+        _arrow.rotation = math.PI/2+ this.rotation;
 
       }
       _fleet.addChild(_arrow);
@@ -571,10 +578,35 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void smallCap(){
+    netSize = SMALLNET;
+    if (_type==Fleet.TEAMASARDINE || _type==Fleet.TEAMBSARDINE){
+      _nets = _resourceManager.getTextureAtlas('sardineNetsSmall');
+    }
+    if (_type==Fleet.TEAMATUNA || _type==Fleet.TEAMBTUNA){
+      _nets = _resourceManager.getTextureAtlas('tunaNetsSmall');
+    }
+    if (_type==Fleet.TEAMASHARK || _type==Fleet.TEAMBSHARK){
+      _nets = _resourceManager.getTextureAtlas('sharkNetsSmall');
+    }
+    _netNames = _nets.frameNames;
+    _changeNetGraphic();
     return;
   }
   
   void largeCap(){
+    netSize = LARGENET;
+    
+    if (_type==Fleet.TEAMASARDINE || _type==Fleet.TEAMBSARDINE){
+      _nets = _resourceManager.getTextureAtlas('sardineNets');
+    }
+    if (_type==Fleet.TEAMATUNA || _type==Fleet.TEAMBTUNA){
+      _nets = _resourceManager.getTextureAtlas('tunaNets');
+    }
+    if (_type==Fleet.TEAMASHARK || _type==Fleet.TEAMBSHARK){
+      _nets = _resourceManager.getTextureAtlas('sharkNets');
+    }
+    _netNames = _nets.frameNames;
+    _changeNetGraphic();
     return;  
   }
   

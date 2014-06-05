@@ -1,0 +1,92 @@
+{"frames": [
+
+{
+	"filename": "sardineNetSmall0.png",
+	"frame": {"x":2,"y":2,"w":85,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":104},
+	"sourceSize": {"w":85,"h":104}
+},
+{
+	"filename": "sardineNetSmall1.png",
+	"frame": {"x":182,"y":109,"w":85,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":105},
+	"sourceSize": {"w":85,"h":105}
+},
+{
+	"filename": "sardineNetSmall2.png",
+	"frame": {"x":356,"y":109,"w":85,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":105},
+	"sourceSize": {"w":85,"h":105}
+},
+{
+	"filename": "sardineNetSmall3.png",
+	"frame": {"x":269,"y":109,"w":85,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":105},
+	"sourceSize": {"w":85,"h":105}
+},
+{
+	"filename": "sardineNetSmall4.png",
+	"frame": {"x":92,"y":109,"w":88,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":105},
+	"sourceSize": {"w":88,"h":105}
+},
+{
+	"filename": "sardineNetSmall5.png",
+	"frame": {"x":2,"y":109,"w":88,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":105},
+	"sourceSize": {"w":88,"h":105}
+},
+{
+	"filename": "sardineNetSmall6.png",
+	"frame": {"x":89,"y":2,"w":88,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":105},
+	"sourceSize": {"w":88,"h":105}
+},
+{
+	"filename": "sardineNetSmall7.png",
+	"frame": {"x":179,"y":2,"w":88,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":105},
+	"sourceSize": {"w":88,"h":105}
+},
+{
+	"filename": "sardineNetSmall8.png",
+	"frame": {"x":269,"y":2,"w":88,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":105},
+	"sourceSize": {"w":88,"h":105}
+},
+{
+	"filename": "sardineNetSmall9.png",
+	"frame": {"x":359,"y":2,"w":88,"h":105},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":88,"h":105},
+	"sourceSize": {"w":88,"h":105}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker ",
+	"version": "1.0",
+	"image": "sardineNetSmall.png",
+	"format": "RGBA8888",
+	"size": {"w":449,"h":216},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:00d7d8b620592eafb5e5fb9a22967efa:66dbdeaf00bc98fc882e4fb37099ea42:6164f884d4f59397ccb74780b197fef0$"
+}
+}

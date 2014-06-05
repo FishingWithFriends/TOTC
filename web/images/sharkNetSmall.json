@@ -1,0 +1,52 @@
+{"frames": [
+
+{
+	"filename": "sharkNetSmall0.png",
+	"frame": {"x":2,"y":2,"w":85,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":104},
+	"sourceSize": {"w":85,"h":104}
+},
+{
+	"filename": "sharkNetSmall1.png",
+	"frame": {"x":89,"y":2,"w":85,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":104},
+	"sourceSize": {"w":85,"h":104}
+},
+{
+	"filename": "sharkNetSmall2.png",
+	"frame": {"x":176,"y":2,"w":85,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":104},
+	"sourceSize": {"w":85,"h":104}
+},
+{
+	"filename": "sharkNetSmall3.png",
+	"frame": {"x":263,"y":2,"w":85,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":104},
+	"sourceSize": {"w":85,"h":104}
+},
+{
+	"filename": "sharkNetSmall4.png",
+	"frame": {"x":350,"y":2,"w":85,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":104},
+	"sourceSize": {"w":85,"h":104}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker ",
+	"version": "1.0",
+	"image": "sharkNetSmall.png",
+	"format": "RGBA8888",
+	"size": {"w":437,"h":108},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:9075cd8338d758a9b5a73681dc3ce7c4:305ae370850afa2b0b88cd9c66f77c2d:ad82229d36269529b8529f35cfa897ca$"
+}
+}

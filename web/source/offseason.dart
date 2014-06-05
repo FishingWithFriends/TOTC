@@ -152,7 +152,7 @@ class Offseason extends Sprite {
           num h = _game.height;
           for (int i=0; i<_fleet.boats.length; i++) {
             Boat fleetBoat = _fleet.boats[i];
-            Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet);
+            Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet, fleetBoat.netSize);
             offseasonBoats.add(boat);
             boat.offseasonBoat = true;
             boat.mapIndex = i;
@@ -271,6 +271,20 @@ class Offseason extends Sprite {
     if(contains(boat)) removeChild(boat);
     clearAndRefillDock();
   }
+  
+//  void largeCap(bool _teamA){
+//      for(int i = 0; i < offseasonBoats.length; i++){
+//        if(offseasonBoats[i]._teamA == _teamA) offseasonBoats[i].largeCap();
+//      }
+//      clearAndRefillDock();
+//    }
+//  
+//  void smallCap(bool _teamA){
+//      for(int i = 0; i < offseasonBoats.length; i++){
+//        if(offseasonBoats[i]._teamA == _teamA) offseasonBoats[i].smallCap();
+//      }
+//      clearAndRefillDock();
+//    }
   
 } 
 
@@ -559,14 +573,14 @@ class Circle extends Sprite implements Touchable {
           _touchedBoat.increaseCapacity();
         } else {
           if (_boxConfirmMode==SHARK) {
-            if (_teamA==true) _fleet.addBoat(Fleet.TEAMASHARK);
-            else _fleet.addBoat(Fleet.TEAMBSHARK);
+            if (_teamA==true) _fleet.addBoat(Fleet.TEAMASHARK,0);
+            else _fleet.addBoat(Fleet.TEAMBSHARK,0);
           } else if (_boxConfirmMode==TUNA) {
-            if (_teamA==true) _fleet.addBoat(Fleet.TEAMATUNA);
-            else _fleet.addBoat(Fleet.TEAMBTUNA);
+            if (_teamA==true) _fleet.addBoat(Fleet.TEAMATUNA,0);
+            else _fleet.addBoat(Fleet.TEAMBTUNA,0);
           } else if (_boxConfirmMode==SARDINE) {
-            if (_teamA==true) _fleet.addBoat(Fleet.TEAMASARDINE);
-            else _fleet.addBoat(Fleet.TEAMBSARDINE);
+            if (_teamA==true) _fleet.addBoat(Fleet.TEAMASARDINE,0);
+            else _fleet.addBoat(Fleet.TEAMBSARDINE,0);
           }
           if (_boxConfirmMode != SPEED && _boxConfirmMode != CAPACITY) 
             _offseason.clearAndRefillDock();
