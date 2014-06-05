@@ -7,15 +7,18 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_PHASE = 3;
   static const ENDGAME_PHASE = 4;
   
-  static const MAX_ROUNDS = 6;
+  static const MAX_ROUNDS = 5;
   
   static const FISHING_TIMER_WIDTH = 125;
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-  static const FISHING_TIME = 25;
-  static const REGROWTH_TIME = 10;
-  static const BUYING_TIME = 15;
+//  static const FISHING_TIME = 25;
+//  static const REGROWTH_TIME = 10;
+//  static const BUYING_TIME = 15;
+  static const FISHING_TIME = 5;
+  static const REGROWTH_TIME = 5;
+  static const BUYING_TIME = 305;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;

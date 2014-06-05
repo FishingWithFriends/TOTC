@@ -89,6 +89,14 @@ void main() {
   resourceManager.addBitmapData("TunaBoatButton", "images/tunaBoatIcon.png");
   resourceManager.addBitmapData("SharkBoatButton", "images/sharkBoatIcon.png");
   resourceManager.addBitmapData("CapacityUpgradeButtonSmall", "images/capUpgradeIcon.png");
+  resourceManager.addBitmapData("CapacityUpgradeButtonLarge", "images/capUpgradeIconBig.png");
+  
+  resourceManager.addBitmapData("SardineBoatButtonGlow", "images/sardineBoatIconGlow.png");
+  resourceManager.addBitmapData("TunaBoatButtonGlow", "images/tunaBoatIconGlow.png");
+  resourceManager.addBitmapData("SharkBoatButtonGlow", "images/sharkBoatIconGlow.png");
+  resourceManager.addBitmapData("CapacityUpgradeButtonSmallGlow", "images/capUpgradeIconGlow.png");
+  resourceManager.addBitmapData("CapacityUpgradeButtonLargeGlow", "images/capUpgradeIconBigGlow.png");
+  
   resourceManager.addBitmapData("SpeedUpgradeButton", "images/speedUpgradeIcon.png");
   resourceManager.addBitmapData("OffseasonDock", "images/offseason_dock.png");
   resourceManager.addBitmapData("sardineIcon", "images/sardineIcon.png");
@@ -109,7 +117,9 @@ void main() {
   resourceManager.addBitmapData("endgameTunaIcon", "images/endgameTunaIcon.png");
   resourceManager.addBitmapData("endgameSharkIcon", "images/endgameSharkIcon.png");
   resourceManager.addBitmapData("sellIsland", "images/sell_island.png");
-  resourceManager.addBitmapData("CapacityUpgradeButtonLarge", "images/capUpgradeIconBig.png");
+
+  resourceManager.addBitmapData("teamAScoreCircle", "images/teamAScoreCircle.png");
+  resourceManager.addBitmapData("teamBScoreCircle", "images/teamBScoreCircle.png");
   
   resourceManager.addSound("buttonClick", "sounds/button_click.ogg");
   resourceManager.addSound("circleUISwoosh", "sounds/circle_swoosh.ogg");

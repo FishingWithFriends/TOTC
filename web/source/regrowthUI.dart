@@ -397,7 +397,9 @@ class ScoreCounter extends Sprite{
   
   int teamType;
   
-  Shape uiBox, teamBase;
+  Shape uiBox;//, teamBase;
+  
+  Bitmap teamBase;
   TextField scorePrompt;
   TextField multiplier;
   TextField total;
@@ -411,26 +413,35 @@ class ScoreCounter extends Sprite{
     int boxX, boxY, r1,r2,r3, r4, offsetX, offsetY;
     int baseX, baseY;
     int fillColor;
-
+    var teamBaseText;
+    int offset = 70;
         if(teamType == TEAMA){
-          baseX = 0;
-          baseY = 0;
+          baseX = offset;
+          baseY = offset;
           r1 = 400;
           fillColor = Color.Green;
+          teamBaseText = "teamAScoreCircle";
          
         }
         else if(teamType == TEAMB){
-          baseX = _game.width;
-          baseY = _game.height;
+          baseX = _game.width - offset;
+          baseY = _game.height - offset;
           r1 = 400;
           fillColor = Color.Red;
+          teamBaseText = "teamBScoreCircle";
               
         }    
         
-   teamBase = new Shape();
-   teamBase..graphics.arc(baseX, baseY, r1, 0, 2*math.PI, false)
-            ..graphics.fillColor(fillColor)
-            ..alpha = 0;
+//   teamBase = new Shape();
+//   teamBase..graphics.arc(baseX, baseY, r1, 0, 2*math.PI, false)
+//            ..graphics.fillColor(fillColor)
+     teamBase = new Bitmap(_resourceManager.getBitmapData(teamBaseText));
+     teamBase..alpha = 0
+             ..pivotX = teamBase.width/2
+             ..pivotY = teamBase.height/2
+             ..x  = baseX
+             ..y = baseY;
+     
    addChild(teamBase);
    
    if(teamType == TEAMA){
@@ -516,7 +527,7 @@ class ScoreCounter extends Sprite{
     _juggler.add(t1);
     
     Tween t3 = new Tween(teamBase, .5, TransitionFunction.linear);
-    t3.animate.alpha.to(.6);
+    t3.animate.alpha.to(1);
     _juggler.add(t3);
     
     

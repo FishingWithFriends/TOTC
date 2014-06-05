@@ -451,14 +451,14 @@ class Boat extends Sprite implements Touchable, Animatable {
     x = x+speed*math.sin(rotation);
     y = y-speed*math.cos(rotation);
     
-    if (_collisionDetected()) {
-      x = oldX;
-      y = oldY;
-      rotation = Movement.rotateTowards(newAngle, rotSpeed, rotation);
-      return true;
-    } else {
-      return true;
-    }
+//    if (_collisionDetected()) {
+//      x = oldX;
+//      y = oldY;
+//      rotation = Movement.rotateTowards(newAngle, rotSpeed, rotation);
+//      return true;
+//    } else {
+//      return true;
+//    }
   }
   
   bool _collisionDetected() {

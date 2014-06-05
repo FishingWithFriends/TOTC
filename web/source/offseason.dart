@@ -80,10 +80,10 @@ class Offseason extends Sprite {
   
   void clearAndRefillDock() {
 //    if (offseasonDock.numChildren>1) offseasonDock.removeChildren(1, offseasonDock.numChildren-1);
-    for(int i = 0; i < offseasonBoats.length; i++){
-      if(contains(offseasonBoats[i])) removeChild(offseasonBoats[i]);
-    }
-    offseasonBoats.clear();
+//    for(int i = 0; i < offseasonBoats.length; i++){
+//      if(contains(offseasonBoats[i])) removeChild(offseasonBoats[i]);
+//    }
+//    offseasonBoats.clear();
     fillDocks();
 //    arrangeUICircle();
   }
@@ -97,6 +97,9 @@ class Offseason extends Sprite {
   }
   
   void showCircles() {
+    
+    _teamACircle._touchMode = 0;
+    _teamBCircle._touchMode = 0;    
     
     Tween t1 = new Tween(_teamACircle, .5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
@@ -116,6 +119,9 @@ class Offseason extends Sprite {
   }
   
   void hideCircles() {
+    
+    _teamACircle._touchMode = -1;
+    _teamBCircle._touchMode = -1;    
     
     Tween t1 = new Tween(_teamACircle, .5, TransitionFunction.linear);
     t1.animate.alpha.to(0);
@@ -150,6 +156,10 @@ class Offseason extends Sprite {
           int bCounter = 0;
           num w = _game.width;
           num h = _game.height;
+          for(int i = 0; i < offseasonBoats.length; i++){
+            if(contains(offseasonBoats[i])) removeChild(offseasonBoats[i]);
+          }
+          offseasonBoats.clear();
           for (int i=0; i<_fleet.boats.length; i++) {
             Boat fleetBoat = _fleet.boats[i];
             Boat boat = new Boat(_resourceManager, _juggler, fleetBoat._type, _game, _fleet, fleetBoat.netSize);
@@ -296,6 +306,7 @@ class Circle extends Sprite implements Touchable {
   static const SHARK = 5;
   static const OKAY = 6;
   static const CONFIRM = 7;
+  static const TRANSITION = -1;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -335,6 +346,8 @@ class Circle extends Sprite implements Touchable {
   bool _boxUp = false;
   num _boxX, _boxY;
   bool _boxDisplayed = false;
+  num wShip;
+  num wNet;
   
   Circle(ResourceManager resourceManager, Juggler juggler, Game game, bool teamA, Map<int, Boat> boatsA, Map<int, Boat> boatsB, Fleet fleet, Offseason offseason) {
     _resourceManager = resourceManager;
@@ -386,68 +399,49 @@ class Circle extends Sprite implements Touchable {
     _circleButton.addEventListener(TouchEvent.TOUCH_TAP, _circlePressed);
     _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
 
-    _capacitySmallButton = _returnCapacityButton();
-    _capacitySmallButton.alpha = 1;
-    _capacitySmallButton.addEventListener(MouseEvent.MOUSE_DOWN, _capacitySmallButtonPressed);
-    _capacitySmallButton.addEventListener(TouchEvent.TOUCH_TAP, _capacitySmallButtonPressed);
-    _capacitySmallButton.addEventListener(TouchEvent.TOUCH_BEGIN, _capacitySmallButtonPressed);
-    
-    _capacityLargeButton = _returnCapacityButtonLarge();
-    _capacityLargeButton.alpha = 1;
-    _capacityLargeButton.addEventListener(MouseEvent.MOUSE_DOWN, _capacityLargeButtonPressed);
-    _capacityLargeButton.addEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
-    _capacityLargeButton.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
-    
-    _tunaButton = _returnTunaButton();
-    _tunaButton.alpha = 1;
-    _tunaButton.addEventListener(MouseEvent.MOUSE_DOWN, _tunaPressed);
-    _tunaButton.addEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
-    _tunaButton.addEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
-    
-    _sardineButton = _returnSardineButton();
-    _sardineButton.alpha = 1;
-    _sardineButton.addEventListener(MouseEvent.MOUSE_DOWN, _sardinePressed);
-    _sardineButton.addEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
-    _sardineButton.addEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
-    
-    _sharkButton = _returnSharkButton();
-    _sharkButton.alpha = 1;
-    _sharkButton.addEventListener(MouseEvent.MOUSE_DOWN, _sharkPressed);
-    _sharkButton.addEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
-    _sharkButton.addEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
+
     
     BitmapData.load('images/teamACircle.png').then((bitmapData) {
        _circle.pivotX = bitmapData.width/2;
        _circle.pivotY = bitmapData.height/2;
        
-       num w = bitmapData.width*.375;
-       _capacitySmallButton.x = math.cos(math.PI*9/8)*w;
-       _capacitySmallButton.y = math.sin(math.PI*9/8)*w;
-       _capacityLargeButton.x = math.cos(math.PI*8/6)*w;
-       _capacityLargeButton.y = math.sin(math.PI*8/6)*w;
-       w = width*.1875;
-       _sardineButton.x = math.cos(-math.PI*1/16)*w;
-       _sardineButton.y = math.sin(-math.PI*1/16)*w;
-       _tunaButton.x = math.cos(math.PI*1.5/6)*w;
-       _tunaButton.y = math.sin(math.PI*1.5/6)*w;
-       _sharkButton.x = math.cos(math.PI*3.75/6)*w;
-       _sharkButton.y = math.sin(math.PI*3.75/6)*w;
+       wNet = bitmapData.width*.375;
+       wShip = width*.1875;
+       
+       _capacitySmallButton = _returnCapacityButton();
+       _capacitySmallButton.alpha = 1;
+
+       
+       _capacityLargeButton = _returnCapacityButtonLarge();
+       _capacityLargeButton.alpha = 1;
+
+       
+       
+       _sardineButton = _returnSardineButton();
+       _sardineButton.alpha = 1;
+       
+       _tunaButton = _returnTunaButton();
+       _tunaButton.alpha = 1;
+       
+       _sharkButton = _returnSharkButton();
+       _sharkButton.alpha = 1;
+       
+       
      });
 
     
     addChild(_circle);
     addChild(_circleButton);
-    addChild(_capacityLargeButton);
-    addChild(_capacitySmallButton);
-    addChild(_tunaButton);
-    addChild(_sardineButton);
-    addChild(_sharkButton);
+
     new Timer(new Duration(milliseconds:200), () =>_circlePressed(0));
   }
   
   void _circlePressed(var e) {
     if (_juggler.contains(_rotateTween)) _juggler.remove(_rotateTween);
-    if (_juggler.contains(_rotateTween2)) _juggler.remove(_rotateTween2);
+    if (_juggler.contains(_rotateTween2)){
+      _juggler.remove(_rotateTween2);
+    }
+    
     _rotateTween = new Tween(this, .6, TransitionFunction.easeOutBounce);
     _rotateTween2 = new Tween(_circleButton, .6, TransitionFunction.easeOutBounce);
     if (_upgradeMode==true) {
@@ -466,54 +460,305 @@ class Circle extends Sprite implements Touchable {
   }
   
   void _capacityLargeButtonPressed(var e) {
-    _touchMode = SPEED;
-    _fleet.largeCap(_teamA);
+    if(_touchMode != TRANSITION){
+      _touchMode = SPEED;
+      _fleet.largeCap(_teamA);
+      
+      _capacityLargeButton = _returnCapacityButtonLargeGlow();
+      _capacitySmallButton = _returnCapacityButton();
+    }
   }
   void _capacitySmallButtonPressed(var e) {
-    _touchMode = CAPACITY;
-    _fleet.smallCap(_teamA);
+    if(_touchMode != TRANSITION){
+      _touchMode = CAPACITY;
+      _fleet.smallCap(_teamA);
+      
+      _capacityLargeButton = _returnCapacityButtonLarge();
+      _capacitySmallButton = _returnCapacityButtonGlow();
+    }
   }
   void _tunaPressed(var e) {
-    _touchMode = TUNA;
-    _fleet.makeTuna(_teamA);
+    if(_touchMode != TRANSITION){
+      _touchMode = TUNA;
+      _fleet.makeTuna(_teamA);
+      
+      _sardineButton = _returnSardineButton();
+      _tunaButton = _returnTunaButtonGlow();
+      _sharkButton = _returnSharkButton();
+    }
   }
   void _sardinePressed(var e) {
-    _touchMode = SARDINE;
-    _fleet.makeSardine(_teamA);
+    if(_touchMode != TRANSITION){
+      _touchMode = SARDINE;
+      _fleet.makeSardine(_teamA);
+  
+      _sardineButton = _returnSardineButtonGlow();
+      _tunaButton = _returnTunaButton();
+      _sharkButton = _returnSharkButton();
+    }
   }
   void _sharkPressed(var e) {
-    _touchMode = SHARK;
-    _fleet.makeShark(_teamA);
+    if(_touchMode != TRANSITION){
+      _touchMode = SHARK;
+      _fleet.makeShark(_teamA);
+      
+      
+  
+      _sardineButton = _returnSardineButton();
+      _tunaButton = _returnTunaButton();
+      _sharkButton = _returnSharkButtonGlow();
+    }
   }
   SimpleButton _returnCapacityButtonLarge() {
-    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")), 
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")),
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")), 
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")));
+    
+    SimpleButton temp;
+    if(contains(_capacityLargeButton)){
+      removeChild(_capacityLargeButton);
+      _capacityLargeButton.removeEventListener(MouseEvent.MOUSE_DOWN, _capacityLargeButtonPressed);
+      _capacityLargeButton.removeEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
+      _capacityLargeButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
+    }
+    temp = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLargeGlow")),
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLargeGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLarge")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _capacityLargeButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
+    
+    temp.x = math.cos(math.PI*8/6)*wNet;
+    temp.y = math.sin(math.PI*8/6)*wNet;
+    
+    addChild(temp);
+    
+    return temp;
+  }
+  
+  SimpleButton _returnCapacityButtonLargeGlow() {
+    
+    SimpleButton temp;
+    if(contains(_capacityLargeButton)){
+      removeChild(_capacityLargeButton);
+      _capacityLargeButton.removeEventListener(MouseEvent.MOUSE_DOWN, _capacityLargeButtonPressed);
+      _capacityLargeButton.removeEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
+      _capacityLargeButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
+    }
+    temp =  new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLargeGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLargeGlow")),
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLargeGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonLargeGlow")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _capacityLargeButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
+    
+    temp.x = math.cos(math.PI*8/6)*wNet;
+    temp.y = math.sin(math.PI*8/6)*wNet;
+    
+    addChild(temp);
+    
+    return temp;
   }
   SimpleButton _returnCapacityButton() {
-    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")), 
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")),
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")), 
-                           new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")));
+    
+    SimpleButton temp;
+    if(contains(_capacitySmallButton)){
+      removeChild(_capacitySmallButton);
+      _capacitySmallButton.removeEventListener(MouseEvent.MOUSE_DOWN, _capacitySmallButtonPressed);
+      _capacitySmallButton.removeEventListener(TouchEvent.TOUCH_TAP, _capacitySmallButtonPressed);
+      _capacitySmallButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _capacitySmallButtonPressed);
+    }
+    temp =   new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmallGlow")),
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmallGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmall")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _capacitySmallButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _capacitySmallButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _capacitySmallButtonPressed);
+    
+    temp.x = math.cos(math.PI*9/8)*wNet;
+    temp.y = math.sin(math.PI*9/8)*wNet;
+    
+    addChild(temp);
+    
+    return temp;
   }
+  
+  SimpleButton _returnCapacityButtonGlow() {
+    
+    SimpleButton temp;
+    if(contains(_capacitySmallButton)){
+      removeChild(_capacitySmallButton);
+      _capacitySmallButton.removeEventListener(MouseEvent.MOUSE_DOWN, _capacitySmallButtonPressed);
+      _capacitySmallButton.removeEventListener(TouchEvent.TOUCH_TAP, _capacitySmallButtonPressed);
+      _capacitySmallButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _capacitySmallButtonPressed);
+    }
+    temp =   new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmallGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmallGlow")),
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmallGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("CapacityUpgradeButtonSmallGlow")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _capacitySmallButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _capacitySmallButtonPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _capacitySmallButtonPressed);
+    
+    temp.x = math.cos(math.PI*9/8)*wNet;
+    temp.y = math.sin(math.PI*9/8)*wNet;
+    
+    addChild(temp);
+    
+    return temp;
+  }
+  
   SimpleButton _returnTunaButton() {
-    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("TunaBoatButton")), 
-                            new Bitmap(_resourceManager.getBitmapData("TunaBoatButton")),
-                            new Bitmap(_resourceManager.getBitmapData("TunaBoatButton")), 
+    SimpleButton temp;
+    if(contains(_tunaButton)){
+      removeChild(_tunaButton);
+      _tunaButton.removeEventListener(MouseEvent.MOUSE_DOWN, _tunaPressed);
+      _tunaButton.removeEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
+      _tunaButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
+    }
+    temp =  new SimpleButton(new Bitmap(_resourceManager.getBitmapData("TunaBoatButton")), 
+                            new Bitmap(_resourceManager.getBitmapData("TunaBoatButtonGlow")),
+                            new Bitmap(_resourceManager.getBitmapData("TunaBoatButtonGlow")), 
                             new Bitmap(_resourceManager.getBitmapData("TunaBoatButton")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _tunaPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
+    
+    temp.x = math.cos(math.PI*1.5/6)*wShip;
+    temp.y = math.sin(math.PI*1.5/6)*wShip;
+    
+    addChild(temp);
+    
+    return temp;
+    
+  }
+  
+  SimpleButton _returnTunaButtonGlow() {
+    
+    SimpleButton temp;
+    if(contains(_tunaButton)){
+      removeChild(_tunaButton);
+      _tunaButton.removeEventListener(MouseEvent.MOUSE_DOWN, _tunaPressed);
+      _tunaButton.removeEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
+      _tunaButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
+    }
+    temp =  new SimpleButton(new Bitmap(_resourceManager.getBitmapData("TunaBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("TunaBoatButtonGlow")),
+        new Bitmap(_resourceManager.getBitmapData("TunaBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("TunaBoatButtonGlow")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _tunaPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
+    
+    temp.x = math.cos(math.PI*1.5/6)*wShip;
+    temp.y = math.sin(math.PI*1.5/6)*wShip;
+    addChild(temp);
+    
+    return temp;
   }
   SimpleButton _returnSharkButton() {
-    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SharkBoatButton")), 
-                           new Bitmap(_resourceManager.getBitmapData("SharkBoatButton")),
-                           new Bitmap(_resourceManager.getBitmapData("SharkBoatButton")), 
-                           new Bitmap(_resourceManager.getBitmapData("SharkBoatButton")));
+    
+    SimpleButton temp;
+    if(contains(_sharkButton)){
+      removeChild(_sharkButton);
+      _sharkButton.removeEventListener(MouseEvent.MOUSE_DOWN, _sharkPressed);
+      _sharkButton.removeEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
+      _sharkButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
+    }
+    temp =  new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SharkBoatButton")), 
+        new Bitmap(_resourceManager.getBitmapData("SharkBoatButtonGlow")),
+        new Bitmap(_resourceManager.getBitmapData("SharkBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("SharkBoatButton")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _sharkPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
+    
+    temp.x = math.cos(math.PI*3.75/6)*wShip;
+    temp.y = math.sin(math.PI*3.75/6)*wShip;
+    addChild(temp);
+    
+    return temp;
+
+  }
+  
+  SimpleButton _returnSharkButtonGlow() {
+    
+    SimpleButton temp;
+    if(contains(_sharkButton)){
+      removeChild(_sharkButton);
+      _sharkButton.removeEventListener(MouseEvent.MOUSE_DOWN, _sharkPressed);
+      _sharkButton.removeEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
+      _sharkButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
+    }
+    temp =  new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SharkBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("SharkBoatButtonGlow")),
+        new Bitmap(_resourceManager.getBitmapData("SharkBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("SharkBoatButtonGlow")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _sharkPressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
+    
+    temp.x = math.cos(math.PI*3.75/6)*wShip;
+    temp.y = math.sin(math.PI*3.75/6)*wShip;
+    addChild(temp);
+    
+    return temp;
+
   }
   SimpleButton _returnSardineButton() {
-    return new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")), 
-                            new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")),
-                            new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")), 
-                            new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")));
+    SimpleButton temp;
+    if(contains(_sardineButton)){
+      removeChild(_sardineButton);
+      _sardineButton.removeEventListener(MouseEvent.MOUSE_DOWN, _sardinePressed);
+      _sardineButton.removeEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
+      _sardineButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
+    }
+    temp =  new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")), 
+        new Bitmap(_resourceManager.getBitmapData("SardineBoatButtonGlow")),
+        new Bitmap(_resourceManager.getBitmapData("SardineBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("SardineBoatButton")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _sardinePressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
+    
+    temp.x = math.cos(-math.PI*1/16)*wShip;
+    temp.y = math.sin(-math.PI*1/16)*wShip;
+    addChild(temp);
+    
+    return temp;
+  }
+  
+  SimpleButton _returnSardineButtonGlow() {
+    SimpleButton temp;
+    if(contains(_sardineButton)){
+      removeChild(_sardineButton);
+      _sardineButton.removeEventListener(MouseEvent.MOUSE_DOWN, _sardinePressed);
+      _sardineButton.removeEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
+      _sardineButton.removeEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
+    }
+    temp =  new SimpleButton(new Bitmap(_resourceManager.getBitmapData("SardineBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("SardineBoatButtonGlow")),
+        new Bitmap(_resourceManager.getBitmapData("SardineBoatButtonGlow")), 
+        new Bitmap(_resourceManager.getBitmapData("SardineBoatButtonGlow")));
+    
+    temp.addEventListener(MouseEvent.MOUSE_DOWN, _sardinePressed);
+    temp.addEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
+    temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
+    
+    temp.x = math.cos(-math.PI*1/16)*wShip;
+    temp.y = math.sin(-math.PI*1/16)*wShip;
+    addChild(temp);
+    
+    return temp;
   }
   
   num _calculateAmount() {
