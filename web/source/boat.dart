@@ -10,6 +10,16 @@ class Boat extends Sprite implements Touchable, Animatable {
   static const num BASE_ROT_SPEED = .09;
   static const num BASE_NET_CAPACITY = 25000;
   
+  static const int SMALL_NET_SARDINE_CAPACITY = 100;
+  static const int LARGE_NET_SARDINE_CAPACITY = 200;
+  static const int SMALL_NET_TUNA_CAPACITY = 15;
+  static const int LARGE_NET_TUNA_CAPACITY = 30;
+  static const int SMALL_NET_SHARK_CAPACITY = 3;
+  static const int LARGE_NET_SHARK_CAPACITY = 8;
+  
+
+  
+  
   static const int SMALLNET = 0;
   static const int LARGENET = 1;
   
@@ -154,18 +164,36 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMBSARDINE){
       catchType = Ecosystem.SARDINE;
-      if(netSize == LARGENET) _nets = resourceManager.getTextureAtlas('sardineNets');
-      else if(netSize == SMALLNET) _nets = resourceManager.getTextureAtlas('sardineNetsSmall');
+      if(netSize == LARGENET){
+        _nets = resourceManager.getTextureAtlas('sardineNets');
+        netCapacityMax = LARGE_NET_SARDINE_CAPACITY;
+      }
+      else if(netSize == SMALLNET){
+        _nets = resourceManager.getTextureAtlas('sardineNetsSmall');
+        netCapacityMax = SMALL_NET_SARDINE_CAPACITY;
+      }
     }
     if (type==Fleet.TEAMATUNA || type==Fleet.TEAMBTUNA){
       catchType = Ecosystem.TUNA;
-      if(netSize == LARGENET) _nets = resourceManager.getTextureAtlas('tunaNets');
-      else if(netSize == SMALLNET) _nets = resourceManager.getTextureAtlas('tunaNetsSmall');
+      if(netSize == LARGENET){
+        _nets = resourceManager.getTextureAtlas('tunaNets');
+        netCapacityMax = LARGE_NET_TUNA_CAPACITY;
+      }
+      else if(netSize == SMALLNET){
+        _nets = resourceManager.getTextureAtlas('tunaNetsSmall');
+        netCapacityMax = SMALL_NET_TUNA_CAPACITY;
+      }
     }
     if (type==Fleet.TEAMASHARK || type==Fleet.TEAMBSHARK){
       catchType = Ecosystem.SHARK;
-      if(netSize == LARGENET) _nets = resourceManager.getTextureAtlas('sharkNets');
-      else if(netSize == SMALLNET) _nets = resourceManager.getTextureAtlas('sharkNetsSmall');
+      if(netSize == LARGENET){
+        _nets = resourceManager.getTextureAtlas('sharkNets');
+        netCapacityMax = LARGE_NET_SHARK_CAPACITY;
+      }
+      else if(netSize == SMALLNET){
+        _nets = resourceManager.getTextureAtlas('sharkNetsSmall');
+        netCapacityMax = SMALL_NET_SHARK_CAPACITY;
+      }
     }
     if (type==Fleet.TEAMASARDINE || type==Fleet.TEAMATUNA || type==Fleet.TEAMASHARK) _teamA = true;
     else _teamA = false;
@@ -259,9 +287,9 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (n==Ecosystem.SHARK) worth = 100;
     _netMoney = _netMoney + worth;
     
-    if (n==Ecosystem.SARDINE) _netCapacity = _netCapacity + 5;
-    if (n==Ecosystem.TUNA) _netCapacity = _netCapacity + 15;
-    if (n==Ecosystem.SHARK) _netCapacity = _netCapacity + 50;
+    if (n==Ecosystem.SARDINE) _netCapacity = _netCapacity + 1;
+    if (n==Ecosystem.TUNA) _netCapacity = _netCapacity + 1;
+    if (n==Ecosystem.SHARK) _netCapacity = _netCapacity + 1;
     _changeNetGraphic();
   }
 
@@ -581,12 +609,15 @@ class Boat extends Sprite implements Touchable, Animatable {
     netSize = SMALLNET;
     if (_type==Fleet.TEAMASARDINE || _type==Fleet.TEAMBSARDINE){
       _nets = _resourceManager.getTextureAtlas('sardineNetsSmall');
+      netCapacityMax = SMALL_NET_SARDINE_CAPACITY;
     }
     if (_type==Fleet.TEAMATUNA || _type==Fleet.TEAMBTUNA){
       _nets = _resourceManager.getTextureAtlas('tunaNetsSmall');
+      netCapacityMax = SMALL_NET_TUNA_CAPACITY;
     }
     if (_type==Fleet.TEAMASHARK || _type==Fleet.TEAMBSHARK){
       _nets = _resourceManager.getTextureAtlas('sharkNetsSmall');
+      netCapacityMax = SMALL_NET_SHARK_CAPACITY;
     }
     _netNames = _nets.frameNames;
     _changeNetGraphic();
@@ -598,12 +629,15 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     if (_type==Fleet.TEAMASARDINE || _type==Fleet.TEAMBSARDINE){
       _nets = _resourceManager.getTextureAtlas('sardineNets');
+      netCapacityMax = LARGE_NET_SARDINE_CAPACITY;
     }
     if (_type==Fleet.TEAMATUNA || _type==Fleet.TEAMBTUNA){
       _nets = _resourceManager.getTextureAtlas('tunaNets');
+      netCapacityMax = LARGE_NET_TUNA_CAPACITY;
     }
     if (_type==Fleet.TEAMASHARK || _type==Fleet.TEAMBSHARK){
       _nets = _resourceManager.getTextureAtlas('sharkNets');
+      netCapacityMax = LARGE_NET_SHARK_CAPACITY;
     }
     _netNames = _nets.frameNames;
     _changeNetGraphic();

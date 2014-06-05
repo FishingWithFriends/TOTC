@@ -75,7 +75,7 @@ class Offseason extends Sprite {
     addChild(offseasonDock);
     addChild(_teamACircle);
     addChild(_teamBCircle);
-
+    
   }
   
   void clearAndRefillDock() {
@@ -442,6 +442,7 @@ class Circle extends Sprite implements Touchable {
     addChild(_tunaButton);
     addChild(_sardineButton);
     addChild(_sharkButton);
+    new Timer(new Duration(milliseconds:200), () =>_circlePressed(0));
   }
   
   void _circlePressed(var e) {

@@ -13,7 +13,7 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-  static const FISHING_TIME = 25;
+  static const FISHING_TIME = 10;
   static const REGROWTH_TIME = 10;
   static const BUYING_TIME = 15;
   
@@ -570,15 +570,15 @@ class Game extends Sprite implements Animatable{
                   ..x = width~/2+teamAMoneyText.width~/2
                   ..y = 60
                   ..rotation = math.PI;
-    addChild(teamAMoneyText);
-    uiObjects.add(teamAMoneyText);
+//    addChild(teamAMoneyText);
+//    uiObjects.add(teamAMoneyText);
     
     teamBMoneyText = new TextField("\$$teamBMoney", format);
     teamBMoneyText..width = 150
                   ..x = width~/2-teamBMoneyText.width~/2
                   ..y = height-60;
-    addChild(teamBMoneyText);
-    uiObjects.add(teamBMoneyText);
+//    addChild(teamBMoneyText);
+//    uiObjects.add(teamBMoneyText);
     
     //Text Elements for Team Cummulative Score
     teamAScoreText = new TextField("Score: ${teamAScore}", format);
