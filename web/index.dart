@@ -117,6 +117,24 @@ void main() {
   resourceManager.addBitmapData("endgameTunaIcon", "images/endgameTunaIcon.png");
   resourceManager.addBitmapData("endgameSharkIcon", "images/endgameSharkIcon.png");
   resourceManager.addBitmapData("sellIsland", "images/sell_island.png");
+  resourceManager.addBitmapData("ecosystemScore0", "images/ecosystemScore0.png");
+  resourceManager.addBitmapData("ecosystemScore1", "images/ecosystemScore1.png");
+  resourceManager.addBitmapData("ecosystemScore2", "images/ecosystemScore2.png");
+  resourceManager.addBitmapData("ecosystemScore3", "images/ecosystemScore3.png");
+  resourceManager.addBitmapData("ecosystemScore4", "images/ecosystemScore4.png");
+  resourceManager.addBitmapData("ecosystemScore5", "images/ecosystemScore5.png");
+  resourceManager.addBitmapData("ecosystemScore6", "images/ecosystemScore6.png");
+  resourceManager.addBitmapData("ecosystemScore7", "images/ecosystemScore7.png");
+  resourceManager.addBitmapData("ecosystemScore8", "images/ecosystemScore8.png");
+  resourceManager.addBitmapData("ecosystemScore9", "images/ecosystemScore9.png");
+  resourceManager.addBitmapData("ecosystemScore10", "images/ecosystemScore10.png");
+  resourceManager.addBitmapData("ecosystemScore11", "images/ecosystemScore11.png");
+  resourceManager.addBitmapData("ecosystemScore12", "images/ecosystemScore12.png");
+  resourceManager.addBitmapData("ecosystemScore13", "images/ecosystemScore13.png");
+  resourceManager.addBitmapData("ecosystemScore14", "images/ecosystemScore14.png");
+  resourceManager.addBitmapData("ecosystemScore15", "images/ecosystemScore15.png");
+  resourceManager.addBitmapData("replayButton", "images/replayButton.png");
+  resourceManager.addBitmapData("timerGlow", "images/timerGlow.png");
 
   resourceManager.addBitmapData("teamAScoreCircle", "images/teamAScoreCircle.png");
   resourceManager.addBitmapData("teamBScoreCircle", "images/teamBScoreCircle.png");

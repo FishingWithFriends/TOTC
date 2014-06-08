@@ -8,17 +8,18 @@ class Game extends Sprite implements Animatable{
   static const ENDGAME_PHASE = 4;
   
   static const MAX_ROUNDS = 5;
+//  static const MAX_ROUNDS = 0;
   
   static const FISHING_TIMER_WIDTH = 125;
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-//  static const FISHING_TIME = 25;
-//  static const REGROWTH_TIME = 10;
-//  static const BUYING_TIME = 15;
-  static const FISHING_TIME = 5;
-  static const REGROWTH_TIME = 5;
-  static const BUYING_TIME = 305;
+  static const FISHING_TIME = 25;
+  static const REGROWTH_TIME = 10;
+  static const BUYING_TIME = 15;
+//  static const FISHING_TIME = 5;
+//  static const REGROWTH_TIME = 500;
+//  static const BUYING_TIME = 305;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -29,7 +30,7 @@ class Game extends Sprite implements Animatable{
   static const BAR_TIMER = 0;
   static const PIE_TIMER = 1;
   num timerType = PIE_TIMER; // TOGGLE VARIABLE
-  Bitmap pieTimerBitmap;
+  Bitmap pieTimerBitmap, pieTimerBitmapButton;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -91,11 +92,14 @@ class Game extends Sprite implements Animatable{
   int buyTimerTick = 20;
   int regrowthTimerTick = 15;
   
-  bool transition;
+  bool transition, timerButtonBool, timerButtonReady;
   bool timerActive;
   Sound timerSound;
   
+  SimpleButton timerButton;
+  
   Timer clockUpdateTimer;
+  Timer curTimer;
   num clockCounter;
   // Slider _teamASlider, _teamBSlider;
   // int sliderPrompt = 6;
@@ -124,7 +128,7 @@ class Game extends Sprite implements Animatable{
     _mask.height = height;
 
     badge = new EcosystemBadge(_resourceManager, _juggler, this, _ecosystem);
-    
+    timerButtonBool = false;
     addChild(_background);
     addChild(_ecosystem);
     addChild(_mask);
@@ -244,26 +248,30 @@ class Game extends Sprite implements Animatable{
   
   
   void startTimer(){
-    
+    timerButtonReady = false;
     clockUpdateTimer = new Timer.periodic(new Duration(milliseconds:250), updateClock);
     
+    
     if(phase == FISHING_PHASE){
-      new Timer(new Duration(milliseconds:FISHING_TIME*1000+250), _nextSeason );
+      curTimer = new Timer(new Duration(milliseconds:FISHING_TIME*1000+250), _nextSeason );
       new Timer(new Duration(milliseconds:FISHING_TIME*1000 -5000), timerSound.play);
       clockCounter = FISHING_TIME*1000;
       new Timer(new Duration(milliseconds:FISHING_TIME*1000+250), clockUpdateTimer.cancel);
+      new Timer(new Duration(milliseconds:2000),() => timerButtonReady = true);
     }
     else if(phase == REGROWTH_PHASE){
-      new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 +250), _nextSeason );
+      curTimer = new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 +250), _nextSeason );
       new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 -5000), timerSound.play);
       clockCounter = REGROWTH_TIME*1000;
       new Timer(new Duration(milliseconds:REGROWTH_TIME*1000+250), clockUpdateTimer.cancel);
+      new Timer(new Duration(milliseconds:5500),() => timerButtonReady = true);
     }
     else if(phase == BUY_PHASE){
-      new Timer(new Duration(milliseconds:BUYING_TIME*1000+250), _nextSeason );
+      curTimer = new Timer(new Duration(milliseconds:BUYING_TIME*1000+250), _nextSeason );
       new Timer(new Duration(milliseconds:BUYING_TIME*1000 -5000), timerSound.play);
       clockCounter = BUYING_TIME*1000;
       new Timer(new Duration(milliseconds:BUYING_TIME*1000+250), clockUpdateTimer.cancel);
+      new Timer(new Duration(milliseconds:2000),() => timerButtonReady = true);
     }
     
 //    clockUpdateTimer = new Timer.periodic(new Duration(milliseconds:250), updateClock);
@@ -540,7 +548,7 @@ class Game extends Sprite implements Animatable{
  
   void toEndGameTransitionStageOne(){
     _endgame.alpha = 1;
-    _endgame.showGameOverReason();
+    _endgame.showStars();
   }
   
   
@@ -562,6 +570,25 @@ class Game extends Sprite implements Animatable{
     _graphTimer = 0;
     addChild(_teamAGraph);
     addChild(_teamBGraph);
+  }
+  
+  void _timerButtonPressed(var e){
+    if(!gameStarted || transition || !timerButtonReady) return;
+    if (timerButtonBool){
+      timerButtonBool = false;
+      curTimer.cancel();
+      clockUpdateTimer.cancel();
+      _nextSeason();
+      timerButtonReady = false;
+    }
+    else{
+      timerButtonBool = true;
+      new Timer(new Duration(milliseconds:500), toggleTimerBool);
+    }
+  }
+  
+  void toggleTimerBool(){
+   timerButtonBool = false;
   }
   
   void _loadTextAndShapes() {
@@ -672,7 +699,7 @@ class Game extends Sprite implements Animatable{
                ..rotation = math.PI/4; 
     
     format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
-    seasonTitle = new TextField("season here", format);
+    seasonTitle = new TextField("Tap to Skip\nForward", format);
     seasonTitle..x = width - 115
                ..y = 125
                ..alpha = .7
@@ -680,6 +707,23 @@ class Game extends Sprite implements Animatable{
                ..pivotX = seasonTitle.width/2
                ..rotation = math.PI/4; 
     
+    pieTimerBitmapButton = new Bitmap(_resourceManager.getBitmapData("timer"));
+    pieTimerBitmapButton.rotation = math.PI/4;
+    pieTimerBitmapButton.alpha = 0;
+    pieTimerBitmapButton.x = timerPie.x +22;
+    pieTimerBitmapButton.y = timerPie.y - 62;
+    
+//    Bitmap pieTimerBitmapButtonGlow = new Bitmap(_resourceManager.getBitmapData("timerGlow"));
+//    pieTimerBitmapButtonGlow.rotation = math.PI/4;
+//    pieTimerBitmapButtonGlow.alpha = 1;
+//    pieTimerBitmapButtonGlow.x = timerPie.x +22;
+//    pieTimerBitmapButtonGlow.y = timerPie.y - 62;
+    
+    timerButton = new SimpleButton(pieTimerBitmapButton, pieTimerBitmapButton, pieTimerBitmapButton, pieTimerBitmapButton);
+    timerButton.addEventListener(MouseEvent.MOUSE_DOWN, _timerButtonPressed);
+    timerButton.addEventListener(TouchEvent.TOUCH_TAP, _timerButtonPressed);
+    timerButton.addEventListener(TouchEvent.TOUCH_BEGIN, _timerButtonPressed);
+        
     if(timerType == BAR_TIMER){
       addChild(timerGraphicA);
       addChild(timerTextA);
@@ -697,12 +741,14 @@ class Game extends Sprite implements Animatable{
       addChild(roundTitle);
       addChild(roundNumber);
       addChild(seasonTitle);
+      addChild(timerButton);
       
       uiObjects.add(timerPie);
       uiObjects.add(pieTimerBitmap);
       uiObjects.add(roundTitle);
       uiObjects.add(roundNumber);
       uiObjects.add(seasonTitle);
+      uiObjects.add(timerButton);
     }
     
     
@@ -712,12 +758,12 @@ class Game extends Sprite implements Animatable{
               ..x  = 20
               ..y = height - 20
               ..alpha = .6
-              ..graphics.fillColor(Color.Green);
+              ..graphics.fillColor(Color.Salmon);
     addChild(sardineBar);
     uiObjects.add(sardineBar);
     
     sardineIcon = new Bitmap(_resourceManager.getBitmapData("sardineIcon"));
-    sardineIcon.x = sardineBar.x;
+    sardineIcon.x = sardineBar.x+7;
     sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height; 
     addChild(sardineIcon);
     uiObjects.add(sardineIcon);
@@ -728,12 +774,12 @@ class Game extends Sprite implements Animatable{
               ..x  = 50
               ..y = height - 20
               ..alpha = .6
-              ..graphics.fillColor(Color.Red);
+              ..graphics.fillColor(Color.Orange);
     addChild(tunaBar);
     uiObjects.add(tunaBar);
     
     tunaIcon = new Bitmap(_resourceManager.getBitmapData("tunaIcon"));
-    tunaIcon.x = tunaBar.x;
+    tunaIcon.x = tunaBar.x+5;
     tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height; 
     addChild(tunaIcon);
     uiObjects.add(tunaIcon);
@@ -748,7 +794,7 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(sharkBar);
     
     sharkIcon = new Bitmap(_resourceManager.getBitmapData("sharkIcon"));
-    sharkIcon.x = sharkBar.x;
+    sharkIcon.x = sharkBar.x+2;
     sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height; 
     addChild(sharkIcon);
     uiObjects.add(sharkIcon);
@@ -792,10 +838,16 @@ class Game extends Sprite implements Animatable{
     if(min > getChildIndex(roundTitle)){
       min = getChildIndex(roundTitle);
       lowest = roundTitle;
-      
+    }
+    if(min > getChildIndex(timerButton)){
+      min = getChildIndex(timerButton);
+      lowest = timerButton;
     }
     if(lowest != null){
       swapChildren(timerPie, lowest);
+    }
+    if(getChildIndex(timerButton) != this.numChildren-1){
+      swapChildren(timerButton, getChildAt(this.numChildren-1));
     }
   }
 }

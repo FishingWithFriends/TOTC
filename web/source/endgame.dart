@@ -18,9 +18,15 @@ class Endgame extends Sprite implements Animatable{
   BestScores bestScoresB;
   
   Bitmap endgameIcon;
+  
+  SimpleButton replayButton;
+  bool replayEnable;
 
+  int animatedRating;
   
   Endgame(this._resourceManager, this._juggler, this._game, this._ecosystem) {
+    
+    animatedRating = 0;
     
     teamAui = new EndGameTeamUI(this._resourceManager, this._juggler, this._game, TEAMA);
     teamAui.alpha = 0;
@@ -33,13 +39,25 @@ class Endgame extends Sprite implements Animatable{
     bestScoresB.alpha = 0;
     
     
-    endgameIcon = new Bitmap(_resourceManager.getBitmapData("endgameWinIcon"));
+    endgameIcon = new Bitmap(_resourceManager.getBitmapData("ecosystemScore0"));
     endgameIcon..alpha = 0
                ..pivotX = endgameIcon.width/2
                ..pivotY = endgameIcon.height/2
                ..rotation = -math.PI/4
                ..x = _game.width/2
                ..y = _game.height/2;
+    
+    replayButton = new SimpleButton(
+                new Bitmap(_resourceManager.getBitmapData("replayButton")),
+                new Bitmap(_resourceManager.getBitmapData("replayButton")),
+                new Bitmap(_resourceManager.getBitmapData("replayButton")),
+                new Bitmap(_resourceManager.getBitmapData("replayButton")));
+    replayButton..alpha = 0
+                ..x = _game.width/2
+                ..y = 25;
+    replayEnable = false;
+    
+    addChild(replayButton);
     
     addChild(teamAui);
     addChild(teamBui);
@@ -53,6 +71,50 @@ class Endgame extends Sprite implements Animatable{
   bool advanceTime(num time){
     return true;
   }
+  
+  void showStars(){
+     if(animatedRating == _game.starCount){
+//       Timer temp = new Timer(const Duration(seconds:1), teamBCounter.showCounter);
+       Timer temp2 = new Timer(const Duration(seconds:1), showTeamUI);
+     }
+     else{
+       
+       Bitmap toShow;
+       var showString;
+       if(animatedRating == 0) showString = 'ecosystemScore1';
+       else if(animatedRating == 1) showString = 'ecosystemScore2';
+       else if(animatedRating == 2) showString = 'ecosystemScore3';
+       else if(animatedRating == 3) showString = 'ecosystemScore4';
+       else if(animatedRating == 4) showString = 'ecosystemScore5';
+       else if(animatedRating == 5) showString = 'ecosystemScore6';
+       else if(animatedRating == 6) showString = 'ecosystemScore7';
+       else if(animatedRating == 7) showString = 'ecosystemScore8';
+       else if(animatedRating == 8) showString = 'ecosystemScore9';
+       else if(animatedRating == 9) showString = 'ecosystemScore10';
+       else if(animatedRating == 10) showString = 'ecosystemScore11';
+       else if(animatedRating == 11) showString = 'ecosystemScore12';
+       else if(animatedRating == 12) showString = 'ecosystemScore13';
+       else if(animatedRating == 13) showString = 'ecosystemScore14';
+       else if(animatedRating == 14) showString = 'ecosystemScore15';
+       else return;
+       
+       toShow = new Bitmap(_resourceManager.getBitmapData(showString));
+       toShow..pivotX = toShow.width/2
+              ..pivotY = toShow.height/2
+              ..x = _game.width/2+15
+              ..y = _game.height/2
+              ..rotation = -math.PI/4
+              ..alpha = 0;
+       addChild(toShow);
+       
+       Tween t1 = new Tween(toShow, .18, TransitionFunction.easeInOutQuadratic);
+       t1.animate.alpha.to(1);
+       t1.onComplete = showStars;
+       _juggler.add(t1);
+       animatedRating++;
+     }
+     
+   }
   
   void showGameOverReason(){
     if(_game.round == Game.MAX_ROUNDS){
@@ -76,18 +138,41 @@ class Endgame extends Sprite implements Animatable{
   }
 
   void showTeamUI(){
-    teamAui.teamFinalScoreText.text = "Final Score: ${_game.teamAScore}";
-    teamBui.teamFinalScoreText.text = "Final Score: ${_game.teamBScore}";
+    teamAui.teamFinalScoreText.text = "Final Score: ${_game.teamAMoney}";
+    teamBui.teamFinalScoreText.text = "Final Score: ${_game.teamBMoney}";
     Tween t1 = new Tween(teamAui, 1.5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
 
     
     Tween t2 = new Tween(teamBui, 1.5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
-    t2.onComplete = showBestScores;
+    
+    
+    new Timer(new Duration(seconds:14), () => replayEnable = true);
+    new Timer(new Duration(seconds:15), showReplayButton);
     
     _juggler.add(t1);
     _juggler.add(t2);
+  }
+  
+  void showReplayButton(){
+    Tween t1 = new Tween(replayButton, .5, TransitionFunction.linear);
+    t1.animate.alpha.to(1);
+    _juggler.add(t1);
+    replayButton.addEventListener(MouseEvent.MOUSE_DOWN, _replayButtonPressed);
+    replayButton.addEventListener(TouchEvent.TOUCH_TAP, _replayButtonPressed);
+    replayButton.addEventListener(TouchEvent.TOUCH_BEGIN, _replayButtonPressed);
+    
+    
+  }
+  
+  void _replayButtonPressed(var e){
+    if(replayEnable){
+      html.window.location.reload();
+    }
+    else{
+      return;
+    }
   }
   
   void hideTeamUI(){
@@ -113,7 +198,6 @@ class Endgame extends Sprite implements Animatable{
     
   }
   
-  
 }
 
 class EndGameTeamUI extends Sprite{
@@ -130,7 +214,7 @@ class EndGameTeamUI extends Sprite{
   
   int teamScore;
   
-  Shape teamBase;
+  Bitmap teamBase;
   TextField teamGameOverText;
   TextField teamFinalScoreText;
   
@@ -142,6 +226,34 @@ class EndGameTeamUI extends Sprite{
     num rotationVal;
     int baseX, baseY, r1,r2,r3, offsetX, offsetY;
     int fillColor;
+    var teamBaseText;
+    int offset = 70;
+            if(teamType == TEAMA){
+              baseX = offset;
+              baseY = offset;
+              r1 = 400;
+              fillColor = Color.Green;
+              teamBaseText = "teamAScoreCircle";
+             
+            }
+            else if(teamType == TEAMB){
+              baseX = _game.width - offset;
+              baseY = _game.height - offset;
+              r1 = 400;
+              fillColor = Color.Red;
+              teamBaseText = "teamBScoreCircle";
+                  
+            }    
+            
+         teamBase = new Bitmap(_resourceManager.getBitmapData(teamBaseText));
+         teamBase..alpha = 1
+                 ..pivotX = teamBase.width/2
+                 ..pivotY = teamBase.height/2
+                 ..x  = baseX
+                 ..y = baseY;
+         
+       addChild(teamBase);
+    
     
     if(teamType == TEAMA){
       rotationVal = 3*math.PI/4;
@@ -170,17 +282,17 @@ class EndGameTeamUI extends Sprite{
           
     }    
     
-    teamBase = new Shape();
-    teamBase..graphics.arc(baseX, baseY, r1, 0, 2*math.PI, false)
-             ..graphics.fillColor(fillColor)
-             ..alpha = 0.6;
-    addChild(teamBase);
+//    teamBase = new Shape();
+//    teamBase..graphics.arc(baseX, baseY, r1, 0, 2*math.PI, false)
+//             ..graphics.fillColor(fillColor)
+//             ..alpha = 0.6;
+//    addChild(teamBase);
 
-    TextFormat format = new TextFormat("Arial", 18, Color.White, align: "center", bold: true);
+    TextFormat format = new TextFormat("Arial", 36, Color.White, align: "center", bold: true);
        
     teamGameOverText = new TextField("GAME OVER", format);
     teamGameOverText..alpha = 1
-                  ..width = 150
+                  ..width = 300
                   ..pivotX = teamGameOverText.width/2
                   ..rotation = rotationVal
                   ..x =offsetX - r2*math.cos(rotationVal)
@@ -189,7 +301,7 @@ class EndGameTeamUI extends Sprite{
     
    teamFinalScoreText = new TextField("Final Score: ${teamScore}", format);
    teamFinalScoreText..alpha = 1
-                 ..width = 150
+                 ..width = 300
                  ..pivotX = teamFinalScoreText.width/2
                  ..rotation = rotationVal
                  ..x =offsetX - r3*math.cos(rotationVal)
