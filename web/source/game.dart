@@ -7,8 +7,8 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_PHASE = 3;
   static const ENDGAME_PHASE = 4;
   
-  static const MAX_ROUNDS = 5;
-//  static const MAX_ROUNDS = 0;
+//  static const MAX_ROUNDS = 5;
+  static const MAX_ROUNDS = 1;
   
   static const FISHING_TIMER_WIDTH = 125;
   static const REGROWTH_TIMER_WIDTH = 125;
@@ -84,7 +84,7 @@ class Game extends Sprite implements Animatable{
   EcosystemBadge badge;
   
   Shape timerGraphicA,timerGraphicB, timerPie;
-  Shape sardineBar, tunaBar, sharkBar;
+  Shape sardineBar, tunaBar, sharkBar, sardineOutline, tunaOutline, sharkOutline;
   TextField timerTextA, timerTextB, gameIDText;
   Bitmap sardineIcon, tunaIcon, sharkIcon;
   
@@ -567,7 +567,7 @@ class Game extends Sprite implements Animatable{
  
   void toEndGameTransitionStageOne(){
     _endgame.alpha = 1;
-    _endgame.showStars();
+    _endgame.showGameOverReason();
   }
   
   
@@ -773,13 +773,22 @@ class Game extends Sprite implements Animatable{
     
     //Text and Shapes for population bar graph
     sardineBar = new Shape();
-    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]/2)
+    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE])
               ..x  = 20
               ..y = height - 20
               ..alpha = .6
               ..graphics.fillColor(Color.Salmon);
     addChild(sardineBar);
     uiObjects.add(sardineBar);
+    
+    sardineOutline = new Shape();
+    sardineOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE])
+                  ..x = 20
+                  ..y = height - 20
+                  ..alpha = 1
+                  ..graphics.strokeColor(Color.Salmon);
+    addChild(sardineOutline);
+    uiObjects.add(sardineOutline);
     
     sardineIcon = new Bitmap(_resourceManager.getBitmapData("sardineIcon"));
     sardineIcon.x = sardineBar.x+7;
@@ -789,13 +798,23 @@ class Game extends Sprite implements Animatable{
     
     
     tunaBar = new Shape();
-    tunaBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*3)
+    tunaBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*2)
               ..x  = 50
               ..y = height - 20
               ..alpha = .6
               ..graphics.fillColor(Color.Orange);
     addChild(tunaBar);
     uiObjects.add(tunaBar);
+    
+    
+    tunaOutline = new Shape();
+    tunaOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*2)
+                  ..x = 50
+                  ..y = height - 20
+                  ..alpha = 1
+                  ..graphics.strokeColor(Color.Orange);
+    addChild(tunaOutline);
+    uiObjects.add(tunaOutline);
     
     tunaIcon = new Bitmap(_resourceManager.getBitmapData("tunaIcon"));
     tunaIcon.x = tunaBar.x+5;
@@ -804,13 +823,22 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(tunaIcon);
     
     sharkBar = new Shape();
-    sharkBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*8)
+    sharkBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*4)
               ..x  = 80
               ..y = height - 20
               ..alpha = .6
               ..graphics.fillColor(Color.Yellow);
     addChild(sharkBar);
     uiObjects.add(sharkBar);
+    
+    sharkOutline = new Shape();
+    sharkOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*4)
+                  ..x = 80
+                  ..y = height - 20
+                  ..alpha = 1
+                  ..graphics.strokeColor(Color.Yellow);
+    addChild(sharkOutline);
+    uiObjects.add(sharkOutline);
     
     sharkIcon = new Bitmap(_resourceManager.getBitmapData("sharkIcon"));
     sharkIcon.x = sharkBar.x+2;

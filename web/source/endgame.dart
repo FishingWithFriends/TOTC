@@ -17,7 +17,9 @@ class Endgame extends Sprite implements Animatable{
   BestScores bestScoresA;
   BestScores bestScoresB;
   
-  Bitmap endgameIcon;
+  Bitmap endgameIconTop;
+  Bitmap endgameIconBottom;
+  Bitmap emptyStars;
   
   SimpleButton replayButton;
   bool replayEnable;
@@ -38,11 +40,26 @@ class Endgame extends Sprite implements Animatable{
     bestScoresB = new BestScores(this._resourceManager, this._juggler, this._game, TEAMB);
     bestScoresB.alpha = 0;
     
+    endgameIconTop = new Bitmap(_resourceManager.getBitmapData("endgameSardineIcon"));
+    endgameIconTop..alpha = 0
+               ..pivotX = endgameIconTop.width/2
+               ..pivotY = endgameIconTop.height/2
+               ..rotation = math.PI/4
+               ..x = _game.width-150
+               ..y = 150;
     
-    endgameIcon = new Bitmap(_resourceManager.getBitmapData("ecosystemScore0"));
-    endgameIcon..alpha = 0
-               ..pivotX = endgameIcon.width/2
-               ..pivotY = endgameIcon.height/2
+    endgameIconBottom = new Bitmap(_resourceManager.getBitmapData("endgameSardineIcon"));
+    endgameIconBottom..alpha = 0
+               ..pivotX = endgameIconBottom.width/2
+               ..pivotY = endgameIconBottom.height/2
+               ..rotation = -3*math.PI/4
+               ..x = 150
+               ..y = _game.height -150;
+    
+    emptyStars = new Bitmap(_resourceManager.getBitmapData("ecosystemScore0"));
+    emptyStars..alpha = 0
+               ..pivotX = emptyStars.width/2
+               ..pivotY = emptyStars.height/2
                ..rotation = -math.PI/4
                ..x = _game.width/2
                ..y = _game.height/2;
@@ -63,7 +80,8 @@ class Endgame extends Sprite implements Animatable{
     addChild(teamBui);
     addChild(bestScoresA);
     addChild(bestScoresB);
-    addChild(endgameIcon);
+    addChild(endgameIconTop);
+    addChild(endgameIconBottom);
     
     this.alpha = 0;
   }
@@ -118,22 +136,34 @@ class Endgame extends Sprite implements Animatable{
   
   void showGameOverReason(){
     if(_game.round == Game.MAX_ROUNDS){
-      
+      Tween t1 = new Tween(endgameIconTop, .05, TransitionFunction.linear);
+      t1.animate.alpha.to(0);
+      t1.onComplete = showStars;
+      _juggler.add(t1);
+      return;
     }
     else if(_ecosystem._fishCount[Ecosystem.SARDINE]<=0){
-      endgameIcon.bitmapData = _resourceManager.getBitmapData("endgameSardineIcon");
+      endgameIconTop.bitmapData = _resourceManager.getBitmapData("endgameSardineIcon");
+      endgameIconBottom.bitmapData = _resourceManager.getBitmapData("endgameSardineIcon");
     }
     else if(_ecosystem._fishCount[Ecosystem.TUNA]<=0){
-      endgameIcon.bitmapData = _resourceManager.getBitmapData("endgameTunaIcon");    
+      endgameIconTop.bitmapData = _resourceManager.getBitmapData("endgameTunaIcon");    
+      endgameIconBottom.bitmapData = _resourceManager.getBitmapData("endgameTunaIcon");    
     }
     else if(_ecosystem._fishCount[Ecosystem.SHARK]<=0){
-      endgameIcon.bitmapData = _resourceManager.getBitmapData("endgameSharkIcon");
+      endgameIconTop.bitmapData = _resourceManager.getBitmapData("endgameSharkIcon");
+      endgameIconBottom.bitmapData = _resourceManager.getBitmapData("endgameSharkIcon");
     }
     
-    Tween t1 = new Tween(endgameIcon, 1.5, TransitionFunction.linear);
+    Tween t1 = new Tween(endgameIconTop, .75, TransitionFunction.linear);
     t1.animate.alpha.to(1);
-    t1.onComplete = showTeamUI;
+    t1.onComplete = showStars;
     _juggler.add(t1);
+    
+    Tween t2 = new Tween(endgameIconBottom, .75, TransitionFunction.linear);
+    t2.animate.alpha.to(1);
+    _juggler.add(t2);
+    
     
   }
 

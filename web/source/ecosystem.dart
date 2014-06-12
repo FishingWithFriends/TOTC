@@ -62,7 +62,8 @@ class Ecosystem extends Sprite {
     tunaFoodCount = 0;
     sharkFoodCount = 0;
     
-    addFish(8, SHARK, true);
+//    addFish(8, SHARK, true);
+    addFish(0, SHARK, true);
     addFish(60, TUNA, true);
     addFish(300, SARDINE, true);
     
