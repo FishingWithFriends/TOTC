@@ -14,6 +14,10 @@ class Fleet extends Sprite {
   static const SMALLNET = 0;
   static const LARGENET = 1;
   
+  static const SARDINE = 0;
+  static const TUNA = 1;
+  static const SHARK = 2;
+  
   ResourceManager _resourceManager;
   Juggler _juggler;
   Game _game;
@@ -27,13 +31,25 @@ class Fleet extends Sprite {
   int teamANetSize;
   int teamBNetSize;
   
+  int teamABoatType;
+  int teamBBoatType;
+  
+  int teamACaught;
+  int teamBCaught;
+  
   Fleet(ResourceManager resourceManager, Juggler juggler, Game game) {
     _resourceManager = resourceManager;
     _juggler = juggler;
     _game = game;
+    
+    teamABoatType = SARDINE;
+    teamBBoatType = SARDINE;
 
     BitmapData.load("images/dock.png").then((bitmapData) {
       dockHeight = bitmapData.height;
+      
+      teamACaught = 0;
+      teamBCaught = 0;
       
       teamANetSize = SMALLNET;
       teamBNetSize = SMALLNET;
@@ -83,10 +99,12 @@ class Fleet extends Sprite {
     if(teamA){
       addBoat(TEAMASARDINE, teamANetSize);
       addBoat(TEAMASARDINE, teamANetSize);
+      teamABoatType = SARDINE;
     }
     else{
       addBoat(TEAMBSARDINE, teamBNetSize);
       addBoat(TEAMBSARDINE, teamBNetSize);
+      teamBBoatType = SARDINE;
     }
     _game._offseason.clearAndRefillDock();
   }
@@ -100,10 +118,12 @@ class Fleet extends Sprite {
     if(teamA){
       addBoat(TEAMATUNA, teamANetSize);
       addBoat(TEAMATUNA, teamANetSize);
+      teamABoatType = TUNA;
     }
     else{
       addBoat(TEAMBTUNA, teamBNetSize);
       addBoat(TEAMBTUNA, teamBNetSize);
+      teamBBoatType = TUNA;
     }
     _game._offseason.clearAndRefillDock();
   }
@@ -117,10 +137,12 @@ class Fleet extends Sprite {
     if(teamA){
       addBoat(TEAMASHARK, teamANetSize);
       addBoat(TEAMASHARK, teamANetSize);
+      teamABoatType = SHARK;
     }
     else{
       addBoat(TEAMBSHARK, teamBNetSize);
       addBoat(TEAMBSHARK, teamBNetSize);
+      teamBBoatType = SHARK;
     }
     _game._offseason.clearAndRefillDock();
   }

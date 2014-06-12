@@ -330,10 +330,12 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_teamA==true){
       _game.teamAMoney = _game.teamAMoney+_netMoney;
       _game.teamARoundProfit += _netMoney;
+      _fleet.teamACaught += _netCapacity;
     }
     else{
       _game.teamBMoney = _game.teamBMoney+_netMoney;
       _game.teamBRoundProfit += _netMoney;
+      _fleet.teamBCaught += _netCapacity;
     }
     _game.moneyChanged = true;
     

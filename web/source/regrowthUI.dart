@@ -5,6 +5,11 @@ class EcosystemBadge extends Sprite implements Animatable{
   static const TEAMA = 0;
   static const TEAMB = 1;
   
+  static const OVERPOPULATED = 3;
+  static const LEAST_CONCERN = 2;
+  static const ENDANGERED = 1;
+  static const EXTINCT = 0;
+  
   ResourceManager _resourceManager;
   Juggler _juggler;
   Game _game;
@@ -36,7 +41,7 @@ class EcosystemBadge extends Sprite implements Animatable{
   ScoreCounter teamACounter;
   ScoreCounter teamBCounter;
   
-  int rating, animatedRating;
+  int rating,sardineRating, tunaRating, sharkRating, animatedRating;
   
   Sound badgeSound;
   Sound starSound;
@@ -44,6 +49,11 @@ class EcosystemBadge extends Sprite implements Animatable{
   bool showStatusText = false;
   
   EcosystemBadge(this._resourceManager, this._juggler, this._game, this._ecosystem) {
+    
+    sardineRating = LEAST_CONCERN;
+    tunaRating = LEAST_CONCERN;
+    sharkRating = LEAST_CONCERN;
+    
   
     teamACounter = new ScoreCounter(_resourceManager, _juggler, _game, this, TEAMA);
     teamBCounter = new ScoreCounter(_resourceManager, _juggler, _game, this, TEAMB);
@@ -198,20 +208,24 @@ class EcosystemBadge extends Sprite implements Animatable{
       _sardineStatusText = "Sardine populuation is endangered";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
+      sardineRating=ENDANGERED;
     }
     else if (sardineCount > Ecosystem.MAX_SARDINE-50){
       _sardineStatusText = "Sardines are overpopulated";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
+      sardineRating=OVERPOPULATED;
     }
     else if(sardineCount <= 0){
       _sardineStatusText = "Sardines are extinct";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
       rating--;
+      sardineRating=EXTINCT;
     }
     else{
       _sardineStatusText = "";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
+      sardineRating=LEAST_CONCERN;
     }
     
     
@@ -219,20 +233,24 @@ class EcosystemBadge extends Sprite implements Animatable{
       _tunaStatusText = "Tuna populuation is endangered";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
+      tunaRating = ENDANGERED;
     }
     else if (tunaCount > Ecosystem.MAX_TUNA-25){
       _tunaStatusText = "Tunas are overpopulated";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
+      tunaRating = OVERPOPULATED;
     }
     else if (tunaCount <= 0){
       _tunaStatusText = "Tunas are extinct!";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
       rating--;
+      tunaRating = EXTINCT;
     }
     else{
       _tunaStatusText = "";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
+      tunaRating = LEAST_CONCERN;
     }
     
     
@@ -240,20 +258,24 @@ class EcosystemBadge extends Sprite implements Animatable{
       _sharkStatusText = "Shark populuation is endangered";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
+      sharkRating = ENDANGERED;
     }
     else if (sharkCount > 12){
       _sharkStatusText = "Sharks are overpopulated";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
+      sharkRating = OVERPOPULATED;
     }
     else if(sharkCount <= 0){
       _sharkStatusText = "Sharks are extinct";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
       rating--;
+      sharkRating = EXTINCT;
     }
     else{
       _sharkStatusText = "";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
+      sharkRating = LEAST_CONCERN;
     }
 
     return rating;

@@ -14,12 +14,12 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-  static const FISHING_TIME = 25;
+//  static const FISHING_TIME = 25;
+//  static const REGROWTH_TIME = 10;
+//  static const BUYING_TIME = 15;
+  static const FISHING_TIME = 10;
   static const REGROWTH_TIME = 10;
-  static const BUYING_TIME = 15;
-//  static const FISHING_TIME = 5;
-//  static const REGROWTH_TIME = 500;
-//  static const BUYING_TIME = 305;
+  static const BUYING_TIME = 10;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -45,6 +45,7 @@ class Game extends Sprite implements Animatable{
   TouchLayer tlayer = new TouchLayer();
   
   bool gameStarted = false;
+  bool newGame = true;
   
   int width;
   int height;
@@ -69,6 +70,7 @@ class Game extends Sprite implements Animatable{
   int moneyTimer = 0;
   int moneyTimerMax = 2;
   int round = 0;
+  int gameID = -1;
 
   //REGROWTH INFO
   static const LINE_GRAPH_INFO = 0;
@@ -83,7 +85,7 @@ class Game extends Sprite implements Animatable{
   
   Shape timerGraphicA,timerGraphicB, timerPie;
   Shape sardineBar, tunaBar, sharkBar;
-  TextField timerTextA, timerTextB;
+  TextField timerTextA, timerTextB, gameIDText;
   Bitmap sardineIcon, tunaIcon, sharkIcon;
   
   int phase = FISHING_PHASE;
@@ -104,7 +106,9 @@ class Game extends Sprite implements Animatable{
   // Slider _teamASlider, _teamBSlider;
   // int sliderPrompt = 6;
   
-  List<DisplayObject> uiObjects = new List<DisplayObject>(); 
+  List<DisplayObject> uiObjects = new List<DisplayObject>();
+  
+  DataLogger datalogger;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -141,11 +145,19 @@ class Game extends Sprite implements Animatable{
     
     transition = false;
     timerActive = false;
+    datalogger = new DataLogger();
   }
 
   bool advanceTime(num time) {
-//    print("${_ecosystem.planktonCount}, ${_ecosystem._fishCount[SARDINE]}, || ${_ecosystem.tunaFoodCount}, ${_ecosystem._fishCount[TUNA]}, || ${_ecosystem.sharkFoodCount}, ${ _ecosystem._fishCount[SHARK]}");
-   
+
+    if(gameStarted && newGame){
+      newGame = false;
+      ws.send('newgame');
+      ws.onMessage.listen((html.MessageEvent e) {
+        handleMsg(e.data);
+      });
+    }
+    
     if (gameStarted == false){
       sardineBar.height = _ecosystem._fishCount[SARDINE];
       sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
@@ -200,6 +212,7 @@ class Game extends Sprite implements Animatable{
     sharkBar.height = _ecosystem._fishCount[SHARK]* 4;
     sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height;
     
+    gameIDText.text = "Game ID: $gameID";
     return true;
   }
   
@@ -360,8 +373,11 @@ class Game extends Sprite implements Animatable{
     }
     else if (phase==REGROWTH_PHASE) {
       
+      logRound();
+      
       if(endgame()){
         transition = true;
+        logEndGame();
         phase = ENDGAME_PHASE;
         
         
@@ -403,6 +419,9 @@ class Game extends Sprite implements Animatable{
       
       teamARoundProfit = 0;
       teamBRoundProfit = 0;
+      
+      _fleet.teamACaught = 0;
+      _fleet.teamBCaught = 0;
       
       _offseason.hideCircles();
       Tween t1 = new Tween(_offseason.dock, .5, TransitionFunction.linear);
@@ -799,6 +818,19 @@ class Game extends Sprite implements Animatable{
     addChild(sharkIcon);
     uiObjects.add(sharkIcon);
     
+    format = new TextFormat("Arial", 10, Color.White, align: "center");
+    
+    
+    gameIDText = new TextField("Game ID: ", format);
+    gameIDText..x = 75
+              ..y = height -20
+              ..alpha = .7
+              ..width = 300
+              ..pivotX = roundTitle.width/2
+              ..rotation = 0;
+    addChild(gameIDText);
+    uiObjects.add(gameIDText);
+    
   }
   
   void arrangeUILayers(){
@@ -848,6 +880,53 @@ class Game extends Sprite implements Animatable{
     }
     if(getChildIndex(timerButton) != this.numChildren-1){
       swapChildren(timerButton, getChildAt(this.numChildren-1));
+    }
+  }
+  
+  void logRound(){
+    RoundLogger curRound;
+    if(round == 0) curRound = datalogger.round0;
+    else if(round == 1) curRound = datalogger.round1;
+    else if(round == 2) curRound = datalogger.round2;
+    else if(round == 3) curRound = datalogger.round3;
+    else if(round == 4) curRound = datalogger.round4;
+    else if(round == 5) curRound = datalogger.round5;
+    else return;
+    
+    curRound.roundTime = -1;
+    curRound.starRating = badge.rating;
+    curRound.sardineCount = _ecosystem._fishCount[Ecosystem.SARDINE];
+    curRound.tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
+    curRound.sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
+    curRound.sardineStatus = badge.sardineRating;
+    curRound.tunaStatus = badge.tunaRating;
+    curRound.sharkStatus = badge.sharkRating;
+    curRound.teamANetSize = _fleet.teamANetSize;
+    curRound.teamABoatType = _fleet.teamABoatType;
+    curRound.teamASeasonProfit = teamARoundProfit;
+    curRound.teamANumOfFishCaught = _fleet.teamACaught;
+    curRound.teamBNetSize = _fleet.teamBNetSize;
+    curRound.teamBBoatType = _fleet.teamBBoatType;
+    curRound.teamBSeasonProfit = teamBRoundProfit;
+    curRound.teamBNumOfFishCaught = _fleet.teamBCaught;
+  }
+  
+  void logEndGame(){
+    datalogger.id = gameID;
+    datalogger.totalTime = -1;
+    datalogger.teamAFinalScore = teamAScore;
+    datalogger.teamBFinalScore = teamBScore;
+    datalogger.totalStars = starCount;
+    datalogger.numOfRound = round;
+    
+    datalogger.send();
+  }
+  
+void  handleMsg(data){
+    if(data[0]=="i" && data[1]=="d"){
+      var idString = data.substring(4,7);
+      num id = int.parse(idString);
+      gameID = id;
     }
   }
 }
