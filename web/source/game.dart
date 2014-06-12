@@ -7,19 +7,19 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_PHASE = 3;
   static const ENDGAME_PHASE = 4;
   
-//  static const MAX_ROUNDS = 5;
-  static const MAX_ROUNDS = 1;
+  static const MAX_ROUNDS = 5;
+//  static const MAX_ROUNDS = 1;
   
   static const FISHING_TIMER_WIDTH = 125;
   static const REGROWTH_TIMER_WIDTH = 125;
   static const BUY_TIMER_WIDTH = 125;
   
-//  static const FISHING_TIME = 25;
-//  static const REGROWTH_TIME = 10;
-//  static const BUYING_TIME = 15;
-  static const FISHING_TIME = 10;
+  static const FISHING_TIME = 25;
   static const REGROWTH_TIME = 10;
-  static const BUYING_TIME = 10;
+  static const BUYING_TIME = 15;
+//  static const FISHING_TIME = 10;
+//  static const REGROWTH_TIME = 10;
+//  static const BUYING_TIME = 10;
   
   static const timerPieRadius = 60;
   static const TUNA = 0;
@@ -49,7 +49,7 @@ class Game extends Sprite implements Animatable{
   
   int width;
   int height;
-  
+  int totalTimeCounter = 0;
   Bitmap _mask;
   Tween _maskTween;
   
@@ -58,8 +58,8 @@ class Game extends Sprite implements Animatable{
   TextField roundTitle, roundNumber, seasonTitle;
   
   int starCount = 0;
-  int teamAMoney = 3000;
-  int teamBMoney = 3000;
+  int teamAMoney = 0;
+  int teamBMoney = 0;
   int teamAScore = 0;
   int teamBScore = 0;
   int teamARoundProfit = 0;
@@ -152,6 +152,7 @@ class Game extends Sprite implements Animatable{
 
     if(gameStarted && newGame){
       newGame = false;
+      new Timer.periodic(new Duration(seconds:1), (var e) => totalTimeCounter++);
       ws.send('newgame');
       ws.onMessage.listen((html.MessageEvent e) {
         handleMsg(e.data);
@@ -597,6 +598,7 @@ class Game extends Sprite implements Animatable{
       timerButtonBool = false;
       curTimer.cancel();
       clockUpdateTimer.cancel();
+      _ecosystem.timerSkipped();
       _nextSeason();
       timerButtonReady = false;
     }
@@ -921,7 +923,7 @@ class Game extends Sprite implements Animatable{
     else if(round == 5) curRound = datalogger.round5;
     else return;
     
-    curRound.roundTime = -1;
+    curRound.roundTime = totalTimeCounter;
     curRound.starRating = badge.rating;
     curRound.sardineCount = _ecosystem._fishCount[Ecosystem.SARDINE];
     curRound.tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
@@ -941,7 +943,7 @@ class Game extends Sprite implements Animatable{
   
   void logEndGame(){
     datalogger.id = gameID;
-    datalogger.totalTime = -1;
+    datalogger.totalTime = totalTimeCounter;
     datalogger.teamAFinalScore = teamAScore;
     datalogger.teamBFinalScore = teamBScore;
     datalogger.totalStars = starCount;

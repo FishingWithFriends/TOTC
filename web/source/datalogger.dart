@@ -24,12 +24,12 @@ class DataLogger{
     totalStars = -1;
     numOfRound = -1;
     
-    round0 = new RoundLogger();    
-    round1 = new RoundLogger();
-    round2 = new RoundLogger();
-    round3 = new RoundLogger();
-    round4 = new RoundLogger();
-    round5 = new RoundLogger();
+    round0 = new RoundLogger(this,0);    
+    round1 = new RoundLogger(this,1);
+    round2 = new RoundLogger(this,2);
+    round3 = new RoundLogger(this,3);
+    round4 = new RoundLogger(this,4);
+    round5 = new RoundLogger(this,5);
   }
   
   void send(){
@@ -61,7 +61,8 @@ class RoundLogger{
   static const NET_LARGE = 1;
   static const NET_SMALL = 0;
   
-  
+  DataLogger logger;
+  int roundNumber;
   
   int roundTime;
   int starRating;
@@ -80,7 +81,7 @@ class RoundLogger{
   int teamBSeasonProfit;
   int teamBNumOfFishCaught;
   
-  RoundLogger(){
+  RoundLogger(this.logger,this.roundNumber){
     roundTime = -1;
     starRating = -1;
     sardineCount = -1;
@@ -100,6 +101,22 @@ class RoundLogger{
     }
   
   String getData(){
-    return "$roundTime, $starRating, $sardineCount, $tunaCount, $sharkCount, $sardineStatus, $tunaStatus, $sharkStatus, $teamANetSize, $teamABoatType, $teamASeasonProfit, $teamANumOfFishCaught, $teamBNetSize, $teamBBoatType, $teamBSeasonProfit, $teamBNumOfFishCaught, ";
+    return "${getTime()}, $starRating, $sardineCount, $tunaCount, $sharkCount, $sardineStatus, $tunaStatus, $sharkStatus, $teamANetSize, $teamABoatType, $teamASeasonProfit, $teamANumOfFishCaught, $teamBNetSize, $teamBBoatType, $teamBSeasonProfit, $teamBNumOfFishCaught, ";
+  }
+  
+  int getTime(){
+    int time;
+    
+    if(roundTime != -1){
+      if(roundNumber == 0) time = roundTime;
+      else if(roundNumber == 1) time = roundTime - logger.round0.roundTime;
+      else if(roundNumber == 2) time = roundTime - logger.round1.roundTime;
+      else if(roundNumber == 3) time = roundTime - logger.round2.roundTime;
+      else if(roundNumber == 4) time = roundTime - logger.round3.roundTime;
+      else if(roundNumber == 5) time = roundTime - logger.round4.roundTime;
+      
+      return time;
+    }
+    else return -1;
   }
 }

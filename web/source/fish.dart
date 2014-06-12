@@ -61,7 +61,7 @@ class Fish extends Bitmap implements Animatable {
       _v = .6;
       _minSeparation = 50;
       _rotationSpeed = math.PI/60;
-      _hungerMax = 120;
+      _hungerMax = 90;
       _hunger = _random.nextInt(_hungerMax);
       _foodType = Ecosystem.TUNA;
       _predType = -1;
@@ -102,7 +102,7 @@ class Fish extends Bitmap implements Animatable {
       int rand = _random.nextInt(100);
 //      if(rand - _ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE] < 80){
         if(_ecosystem.planktonCount > 0){
-          _hunger+= 1;//+ (_ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE]*1).floor();
+          _hunger+= 3;//+ (_ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE]*1).floor();
           _ecosystem.planktonCount--;
         }
 //      }
@@ -117,7 +117,7 @@ class Fish extends Bitmap implements Animatable {
       int rand = _random.nextInt(100);
 //      if(rand - _ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA] < 10){
         if(_ecosystem.tunaFoodCount > 0){
-          _hunger+= 1;//+ (_ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA]*1).floor();
+          _hunger+= 3;//+ (_ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA]*1).floor();
           _ecosystem.tunaFoodCount--;
         }
 //      }

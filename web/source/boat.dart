@@ -710,10 +710,10 @@ class Boat extends Sprite implements Touchable, Animatable {
 //        swapChildren(boat, particleEmitter);
 //        _juggler.add(particleEmitter);
         
-//      }
+      }
       if (canCatch==false && _canMove==false) _promptBoatFull();
 
-    }
+//    }
 
     
     return true;
