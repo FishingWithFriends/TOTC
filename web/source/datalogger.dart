@@ -13,7 +13,7 @@ class DataLogger{
   RoundLogger round2;
   RoundLogger round3;
   RoundLogger round4;
-  RoundLogger round5;
+//  RoundLogger round5;
   
   DataLogger(){
     
@@ -29,7 +29,7 @@ class DataLogger{
     round2 = new RoundLogger(this,2);
     round3 = new RoundLogger(this,3);
     round4 = new RoundLogger(this,4);
-    round5 = new RoundLogger(this,5);
+//    round5 = new RoundLogger(this,5);
   }
   
   void send(){
@@ -39,7 +39,7 @@ class DataLogger{
     data += round2.getData();
     data += round3.getData();
     data += round4.getData();
-    data += round5.getData();
+//    data += round5.getData();
     
     ws.send(data);
     ws.send("endgame");
@@ -113,7 +113,7 @@ class RoundLogger{
       else if(roundNumber == 2) time = roundTime - logger.round1.roundTime;
       else if(roundNumber == 3) time = roundTime - logger.round2.roundTime;
       else if(roundNumber == 4) time = roundTime - logger.round3.roundTime;
-      else if(roundNumber == 5) time = roundTime - logger.round4.roundTime;
+//      else if(roundNumber == 5) time = roundTime - logger.round4.roundTime;
       
       return time;
     }

@@ -7,7 +7,7 @@ class Game extends Sprite implements Animatable{
   static const REGROWTH_PHASE = 3;
   static const ENDGAME_PHASE = 4;
   
-  static const MAX_ROUNDS = 5;
+  static const MAX_ROUNDS = 4;
 //  static const MAX_ROUNDS = 1;
   
   static const FISHING_TIMER_WIDTH = 125;
@@ -535,7 +535,7 @@ class Game extends Sprite implements Animatable{
     t3.animate.y.to(0);
     
     round++;
-    roundNumber.text = "${round}";
+    roundNumber.text = "${round+1}";
     
     Tween t4 = new Tween(roundNumber, .5, TransitionFunction.linear);
     t4.animate.alpha.to(.7);
@@ -711,7 +711,7 @@ class Game extends Sprite implements Animatable{
               ..rotation = math.PI/4;
     
     format = new TextFormat("Arial", 50, Color.White, align: "center", bold:true);
-    roundNumber = new TextField("${round}", format);
+    roundNumber = new TextField("${round+1}", format);
     roundNumber..x = width - 75
                ..y = 85
                ..alpha = .7
@@ -920,7 +920,7 @@ class Game extends Sprite implements Animatable{
     else if(round == 2) curRound = datalogger.round2;
     else if(round == 3) curRound = datalogger.round3;
     else if(round == 4) curRound = datalogger.round4;
-    else if(round == 5) curRound = datalogger.round5;
+//    else if(round == 5) curRound = datalogger.round5;
     else return;
     
     curRound.roundTime = totalTimeCounter;
