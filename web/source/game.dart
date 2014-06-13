@@ -55,7 +55,7 @@ class Game extends Sprite implements Animatable{
   
   TextField teamAMoneyText, teamBMoneyText;
   TextField teamAScoreText, teamBScoreText;
-  TextField roundTitle, roundNumber, seasonTitle;
+  TextField roundTitle, roundNumber, seasonTitle, roundNumberDiv;
   
   int starCount = 0;
   int teamAMoney = 0;
@@ -712,11 +712,20 @@ class Game extends Sprite implements Animatable{
     
     format = new TextFormat("Arial", 50, Color.White, align: "center", bold:true);
     roundNumber = new TextField("${round+1}", format);
-    roundNumber..x = width - 75
-               ..y = 85
+    roundNumber..x = width - 85
+               ..y = 75
                ..alpha = .7
                ..width = 300
                ..pivotX = roundNumber.width/2
+               ..rotation = math.PI/4; 
+    
+    format = new TextFormat("Arial", 25, Color.White, align: "center", bold:true);
+    roundNumberDiv = new TextField("/ 5", format);
+    roundNumberDiv..x = width - 80
+               ..y = 115
+               ..alpha = .7
+               ..width = 300
+               ..pivotX = roundNumberDiv.width/2
                ..rotation = math.PI/4; 
     
     format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
@@ -761,6 +770,7 @@ class Game extends Sprite implements Animatable{
       addChild(pieTimerBitmap);
       addChild(roundTitle);
       addChild(roundNumber);
+      addChild(roundNumberDiv);
       addChild(seasonTitle);
       addChild(timerButton);
       
@@ -768,6 +778,7 @@ class Game extends Sprite implements Animatable{
       uiObjects.add(pieTimerBitmap);
       uiObjects.add(roundTitle);
       uiObjects.add(roundNumber);
+      uiObjects.add(roundNumberDiv);
       uiObjects.add(seasonTitle);
       uiObjects.add(timerButton);
     }
@@ -892,6 +903,10 @@ class Game extends Sprite implements Animatable{
     if(min >  getChildIndex(roundNumber)){
       min = getChildIndex(roundNumber);
       lowest = roundNumber;
+    }
+    if(min >  getChildIndex(roundNumberDiv)){
+      min = getChildIndex(roundNumberDiv);
+      lowest = roundNumberDiv;
     }
     if(min > getChildIndex(seasonTitle)){
       min = getChildIndex(seasonTitle);
