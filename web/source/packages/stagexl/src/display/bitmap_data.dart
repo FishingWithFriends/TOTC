@@ -18,7 +18,7 @@ class BitmapData implements BitmapDrawable {
     _width = _ensureInt(width);
     _height = _ensureInt(height);
     _renderTexture = new RenderTexture(_width, _height, transparent, fillColor, pixelRatio);
-    _renderTextureQuad = new RenderTextureQuad(_renderTexture, 0, 0, 0, 0, 0, _width, _height);
+    _renderTextureQuad = _renderTexture.quad;
   }
 
   BitmapData.fromImageElement(ImageElement imageElement, [num pixelRatio = 1.0]) {
@@ -58,7 +58,8 @@ class BitmapData implements BitmapDrawable {
 
     var autoHiDpi = bitmapDataLoadOptions.autoHiDpi;
     var webpAvailable = bitmapDataLoadOptions.webp;
-    var loader = RenderTexture.load(url, autoHiDpi, webpAvailable);
+    var corsEnabled = bitmapDataLoadOptions.corsEnabled;
+    var loader = RenderTexture.load(url, autoHiDpi, webpAvailable, corsEnabled);
 
     return loader.then((renderTexture) => new BitmapData.fromRenderTextureQuad(renderTexture.quad));
   }
@@ -76,6 +77,18 @@ class BitmapData implements BitmapDrawable {
     return bitmapData;
   }
 
+  /**
+   * Return a dataUrl for this BitmapData.
+   */
+
+  String toDataUrl([String type = 'image/png', num quality]) {
+    if (identical(_renderTextureQuad, _renderTexture.quad)) {
+      return _renderTexture.canvas.toDataUrl(type, quality);
+    } else {
+      return clone().toDataUrl(type, quality);
+    }
+  }
+
   //-------------------------------------------------------------------------------------------------
 
   /**
@@ -87,25 +100,26 @@ class BitmapData implements BitmapDrawable {
    *
    * The optional frameCount parameter will limit the number of frames generated,
    * in case you have empty frames you don't care about due to the width / height
-   * of this BitmapData.
+   * of this BitmapData. If your frames are also separated by space or have an
+   * additional margin for each frame, you can specify this with the spacing or
+   * margin parameter (in pixel).
    */
 
-  List<BitmapData> sliceIntoFrames(int frameWidth, int frameHeight, [int frameCount]) {
+  List<BitmapData> sliceIntoFrames(int frameWidth, int frameHeight, {
+    int frameCount: null, int frameSpacing: 0, int frameMargin: 0 }) {
 
-    var cols = _width ~/ frameWidth;
-    var rows = _height ~/ frameHeight;
+    var cols = (_width - frameMargin + frameSpacing) ~/ (frameWidth + frameSpacing);
+    var rows = (_height - frameMargin + frameSpacing) ~/ (frameHeight + frameSpacing);
     var frames = new List<BitmapData>();
 
-    if (frameCount == null) {
-      frameCount = rows * cols;
-    } else {
-      frameCount = min(frameCount, rows * cols);
-    }
+    frameCount = (frameCount == null) ? rows * cols : min(frameCount, rows * cols);
 
     for(var f = 0; f < frameCount; f++) {
       var x = f % cols;
       var y = f ~/ cols;
-      var rectangle = new Rectangle<int>(x * frameWidth, y * frameHeight, frameWidth, frameHeight);
+      var frameLeft = frameMargin + x * (frameWidth + frameSpacing);
+      var frameTop = frameMargin + y * (frameHeight + frameSpacing);
+      var rectangle = new Rectangle<int>(frameLeft, frameTop, frameWidth, frameHeight);
       var bitmapData = new BitmapData.fromBitmapData(this, rectangle);
       frames.add(bitmapData);
     }

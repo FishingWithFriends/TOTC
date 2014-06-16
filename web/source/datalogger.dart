@@ -8,6 +8,7 @@ class DataLogger{
   int teamBFinalScore;
   int totalStars;
   int numOfRound;
+  int reasonLost;
   RoundLogger round0;
   RoundLogger round1;
   RoundLogger round2;
@@ -23,6 +24,7 @@ class DataLogger{
     teamBFinalScore = -1;
     totalStars = -1;
     numOfRound = -1;
+    reasonLost = -1;
     
     round0 = new RoundLogger(this,0);    
     round1 = new RoundLogger(this,1);
@@ -33,7 +35,7 @@ class DataLogger{
   }
   
   void send(){
-    var data = "$id, $totalTime, $teamAFinalScore, $teamBFinalScore, $totalStars, $numOfRound, ";
+    var data = "$id, $totalTime, $teamAFinalScore, $teamBFinalScore, $totalStars, $numOfRound, $reasonLost, ";
     data += round0.getData();
     data += round1.getData();
     data += round2.getData();

@@ -256,8 +256,12 @@ class Ecosystem extends Sprite {
   }
   
   void timerSkipped(){
-    addFish(1, SHARK, true);
-    addFish(10, TUNA, true);
-    addFish(30, SARDINE, true);
+    
+
+      
+    if(_fishCount[SHARK] > 0) addFish(1, SHARK, true);
+    if(_fishCount[TUNA] > 0) addFish(10, TUNA, true);
+    if(_fishCount[SARDINE] > 0) addFish(30, SARDINE, true);
+
   }
 }

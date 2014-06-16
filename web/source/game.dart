@@ -957,6 +957,20 @@ class Game extends Sprite implements Animatable{
   }
   
   void logEndGame(){
+    
+    if(_ecosystem._fishCount[SARDINE] <= 0){
+      datalogger.reasonLost = 1;
+    }
+    else if(_ecosystem._fishCount[TUNA] <= 0){
+      datalogger.reasonLost = 2;
+    }
+    else if(_ecosystem._fishCount[SHARK] <= 0){
+          datalogger.reasonLost = 3;
+        }
+    else{
+      datalogger.reasonLost = 0;
+    }
+    
     datalogger.id = gameID;
     datalogger.totalTime = totalTimeCounter;
     datalogger.teamAFinalScore = teamAScore;
