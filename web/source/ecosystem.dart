@@ -10,7 +10,7 @@ class Ecosystem extends Sprite {
   static const CAUGHT = 6;
   static const MAX_SHARK = 25;
   static const MAX_TUNA = 100;
-  static const MAX_SARDINE = 400;
+  static const MAX_SARDINE = 350;
   
   ResourceManager _resourceManager;
   Juggler _juggler;

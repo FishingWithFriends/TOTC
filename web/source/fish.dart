@@ -101,11 +101,15 @@ class Fish extends Bitmap implements Animatable {
     {
       int rand = _random.nextInt(100);
 //      if(rand - _ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE] < 80){
-        if(_ecosystem.planktonCount > 0){
+        if(_ecosystem.planktonCount > 0 && _ecosystem.game.badge.tunaRating==1){
           _hunger+= 3;//+ (_ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE]*1).floor();
           _ecosystem.planktonCount--;
         }
-//      }
+        else if(_ecosystem.planktonCount > 0){
+          _hunger+= 2;//+ (_ecosystem.planktonCount/_ecosystem._fishCount[Ecosystem.SARDINE]*1).floor();
+          _ecosystem.planktonCount--;
+          
+      }
         else{
           _hunger--;
         }
@@ -117,7 +121,7 @@ class Fish extends Bitmap implements Animatable {
       int rand = _random.nextInt(100);
 //      if(rand - _ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA] < 10){
         if(_ecosystem.tunaFoodCount > 0){
-          _hunger+= 3;//+ (_ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA]*1).floor();
+          _hunger+= 2;//+ (_ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA]*1).floor();
           _ecosystem.tunaFoodCount--;
         }
 //      }
