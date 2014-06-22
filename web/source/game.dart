@@ -409,9 +409,12 @@ class Game extends Sprite implements Animatable{
         t1.onComplete = toBuyPhaseTransitionStageOne;
         _juggler.add(t1);
         
+        fadePieTimer(0,2);
+        
         Tween t2 = new Tween(_ecosystem, 2, TransitionFunction.linear);
         t2.animate.alpha.to(0);
         _juggler.add(t2);
+        
       }
 
     } else if (phase==BUY_PHASE) {
@@ -429,6 +432,7 @@ class Game extends Sprite implements Animatable{
       t1.animate.alpha.to(0);
       t1.onComplete = toFishingPhaseStageOne;
       _juggler.add(t1);
+      fadePieTimer(0,.5);
       
       Tween t2 = new Tween(_offseason.sellIslandTop, .5, TransitionFunction.linear);
       t2.animate.alpha.to(0);
@@ -471,6 +475,7 @@ class Game extends Sprite implements Animatable{
     
     arrangeUILayers();
 
+   animatePieTimer(-width/2+100, height/2-115,.5);
     
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(0);
@@ -486,6 +491,7 @@ class Game extends Sprite implements Animatable{
   }
   void toBuyPhaseTransitionStageTwo(){
     _offseason.showCircles();
+    fadePieTimer(.9,.5);
     Tween t1 = new Tween(teamAMoneyText, .5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
     _juggler.add(t1);
@@ -512,6 +518,7 @@ class Game extends Sprite implements Animatable{
       timerTextB.text = "Fishing season";
 
       _offseason.sendBoatsToFish();
+      animatePieTimer(width/2-100, -height/2+115, .750);
       
       Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
       
@@ -537,14 +544,14 @@ class Game extends Sprite implements Animatable{
     round++;
     roundNumber.text = "${round+1}";
     
-    Tween t4 = new Tween(roundNumber, .5, TransitionFunction.linear);
-    t4.animate.alpha.to(.7);
+//    Tween t4 = new Tween(roundNumber, .5, TransitionFunction.linear);
+//    t4.animate.alpha.to(.7);
     
     
     _juggler.add(t1);
     _juggler.add(t2);
     _juggler.add(t3);
-    _juggler.add(t4);
+//    _juggler.add(t4);
 
       
   }
@@ -557,6 +564,8 @@ class Game extends Sprite implements Animatable{
     Tween t1 = new Tween(_fleet, 1, TransitionFunction.linear);
     t1.animate.alpha.to(1);
     _juggler.add(t1);
+    
+    fadePieTimer(.7, 1);
     
     Tween t2 = new Tween(_ecosystem, 1, TransitionFunction.linear);
     t2.animate.alpha.to(1);
@@ -981,11 +990,77 @@ class Game extends Sprite implements Animatable{
     datalogger.send();
   }
   
-void  handleMsg(data){
+  void  handleMsg(data){
     if(data[0]=="i" && data[1]=="d"){
       var idString = data.substring(4,7);
       num id = int.parse(idString);
       gameID = id;
     }
+  }
+
+
+  void fadePieTimer(val, dt){
+    Tween t1 = new Tween(timerPie, dt, TransitionFunction.linear);
+    t1.animate.alpha.to(val);
+    _juggler.add(t1);
+    
+    Tween t2 = new Tween(pieTimerBitmap, dt, TransitionFunction.linear);
+    t2.animate.alpha.to(val);
+    _juggler.add(t2);
+    
+    Tween t3 = new Tween(roundTitle, dt, TransitionFunction.linear);
+    t3.animate.alpha.to(val);
+    _juggler.add(t3);
+    
+    Tween t4 = new Tween(roundNumber, dt, TransitionFunction.linear);
+    t4.animate.alpha.to(val);
+    _juggler.add(t4);
+    
+    Tween t5 = new Tween(roundNumberDiv, dt, TransitionFunction.linear);
+    t5.animate.alpha.to(val);
+    _juggler.add(t5);
+    
+    Tween t6 = new Tween(seasonTitle, dt, TransitionFunction.linear);
+    t6.animate.alpha.to(val);
+    _juggler.add(t6);
+    
+  }
+
+  void animatePieTimer(dx, dy, dt){
+      Tween t1 = new Tween(timerPie, dt, TransitionFunction.linear);
+      t1.animate.x.by(dx);
+      t1.animate.y.by(dy);
+      _juggler.add(t1);
+      
+      Tween t2 = new Tween(pieTimerBitmap, dt, TransitionFunction.linear);
+      t2.animate.x.by(dx);
+      t2.animate.y.by(dy);
+      _juggler.add(t2);
+      
+      Tween t3 = new Tween(roundTitle, dt, TransitionFunction.linear);
+      t3.animate.x.by(dx);
+      t3.animate.y.by(dy);
+      _juggler.add(t3);
+      
+      Tween t4 = new Tween(roundNumber, dt, TransitionFunction.linear);
+      t4.animate.x.by(dx);
+      t4.animate.y.by(dy);
+      _juggler.add(t4);
+      
+      Tween t5 = new Tween(roundNumberDiv, dt, TransitionFunction.linear);
+      t5.animate.x.by(dx);
+      t5.animate.y.by(dy);
+      _juggler.add(t5);
+      
+      Tween t6 = new Tween(seasonTitle, dt, TransitionFunction.linear);
+      t6.animate.x.by(dx);
+      t6.animate.y.by(dy);
+      _juggler.add(t6);
+      
+      Tween t7 = new Tween(timerButton, dt, TransitionFunction.linear);
+      t7.animate.x.by(dx);
+      t7.animate.y.by(dy);
+      _juggler.add(t7);
+      
   }
 }
