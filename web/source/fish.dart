@@ -379,8 +379,8 @@ class Fish extends Bitmap implements Animatable {
         int fishType = _fishes[i].type;
         if (_hunger < _hungerMax && fishType == _foodType && _dartTimer > _dartTimerMax) {
           _dartTimer = 0;
-          _darting = true;
-          _pouncing = true;
+//          _darting = true;
+//          _pouncing = true;
           ate = _fishes[i];
           var newy = _fishes[i].y;
           var newx = _fishes[i].x;
@@ -388,7 +388,7 @@ class Fish extends Bitmap implements Animatable {
         }
         if (fishType == _predType && _dartTimer > _dartTimerMax) {
           _dartTimer = 0;
-          _darting = true;
+//          _darting = true;
           if (_random.nextInt(1) == 0) return rotation+_dartRotationSpeed;
           else return rotation-_dartRotationSpeed;
         }
