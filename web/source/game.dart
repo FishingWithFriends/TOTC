@@ -799,7 +799,7 @@ class Game extends Sprite implements Animatable{
                   ..x = 20
                   ..y = height - 20
                   ..alpha = 1
-                  ..graphics.strokeColor(Color.Salmon);
+                  ..graphics.strokeColor(Color.Salmon,3);
     addChild(sardineOutline);
     uiObjects.add(sardineOutline);
     
@@ -825,7 +825,7 @@ class Game extends Sprite implements Animatable{
                   ..x = 50
                   ..y = height - 20
                   ..alpha = 1
-                  ..graphics.strokeColor(Color.Orange);
+                  ..graphics.strokeColor(Color.Orange,3);
     addChild(tunaOutline);
     uiObjects.add(tunaOutline);
     
@@ -849,7 +849,7 @@ class Game extends Sprite implements Animatable{
                   ..x = 80
                   ..y = height - 20
                   ..alpha = 1
-                  ..graphics.strokeColor(Color.Yellow);
+                  ..graphics.strokeColor(Color.Yellow,3);
     addChild(sharkOutline);
     uiObjects.add(sharkOutline);
     
