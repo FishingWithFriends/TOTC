@@ -475,7 +475,7 @@ class Game extends Sprite implements Animatable{
     
     arrangeUILayers();
 
-   animatePieTimer(-width/2+100, height/2-115,.5);
+   animatePieTimer(-width/2+100, height/2-103,.5);
     
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(0);
@@ -518,7 +518,7 @@ class Game extends Sprite implements Animatable{
       timerTextB.text = "Fishing season";
 
       _offseason.sendBoatsToFish();
-      animatePieTimer(width/2-100, -height/2+115, .750);
+      animatePieTimer(width/2-100, -height/2+103, .750);
       
       Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
       
