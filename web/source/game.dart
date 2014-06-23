@@ -160,7 +160,7 @@ class Game extends Sprite implements Animatable{
     }
     
     if (gameStarted == false){
-      sardineBar.height = _ecosystem._fishCount[SARDINE];
+      sardineBar.height = _ecosystem._fishCount[SARDINE]*2/3;
       sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
  
       tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
@@ -204,7 +204,7 @@ class Game extends Sprite implements Animatable{
     }
     
     //Update the population bar graph size
-    sardineBar.height = _ecosystem._fishCount[SARDINE];
+    sardineBar.height = _ecosystem._fishCount[SARDINE]*2/3;
     sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
     
     tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
@@ -795,7 +795,7 @@ class Game extends Sprite implements Animatable{
     
     //Text and Shapes for population bar graph
     sardineBar = new Shape();
-    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE])
+    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]*2/3)
               ..x  = 20
               ..y = height - 20
               ..alpha = .6
@@ -804,7 +804,7 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(sardineBar);
     
     sardineOutline = new Shape();
-    sardineOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE])
+    sardineOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]*2/3)
                   ..x = 20
                   ..y = height - 20
                   ..alpha = 1
