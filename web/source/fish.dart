@@ -121,7 +121,7 @@ class Fish extends Bitmap implements Animatable {
       int rand = _random.nextInt(100);
 //      if(rand - _ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA] < 10){
         if(_ecosystem.tunaFoodCount > 0){
-          _hunger+= 2;//+ (_ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA]*1).floor();
+          _hunger+= 1;//+ (_ecosystem.tunaFoodCount/_ecosystem._fishCount[Ecosystem.TUNA]*1).floor();
           _ecosystem.tunaFoodCount--;
         }
 //      }
