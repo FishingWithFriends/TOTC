@@ -2,7 +2,7 @@ part of TOTC;
 
 class Boat extends Sprite implements Touchable, Animatable {
 
-  static const num PROXIMITY = 75;
+  static const num PROXIMITY = 100;
   static const int RIGHT = 0;
   static const int LEFT = 1;
   static const int STRAIGHT = 2;

@@ -65,12 +65,15 @@ class Ecosystem extends Sprite {
     addFish(8, SHARK, true);
 //    addFish(0, SHARK, true);
     addFish(45, TUNA, true);
-    addFish(250, SARDINE, true);
+    addFish(350, SARDINE, true);
     
     new Timer.periodic(const Duration(milliseconds : 1000), (timer) => _timerTick());
   }
   
   void addFish(int n, int type, bool start) {
+    if(!game.timerActive && !game.gameStarted){
+      return;
+    }
     if (n>0) {
       var fishImage;
       if (type == TUNA) {

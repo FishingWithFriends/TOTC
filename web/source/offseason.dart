@@ -336,6 +336,7 @@ class Circle extends Sprite implements Touchable {
   Tween _rotateTween;
   Tween _rotateTween2;
   num _upgradeRotation;
+  num _upgradeRotation2;
   
   int _touchMode = 0;
   num _circleWidth;
@@ -366,6 +367,9 @@ class Circle extends Sprite implements Touchable {
     
     if (teamA==true) _upgradeRotation = math.PI;
     else _upgradeRotation = 0;
+    
+    if (teamA==true) _upgradeRotation2 = 0;
+    else _upgradeRotation2 = 0;
     
     if (_teamA==true){
       _circle = new Bitmap(_resourceManager.getBitmapData("TeamACircle"));
@@ -447,16 +451,16 @@ class Circle extends Sprite implements Touchable {
     if (_upgradeMode==true) {
       _upgradeMode = false;
       _rotateTween.animate.rotation.to(_upgradeRotation+math.PI);
-      _rotateTween2.animate.rotation.by(-math.PI);
+      _rotateTween2.animate.rotation.to(_upgradeRotation2-math.PI-math.PI/4);
     }
     else {
       _upgradeMode = true;
       _rotateTween.animate.rotation.to(_upgradeRotation);
-      _rotateTween2.animate.rotation.by(math.PI);
+      _rotateTween2.animate.rotation.to(_upgradeRotation2-math.PI/4);
     }
     _juggler.add(_rotateTween);
     _juggler.add(_rotateTween2);
-    swoosh.play();
+//    swoosh.play();
   }
   
   void _capacityLargeButtonPressed(var e) {

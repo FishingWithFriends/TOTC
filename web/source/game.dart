@@ -116,6 +116,10 @@ class Game extends Sprite implements Animatable{
     width = w;
     height = h+16;
     
+    transition = false;
+    timerActive = true;
+    datalogger = new DataLogger();
+    
     tmanager.registerEvents(this);
     tmanager.addTouchLayer(tlayer);
     
@@ -142,10 +146,7 @@ class Game extends Sprite implements Animatable{
     timerSound = _resourceManager.getSound("timerSound");
     
     _loadTextAndShapes();
-    
-    transition = false;
     timerActive = false;
-    datalogger = new DataLogger();
   }
 
   bool advanceTime(num time) {
@@ -804,7 +805,7 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(sardineBar);
     
     sardineOutline = new Shape();
-    sardineOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]*2/3)
+    sardineOutline..graphics.rect(0, 0, 30, -(_ecosystem._fishCount[SARDINE]-100)*2/3)
                   ..x = 20
                   ..y = height - 20
                   ..alpha = 1
