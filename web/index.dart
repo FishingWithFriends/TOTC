@@ -22,6 +22,7 @@ part 'source/offseason.dart';
 part 'source/regrowthUI.dart';
 part 'source/endgame.dart';
 part 'source/datalogger.dart';
+part 'source/title.dart';
 
 
 html.WebSocket ws;
@@ -182,6 +183,11 @@ void main() {
 
   resourceManager.addBitmapData("teamAScoreCircle", "images/teamAScoreCircle.png");
   resourceManager.addBitmapData("teamBScoreCircle", "images/teamBScoreCircle.png");
+  resourceManager.addBitmapData("title", "images/title.png");
+  resourceManager.addBitmapData("playButton", "images/playButton.png");
+  resourceManager.addBitmapData("playButtonPressed", "images/playButtonPressed.png");
+  resourceManager.addBitmapData("aboutButton", "images/aboutButton.png");
+  resourceManager.addBitmapData("aboutButtonPressed", "images/aboutButtonPressed.png");
   
   resourceManager.addSound("buttonClick", "sounds/button_click.ogg");
   resourceManager.addSound("circleUISwoosh", "sounds/circle_swoosh.ogg");

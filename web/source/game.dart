@@ -2,10 +2,14 @@ part of TOTC;
 
 class Game extends Sprite implements Animatable{
   
+  static const TITLE_PHASE = 5;
+  static const ABOUT_PHASE = 7;
+  static const INSTRUCTION_PHASE = 6;
   static const FISHING_PHASE = 1;
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   static const ENDGAME_PHASE = 4;
+  
   
   static const MAX_ROUNDS = 4;
 //  static const MAX_ROUNDS = 1;
@@ -40,6 +44,8 @@ class Game extends Sprite implements Animatable{
   Offseason _offseason;
   Bitmap _background;
   Endgame _endgame;
+  
+  Title _title;
   
   TouchManager tmanager = new TouchManager();
   TouchLayer tlayer = new TouchLayer();
@@ -88,7 +94,7 @@ class Game extends Sprite implements Animatable{
   TextField timerTextA, timerTextB, gameIDText;
   Bitmap sardineIcon, tunaIcon, sharkIcon;
   
-  int phase = FISHING_PHASE;
+  int phase = TITLE_PHASE;
   int timer = 0;
   int fishingTimerTick = 25;
   int buyTimerTick = 20;
@@ -128,6 +134,8 @@ class Game extends Sprite implements Animatable{
     _fleet = new Fleet(_resourceManager, _juggler, this);
     _ecosystem = new Ecosystem(_resourceManager, _juggler, this, _fleet);
     _endgame = new Endgame(_resourceManager, _juggler, this, _ecosystem);
+    
+    _title = new Title(_resourceManager, _juggler, this, _ecosystem);
 
     _background.width = width;
     _background.height = height;
@@ -142,6 +150,7 @@ class Game extends Sprite implements Animatable{
     addChild(_mask);
     addChild(_fleet);
     addChild(_endgame);
+    addChild(_title);
 
     timerSound = _resourceManager.getSound("timerSound");
     
@@ -448,6 +457,19 @@ class Game extends Sprite implements Animatable{
 
       
       
+    }
+    
+    else if(phase == TITLE_PHASE){
+//      _title.hide();
+      phase=FISHING_PHASE;
+      
+      tlayer.touchables.remove(_title);
+      
+      Tween t1 = new Tween(_title.titleBackground, .5, TransitionFunction.linear);
+      t1.animate.alpha.to(0);
+//      t1.onComplete = toFishingPhaseStageOne;
+      _juggler.add(t1);
+//      fadePieTimer(0,.5);
     }
   }
   
