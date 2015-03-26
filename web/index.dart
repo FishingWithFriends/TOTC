@@ -184,6 +184,7 @@ void main() {
   resourceManager.addBitmapData("teamAScoreCircle", "images/teamAScoreCircle.png");
   resourceManager.addBitmapData("teamBScoreCircle", "images/teamBScoreCircle.png");
   resourceManager.addBitmapData("title", "images/title.png");
+  resourceManager.addBitmapData("about", "images/about.png");
   resourceManager.addBitmapData("playButton", "images/playButton.png");
   resourceManager.addBitmapData("playButtonPressed", "images/playButtonPressed.png");
   resourceManager.addBitmapData("aboutButton", "images/aboutButton.png");

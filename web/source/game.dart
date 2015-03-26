@@ -150,12 +150,13 @@ class Game extends Sprite implements Animatable{
     addChild(_mask);
     addChild(_fleet);
     addChild(_endgame);
-    addChild(_title);
 
     timerSound = _resourceManager.getSound("timerSound");
     
     _loadTextAndShapes();
     timerActive = false;
+    addChild(_title);
+
   }
 
   bool advanceTime(num time) {
@@ -460,16 +461,9 @@ class Game extends Sprite implements Animatable{
     }
     
     else if(phase == TITLE_PHASE){
-//      _title.hide();
+      _title.hide();
       phase=FISHING_PHASE;
       
-      tlayer.touchables.remove(_title);
-      
-      Tween t1 = new Tween(_title.titleBackground, .5, TransitionFunction.linear);
-      t1.animate.alpha.to(0);
-//      t1.onComplete = toFishingPhaseStageOne;
-      _juggler.add(t1);
-//      fadePieTimer(0,.5);
     }
   }
   
