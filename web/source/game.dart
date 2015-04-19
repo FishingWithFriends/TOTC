@@ -3,15 +3,15 @@ part of TOTC;
 class Game extends Sprite implements Animatable{
   
   static const TITLE_PHASE = 5;
-  static const ABOUT_PHASE = 7;
   static const INSTRUCTION_PHASE = 6;
   static const FISHING_PHASE = 1;
   static const BUY_PHASE = 2;
   static const REGROWTH_PHASE = 3;
   static const ENDGAME_PHASE = 4;
+  static const FINALSUMMARY_PHASE = 7;
   
   
-  static const MAX_ROUNDS = 4;
+  static const MAX_ROUNDS = 1;
 //  static const MAX_ROUNDS = 1;
   
   static const FISHING_TIMER_WIDTH = 125;
@@ -46,6 +46,7 @@ class Game extends Sprite implements Animatable{
   Endgame _endgame;
   
   Title _title;
+  FinalSummary _finalSummary;
   
   TouchManager tmanager = new TouchManager();
   TouchLayer tlayer = new TouchLayer();
@@ -103,7 +104,7 @@ class Game extends Sprite implements Animatable{
   bool transition, timerButtonBool, timerButtonReady;
   bool timerActive;
   Sound timerSound;
-  
+  Timer timerSoundTimer;
   SimpleButton timerButton;
   
   Timer clockUpdateTimer;
@@ -136,7 +137,8 @@ class Game extends Sprite implements Animatable{
     _endgame = new Endgame(_resourceManager, _juggler, this, _ecosystem);
     
     _title = new Title(_resourceManager, _juggler, this, _ecosystem);
-
+    _finalSummary = new FinalSummary(_resourceManager, _juggler, this, _ecosystem);
+    
     _background.width = width;
     _background.height = height;
     _mask.alpha = 0;
@@ -150,7 +152,8 @@ class Game extends Sprite implements Animatable{
     addChild(_mask);
     addChild(_fleet);
     addChild(_endgame);
-
+    addChild(_finalSummary);
+    
     timerSound = _resourceManager.getSound("timerSound");
     
     _loadTextAndShapes();
@@ -279,21 +282,21 @@ class Game extends Sprite implements Animatable{
     
     if(phase == FISHING_PHASE){
       curTimer = new Timer(new Duration(milliseconds:FISHING_TIME*1000+250), _nextSeason );
-      new Timer(new Duration(milliseconds:FISHING_TIME*1000 -5000), timerSound.play);
+      timerSoundTimer = new Timer(new Duration(milliseconds:FISHING_TIME*1000 -5000), timerSound.play);
       clockCounter = FISHING_TIME*1000;
       new Timer(new Duration(milliseconds:FISHING_TIME*1000+250), clockUpdateTimer.cancel);
       new Timer(new Duration(milliseconds:2000),() => timerButtonReady = true);
     }
     else if(phase == REGROWTH_PHASE){
       curTimer = new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 +250), _nextSeason );
-      new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 -5000), timerSound.play);
+      timerSoundTimer = new Timer(new Duration(milliseconds:REGROWTH_TIME*1000 -5000), timerSound.play);
       clockCounter = REGROWTH_TIME*1000;
       new Timer(new Duration(milliseconds:REGROWTH_TIME*1000+250), clockUpdateTimer.cancel);
       new Timer(new Duration(milliseconds:5500),() => timerButtonReady = true);
     }
     else if(phase == BUY_PHASE){
       curTimer = new Timer(new Duration(milliseconds:BUYING_TIME*1000+250), _nextSeason );
-      new Timer(new Duration(milliseconds:BUYING_TIME*1000 -5000), timerSound.play);
+      timerSoundTimer = new Timer(new Duration(milliseconds:BUYING_TIME*1000 -5000), timerSound.play);
       clockCounter = BUYING_TIME*1000;
       new Timer(new Duration(milliseconds:BUYING_TIME*1000+250), clockUpdateTimer.cancel);
       new Timer(new Duration(milliseconds:2000),() => timerButtonReady = true);
@@ -455,8 +458,10 @@ class Game extends Sprite implements Animatable{
     }
     
     else if(phase == ENDGAME_PHASE){
-
-      
+      phase = FINALSUMMARY_PHASE;
+      _endgame.hide();
+//      addChild(_finalSummary);
+      _finalSummary.show();
       
     }
     
@@ -627,6 +632,8 @@ class Game extends Sprite implements Animatable{
       _ecosystem.timerSkipped();
       _nextSeason();
       timerButtonReady = false;
+      timerSoundTimer.cancel();
+      timerSound.stop();
     }
     else{
       timerButtonBool = true;

@@ -186,14 +186,14 @@ class Endgame extends Sprite implements Animatable{
   }
   
   void showReplayButton(){
-    Tween t1 = new Tween(replayButton, .5, TransitionFunction.linear);
-    t1.animate.alpha.to(1);
-    _juggler.add(t1);
-    replayButton.addEventListener(MouseEvent.MOUSE_DOWN, _replayButtonPressed);
-    replayButton.addEventListener(TouchEvent.TOUCH_TAP, _replayButtonPressed);
-    replayButton.addEventListener(TouchEvent.TOUCH_BEGIN, _replayButtonPressed);
-    
-    
+//    Tween t1 = new Tween(replayButton, .5, TransitionFunction.linear);
+//    t1.animate.alpha.to(1);
+//    _juggler.add(t1);
+//    replayButton.addEventListener(MouseEvent.MOUSE_DOWN, _replayButtonPressed);
+//    replayButton.addEventListener(TouchEvent.TOUCH_TAP, _replayButtonPressed);
+//    replayButton.addEventListener(TouchEvent.TOUCH_BEGIN, _replayButtonPressed);
+//    
+    _game._nextSeason();
   }
   
   void _replayButtonPressed(var e){
@@ -225,6 +225,15 @@ class Endgame extends Sprite implements Animatable{
     Tween t2 = new Tween(bestScoresB, .5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
     _juggler.add(t2);
+    
+  }
+  
+  void hide(){
+    hideTeamUI();
+
+    Tween t1 = new Tween(this, .5, TransitionFunction.linear);
+    t1.animate.alpha.to(0);
+    _juggler.add(t1);
     
   }
   

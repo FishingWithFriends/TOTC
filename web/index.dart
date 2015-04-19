@@ -23,7 +23,7 @@ part 'source/regrowthUI.dart';
 part 'source/endgame.dart';
 part 'source/datalogger.dart';
 part 'source/title.dart';
-
+part 'source/finalSummary.dart';
 
 html.WebSocket ws;
 
@@ -68,7 +68,8 @@ void initWebSocket([int retrySeconds = 2]) {
 }
 
 void main() {
-  int height = html.window.innerHeight-20;
+//  int height = html.window.innerHeight-20;
+  int height = (html.window.innerWidth * .75).toInt();
   int width = html.window.innerWidth;
   
   var canvas = html.querySelector('#stage');
