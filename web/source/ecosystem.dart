@@ -38,6 +38,10 @@ class Ecosystem extends Sprite {
   int tunaFoodCount;
   int sharkFoodCount;
   
+  List<Sound> sardineCatchSounds = new List<Sound>();
+  List<Sound> tunaCatchSounds = new List<Sound>();
+  List<Sound> sharkCatchSounds = new List<Sound>();
+  
   var random = new math.Random();
   
   Ecosystem(ResourceManager resourceManager, Juggler juggler, Game g, Fleet fleet) {
@@ -50,6 +54,24 @@ class Ecosystem extends Sprite {
     
     _tunaBloodData = _resourceManager.getBitmapData("TunaBlood");
     _sardineBloodData = _resourceManager.getBitmapData("SardineBlood");
+    
+    sardineCatchSounds.add(_resourceManager.getSound("sardineCatchSound01"));
+    sardineCatchSounds.add(_resourceManager.getSound("sardineCatchSound02"));
+    sardineCatchSounds.add(_resourceManager.getSound("sardineCatchSound03"));
+    sardineCatchSounds.add(_resourceManager.getSound("sardineCatchSound04"));
+    sardineCatchSounds.add(_resourceManager.getSound("sardineCatchSound05"));
+    
+    tunaCatchSounds.add(_resourceManager.getSound("tunaCatchSound01"));
+    tunaCatchSounds.add(_resourceManager.getSound("tunaCatchSound02"));
+    tunaCatchSounds.add(_resourceManager.getSound("tunaCatchSound03"));
+    tunaCatchSounds.add(_resourceManager.getSound("tunaCatchSound04"));
+    tunaCatchSounds.add(_resourceManager.getSound("tunaCatchSound05"));
+    
+    sharkCatchSounds.add(_resourceManager.getSound("sharkCatchSound01"));
+    sharkCatchSounds.add(_resourceManager.getSound("sharkCatchSound02"));
+    sharkCatchSounds.add(_resourceManager.getSound("sharkCatchSound03"));
+    sharkCatchSounds.add(_resourceManager.getSound("sharkCatchSound04"));
+    sharkCatchSounds.add(_resourceManager.getSound("sharkCatchSound05"));
     
     _babies[TUNA] = 0;
     _babies[SARDINE] = 0;

@@ -353,6 +353,22 @@ class Fish extends Bitmap implements Animatable {
   
   void _catchFish(Boat b) {
     if(b.catchType==type) {
+      Sound playSound;
+      //PLAYSOUND
+      if(type == Ecosystem.SARDINE){
+        int i = _random.nextInt(_ecosystem.sardineCatchSounds.length);
+        playSound = _ecosystem.sardineCatchSounds[i];
+      }
+      else if(type == Ecosystem.TUNA){
+        int i = _random.nextInt(_ecosystem.tunaCatchSounds.length);
+        playSound = _ecosystem.tunaCatchSounds[i];
+      }
+      else if(type == Ecosystem.SHARK){
+        int i = _random.nextInt(_ecosystem.sharkCatchSounds.length);
+        playSound = _ecosystem.sharkCatchSounds[i];
+      }
+
+      playSound.play();
       b.increaseFishNet(type);
       _ecosystem.removeFish(this, Ecosystem.CAUGHT);
     }

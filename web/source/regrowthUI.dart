@@ -43,8 +43,11 @@ class EcosystemBadge extends Sprite implements Animatable{
   
   int rating,sardineRating, tunaRating, sharkRating, animatedRating;
   
-  Sound badgeSound;
+  Sound badgeSoundSardine, badgeSoundTuna, badgeSoundShark;
   Sound starSound;
+  
+  Sound oneStarSound, twoStarSound, threeStarSound;
+  Sound overpopulatedSound, leastConcernSound, endangeredSound, extinctSound;
   
   bool showStatusText = false;
   
@@ -61,8 +64,15 @@ class EcosystemBadge extends Sprite implements Animatable{
     addChild(teamBCounter);
     initalizeObjects();
     
-    badgeSound = _resourceManager.getSound("badgeSound");
-    starSound = _resourceManager.getSound("starSound");
+    
+    oneStarSound = _resourceManager.getSound("starSound01");
+    twoStarSound =  _resourceManager.getSound("starSound02");
+    threeStarSound = _resourceManager.getSound("starSound03");
+    overpopulatedSound = _resourceManager.getSound("badgeSoundOverpopulated");
+    leastConcernSound = _resourceManager.getSound("badgeSoundLeastConcern");
+    endangeredSound = _resourceManager.getSound("badgeSoundEndangered");
+    extinctSound = _resourceManager.getSound("badgeSoundExtinct");
+    
   }
   
   bool advanceTime(num time){
@@ -108,9 +118,18 @@ class EcosystemBadge extends Sprite implements Animatable{
       
       Bitmap toShow;
       _game.starCount++;
-      if(animatedRating == 0) toShow = stars1;
-      else if(animatedRating == 1) toShow = stars2;
-      else if(animatedRating == 2) toShow = stars3;
+      if(animatedRating == 0){
+        toShow = stars1;
+        starSound = oneStarSound;
+      }
+      else if(animatedRating == 1){
+        toShow = stars2;
+        starSound = twoStarSound;
+      }
+      else if(animatedRating == 2){
+        toShow = stars3;
+        starSound = threeStarSound;
+      }
       
       Tween t1 = new Tween(toShow, .5, TransitionFunction.easeInOutQuadratic);
       t1.animate.alpha.to(1);
@@ -144,7 +163,7 @@ class EcosystemBadge extends Sprite implements Animatable{
             
     Tween t7 = new Tween(badgeSardine, .5, TransitionFunction.easeInOutQuartic);
     t7.animate.alpha.to(1);
-    badgeSound.play();
+    badgeSoundSardine.play();
     t7.onComplete = showTextTwo;
     _juggler.add(t7);
     
@@ -167,7 +186,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     
     Tween t8 = new Tween(badgeTuna, .5, TransitionFunction.easeInOutQuadratic);
     t8.animate.alpha.to(1);
-    badgeSound.play();
+    badgeSoundTuna.play();
     t8.onComplete = showTextThree;
     
     _juggler.add(t8);    
@@ -190,7 +209,7 @@ class EcosystemBadge extends Sprite implements Animatable{
             
     Tween t9 = new Tween(badgeShark, .5, TransitionFunction.easeInOutQuadratic);
     t9.animate.alpha.to(1);
-    badgeSound.play();
+    badgeSoundShark.play();
     t9.onComplete = showStars;
 
     _juggler.add(t9);
@@ -209,23 +228,27 @@ class EcosystemBadge extends Sprite implements Animatable{
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
       sardineRating=ENDANGERED;
+      badgeSoundSardine = endangeredSound;
     }
     else if (sardineCount > Ecosystem.MAX_SARDINE-50){
       _sardineStatusText = "Sardines are overpopulated";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
       sardineRating=OVERPOPULATED;
+      badgeSoundSardine = overpopulatedSound;
     }
     else if(sardineCount <= 0){
       _sardineStatusText = "Sardines are extinct";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
       rating--;
       sardineRating=EXTINCT;
+      badgeSoundSardine = extinctSound;
     }
     else{
       _sardineStatusText = "";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
       sardineRating=LEAST_CONCERN;
+      badgeSoundSardine = leastConcernSound;
     }
     
     
@@ -234,23 +257,27 @@ class EcosystemBadge extends Sprite implements Animatable{
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
       tunaRating = ENDANGERED;
+      badgeSoundTuna = endangeredSound;
     }
     else if (tunaCount > Ecosystem.MAX_TUNA-25){
       _tunaStatusText = "Tunas are overpopulated";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
       tunaRating = OVERPOPULATED;
+      badgeSoundTuna = overpopulatedSound;
     }
     else if (tunaCount <= 0){
       _tunaStatusText = "Tunas are extinct!";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
       rating--;
       tunaRating = EXTINCT;
+      badgeSoundTuna = extinctSound;
     }
     else{
       _tunaStatusText = "";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
       tunaRating = LEAST_CONCERN;
+      badgeSoundTuna = leastConcernSound;
     }
     
     
@@ -259,23 +286,27 @@ class EcosystemBadge extends Sprite implements Animatable{
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
       sharkRating = ENDANGERED;
+      badgeSoundShark = endangeredSound;
     }
     else if (sharkCount > 12){
       _sharkStatusText = "Sharks are overpopulated";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
       sharkRating = OVERPOPULATED;
+      badgeSoundShark = overpopulatedSound;
     }
     else if(sharkCount <= 0){
       _sharkStatusText = "Sharks are extinct";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeExtinct");
       rating--;
       sharkRating = EXTINCT;
+      badgeSoundShark = extinctSound;
     }
     else{
       _sharkStatusText = "";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeLeastConcern");
       sharkRating = LEAST_CONCERN;
+      badgeSoundShark = leastConcernSound;
     }
 
     return rating;

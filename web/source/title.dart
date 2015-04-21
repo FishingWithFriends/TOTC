@@ -1,7 +1,7 @@
 part of TOTC;
 
 
-class Title extends Sprite implements Animatable, Touchable{
+class Title extends Sprite implements Animatable{
    ResourceManager _resourceManager;
    Juggler _juggler;
    Game _game;
@@ -156,24 +156,7 @@ class Title extends Sprite implements Animatable, Touchable{
 //    _juggler.add(t2);
 //    
 //  }
-  bool containsTouch(Contact e) {
-    return true;
-  }
-   
-  bool touchDown(Contact event) {
-   return true;
-  }
-   
-  void touchUp(Contact event) {
 
-
-  }
-   
-  void touchDrag(Contact event) {
-
-  }
-   
-  void touchSlide(Contact event) { }
 }
 
 

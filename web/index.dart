@@ -197,8 +197,37 @@ void main() {
   resourceManager.addSound("buySplash", "sounds/buy_splash.ogg");
   resourceManager.addSound("itemSuction", "sounds/item_suction.ogg");
   resourceManager.addSound("timerSound", "sounds/round_timer.ogg");
-  resourceManager.addSound("badgeSound", "sounds/badge_sound.ogg");
-  resourceManager.addSound("starSound", "sounds/star_sound.ogg");
+//  resourceManager.addSound("badgeSound", "sounds/badge_sound.ogg");
+//  resourceManager.addSound("starSound", "sounds/star_sound.ogg");
+  
+  resourceManager.addSound("sardineCatchSound01", "sounds/sardineCatchSound01.ogg");
+  resourceManager.addSound("sardineCatchSound02", "sounds/sardineCatchSound02.ogg");
+  resourceManager.addSound("sardineCatchSound03", "sounds/sardineCatchSound03.ogg");
+  resourceManager.addSound("sardineCatchSound04", "sounds/sardineCatchSound04.ogg");
+  resourceManager.addSound("sardineCatchSound05", "sounds/sardineCatchSound05.ogg");
+  
+  resourceManager.addSound("tunaCatchSound01", "sounds/tunaCatchSound01.ogg");
+  resourceManager.addSound("tunaCatchSound02", "sounds/tunaCatchSound02.ogg");
+  resourceManager.addSound("tunaCatchSound03", "sounds/tunaCatchSound03.ogg");
+  resourceManager.addSound("tunaCatchSound04", "sounds/tunaCatchSound04.ogg");
+  resourceManager.addSound("tunaCatchSound05", "sounds/tunaCatchSound05.ogg");
+  
+  resourceManager.addSound("sharkCatchSound01", "sounds/sharkCatchSound01.ogg");
+  resourceManager.addSound("sharkCatchSound02", "sounds/sharkCatchSound02.ogg");
+  resourceManager.addSound("sharkCatchSound03", "sounds/sharkCatchSound03.ogg");
+  resourceManager.addSound("sharkCatchSound04", "sounds/sharkCatchSound04.ogg");
+  resourceManager.addSound("sharkCatchSound05", "sounds/sharkCatchSound05.ogg");
+  
+  resourceManager.addSound("starSound01", "sounds/starSound01.ogg");
+  resourceManager.addSound("starSound02", "sounds/starSound02.ogg");
+  resourceManager.addSound("starSound03", "sounds/starSound03.ogg");
+  
+  resourceManager.addSound("badgeSoundOverpopulated", "sounds/badgeSoundOverpopulated.ogg");
+  resourceManager.addSound("badgeSoundLeastConcern", "sounds/badgeSoundLeastConcern.ogg");
+  resourceManager.addSound("badgeSoundEndangered", "sounds/badgeSoundEndangered.ogg");
+  resourceManager.addSound("badgeSoundExtinct", "sounds/badgeSoundExtinct.ogg");
+  
+  
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
   
   resourceManager.load().then((res) {
