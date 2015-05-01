@@ -401,7 +401,7 @@ class Circle extends Sprite implements Touchable {
 
     _circleButton.addEventListener(MouseEvent.MOUSE_UP, _circlePressed);
     _circleButton.addEventListener(TouchEvent.TOUCH_TAP, _circlePressed);
-    _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
+//    _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
 
 
     

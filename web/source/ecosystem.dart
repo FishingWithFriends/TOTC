@@ -8,9 +8,9 @@ class Ecosystem extends Sprite {
   static const EATEN = 4;
   static const STARVATION = 5;
   static const CAUGHT = 6;
-  static const MAX_SHARK = 25;
-  static const MAX_TUNA = 100;
-  static const MAX_SARDINE = 350;
+  static const MAX_SHARK = 13;
+  static const MAX_TUNA = 50;
+  static const MAX_SARDINE = 175;
   
   ResourceManager _resourceManager;
   Juggler _juggler;
@@ -84,10 +84,10 @@ class Ecosystem extends Sprite {
     tunaFoodCount = 0;
     sharkFoodCount = 0;
     
-    addFish(8, SHARK, true);
+    addFish(4, SHARK, true);
 //    addFish(0, SHARK, true);
-    addFish(45, TUNA, true);
-    addFish(350, SARDINE, true);
+    addFish(22, TUNA, true);
+    addFish(150, SARDINE, true);
     
     new Timer.periodic(const Duration(milliseconds : 1000), (timer) => _timerTick());
   }

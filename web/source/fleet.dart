@@ -55,10 +55,10 @@ class Fleet extends Sprite {
       teamBNetSize = SMALLNET;
       
       addBoat(TEAMASARDINE, teamANetSize);
-      addBoat(TEAMASARDINE, teamANetSize);
+//      addBoat(TEAMASARDINE, teamANetSize);
       
       addBoat(TEAMBSARDINE, SMALLNET);
-      addBoat(TEAMBSARDINE, SMALLNET);
+//      addBoat(TEAMBSARDINE, SMALLNET);
       
       addBoatsToTouchables();
       returnBoats();
@@ -98,12 +98,12 @@ class Fleet extends Sprite {
     
     if(teamA){
       addBoat(TEAMASARDINE, teamANetSize);
-      addBoat(TEAMASARDINE, teamANetSize);
+//      addBoat(TEAMASARDINE, teamANetSize);
       teamABoatType = SARDINE;
     }
     else{
       addBoat(TEAMBSARDINE, teamBNetSize);
-      addBoat(TEAMBSARDINE, teamBNetSize);
+//      addBoat(TEAMBSARDINE, teamBNetSize);
       teamBBoatType = SARDINE;
     }
     _game._offseason.clearAndRefillDock();
@@ -117,12 +117,12 @@ class Fleet extends Sprite {
     }
     if(teamA){
       addBoat(TEAMATUNA, teamANetSize);
-      addBoat(TEAMATUNA, teamANetSize);
+//      addBoat(TEAMATUNA, teamANetSize);
       teamABoatType = TUNA;
     }
     else{
       addBoat(TEAMBTUNA, teamBNetSize);
-      addBoat(TEAMBTUNA, teamBNetSize);
+//      addBoat(TEAMBTUNA, teamBNetSize);
       teamBBoatType = TUNA;
     }
     _game._offseason.clearAndRefillDock();
@@ -136,12 +136,12 @@ class Fleet extends Sprite {
     }
     if(teamA){
       addBoat(TEAMASHARK, teamANetSize);
-      addBoat(TEAMASHARK, teamANetSize);
+//      addBoat(TEAMASHARK, teamANetSize);
       teamABoatType = SHARK;
     }
     else{
       addBoat(TEAMBSHARK, teamBNetSize);
-      addBoat(TEAMBSHARK, teamBNetSize);
+//      addBoat(TEAMBSHARK, teamBNetSize);
       teamBBoatType = SHARK;
     }
     _game._offseason.clearAndRefillDock();

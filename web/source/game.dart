@@ -476,6 +476,7 @@ class Game extends Sprite implements Animatable{
       _title.hide();
       removeChild(_title);
       phase=FISHING_PHASE;
+      arrangeTimerUI();
       
     }
   }
@@ -636,11 +637,17 @@ class Game extends Sprite implements Animatable{
     if(!gameStarted || transition || !timerButtonReady) return;
     if (timerButtonBool){
       timerButtonBool = false;
+      try{
+        timerSoundChannel.stop();
+      }
+      catch(e){};
+      try{
       timerSoundTimer.cancel();
-      timerSoundChannel.stop();
       curTimer.cancel();
       clockUpdateTimer.cancel();
       _ecosystem.timerSkipped();
+      }
+      catch(e){};
       _nextSeason();
       timerButtonReady = false;
     }
@@ -826,9 +833,12 @@ class Game extends Sprite implements Animatable{
     }
     
     
+    num sardineMultiplier = 2/3;
+    num tunaMultiplier = 2;
+    num sharkMulitplier = 4;
     //Text and Shapes for population bar graph
     sardineBar = new Shape();
-    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]*2/3)
+    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]*sardineMultiplier)
               ..x  = 20
               ..y = height - 20
               ..alpha = .6
@@ -837,7 +847,7 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(sardineBar);
     
     sardineOutline = new Shape();
-    sardineOutline..graphics.rect(0, 0, 30, -(_ecosystem._fishCount[SARDINE]-100)*2/3)
+    sardineOutline..graphics.rect(0, 0, 30, -(Ecosystem.MAX_SARDINE)*sardineMultiplier)
                   ..x = 20
                   ..y = height - 20
                   ..alpha = 1
@@ -853,7 +863,7 @@ class Game extends Sprite implements Animatable{
     
     
     tunaBar = new Shape();
-    tunaBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*2)
+    tunaBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*tunaMultiplier)
               ..x  = 50
               ..y = height - 20
               ..alpha = .6
@@ -863,7 +873,7 @@ class Game extends Sprite implements Animatable{
     
     
     tunaOutline = new Shape();
-    tunaOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*2)
+    tunaOutline..graphics.rect(0, 0, 30, -Ecosystem.MAX_TUNA*tunaMultiplier)
                   ..x = 50
                   ..y = height - 20
                   ..alpha = 1
@@ -878,7 +888,7 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(tunaIcon);
     
     sharkBar = new Shape();
-    sharkBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*4)
+    sharkBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*sharkMulitplier)
               ..x  = 80
               ..y = height - 20
               ..alpha = .6
@@ -887,7 +897,7 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(sharkBar);
     
     sharkOutline = new Shape();
-    sharkOutline..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*4)
+    sharkOutline..graphics.rect(0, 0, 30, -Ecosystem.MAX_SHARK*sharkMulitplier)
                   ..x = 80
                   ..y = height - 20
                   ..alpha = 1

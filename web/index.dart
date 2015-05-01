@@ -191,41 +191,47 @@ void main() {
   resourceManager.addBitmapData("aboutButton", "images/aboutButton.png");
   resourceManager.addBitmapData("aboutButtonPressed", "images/aboutButtonPressed.png");
   
-  resourceManager.addSound("buttonClick", "sounds/button_click.ogg");
-  resourceManager.addSound("circleUISwoosh", "sounds/circle_swoosh.ogg");
-  resourceManager.addSound("chaChing", "sounds/cha_ching.ogg");
-  resourceManager.addSound("buySplash", "sounds/buy_splash.ogg");
-  resourceManager.addSound("itemSuction", "sounds/item_suction.ogg");
-  resourceManager.addSound("timerSound", "sounds/round_timer.ogg");
-//  resourceManager.addSound("badgeSound", "sounds/badge_sound.ogg");
-//  resourceManager.addSound("starSound", "sounds/star_sound.ogg");
+  resourceManager.addSound("buttonClick", "sounds/button_click.mp3");
+  resourceManager.addSound("circleUISwoosh", "sounds/circle_swoosh.mp3");
+  resourceManager.addSound("chaChing", "sounds/cha_ching.mp3");
+  resourceManager.addSound("buySplash", "sounds/buy_splash.mp3");
+  resourceManager.addSound("itemSuction", "sounds/item_suction.mp3");
+  resourceManager.addSound("timerSound", "sounds/round_timer.mp3");
+//  resourceManager.addSound("badgeSound", "sounds/badge_sound.mp3");
+//  resourceManager.addSound("starSound", "sounds/star_sound.mp3");
   
-  resourceManager.addSound("sardineCatchSound01", "sounds/sardineCatchSound01.ogg");
-  resourceManager.addSound("sardineCatchSound02", "sounds/sardineCatchSound02.ogg");
-  resourceManager.addSound("sardineCatchSound03", "sounds/sardineCatchSound03.ogg");
-  resourceManager.addSound("sardineCatchSound04", "sounds/sardineCatchSound04.ogg");
-  resourceManager.addSound("sardineCatchSound05", "sounds/sardineCatchSound05.ogg");
+  resourceManager.addSound("sardineCatchSound01", "sounds/sardineCatchSound01.mp3");
+  resourceManager.addSound("sardineCatchSound02", "sounds/sardineCatchSound02.mp3");
+  resourceManager.addSound("sardineCatchSound03", "sounds/sardineCatchSound03.mp3");
+  resourceManager.addSound("sardineCatchSound04", "sounds/sardineCatchSound04.mp3");
+  resourceManager.addSound("sardineCatchSound05", "sounds/sardineCatchSound05.mp3");
   
-  resourceManager.addSound("tunaCatchSound01", "sounds/tunaCatchSound01.ogg");
-  resourceManager.addSound("tunaCatchSound02", "sounds/tunaCatchSound02.ogg");
-  resourceManager.addSound("tunaCatchSound03", "sounds/tunaCatchSound03.ogg");
-  resourceManager.addSound("tunaCatchSound04", "sounds/tunaCatchSound04.ogg");
-  resourceManager.addSound("tunaCatchSound05", "sounds/tunaCatchSound05.ogg");
+//  resourceManager.addSound("sardineCatchSound01", "sounds/sardineCatchSound01.wav");
+//  resourceManager.addSound("sardineCatchSound02", "sounds/sardineCatchSound02.wav");
+//  resourceManager.addSound("sardineCatchSound03", "sounds/sardineCatchSound03.wav");
+//  resourceManager.addSound("sardineCatchSound04", "sounds/sardineCatchSound04.wav");
+//  resourceManager.addSound("sardineCatchSound05", "sounds/sardineCatchSound05.wav");
   
-  resourceManager.addSound("sharkCatchSound01", "sounds/sharkCatchSound01.ogg");
-  resourceManager.addSound("sharkCatchSound02", "sounds/sharkCatchSound02.ogg");
-  resourceManager.addSound("sharkCatchSound03", "sounds/sharkCatchSound03.ogg");
-  resourceManager.addSound("sharkCatchSound04", "sounds/sharkCatchSound04.ogg");
-  resourceManager.addSound("sharkCatchSound05", "sounds/sharkCatchSound05.ogg");
+  resourceManager.addSound("tunaCatchSound01", "sounds/tunaCatchSound01.mp3");
+  resourceManager.addSound("tunaCatchSound02", "sounds/tunaCatchSound02.mp3");
+  resourceManager.addSound("tunaCatchSound03", "sounds/tunaCatchSound03.mp3");
+  resourceManager.addSound("tunaCatchSound04", "sounds/tunaCatchSound04.mp3");
+  resourceManager.addSound("tunaCatchSound05", "sounds/tunaCatchSound05.mp3");
   
-  resourceManager.addSound("starSound01", "sounds/starSound01.ogg");
-  resourceManager.addSound("starSound02", "sounds/starSound02.ogg");
-  resourceManager.addSound("starSound03", "sounds/starSound03.ogg");
+  resourceManager.addSound("sharkCatchSound01", "sounds/sharkCatchSound01.mp3");
+  resourceManager.addSound("sharkCatchSound02", "sounds/sharkCatchSound02.mp3");
+  resourceManager.addSound("sharkCatchSound03", "sounds/sharkCatchSound03.mp3");
+  resourceManager.addSound("sharkCatchSound04", "sounds/sharkCatchSound04.mp3");
+  resourceManager.addSound("sharkCatchSound05", "sounds/sharkCatchSound05.mp3");
   
-  resourceManager.addSound("badgeSoundOverpopulated", "sounds/badgeSoundOverpopulated.ogg");
-  resourceManager.addSound("badgeSoundLeastConcern", "sounds/badgeSoundLeastConcern.ogg");
-  resourceManager.addSound("badgeSoundEndangered", "sounds/badgeSoundEndangered.ogg");
-  resourceManager.addSound("badgeSoundExtinct", "sounds/badgeSoundExtinct.ogg");
+  resourceManager.addSound("starSound01", "sounds/starSound01.mp3");
+  resourceManager.addSound("starSound02", "sounds/starSound02.mp3");
+  resourceManager.addSound("starSound03", "sounds/starSound03.mp3");
+  
+  resourceManager.addSound("badgeSoundOverpopulated", "sounds/badgeSoundOverpopulated.mp3");
+  resourceManager.addSound("badgeSoundLeastConcern", "sounds/badgeSoundLeastConcern.mp3");
+  resourceManager.addSound("badgeSoundEndangered", "sounds/badgeSoundEndangered.mp3");
+  resourceManager.addSound("badgeSoundExtinct", "sounds/badgeSoundExtinct.mp3");
   
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
