@@ -54,8 +54,8 @@ class Game extends Sprite implements Animatable{
   bool gameStarted = false;
   bool newGame = true;
   
-  int width;
-  int height;
+  int width =2048;
+  int height=1536;
   int totalTimeCounter = 0;
   Bitmap _mask;
   Tween _maskTween;
@@ -122,8 +122,11 @@ class Game extends Sprite implements Animatable{
     _resourceManager = resourceManager;
     _juggler = juggler;
     width = w;
-    height = h+16;
-    
+    height = h;//+16;
+    print("Game Width:" + width.toString());
+    print("Game Height:" + height.toString());
+     
+      
     transition = false;
     timerActive = true;
     datalogger = new DataLogger();

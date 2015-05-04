@@ -78,6 +78,8 @@ class Title extends Sprite implements Animatable{
     playButton.hide();
     aboutButton.hide();
     aboutPage.show();
+    print("Width:" + _game.width.toString());
+    print("height:" + _game.height.toString());
     
     Tween t1 = new Tween(aboutPage, .5, TransitionFunction.linear);
      t1.animate.alpha.to(1);

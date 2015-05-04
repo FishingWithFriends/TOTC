@@ -69,12 +69,29 @@ void initWebSocket([int retrySeconds = 2]) {
 
 void main() {
 //  int height = html.window.innerHeight-20;
-  int height = (html.window.innerWidth * .75).toInt();
-  int width = html.window.innerWidth;
+  var densityRatio = html.window.devicePixelRatio;
+
+//  int height = (html.window.screen.available.width * .75).toInt() * densityRatio;
+//  int width = html.window.screen.available.width * densityRatio;
+  int height = (html.window.innerWidth * .75).toInt() * densityRatio;
+  int width = html.window.innerWidth * densityRatio;
+  print("HEIGHT: " + height.toString());
+  print("WIDTH: " + width.toString());
+//  var htmlDoc = html.querySelector('#myBody');
+//  int height = (htmlDoc.width * .75).toInt();
+//  int width = htmlDoc.width;
   
+//  int height = 1536;
+//  int width = 2048;
   var canvas = html.querySelector('#stage');
-  canvas.width = width;
-  canvas.height = height+16;
+  print("Density:" + densityRatio.toString());
+  canvas.width = width ;
+  canvas.height = height;//+16;
+//  canvas.style = "width:"+html.window.screen.available.width +",height:"+html.window.screen.available.height+",";
+//  canvas.style.height = 
+  
+//  canvas.width = html.window.screen.available.width;
+//  canvas.height = html.window.screen.available.height;
   
   var stage = new Stage(canvas);
   var renderLoop = new RenderLoop();
@@ -236,11 +253,23 @@ void main() {
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
   
+  print("Inner Width" + html.window.innerWidth.toString());
+  print("Inner height" + html.window.innerHeight.toString());
+  print("Screen width" + html.window.screen.available.width.toString());
+  print("Screen Height" + html.window.screen.available.height.toString());
+  
   resourceManager.load().then((res) {
     var game = new Game(resourceManager, stage.juggler, width, height);
     stage.addChild(game);
     stage.juggler.add(game);
+    var canvas = html.querySelector('#stage');
+    print("Density:" + densityRatio.toString());
+    canvas.width = width ;
+    canvas.height = height;//+16;
+//    var screenWidth = html.window.screen.available.width;
+    canvas.style.width = html.window.innerWidth.toString()+"px";
+    canvas.style.height = html.window.innerHeight.toString()+"px";
   });
   
-  initWebSocket();
+//  initWebSocket();
 }
