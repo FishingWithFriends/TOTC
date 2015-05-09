@@ -16,12 +16,12 @@ part 'source/ecosystem.dart';
 part 'source/fish.dart';
 part 'source/movement.dart';
 part 'source/console.dart';
-part 'source/slider.dart';
+//part 'source/slider.dart';
 part 'source/graph.dart';
 part 'source/offseason.dart';
 part 'source/regrowthUI.dart';
 part 'source/endgame.dart';
-part 'source/datalogger.dart';
+//part 'source/datalogger.dart';
 part 'source/title.dart';
 part 'source/finalSummary.dart';
 
@@ -249,6 +249,29 @@ void main() {
   resourceManager.addSound("badgeSoundLeastConcern", "sounds/badgeSoundLeastConcern.mp3");
   resourceManager.addSound("badgeSoundEndangered", "sounds/badgeSoundEndangered.mp3");
   resourceManager.addSound("badgeSoundExtinct", "sounds/badgeSoundExtinct.mp3");
+  
+  resourceManager.addSound("ui_playButton", "sounds/ui_playButton.mp3");
+  resourceManager.addSound("ui_aboutButtonOpen", "sounds/ui_aboutButtonOpen.mp3");
+  resourceManager.addSound("ui_aboutButtonClose", "sounds/ui_aboutButtonClose.mp3");
+  
+  resourceManager.addSound("ui_tapTimer", "sounds/ui_tapTimer.mp3");
+  
+  resourceManager.addSound("ui_selectSardineBoat", "sounds/ui_selectSardineBoat.mp3");
+  resourceManager.addSound("ui_selectTunaBoat", "sounds/ui_selectTunaBoat.mp3");
+  resourceManager.addSound("ui_selectSharkBoat", "sounds/ui_selectSharkBoat.mp3");
+  resourceManager.addSound("ui_selectSmallNet", "sounds/ui_selectSmallNet.mp3");
+  resourceManager.addSound("ui_selectBigNet", "sounds/ui_selectBigNet.mp3");
+  resourceManager.addSound("ui_rotateBuyDisc", "sounds/ui_rotateBuyDisc.mp3");
+  
+  resourceManager.addSound("ui_restartGame", "sounds/ui_restartGame.mp3");
+  
+  resourceManager.addSound("transition_titleToFishing", "sounds/transition_titleToFishing.mp3");
+  resourceManager.addSound("transition_fishingToRegrowth", "sounds/transition_fishingToRegrowth.mp3");
+  resourceManager.addSound("transition_regrowthToBuy", "sounds/transition_regrowthToBuy.mp3");
+  resourceManager.addSound("transition_buyToFishing", "sounds/transition_buyToFishing.mp3");
+  resourceManager.addSound("transition_regrowthToEnd", "sounds/transition_regrowthToEnd.mp3");
+  resourceManager.addSound("transition_endToSummary", "sounds/transition_endToSummary.mp3");
+  resourceManager.addSound("boatFull", "boatFull.mp3");
   
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;

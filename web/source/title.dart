@@ -14,6 +14,10 @@ class Title extends Sprite implements Animatable{
    
    MyButton playButton;
    MyButton aboutButton;
+   Sound ui_playButtonSound;
+   Sound ui_aboutButtonOpenSound;
+   Sound ui_aboutButtonCloseSound;
+   
    //SimpleButton replayButton;
    var aboutOpen = false;
   Title(this._resourceManager, this._juggler, this._game, this._ecosystem) {
@@ -32,7 +36,7 @@ class Title extends Sprite implements Animatable{
         _resourceManager.getBitmapData("playButton"),
        _resourceManager.getBitmapData("playButton"),
        _resourceManager.getBitmapData("playButtonPressed"),
-       _game._nextSeason);
+       playButtonPressed);
     
     aboutButton = new MyButton(_game, _game.width/2, _game.height/2 + 150, 
     _resourceManager.getBitmapData("aboutButton"),
@@ -40,6 +44,10 @@ class Title extends Sprite implements Animatable{
     _resourceManager.getBitmapData("aboutButtonPressed"),
        showAbout);
 
+    ui_playButtonSound = _resourceManager.getSound("ui_playButton");
+    ui_aboutButtonOpenSound = _resourceManager.getSound("ui_aboutButtonOpen");
+    ui_aboutButtonCloseSound = _resourceManager.getSound("ui_aboutButtonClose");
+    
     
     addChild(titleBackground);
     addChild(playButton);
@@ -49,6 +57,11 @@ class Title extends Sprite implements Animatable{
 
     
     //this.alpha = 0;
+  }
+  
+  void playButtonPressed(){
+    ui_playButtonSound.play();
+    _game._nextSeason();
   }
   
   bool advanceTime(num time){
@@ -78,6 +91,7 @@ class Title extends Sprite implements Animatable{
     playButton.hide();
     aboutButton.hide();
     aboutPage.show();
+    ui_aboutButtonOpenSound.play();
     print("Width:" + _game.width.toString());
     print("height:" + _game.height.toString());
     
@@ -99,6 +113,7 @@ class Title extends Sprite implements Animatable{
     playButton.show();
     aboutButton.show();
     aboutPage.hide();
+    ui_aboutButtonCloseSound.play();
     
     Tween t1 = new Tween(aboutPage, .5, TransitionFunction.linear);
      t1.animate.alpha.to(0);

@@ -88,6 +88,8 @@ class Boat extends Sprite implements Touchable, Animatable {
   int mapIndex = null;
   
   int netSize;
+  
+  Sound boatFullSound;
  
   Boat(ResourceManager resourceManager, Juggler juggler, int type, Game game, Fleet f, this.netSize) {
     _resourceManager = resourceManager;
@@ -214,6 +216,8 @@ class Boat extends Sprite implements Touchable, Animatable {
     _newX = x;
     _newY = y;
     particleEmitter.setEmitterLocation(x+boat.width/2, y+boat.height/2);
+    
+    boatFullSound = _resourceManager.getSound("boatFull");
   }
   
   void setX(num newX) {
@@ -287,9 +291,46 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (n==Ecosystem.SHARK) worth = 100;
     _netMoney = _netMoney + worth;
     
-    if (n==Ecosystem.SARDINE) _netCapacity = _netCapacity + 1;
-    if (n==Ecosystem.TUNA) _netCapacity = _netCapacity + 1;
-    if (n==Ecosystem.SHARK) _netCapacity = _netCapacity + 1;
+    if (n==Ecosystem.SARDINE){
+      _netCapacity = _netCapacity + 1;
+      if(netSize == SMALLNET){
+        if(_netCapacity > SMALL_NET_SARDINE_CAPACITY){
+          _promptBoatFull();
+        }
+      }
+      else{
+        if(_netCapacity > LARGE_NET_SARDINE_CAPACITY){
+          _promptBoatFull();
+        }
+      }
+    }
+    if (n==Ecosystem.TUNA){
+      _netCapacity = _netCapacity + 1;
+      if(netSize == SMALLNET){
+        if(_netCapacity > SMALL_NET_TUNA_CAPACITY){
+          _promptBoatFull();
+        }
+      }
+      else{
+        if(_netCapacity > LARGE_NET_TUNA_CAPACITY){
+          _promptBoatFull();
+        }
+      }
+    }
+    if (n==Ecosystem.SHARK) {
+      _netCapacity = _netCapacity + 1;
+      if(netSize == SMALLNET){
+        if(_netCapacity > SMALL_NET_SHARK_CAPACITY){
+          _promptBoatFull();
+        }
+      }
+      else{
+        if(_netCapacity > LARGE_NET_SHARK_CAPACITY){
+          _promptBoatFull();
+        }
+      }
+    }
+    
     _changeNetGraphic();
   }
 
@@ -577,6 +618,7 @@ class Boat extends Sprite implements Touchable, Animatable {
   }
   
   void _promptBoatFull() {
+    boatFullSound.play();
     if (_showingFullPrompt==false) {
       _showingFullPrompt = true;
       print("trying to be full");
@@ -649,6 +691,10 @@ class Boat extends Sprite implements Touchable, Animatable {
   
    
   bool containsTouch(Contact e) {
+    
+    if(_game.phase == Game.TITLE_PHASE){
+      return false;
+    }
     if (nothing==false && !offseasonBoat) {
       if (_inProximity(e.touchX, e.touchY, PROXIMITY)) {
         return true;

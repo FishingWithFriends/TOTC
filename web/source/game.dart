@@ -11,7 +11,7 @@ class Game extends Sprite implements Animatable{
   static const FINALSUMMARY_PHASE = 7;
   
   
-  static const MAX_ROUNDS = 4;
+  static const MAX_ROUNDS = 1;
 //  static const MAX_ROUNDS = 1;
   
   static const FISHING_TIMER_WIDTH = 125;
@@ -114,9 +114,18 @@ class Game extends Sprite implements Animatable{
   // Slider _teamASlider, _teamBSlider;
   // int sliderPrompt = 6;
   
+  
+  Sound transition_titleToFishingSound;
+  Sound transition_fishingToRegrowthSound;
+  Sound transition_regrowthToBuySound;
+  Sound transition_buyToFishingSound;
+  Sound transition_regrowthToEndSound;
+  Sound transition_endToSummarySound;
+  
+  
   List<DisplayObject> uiObjects = new List<DisplayObject>();
   
-  DataLogger datalogger;
+//  DataLogger datalogger;
   
   Game(ResourceManager resourceManager, Juggler juggler, int w, int h) {
     _resourceManager = resourceManager;
@@ -129,7 +138,7 @@ class Game extends Sprite implements Animatable{
       
     transition = false;
     timerActive = true;
-    datalogger = new DataLogger();
+//    datalogger = new DataLogger();
     
     tmanager.registerEvents(this);
     tmanager.addTouchLayer(tlayer);
@@ -151,6 +160,14 @@ class Game extends Sprite implements Animatable{
 
     badge = new EcosystemBadge(_resourceManager, _juggler, this, _ecosystem);
     timerButtonBool = false;
+    
+    transition_titleToFishingSound = _resourceManager.getSound("transition_titleToFishing");
+    transition_fishingToRegrowthSound = _resourceManager.getSound("transition_fishingToRegrowth");
+    transition_regrowthToBuySound =_resourceManager.getSound("transition_regrowthToBuy");
+    transition_buyToFishingSound = _resourceManager.getSound("transition_buyToFishing");
+    transition_regrowthToEndSound = _resourceManager.getSound("transition_regrowthToEnd");
+    transition_endToSummarySound = _resourceManager.getSound("transition_endToSummary");
+    
     addChild(_background);
     addChild(_ecosystem);
     addChild(_mask);
@@ -173,10 +190,10 @@ class Game extends Sprite implements Animatable{
     if(gameStarted && newGame){
       newGame = false;
       new Timer.periodic(new Duration(seconds:1), (var e) => totalTimeCounter++);
-      ws.send('newgame');
-      ws.onMessage.listen((html.MessageEvent e) {
-        handleMsg(e.data);
-      });
+//      ws.send('newgame');
+//      ws.onMessage.listen((html.MessageEvent e) {
+//        handleMsg(e.data);
+//      });
     }
     
     if (gameStarted == false){
@@ -365,6 +382,7 @@ class Game extends Sprite implements Animatable{
       transition = true;
       phase = REGROWTH_PHASE;
       _fleet.returnBoats();
+      transition_fishingToRegrowthSound.play();
 
       _fleet.alpha = 0;
       _fleet.removeBoatsFromTouchables();
@@ -404,7 +422,7 @@ class Game extends Sprite implements Animatable{
         transition = true;
         logEndGame();
         phase = ENDGAME_PHASE;
-        
+        transition_regrowthToEndSound.play();
         
         
         Tween t1 = new Tween (badge, 2, TransitionFunction.linear);
@@ -427,7 +445,7 @@ class Game extends Sprite implements Animatable{
         
         transition = true;
         phase = BUY_PHASE;
-        
+        transition_regrowthToBuySound.play();
         Tween t1 = new Tween (badge, 2, TransitionFunction.linear);
         t1.animate.alpha.to(0);
         t1.onComplete = toBuyPhaseTransitionStageOne;
@@ -444,7 +462,7 @@ class Game extends Sprite implements Animatable{
     } else if (phase==BUY_PHASE) {
       transition = true;
       phase = FISHING_PHASE;
-      
+      transition_buyToFishingSound.play();
       teamARoundProfit = 0;
       teamBRoundProfit = 0;
       
@@ -472,6 +490,7 @@ class Game extends Sprite implements Animatable{
       _endgame.hide();
 //      addChild(_finalSummary);
       _finalSummary.show();
+      transition_endToSummarySound.play();
       
     }
     
@@ -480,6 +499,7 @@ class Game extends Sprite implements Animatable{
       removeChild(_title);
       phase=FISHING_PHASE;
       arrangeTimerUI();
+      transition_titleToFishingSound.play();
       
     }
   }
@@ -984,56 +1004,56 @@ class Game extends Sprite implements Animatable{
   }
   
   void logRound(){
-    RoundLogger curRound;
-    if(round == 0) curRound = datalogger.round0;
-    else if(round == 1) curRound = datalogger.round1;
-    else if(round == 2) curRound = datalogger.round2;
-    else if(round == 3) curRound = datalogger.round3;
-    else if(round == 4) curRound = datalogger.round4;
-//    else if(round == 5) curRound = datalogger.round5;
-    else return;
-    
-    curRound.roundTime = totalTimeCounter;
-    curRound.starRating = badge.rating;
-    curRound.sardineCount = _ecosystem._fishCount[Ecosystem.SARDINE];
-    curRound.tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
-    curRound.sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
-    curRound.sardineStatus = badge.sardineRating;
-    curRound.tunaStatus = badge.tunaRating;
-    curRound.sharkStatus = badge.sharkRating;
-    curRound.teamANetSize = _fleet.teamANetSize;
-    curRound.teamABoatType = _fleet.teamABoatType;
-    curRound.teamASeasonProfit = teamARoundProfit;
-    curRound.teamANumOfFishCaught = _fleet.teamACaught;
-    curRound.teamBNetSize = _fleet.teamBNetSize;
-    curRound.teamBBoatType = _fleet.teamBBoatType;
-    curRound.teamBSeasonProfit = teamBRoundProfit;
-    curRound.teamBNumOfFishCaught = _fleet.teamBCaught;
+//    RoundLogger curRound;
+//    if(round == 0) curRound = datalogger.round0;
+//    else if(round == 1) curRound = datalogger.round1;
+//    else if(round == 2) curRound = datalogger.round2;
+//    else if(round == 3) curRound = datalogger.round3;
+//    else if(round == 4) curRound = datalogger.round4;
+////    else if(round == 5) curRound = datalogger.round5;
+//    else return;
+//    
+//    curRound.roundTime = totalTimeCounter;
+//    curRound.starRating = badge.rating;
+//    curRound.sardineCount = _ecosystem._fishCount[Ecosystem.SARDINE];
+//    curRound.tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
+//    curRound.sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
+//    curRound.sardineStatus = badge.sardineRating;
+//    curRound.tunaStatus = badge.tunaRating;
+//    curRound.sharkStatus = badge.sharkRating;
+//    curRound.teamANetSize = _fleet.teamANetSize;
+//    curRound.teamABoatType = _fleet.teamABoatType;
+//    curRound.teamASeasonProfit = teamARoundProfit;
+//    curRound.teamANumOfFishCaught = _fleet.teamACaught;
+//    curRound.teamBNetSize = _fleet.teamBNetSize;
+//    curRound.teamBBoatType = _fleet.teamBBoatType;
+//    curRound.teamBSeasonProfit = teamBRoundProfit;
+//    curRound.teamBNumOfFishCaught = _fleet.teamBCaught;
   }
   
   void logEndGame(){
     
-    if(_ecosystem._fishCount[SARDINE] <= 0){
-      datalogger.reasonLost = 1;
-    }
-    else if(_ecosystem._fishCount[TUNA] <= 0){
-      datalogger.reasonLost = 2;
-    }
-    else if(_ecosystem._fishCount[SHARK] <= 0){
-          datalogger.reasonLost = 3;
-        }
-    else{
-      datalogger.reasonLost = 0;
-    }
-    
-    datalogger.id = gameID;
-    datalogger.totalTime = totalTimeCounter;
-    datalogger.teamAFinalScore = teamAScore;
-    datalogger.teamBFinalScore = teamBScore;
-    datalogger.totalStars = starCount;
-    datalogger.numOfRound = round;
-    
-    datalogger.send();
+//    if(_ecosystem._fishCount[SARDINE] <= 0){
+//      datalogger.reasonLost = 1;
+//    }
+//    else if(_ecosystem._fishCount[TUNA] <= 0){
+//      datalogger.reasonLost = 2;
+//    }
+//    else if(_ecosystem._fishCount[SHARK] <= 0){
+//          datalogger.reasonLost = 3;
+//        }
+//    else{
+//      datalogger.reasonLost = 0;
+//    }
+//    
+//    datalogger.id = gameID;
+//    datalogger.totalTime = totalTimeCounter;
+//    datalogger.teamAFinalScore = teamAScore;
+//    datalogger.teamBFinalScore = teamBScore;
+//    datalogger.totalStars = starCount;
+//    datalogger.numOfRound = round;
+//    
+//    datalogger.send();
   }
   
   void  handleMsg(data){
