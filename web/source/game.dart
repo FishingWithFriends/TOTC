@@ -25,7 +25,7 @@ class Game extends Sprite implements Animatable{
 //  static const REGROWTH_TIME = 10;
 //  static const BUYING_TIME = 10;
   
-  static const timerPieRadius = 60;
+  static const timerPieRadius = 83;
   static const TUNA = 0;
   static const SARDINE = 1;
   static const SHARK = 2;
@@ -33,6 +33,11 @@ class Game extends Sprite implements Animatable{
   //Timer Type
   static const BAR_TIMER = 0;
   static const PIE_TIMER = 1;
+  
+  static const sardineBarMult = 1.5;
+  static const tunaBarMult = 3;
+  static const sharkBarMult = 6;
+  
   num timerType = PIE_TIMER; // TOGGLE VARIABLE
   Bitmap pieTimerBitmap, pieTimerBitmapButton;
   
@@ -197,13 +202,13 @@ class Game extends Sprite implements Animatable{
     }
     
     if (gameStarted == false){
-      sardineBar.height = _ecosystem._fishCount[SARDINE]*2/3;
+      sardineBar.height = _ecosystem._fishCount[SARDINE] * sardineBarMult;
       sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
  
-      tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
+      tunaBar.height = _ecosystem._fishCount[TUNA] * tunaBarMult;
       tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height;
       
-      sharkBar.height = _ecosystem._fishCount[SHARK]* 4;
+      sharkBar.height = _ecosystem._fishCount[SHARK]* sharkBarMult;
       sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height;
       return true;
     }
@@ -242,13 +247,30 @@ class Game extends Sprite implements Animatable{
     }
     
     //Update the population bar graph size
-    sardineBar.height = _ecosystem._fishCount[SARDINE]*2/3;
+    
+    if(_ecosystem._fishCount[SARDINE] > Ecosystem.MAX_SARDINE){
+      sardineBar.height =  Ecosystem.MAX_SARDINE* sardineBarMult;
+    }
+    else{
+      sardineBar.height = _ecosystem._fishCount[SARDINE] * sardineBarMult;
+    }
     sardineIcon.y = sardineBar.y - sardineBar.height - sardineIcon.height;
     
-    tunaBar.height = _ecosystem._fishCount[TUNA] * 2;
+    
+    if(_ecosystem._fishCount[TUNA] > Ecosystem.MAX_TUNA){
+      tunaBar.height = Ecosystem.MAX_TUNA* tunaBarMult;
+    }
+    else{
+      tunaBar.height = _ecosystem._fishCount[TUNA] * tunaBarMult;
+    }
     tunaIcon.y = tunaBar.y - tunaBar.height - tunaIcon.height;
     
-    sharkBar.height = _ecosystem._fishCount[SHARK]* 4;
+    if(_ecosystem._fishCount[SHARK] > Ecosystem.MAX_SHARK){
+      sharkBar.height = Ecosystem.MAX_SHARK* sharkBarMult;
+    }
+    else{
+      sharkBar.height = _ecosystem._fishCount[SHARK]* sharkBarMult;
+    }
     sharkIcon.y = sharkBar.y - sharkBar.height - sharkIcon.height;
     
     gameIDText.text = "Game ID: $gameID";
@@ -757,8 +779,8 @@ class Game extends Sprite implements Animatable{
     
     timerPie = new Shape();
     timerPie..graphics.beginPath()
-            ..x = width - 100
-            ..y = 50
+            ..x = width - 100 -33
+            ..y = 50 -10
             ..graphics.lineTo(0, timerPieRadius)
             ..graphics.lineTo(timerPieRadius, timerPieRadius)
             ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI, false)
@@ -769,14 +791,14 @@ class Game extends Sprite implements Animatable{
     pieTimerBitmap = new Bitmap(_resourceManager.getBitmapData("timer"));
     pieTimerBitmap.rotation = math.PI/4;
     pieTimerBitmap.alpha = timerPie.alpha+10;
-    pieTimerBitmap.x = timerPie.x +22;
-    pieTimerBitmap.y = timerPie.y - 62;
+    pieTimerBitmap.x = timerPie.x+24;
+    pieTimerBitmap.y = timerPie.y - 64;
     
     format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
     
     roundTitle = new TextField("Round:", format);
-    roundTitle..x = width - 65
-              ..y = 75
+    roundTitle..x = timerPie.x+ 45
+              ..y = timerPie.y+45
               ..alpha = .7
               ..width = 300
               ..pivotX = roundTitle.width/2
@@ -784,8 +806,9 @@ class Game extends Sprite implements Animatable{
     
     format = new TextFormat("Arial", 50, Color.White, align: "center", bold:true);
     roundNumber = new TextField("${round+1}", format);
-    roundNumber..x = width - 85
-               ..y = 75
+    roundNumber..x = timerPie.x +15
+               ..y = timerPie.y + 50
+                   ..alpha = .7
                ..alpha = .7
                ..width = 300
                ..pivotX = roundNumber.width/2
@@ -793,8 +816,8 @@ class Game extends Sprite implements Animatable{
     
     format = new TextFormat("Arial", 25, Color.White, align: "center", bold:true);
     roundNumberDiv = new TextField("/ 5", format);
-    roundNumberDiv..x = width - 80
-               ..y = 115
+    roundNumberDiv..x = timerPie.x +15
+               ..y = timerPie.y + 95
                ..alpha = .7
                ..width = 300
                ..pivotX = roundNumberDiv.width/2
@@ -802,8 +825,8 @@ class Game extends Sprite implements Animatable{
     
     format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
     seasonTitle = new TextField("Tap to Skip\nForward", format);
-    seasonTitle..x = width - 115
-               ..y = 125
+    seasonTitle..x = timerPie.x - 20
+               ..y = timerPie.y + 115
                ..alpha = .7
                ..width = 300
                ..pivotX = seasonTitle.width/2
@@ -812,8 +835,8 @@ class Game extends Sprite implements Animatable{
     pieTimerBitmapButton = new Bitmap(_resourceManager.getBitmapData("timer"));
     pieTimerBitmapButton.rotation = math.PI/4;
     pieTimerBitmapButton.alpha = 0;
-    pieTimerBitmapButton.x = timerPie.x +22;
-    pieTimerBitmapButton.y = timerPie.y - 62;
+    pieTimerBitmapButton.x = timerPie.x +24;
+    pieTimerBitmapButton.y = timerPie.y - 64;
     
 //    Bitmap pieTimerBitmapButtonGlow = new Bitmap(_resourceManager.getBitmapData("timerGlow"));
 //    pieTimerBitmapButtonGlow.rotation = math.PI/4;
@@ -856,12 +879,13 @@ class Game extends Sprite implements Animatable{
     }
     
     
-    num sardineMultiplier = 2/3;
-    num tunaMultiplier = 2;
-    num sharkMulitplier = 4;
+    num sardineMultiplier = sardineBarMult;
+    num tunaMultiplier = tunaBarMult;
+    num sharkMulitplier = sharkBarMult;
+    num barWidth = 45;
     //Text and Shapes for population bar graph
     sardineBar = new Shape();
-    sardineBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SARDINE]*sardineMultiplier)
+    sardineBar..graphics.rect(0, 0, barWidth, -_ecosystem._fishCount[SARDINE]*sardineMultiplier)
               ..x  = 20
               ..y = height - 20
               ..alpha = .6
@@ -870,7 +894,7 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(sardineBar);
     
     sardineOutline = new Shape();
-    sardineOutline..graphics.rect(0, 0, 30, -(Ecosystem.MAX_SARDINE)*sardineMultiplier)
+    sardineOutline..graphics.rect(0, 0, barWidth, -(Ecosystem.MAX_SARDINE)*sardineMultiplier)
                   ..x = 20
                   ..y = height - 20
                   ..alpha = 1
@@ -886,8 +910,8 @@ class Game extends Sprite implements Animatable{
     
     
     tunaBar = new Shape();
-    tunaBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[TUNA]*tunaMultiplier)
-              ..x  = 50
+    tunaBar..graphics.rect(0, 0, barWidth, -_ecosystem._fishCount[TUNA]*tunaMultiplier)
+              ..x  = 20 + barWidth
               ..y = height - 20
               ..alpha = .6
               ..graphics.fillColor(Color.Orange);
@@ -896,8 +920,8 @@ class Game extends Sprite implements Animatable{
     
     
     tunaOutline = new Shape();
-    tunaOutline..graphics.rect(0, 0, 30, -Ecosystem.MAX_TUNA*tunaMultiplier)
-                  ..x = 50
+    tunaOutline..graphics.rect(0, 0, barWidth, -Ecosystem.MAX_TUNA*tunaMultiplier)
+                  ..x = 20 + barWidth
                   ..y = height - 20
                   ..alpha = 1
                   ..graphics.strokeColor(Color.Orange,3);
@@ -911,8 +935,8 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(tunaIcon);
     
     sharkBar = new Shape();
-    sharkBar..graphics.rect(0, 0, 30, -_ecosystem._fishCount[SHARK]*sharkMulitplier)
-              ..x  = 80
+    sharkBar..graphics.rect(0, 0, barWidth, -_ecosystem._fishCount[SHARK]*sharkMulitplier)
+              ..x  = 20+2*barWidth
               ..y = height - 20
               ..alpha = .6
               ..graphics.fillColor(Color.Yellow);
@@ -920,8 +944,8 @@ class Game extends Sprite implements Animatable{
     uiObjects.add(sharkBar);
     
     sharkOutline = new Shape();
-    sharkOutline..graphics.rect(0, 0, 30, -Ecosystem.MAX_SHARK*sharkMulitplier)
-                  ..x = 80
+    sharkOutline..graphics.rect(0, 0, barWidth, -Ecosystem.MAX_SHARK*sharkMulitplier)
+                  ..x = 20+2*barWidth
                   ..y = height - 20
                   ..alpha = 1
                   ..graphics.strokeColor(Color.Yellow,3);
@@ -944,8 +968,8 @@ class Game extends Sprite implements Animatable{
               ..width = 300
               ..pivotX = roundTitle.width/2
               ..rotation = 0;
-    addChild(gameIDText);
-    uiObjects.add(gameIDText);
+//    addChild(gameIDText);
+//    uiObjects.add(gameIDText);
     
   }
   

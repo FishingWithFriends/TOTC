@@ -160,7 +160,7 @@ class Boat extends Sprite implements Touchable, Animatable {
     
     speedLevel = 0;
     capacityLevel = 0;
-    speed = BASE_SPEED;
+    speed = BASE_SPEED * html.window.devicePixelRatio;
     rotSpeed = BASE_ROT_SPEED;
     netCapacityMax = BASE_NET_CAPACITY;
     
@@ -237,6 +237,8 @@ class Boat extends Sprite implements Touchable, Animatable {
      _net = new Bitmap(_nets.getBitmapData(_netNames[0]));
      _net.addEventListener(Event.ADDED, _netLoaded);
      
+     _net.scaleX = html.window.devicePixelRatio;
+     _net.scaleY = html.window.devicePixelRatio;
      addChildAt(_net, 0);
    }
    
@@ -344,6 +346,8 @@ class Boat extends Sprite implements Touchable, Animatable {
       
       _net = new Bitmap(_nets.getBitmapData(_netNames[i]));
       _net.addEventListener(Event.ADDED, _netLoaded);
+      _net.scaleX = html.window.devicePixelRatio;
+      _net.scaleY = html.window.devicePixelRatio;
       addChildAt(_net, 0);
       
       if(_turnMode == LEFT){
@@ -357,6 +361,7 @@ class Boat extends Sprite implements Touchable, Animatable {
       }
       
     }
+
   }
   
   void _unloadNet() {
@@ -465,6 +470,8 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_type==Fleet.TEAMBTUNA) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBTunaUp"));
     if (_type==Fleet.TEAMASHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatASharkUp"));
     if (_type==Fleet.TEAMBSHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBSharkUp"));
+    _boatImage.scaleX = html.window.devicePixelRatio;
+    _boatImage.scaleY = html.window.devicePixelRatio;
   }
   
   void _setBoatDown() {
@@ -474,6 +481,8 @@ class Boat extends Sprite implements Touchable, Animatable {
     if (_type==Fleet.TEAMBTUNA) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBTunaDown"));
     if (_type==Fleet.TEAMASHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatASharkDown"));
     if (_type==Fleet.TEAMBSHARK) _boatImage = new Bitmap(_resourceManager.getBitmapData("BoatBSharkDown"));
+    _boatImage.scaleX = html.window.devicePixelRatio;
+    _boatImage.scaleY = html.window.devicePixelRatio;
   }
   
   bool _setNewLocation() {
