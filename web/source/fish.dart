@@ -40,6 +40,9 @@ class Fish extends Bitmap implements Animatable {
     _darting = false;
     _pouncing = false;
     
+    this.scaleX = html.window.devicePixelRatio;
+    this.scaleY = html.window.devicePixelRatio;
+    
     if (type == Ecosystem.TUNA) {
       _v = 1;
       _minSeparation = 5;

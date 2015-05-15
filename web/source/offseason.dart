@@ -53,7 +53,7 @@ class Offseason extends Sprite {
       offseasonDock.pivotY = bitmapData.height/2;
       offseasonDock.x = _game.width/2;//-bitmapData.width/2;
       offseasonDock.y = _game.height/2;//-bitmapData.height/2;
-      offseasonDock.rotation = math.PI;
+//      offseasonDock.rotation = math.PI;
     });
     
     sellIslandTop = new Bitmap(_resourceManager.getBitmapData("sellIsland"));
@@ -182,10 +182,10 @@ class Offseason extends Sprite {
                 boat.pivotY = sharkBoat.height/2;
               }
               if (aCounter==0) {
-                boat.x = w/2-95;
-                boat.y = h/2-120;
-                boat._newX = w/2-95;
-                boat._newY = h/2-120;
+                boat.x = w/2-150;
+                boat.y = h/2-150;
+                boat._newX = w/2-150;
+                boat._newY = h/2-150;
                 boat.rotation = math.PI*4/5;
               } else if (aCounter==1) {
                 boat.x = w/2-150;
@@ -204,10 +204,10 @@ class Offseason extends Sprite {
             } else {
               _boatsB[i] = boat;
               if (bCounter==0) {
-                boat.x = w/2+65;
-                boat.y = h/2+100;
-                boat._newX = w/2+65;
-                boat._newY = h/2+100;
+                boat.x = w/2+155;
+                boat.y = h/2+155;
+                boat._newX = w/2+150;
+                boat._newY = h/2+150;
                 boat.rotation = -math.PI/5;
               } else if (bCounter==1) {
                 boat.x = w/2+120;
@@ -418,10 +418,6 @@ class Circle extends Sprite implements Touchable {
     
     }
 
-    _circleButton.addEventListener(MouseEvent.MOUSE_UP, _circlePressed);
-    _circleButton.addEventListener(TouchEvent.TOUCH_TAP, _circlePressed);
-//    _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
-
 
     
     BitmapData.load('images/teamACircle.png').then((bitmapData) {
@@ -452,7 +448,9 @@ class Circle extends Sprite implements Touchable {
        
      });
 
-    
+    _circleButton.addEventListener(MouseEvent.MOUSE_UP, _circlePressed);
+    _circleButton.addEventListener(TouchEvent.TOUCH_TAP, _circlePressed);
+//    _circleButton.addEventListener(TouchEvent.TOUCH_BEGIN, _circlePressed);
     addChild(_circle);
     addChild(_circleButton);
 
@@ -460,7 +458,8 @@ class Circle extends Sprite implements Touchable {
   }
   
   void _circlePressed(var e) {
-    discChannel.stop();
+    
+//    discChannel.stop();
     discChannel = ui_rotateBuyDiscSound.play();
     
     if (_juggler.contains(_rotateTween)) _juggler.remove(_rotateTween);

@@ -551,7 +551,7 @@ class Game extends Sprite implements Animatable{
     
     arrangeUILayers();
 
-   animatePieTimer(-width/2+100, height/2-103,.5);
+   animatePieTimer(-width/2+130, height/2-135,.5);
     
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(0);
@@ -594,7 +594,7 @@ class Game extends Sprite implements Animatable{
       timerTextB.text = "Fishing season";
 
       _offseason.sendBoatsToFish();
-      animatePieTimer(width/2-100, -height/2+103, .750);
+      animatePieTimer(width/2-130, -height/2+135, .750);
       
       Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
       
@@ -1022,6 +1022,10 @@ class Game extends Sprite implements Animatable{
     if(lowest != null){
       swapChildren(timerPie, lowest);
     }
+    
+    if(getChildIndex(pieTimerBitmap) != this.numChildren-2){
+      swapChildren(pieTimerBitmap, getChildAt(this.numChildren-2));
+    }
     if(getChildIndex(timerButton) != this.numChildren-1){
       swapChildren(timerButton, getChildAt(this.numChildren-1));
     }
@@ -1095,7 +1099,12 @@ class Game extends Sprite implements Animatable{
     _juggler.add(t1);
     
     Tween t2 = new Tween(pieTimerBitmap, dt, TransitionFunction.linear);
-    t2.animate.alpha.to(val);
+    if(val != 0){
+      t2.animate.alpha.to(1);
+    }
+    else{
+      t2.animate.alpha.to(val);
+    }
     _juggler.add(t2);
     
     Tween t3 = new Tween(roundTitle, dt, TransitionFunction.linear);
@@ -1151,6 +1160,9 @@ class Game extends Sprite implements Animatable{
       t7.animate.x.by(dx);
       t7.animate.y.by(dy);
       _juggler.add(t7);
+      
+      arrangeTimerUI();
+     
       
   }
 }
