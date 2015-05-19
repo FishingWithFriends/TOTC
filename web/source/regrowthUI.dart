@@ -223,14 +223,14 @@ class EcosystemBadge extends Sprite implements Animatable{
     int tunaCount = _ecosystem._fishCount[Ecosystem.TUNA];
     int sharkCount = _ecosystem._fishCount[Ecosystem.SHARK];
 
-    if (sardineCount < 150 && sardineCount > 0){
+    if (sardineCount < 150/2 && sardineCount > 0){
       _sardineStatusText = "Sardine populuation is endangered";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
       sardineRating=ENDANGERED;
       badgeSoundSardine = endangeredSound;
     }
-    else if (sardineCount > Ecosystem.MAX_SARDINE-50){
+    else if (sardineCount > Ecosystem.MAX_SARDINE-50/2){
       _sardineStatusText = "Sardines are overpopulated";
       badgeSardine.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
@@ -252,14 +252,14 @@ class EcosystemBadge extends Sprite implements Animatable{
     }
     
     
-    if (tunaCount < 35 && tunaCount > 0){
+    if (tunaCount < 35/2 && tunaCount > 0){
       _tunaStatusText = "Tuna populuation is endangered";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
       tunaRating = ENDANGERED;
       badgeSoundTuna = endangeredSound;
     }
-    else if (tunaCount > Ecosystem.MAX_TUNA-25){
+    else if (tunaCount > Ecosystem.MAX_TUNA-25/2){
       _tunaStatusText = "Tunas are overpopulated";
       badgeTuna.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;
@@ -281,14 +281,14 @@ class EcosystemBadge extends Sprite implements Animatable{
     }
     
     
-    if (sharkCount < 5 && sharkCount > 0){
+    if (sharkCount < 5/2 && sharkCount > 0){
       _sharkStatusText = "Shark populuation is endangered";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeEndangered");
       rating--;
       sharkRating = ENDANGERED;
       badgeSoundShark = endangeredSound;
     }
-    else if (sharkCount > 12){
+    else if (sharkCount > 12/2){
       _sharkStatusText = "Sharks are overpopulated";
       badgeShark.bitmapData = _resourceManager.getBitmapData("badgeOverpopulated");
       rating--;

@@ -11,7 +11,7 @@ class Game extends Sprite implements Animatable{
   static const FINALSUMMARY_PHASE = 7;
   
   
-  static const MAX_ROUNDS = 1;
+  static const MAX_ROUNDS = 4;
 //  static const MAX_ROUNDS = 1;
   
   static const FISHING_TIMER_WIDTH = 125;

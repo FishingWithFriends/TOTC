@@ -269,9 +269,9 @@ class Ecosystem extends Sprite {
     _respawnFishes();
     _birthFish();
     
-    planktonCount += 300;
-    tunaFoodCount += 60;
-    sharkFoodCount += 10;
+    planktonCount += 300/2;
+    tunaFoodCount += 60/2;
+    sharkFoodCount += 10/2;
     
     if (game.gameStarted==true) {
       sardineGraph.add(_fishCount[SARDINE]);    
@@ -285,8 +285,8 @@ class Ecosystem extends Sprite {
 
       
     if(_fishCount[SHARK] > 0) addFish(1, SHARK, true);
-    if(_fishCount[TUNA] > 0) addFish(10, TUNA, true);
-    if(_fishCount[SARDINE] > 0) addFish(30, SARDINE, true);
+    if(_fishCount[TUNA] > 0) addFish(5, TUNA, true);
+    if(_fishCount[SARDINE] > 0) addFish(15, SARDINE, true);
 
   }
 }
