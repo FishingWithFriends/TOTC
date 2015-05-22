@@ -127,6 +127,8 @@ class Game extends Sprite implements Animatable{
   Sound transition_regrowthToEndSound;
   Sound transition_endToSummarySound;
   
+  Sound background_music;
+  Sound background_music_short;
   
   List<DisplayObject> uiObjects = new List<DisplayObject>();
   
@@ -187,7 +189,12 @@ class Game extends Sprite implements Animatable{
     _loadTextAndShapes();
     timerActive = false;
     addChild(_title);
+    
+    background_music = _resourceManager.getSound("background_music");
+    background_music_short = _resourceManager.getSound("background_music_short");
 
+    SoundTransform soundTransform = new SoundTransform();
+    SoundChannel music = background_music.play(true, soundTransform);
   }
 
   bool advanceTime(num time) {

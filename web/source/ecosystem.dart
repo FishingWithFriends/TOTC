@@ -9,7 +9,7 @@ class Ecosystem extends Sprite {
   static const STARVATION = 5;
   static const CAUGHT = 6;
   static const MAX_SHARK = 13;
-  static const MAX_TUNA = 50;
+  static const MAX_TUNA = 40;
   static const MAX_SARDINE = 175;
   
   ResourceManager _resourceManager;
@@ -86,7 +86,7 @@ class Ecosystem extends Sprite {
     
     addFish(4, SHARK, true);
 //    addFish(0, SHARK, true);
-    addFish(22, TUNA, true);
+    addFish(18, TUNA, true);
     addFish(150, SARDINE, true);
     
     new Timer.periodic(const Duration(milliseconds : 1000), (timer) => _timerTick());
@@ -269,7 +269,7 @@ class Ecosystem extends Sprite {
     _respawnFishes();
     _birthFish();
     
-    planktonCount += 300/2;
+    planktonCount += 300/3;
     tunaFoodCount += 60/2;
     sharkFoodCount += 10/2;
     

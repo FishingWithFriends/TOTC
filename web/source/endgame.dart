@@ -25,6 +25,22 @@ class Endgame extends Sprite implements Animatable{
   bool replayEnable;
 
   int animatedRating;
+  Sound star0Sound;
+  Sound star1Sound;
+  Sound star2Sound;
+  Sound star3Sound;
+  Sound star4Sound;
+  Sound star5Sound;
+  Sound star6Sound;
+  Sound star7Sound;
+  Sound star8Sound;
+  Sound star9Sound;
+  Sound star10Sound;
+  Sound star11Sound;
+  Sound star12Sound;
+  Sound star13Sound;
+  Sound star14Sound;
+  
   
   Endgame(this._resourceManager, this._juggler, this._game, this._ecosystem) {
     
@@ -84,6 +100,23 @@ class Endgame extends Sprite implements Animatable{
     addChild(endgameIconBottom);
     
     this.alpha = 0;
+    
+    star0Sound = _resourceManager.getSound('star0Sound');
+    star1Sound = _resourceManager.getSound('star1Sound');
+    star2Sound = _resourceManager.getSound('star2Sound');
+    star3Sound = _resourceManager.getSound('star3Sound');
+    star4Sound = _resourceManager.getSound('star4Sound');
+    star5Sound = _resourceManager.getSound('star5Sound');
+    star6Sound = _resourceManager.getSound('star6Sound');
+    star7Sound = _resourceManager.getSound('star7Sound');
+    star8Sound = _resourceManager.getSound('star8Sound');
+    star9Sound = _resourceManager.getSound('star9Sound');
+    star10Sound = _resourceManager.getSound('star10Sound');
+    star11Sound = _resourceManager.getSound('star11Sound');
+    star12Sound = _resourceManager.getSound('star12Sound');
+    star13Sound = _resourceManager.getSound('star13Sound');
+    star14Sound = _resourceManager.getSound('star14Sound');
+    
   }
   
   bool advanceTime(num time){
@@ -96,24 +129,69 @@ class Endgame extends Sprite implements Animatable{
        Timer temp2 = new Timer(const Duration(seconds:1), showTeamUI);
      }
      else{
-       
+       Sound toPlay;
        Bitmap toShow;
        var showString;
-       if(animatedRating == 0) showString = 'ecosystemScore1';
-       else if(animatedRating == 1) showString = 'ecosystemScore2';
-       else if(animatedRating == 2) showString = 'ecosystemScore3';
-       else if(animatedRating == 3) showString = 'ecosystemScore4';
-       else if(animatedRating == 4) showString = 'ecosystemScore5';
-       else if(animatedRating == 5) showString = 'ecosystemScore6';
-       else if(animatedRating == 6) showString = 'ecosystemScore7';
-       else if(animatedRating == 7) showString = 'ecosystemScore8';
-       else if(animatedRating == 8) showString = 'ecosystemScore9';
-       else if(animatedRating == 9) showString = 'ecosystemScore10';
-       else if(animatedRating == 10) showString = 'ecosystemScore11';
-       else if(animatedRating == 11) showString = 'ecosystemScore12';
-       else if(animatedRating == 12) showString = 'ecosystemScore13';
-       else if(animatedRating == 13) showString = 'ecosystemScore14';
-       else if(animatedRating == 14) showString = 'ecosystemScore15';
+       if(animatedRating == 0){
+         showString = 'ecosystemScore1';
+         toPlay = star0Sound;
+       }
+       else if(animatedRating == 1){
+         showString = 'ecosystemScore2';
+         toPlay = star1Sound;
+       }
+       else if(animatedRating == 2){
+         showString = 'ecosystemScore3';
+         toPlay = star2Sound;
+       }
+       else if(animatedRating == 3){
+         showString = 'ecosystemScore4';
+         toPlay = star3Sound;
+       }
+       else if(animatedRating == 4){
+         showString = 'ecosystemScore5';
+         toPlay = star4Sound;
+       }
+       else if(animatedRating == 5){
+         showString = 'ecosystemScore6';
+         toPlay = star5Sound;
+       }
+       else if(animatedRating == 6){
+         showString = 'ecosystemScore7';
+         toPlay = star6Sound;
+       }
+       else if(animatedRating == 7){
+         showString = 'ecosystemScore8';
+         toPlay = star7Sound;
+       }
+       else if(animatedRating == 8){
+         showString = 'ecosystemScore9';
+         toPlay = star8Sound;
+       }
+       else if(animatedRating == 9){
+         showString = 'ecosystemScore10';
+         toPlay = star8Sound;
+       }
+       else if(animatedRating == 10){
+         showString = 'ecosystemScore11';
+         toPlay = star10Sound;
+       }
+       else if(animatedRating == 11){
+         showString = 'ecosystemScore12';
+         toPlay = star11Sound;
+       }
+       else if(animatedRating == 12){
+         showString = 'ecosystemScore13';
+         toPlay = star12Sound;
+       }
+       else if(animatedRating == 13){
+         showString = 'ecosystemScore14';
+         toPlay = star13Sound;
+       }
+       else if(animatedRating == 14){
+         showString = 'ecosystemScore15';
+         toPlay = star14Sound;
+       }
        else return;
        
        toShow = new Bitmap(_resourceManager.getBitmapData(showString));
@@ -130,6 +208,7 @@ class Endgame extends Sprite implements Animatable{
        t1.onComplete = showStars;
        _juggler.add(t1);
        animatedRating++;
+       
      }
      
    }

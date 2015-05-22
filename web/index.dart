@@ -271,7 +271,25 @@ void main() {
   resourceManager.addSound("transition_buyToFishing", "sounds/transition_buyToFishing.mp3");
   resourceManager.addSound("transition_regrowthToEnd", "sounds/transition_regrowthToEnd.mp3");
   resourceManager.addSound("transition_endToSummary", "sounds/transition_endToSummary.mp3");
-  resourceManager.addSound("boatFull", "boatFull.mp3");
+  resourceManager.addSound("boatFull", "sounds/boatFull.mp3");
+  resourceManager.addSound("background_music", "sounds/background_music.mp3");
+  resourceManager.addSound("background_music_short", "sounds/background_music_short.mp3");
+  
+  resourceManager.addSound("star0Sound", "sounds/star0Sound.mp3");
+  resourceManager.addSound("star1Sound", "sounds/star1Sound.mp3");
+  resourceManager.addSound("star2Sound", "sounds/star2Sound.mp3");
+  resourceManager.addSound("star3Sound", "sounds/star3Sound.mp3");
+  resourceManager.addSound("star4Sound", "sounds/star4Sound.mp3");
+  resourceManager.addSound("star5Sound", "sounds/star5Sound.mp3");
+  resourceManager.addSound("star6Sound", "sounds/star6Sound.mp3");
+  resourceManager.addSound("star7Sound", "sounds/star7Sound.mp3");
+  resourceManager.addSound("star8Sound", "sounds/star8Sound.mp3");
+  resourceManager.addSound("star9Sound", "sounds/star9Sound.mp3");
+  resourceManager.addSound("star10Sound", "sounds/star10Sound.mp3");
+  resourceManager.addSound("star11Sound", "sounds/star11Sound.mp3");
+  resourceManager.addSound("star12Sound", "sounds/star12Sound.mp3");
+  resourceManager.addSound("star13Sound", "sounds/star13Sound.mp3");
+  resourceManager.addSound("star14Sound", "sounds/star14Sound.mp3");
   
   
   Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
