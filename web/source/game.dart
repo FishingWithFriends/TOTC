@@ -127,6 +127,8 @@ class Game extends Sprite implements Animatable{
   Sound transition_regrowthToEndSound;
   Sound transition_endToSummarySound;
   
+  Sound ui_tapTimerSound;
+  
   Sound background_music;
   Sound background_music_short;
   
@@ -174,6 +176,7 @@ class Game extends Sprite implements Animatable{
     transition_buyToFishingSound = _resourceManager.getSound("transition_buyToFishing");
     transition_regrowthToEndSound = _resourceManager.getSound("transition_regrowthToEnd");
     transition_endToSummarySound = _resourceManager.getSound("transition_endToSummary");
+    ui_tapTimerSound = _resourceManager.getSound("ui_tapTimer");
     
     addChild(_background);
     addChild(_ecosystem);
@@ -192,9 +195,14 @@ class Game extends Sprite implements Animatable{
     
     background_music = _resourceManager.getSound("background_music");
     background_music_short = _resourceManager.getSound("background_music_short");
+    _playBgMusic();
 
+  }
+  
+  void _playBgMusic(){
     SoundTransform soundTransform = new SoundTransform();
     SoundChannel music = background_music.play(true, soundTransform);
+    new Timer(new Duration(milliseconds:482429),_playBgMusic);
   }
 
   bool advanceTime(num time) {
@@ -700,6 +708,7 @@ class Game extends Sprite implements Animatable{
       _ecosystem.timerSkipped();
       }
       catch(e){};
+      ui_tapTimerSound.play();
       _nextSeason();
       timerButtonReady = false;
     }

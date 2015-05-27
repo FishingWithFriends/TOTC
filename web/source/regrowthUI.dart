@@ -111,6 +111,17 @@ class EcosystemBadge extends Sprite implements Animatable{
   }
   
   void showStars(){
+    if(animatedRating == 0){
+      if(rating ==1){
+        oneStarSound.play();
+      }
+      else if(rating == 2){
+        twoStarSound.play();
+      }
+      else if(rating == 3){
+        threeStarSound.play();
+      }
+    }
     if(animatedRating == rating){
       Timer temp = new Timer(const Duration(seconds:1), teamBCounter.showCounter);
       Timer temp2 = new Timer(const Duration(seconds:1), teamACounter.showCounter);
@@ -121,23 +132,12 @@ class EcosystemBadge extends Sprite implements Animatable{
       _game.starCount++;
       if(animatedRating == 0){
         toShow = stars1;
-        if(rating ==0){
-          oneStarSound.play();
-        }
-        else if(rating == 1){
-          twoStarSound.play();
-        }
-        else if(rating == 2){
-          threeStarSound.play();
-        }
       }
       else if(animatedRating == 1){
         toShow = stars2;
-//        starSound = twoStarSound;
       }
       else if(animatedRating == 2){
         toShow = stars3;
-//        starSound = threeStarSound;
       }
       
       Tween t1 = new Tween(toShow, .5, TransitionFunction.easeInOutQuadratic);
