@@ -68,6 +68,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     oneStarSound = _resourceManager.getSound("starSound01");
     twoStarSound =  _resourceManager.getSound("starSound02");
     threeStarSound = _resourceManager.getSound("starSound03");
+    
     overpopulatedSound = _resourceManager.getSound("badgeSoundOverpopulated");
     leastConcernSound = _resourceManager.getSound("badgeSoundLeastConcern");
     endangeredSound = _resourceManager.getSound("badgeSoundEndangered");
@@ -120,20 +121,28 @@ class EcosystemBadge extends Sprite implements Animatable{
       _game.starCount++;
       if(animatedRating == 0){
         toShow = stars1;
-        starSound = oneStarSound;
+        if(rating ==0){
+          oneStarSound.play();
+        }
+        else if(rating == 1){
+          twoStarSound.play();
+        }
+        else if(rating == 2){
+          threeStarSound.play();
+        }
       }
       else if(animatedRating == 1){
         toShow = stars2;
-        starSound = twoStarSound;
+//        starSound = twoStarSound;
       }
       else if(animatedRating == 2){
         toShow = stars3;
-        starSound = threeStarSound;
+//        starSound = threeStarSound;
       }
       
       Tween t1 = new Tween(toShow, .5, TransitionFunction.easeInOutQuadratic);
       t1.animate.alpha.to(1);
-      starSound.play();
+//      starSound.play();
       t1.onComplete = showStars;
       _juggler.add(t1);
       animatedRating++;

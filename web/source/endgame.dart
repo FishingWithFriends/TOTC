@@ -131,66 +131,100 @@ class Endgame extends Sprite implements Animatable{
      else{
        Sound toPlay;
        Bitmap toShow;
+       if(animatedRating == 0){
+         if(_game.starCount == 0){
+           toPlay = star0Sound;
+         }
+         else if(_game.starCount == 1){
+           toPlay = star1Sound;
+         }
+         else if(_game.starCount == 2){
+           toPlay = star2Sound;
+         }
+         else if(_game.starCount == 3){
+           toPlay = star3Sound;
+         }
+         else if(_game.starCount == 4){
+           toPlay = star4Sound;
+         }
+         else if(_game.starCount == 5){
+           toPlay = star5Sound;
+         }
+         else if(_game.starCount == 6){
+           toPlay = star6Sound;
+         }
+         else if(_game.starCount == 7){
+           toPlay = star7Sound;
+         }
+         else if(_game.starCount == 8){
+           toPlay = star8Sound;
+         }
+         else if(_game.starCount == 9){
+           toPlay = star8Sound;
+         }
+         else if(_game.starCount == 10){
+           toPlay = star10Sound;
+         }
+         else if(_game.starCount == 11){
+           toPlay = star11Sound;
+         }
+         else if(_game.starCount == 12){
+           toPlay = star12Sound;
+         }
+         else if(_game.starCount == 13){
+           toPlay = star13Sound;
+         }
+         else if(_game.starCount == 14){
+           toPlay = star14Sound;
+         }
+         toPlay.play();
+       }
+       
        var showString;
        if(animatedRating == 0){
          showString = 'ecosystemScore1';
-         toPlay = star0Sound;
        }
        else if(animatedRating == 1){
          showString = 'ecosystemScore2';
-         toPlay = star1Sound;
        }
        else if(animatedRating == 2){
          showString = 'ecosystemScore3';
-         toPlay = star2Sound;
        }
        else if(animatedRating == 3){
          showString = 'ecosystemScore4';
-         toPlay = star3Sound;
        }
        else if(animatedRating == 4){
          showString = 'ecosystemScore5';
-         toPlay = star4Sound;
        }
        else if(animatedRating == 5){
          showString = 'ecosystemScore6';
-         toPlay = star5Sound;
        }
        else if(animatedRating == 6){
          showString = 'ecosystemScore7';
-         toPlay = star6Sound;
        }
        else if(animatedRating == 7){
          showString = 'ecosystemScore8';
-         toPlay = star7Sound;
        }
        else if(animatedRating == 8){
          showString = 'ecosystemScore9';
-         toPlay = star8Sound;
        }
        else if(animatedRating == 9){
          showString = 'ecosystemScore10';
-         toPlay = star8Sound;
        }
        else if(animatedRating == 10){
          showString = 'ecosystemScore11';
-         toPlay = star10Sound;
        }
        else if(animatedRating == 11){
          showString = 'ecosystemScore12';
-         toPlay = star11Sound;
        }
        else if(animatedRating == 12){
          showString = 'ecosystemScore13';
-         toPlay = star12Sound;
        }
        else if(animatedRating == 13){
          showString = 'ecosystemScore14';
-         toPlay = star13Sound;
        }
        else if(animatedRating == 14){
          showString = 'ecosystemScore15';
-         toPlay = star14Sound;
        }
        else return;
        
