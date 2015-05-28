@@ -592,20 +592,29 @@ class Boat extends Sprite implements Touchable, Animatable {
       _fleet.touchReminders--;
       _showingPrompt = true;
       
-      _arrow = new Bitmap(_resourceManager.getBitmapData("Arrow"));
-      _arrow.alpha = .6;
-      _arrow.pivotX = _arrow.width/2;
-      _arrow.pivotY = _arrow.height/2;
+
 
       
       if (_teamA==true) {
-        _arrow.y = this.y + this.y/3;//100*math.sin(math.atan2(this.y, this.x));
-        _arrow.x = this.x + this.x/3;//100*math.cos(math.atan2(this.y, this.x));
+        _arrow = new Bitmap(_resourceManager.getBitmapData("arrowGreen"));
+        _arrow.scaleX = html.window.devicePixelRatio/2;
+        _arrow.scaleY = html.window.devicePixelRatio/2;
+        _arrow.alpha = .6;
+        _arrow.pivotX = _arrow.width/2;
+        _arrow.pivotY = _arrow.height/2;
+        _arrow.y = this.y + 120;//100*math.sin(math.atan2(this.y, this.x));
+        _arrow.x = this.x + 120;//100*math.cos(math.atan2(this.y, this.x));
         _arrow.rotation = -math.PI/2 + this.rotation + math.PI;
 
       } else {
-        _arrow.y =  this.y - this.y/12;
-        _arrow.x =  this.x - this.x/10+20;
+        _arrow = new Bitmap(_resourceManager.getBitmapData("arrowRed"));
+        _arrow.alpha = .6;
+        _arrow.scaleX = html.window.devicePixelRatio/2;
+        _arrow.scaleY = html.window.devicePixelRatio/2;
+        _arrow.pivotX = _arrow.width/2;
+        _arrow.pivotY = _arrow.height/2;
+        _arrow.y =  this.y - 120;
+        _arrow.x =  this.x - 120;
         _arrow.rotation = math.PI/2+ this.rotation;
 
       }

@@ -25,7 +25,7 @@ class Game extends Sprite implements Animatable{
 //  static const REGROWTH_TIME = 10;
 //  static const BUYING_TIME = 10;
   
-  static const timerPieRadius = 83;
+  static const timerPieRadius = 92;
   static const TUNA = 0;
   static const SARDINE = 1;
   static const SHARK = 2;
@@ -566,7 +566,7 @@ class Game extends Sprite implements Animatable{
     
     arrangeUILayers();
 
-   animatePieTimer(-width/2+130, height/2-135,.5);
+   animatePieTimer(-width/2+135, height/2-163,.5);
     
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(0);
@@ -609,7 +609,7 @@ class Game extends Sprite implements Animatable{
       timerTextB.text = "Fishing season";
 
       _offseason.sendBoatsToFish();
-      animatePieTimer(width/2-130, -height/2+135, .750);
+      animatePieTimer(width/2-135, -height/2+163, .750);
       
       Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
       
@@ -633,7 +633,7 @@ class Game extends Sprite implements Animatable{
     t3.animate.y.to(0);
     
     round++;
-    roundNumber.text = "${round+1}";
+    roundNumber.text = "${round+1}/5";
     
 //    Tween t4 = new Tween(roundNumber, .5, TransitionFunction.linear);
 //    t4.animate.alpha.to(.7);
@@ -795,8 +795,8 @@ class Game extends Sprite implements Animatable{
     
     timerPie = new Shape();
     timerPie..graphics.beginPath()
-            ..x = width - 100 -33
-            ..y = 50 -10
+            ..x = width - 130
+            ..y = 65
             ..graphics.lineTo(0, timerPieRadius)
             ..graphics.lineTo(timerPieRadius, timerPieRadius)
             ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI, false)
@@ -805,33 +805,33 @@ class Game extends Sprite implements Animatable{
             ..alpha = .70;
         
     pieTimerBitmap = new Bitmap(_resourceManager.getBitmapData("timer"));
-    pieTimerBitmap.rotation = math.PI/4;
+//    pieTimerBitmap.rotation = math.PI/4;
     pieTimerBitmap.alpha = timerPie.alpha+10;
-    pieTimerBitmap.x = timerPie.x+24;
-    pieTimerBitmap.y = timerPie.y - 64;
+    pieTimerBitmap.x = timerPie.x - pieTimerBitmap.width/2;
+    pieTimerBitmap.y = timerPie.y-10;
     
-    format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
+    format = new TextFormat("Arial", 28, Color.White, align: "center", bold:true);
     
-    roundTitle = new TextField("Round:", format);
-    roundTitle..x = timerPie.x+ 45
-              ..y = timerPie.y+45
+    roundTitle = new TextField(" Round:", format);
+    roundTitle..x = timerPie.x+ 40
+              ..y = timerPie.y+40
               ..alpha = .7
               ..width = 300
               ..pivotX = roundTitle.width/2
               ..rotation = math.PI/4;
     
-    format = new TextFormat("Arial", 50, Color.White, align: "center", bold:true);
-    roundNumber = new TextField("${round+1}", format);
-    roundNumber..x = timerPie.x +15
-               ..y = timerPie.y + 50
+    format = new TextFormat("Arial", 70, Color.White, align: "center", bold:true);
+    roundNumber = new TextField("${round+1}/5", format);
+    roundNumber..x = timerPie.x +20
+               ..y = timerPie.y + 65
                    ..alpha = .7
                ..alpha = .7
                ..width = 300
                ..pivotX = roundNumber.width/2
                ..rotation = math.PI/4; 
     
-    format = new TextFormat("Arial", 25, Color.White, align: "center", bold:true);
-    roundNumberDiv = new TextField("/ 5", format);
+    format = new TextFormat("Arial", 65, Color.White, align: "center", bold:true);
+    roundNumberDiv = new TextField("", format);
     roundNumberDiv..x = timerPie.x +15
                ..y = timerPie.y + 95
                ..alpha = .7
@@ -840,9 +840,9 @@ class Game extends Sprite implements Animatable{
                ..rotation = math.PI/4; 
     
     format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
-    seasonTitle = new TextField("Tap to Skip\nForward", format);
-    seasonTitle..x = timerPie.x - 20
-               ..y = timerPie.y + 115
+    seasonTitle = new TextField("Double Tap to\nSkip Forward", format);
+    seasonTitle..x = timerPie.x - 20 -50
+               ..y = timerPie.y + 115 + 50
                ..alpha = .7
                ..width = 300
                ..pivotX = seasonTitle.width/2

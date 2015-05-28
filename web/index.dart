@@ -141,7 +141,12 @@ void main() {
   resourceManager.addBitmapData("YesDown", "images/yes_down.png");
   resourceManager.addBitmapData("YesUp", "images/yes_up.png");
   resourceManager.addBitmapData("GraphBackground", "images/graph.png");
+  
   resourceManager.addBitmapData("Arrow", "images/arrow.png");
+  resourceManager.addBitmapData("arrowGreen", "images/arrowGreen.png");
+  resourceManager.addBitmapData("arrowRed", "images/arrowRed.png");
+  
+  
   resourceManager.addBitmapData("TeamACircle", "images/teamACircle.png");
   resourceManager.addBitmapData("TeamBCircle", "images/teamBCircle.png");
   resourceManager.addBitmapData("CircleButtonUpA", "images/circleUIButtonA.png");
@@ -161,7 +166,9 @@ void main() {
   resourceManager.addBitmapData("CapacityUpgradeButtonLargeGlow", "images/capUpgradeIconBigGlow.png");
   
   resourceManager.addBitmapData("SpeedUpgradeButton", "images/speedUpgradeIcon.png");
-  resourceManager.addBitmapData("OffseasonDock", "images/offseason_dock.png");
+//  resourceManager.addBitmapData("OffseasonDock", "images/offseason_dock.png");
+  resourceManager.addBitmapData("OffseasonDock", "images/Dock_BP.png");
+
   resourceManager.addBitmapData("sardineIcon", "images/sardineIcon.png");
   resourceManager.addBitmapData("tunaIcon", "images/tunaIcon.png");
   resourceManager.addBitmapData("sharkIcon", "images/sharkIcon.png");

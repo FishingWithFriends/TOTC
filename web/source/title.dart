@@ -23,6 +23,8 @@ class Title extends Sprite implements Animatable{
   Title(this._resourceManager, this._juggler, this._game, this._ecosystem) {
     
     titleBackground = new Bitmap(_resourceManager.getBitmapData("title"));
+    titleBackground.width = _game.width;
+    titleBackground.height = _game.height;
     
     aboutPage = new MyButton(_game,0, 0, 
            _resourceManager.getBitmapData("about"),
@@ -31,16 +33,21 @@ class Title extends Sprite implements Animatable{
           hideAbout);
     aboutPage.alpha = 0;
     aboutPage.hide();
+    aboutPage.width = _game.width;
+    aboutPage.height = _game.height;
     
-    playButton = new MyButton(_game,_game.width/2, _game.height/2 - 150, 
-        _resourceManager.getBitmapData("playButton"),
-       _resourceManager.getBitmapData("playButton"),
+    BitmapData playButtonBitmap = _resourceManager.getBitmapData("playButton");
+    
+    playButton = new MyButton(_game,_game.width/2 - playButtonBitmap.width/2, _game.height/2 + 250, 
+        playButtonBitmap,
+        playButtonBitmap,
        _resourceManager.getBitmapData("playButtonPressed"),
        playButtonPressed);
     
-    aboutButton = new MyButton(_game, _game.width/2, _game.height/2 + 150, 
-    _resourceManager.getBitmapData("aboutButton"),
-    _resourceManager.getBitmapData("aboutButton"),
+    BitmapData aboutButtonBitmap =  _resourceManager.getBitmapData("aboutButton");
+    aboutButton = new MyButton(_game, _game.width/2 - aboutButtonBitmap.width/2, _game.height/2 + 500, 
+        aboutButtonBitmap,
+        aboutButtonBitmap,
     _resourceManager.getBitmapData("aboutButtonPressed"),
        showAbout);
 
