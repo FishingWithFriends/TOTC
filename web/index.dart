@@ -203,7 +203,7 @@ void main() {
   resourceManager.addBitmapData("ecosystemScore13", "images/ecosystemScore13.png");
   resourceManager.addBitmapData("ecosystemScore14", "images/ecosystemScore14.png");
   resourceManager.addBitmapData("ecosystemScore15", "images/ecosystemScore15.png");
-  resourceManager.addBitmapData("replayButton", "images/replayButton.png");
+//  resourceManager.addBitmapData("replayButton", "images/replayButton.png");
   resourceManager.addBitmapData("timerGlow", "images/timerGlow.png");
 
   resourceManager.addBitmapData("teamAScoreCircle", "images/teamAScoreCircle.png");
@@ -214,6 +214,12 @@ void main() {
   resourceManager.addBitmapData("playButtonPressed", "images/playButtonPressed.png");
   resourceManager.addBitmapData("aboutButton", "images/aboutButton.png");
   resourceManager.addBitmapData("aboutButtonPressed", "images/aboutButtonPressed.png");
+  
+  resourceManager.addBitmapData("tutorial", "images/tutorial.png");
+  resourceManager.addBitmapData("end", "images/end.png");
+  resourceManager.addBitmapData("replayButton", "images/replayButton.png");
+  resourceManager.addBitmapData("replayButtonPressed", "images/replayButtonPressed.png");
+  
   
   resourceManager.addSound("buttonClick", "sounds/button_click.mp3");
   resourceManager.addSound("circleUISwoosh", "sounds/circle_swoosh.mp3");

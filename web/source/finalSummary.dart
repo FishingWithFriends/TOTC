@@ -21,14 +21,14 @@ class FinalSummary extends Sprite implements Animatable{
    var aboutOpen = false;
    FinalSummary(this._resourceManager, this._juggler, this._game, this._ecosystem) {
     
-     summaryBackground = new Bitmap(_resourceManager.getBitmapData("title"));
+     summaryBackground = new Bitmap(_resourceManager.getBitmapData("end"));
     
 
-    
-     replayButton = new MyButton(_game, _game.width/2, _game.height/2 + 150, 
-    _resourceManager.getBitmapData("aboutButton"),
-    _resourceManager.getBitmapData("aboutButton"),
-    _resourceManager.getBitmapData("aboutButtonPressed"),
+    BitmapData playButtonBitmap = _resourceManager.getBitmapData("replayButton");
+     replayButton = new MyButton(_game, _game.width/2 + playButtonBitmap.width/2 , _game.height/2 + 500, 
+         playButtonBitmap,
+         playButtonBitmap,
+    _resourceManager.getBitmapData("replayButtonPressed"),
     _replayButtonPressed);
 
      

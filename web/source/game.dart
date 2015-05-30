@@ -11,8 +11,8 @@ class Game extends Sprite implements Animatable{
   static const FINALSUMMARY_PHASE = 7;
   
   
-  static const MAX_ROUNDS = 4;
-//  static const MAX_ROUNDS = 1;
+//  static const MAX_ROUNDS = 4;
+  static const MAX_ROUNDS = 0;
   
   static const FISHING_TIMER_WIDTH = 125;
   static const REGROWTH_TIMER_WIDTH = 125;
@@ -566,7 +566,7 @@ class Game extends Sprite implements Animatable{
     
     arrangeUILayers();
 
-   animatePieTimer(-width/2+135, height/2-163,.5);
+   animatePieTimer(-width/2+125, height/2-163,.5);
     
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(0);
@@ -609,7 +609,7 @@ class Game extends Sprite implements Animatable{
       timerTextB.text = "Fishing season";
 
       _offseason.sendBoatsToFish();
-      animatePieTimer(width/2-135, -height/2+163, .750);
+      animatePieTimer(width/2-125, -height/2+163, .750);
       
       Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
       

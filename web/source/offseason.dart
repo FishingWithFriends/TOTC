@@ -388,7 +388,7 @@ class Circle extends Sprite implements Touchable {
     else _upgradeRotation = 0;
     
     if (teamA==true) _upgradeRotation2 = 0;
-    else _upgradeRotation2 = 0;
+    else _upgradeRotation2 = math.PI;
     
     if (_teamA==true){
       _circle = new Bitmap(_resourceManager.getBitmapData("TeamACircle"));
@@ -405,6 +405,7 @@ class Circle extends Sprite implements Touchable {
     }
     else {
       _circle = new Bitmap(_resourceManager.getBitmapData("TeamBCircle"));
+      _circle.rotation = math.PI;
       _circleButton = new SimpleButton(new Bitmap(_resourceManager.getBitmapData("CircleButtonUpB")), 
                                        new Bitmap(_resourceManager.getBitmapData("CircleButtonUpB")),
                                        new Bitmap(_resourceManager.getBitmapData("CircleButtonDownB")), 
@@ -425,7 +426,7 @@ class Circle extends Sprite implements Touchable {
        _circle.pivotY = bitmapData.height/2;
        
        wNet = bitmapData.width*.375;
-       wShip = width*.1875;
+       wShip = width*.175;
        
        _capacitySmallButton = _returnCapacityButton();
        _capacitySmallButton.alpha = 1;
@@ -560,8 +561,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
     
-    temp.x = math.cos(math.PI*8/6)*wNet;
-    temp.y = math.sin(math.PI*8/6)*wNet;
+    temp.x = math.cos(math.PI*8.25/6)*wNet-40;
+    temp.y = math.sin(math.PI*8.25/6)*wNet-40;
     
     addChild(temp);
     
@@ -586,8 +587,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _capacityLargeButtonPressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _capacityLargeButtonPressed);
     
-    temp.x = math.cos(math.PI*8/6)*wNet;
-    temp.y = math.sin(math.PI*8/6)*wNet;
+    temp.x = math.cos(math.PI*8.25/6)*wNet-40;
+    temp.y = math.sin(math.PI*8.25/6)*wNet-40;
     
     addChild(temp);
     
@@ -662,8 +663,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
     
-    temp.x = math.cos(math.PI*1.5/6)*wShip;
-    temp.y = math.sin(math.PI*1.5/6)*wShip;
+    temp.x = math.cos(math.PI*1.5/6)*wShip-50;
+    temp.y = math.sin(math.PI*1.5/6)*wShip-50;
     
     addChild(temp);
     
@@ -689,8 +690,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _tunaPressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _tunaPressed);
     
-    temp.x = math.cos(math.PI*1.5/6)*wShip;
-    temp.y = math.sin(math.PI*1.5/6)*wShip;
+    temp.x = math.cos(math.PI*1.5/6)*wShip-50;
+    temp.y = math.sin(math.PI*1.5/6)*wShip-50;
     addChild(temp);
     
     return temp;
@@ -713,8 +714,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
     
-    temp.x = math.cos(math.PI*3.75/6)*wShip;
-    temp.y = math.sin(math.PI*3.75/6)*wShip;
+    temp.x = math.cos(math.PI*3.95/6)*wShip;
+    temp.y = math.sin(math.PI*3.95/6)*wShip;
     addChild(temp);
     
     return temp;
@@ -739,8 +740,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _sharkPressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sharkPressed);
     
-    temp.x = math.cos(math.PI*3.75/6)*wShip;
-    temp.y = math.sin(math.PI*3.75/6)*wShip;
+    temp.x = math.cos(math.PI*3.95/6)*wShip;
+    temp.y = math.sin(math.PI*3.95/6)*wShip;
     addChild(temp);
     
     return temp;
@@ -763,8 +764,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
     
-    temp.x = math.cos(-math.PI*1/16)*wShip;
-    temp.y = math.sin(-math.PI*1/16)*wShip;
+    temp.x = math.cos(-math.PI*3/16)*wShip+10;
+    temp.y = math.sin(-math.PI*3/16)*wShip+10;
     addChild(temp);
     
     return temp;
@@ -787,8 +788,8 @@ class Circle extends Sprite implements Touchable {
     temp.addEventListener(TouchEvent.TOUCH_TAP, _sardinePressed);
     temp.addEventListener(TouchEvent.TOUCH_BEGIN, _sardinePressed);
     
-    temp.x = math.cos(-math.PI*1/16)*wShip;
-    temp.y = math.sin(-math.PI*1/16)*wShip;
+    temp.x = math.cos(-math.PI*3/16)*wShip+10;
+    temp.y = math.sin(-math.PI*3/16)*wShip+10;
     addChild(temp);
     
     return temp;

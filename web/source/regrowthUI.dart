@@ -129,15 +129,19 @@ class EcosystemBadge extends Sprite implements Animatable{
     else{
       
       Bitmap toShow;
+      Bitmap toFade;
       _game.starCount++;
       if(animatedRating == 0){
         toShow = stars1;
+        toFade = stars0;
       }
       else if(animatedRating == 1){
         toShow = stars2;
+        toFade = stars1;
       }
       else if(animatedRating == 2){
         toShow = stars3;
+        toFade = stars2;
       }
       
       Tween t1 = new Tween(toShow, .5, TransitionFunction.easeInOutQuadratic);
@@ -146,6 +150,10 @@ class EcosystemBadge extends Sprite implements Animatable{
       t1.onComplete = showStars;
       _juggler.add(t1);
       animatedRating++;
+      
+//      Tween t2 = new Tween(toFade, .5, TransitionFunction.easeInOutQuadratic);
+//      t2.animate.alpha.to(0);
+//      _juggler.add(t2);
     }
     
   }
@@ -326,7 +334,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     foodWeb = new Bitmap(_resourceManager.getBitmapData('foodWeb'));
     foodWeb..pivotX = foodWeb.width/2
            ..pivotY = foodWeb.height/2
-           ..x = _game.width/2 -100
+           ..x = _game.width/2 -350
            ..y = _game.height/2
            ..alpha = 0;
     addChild(foodWeb);
@@ -416,8 +424,8 @@ class EcosystemBadge extends Sprite implements Animatable{
     badgeSardine = new Bitmap(_resourceManager.getBitmapData("badgeLeastConcern"));
     badgeSardine..pivotX = badgeSardine.width/2
                 ..pivotY = badgeSardine.height/2
-                ..x = _game.width/2
-                ..y = _game.height/2+150
+                ..x = _game.width/2-100
+                ..y = _game.height/2+300
                 ..alpha = 0
                 ..rotation = -math.PI/4;
     addChild(badgeSardine);
@@ -426,7 +434,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     badgeTuna = new Bitmap(_resourceManager.getBitmapData("badgeLeastConcern"));
     badgeTuna..pivotX = badgeTuna.width/2
                 ..pivotY = badgeTuna.height/2
-                ..x = _game.width/2 - 150
+                ..x = _game.width/2 - 400
                 ..y = _game.height/2+30
                 ..alpha = 0
                 ..rotation = -math.PI/4;
@@ -436,8 +444,8 @@ class EcosystemBadge extends Sprite implements Animatable{
     badgeShark = new Bitmap(_resourceManager.getBitmapData("badgeLeastConcern"));
     badgeShark..pivotX = badgeShark.width/2
                 ..pivotY = badgeShark.height/2
-                ..x = _game.width/2+ 30
-                ..y = _game.height/2-140
+                ..x = _game.width/2 -60
+                ..y = _game.height/2-240
                 ..alpha = 0
                 ..rotation = -math.PI/4;
     addChild(badgeShark);
@@ -510,8 +518,8 @@ class ScoreCounter extends Sprite{
      rotationVal = 3*math.PI/4;
      boxX = 500;
      boxY = 75;
-     r1 = 250;
-     r2 = 210;
+     r1 = 375;
+     r2 = 290;
      r3 = 200;
      r4 = 150;
      offsetX = 0;
@@ -521,8 +529,8 @@ class ScoreCounter extends Sprite{
      rotationVal = -math.PI/4;
      boxX = _game.width - 500;
      boxY = _game.height - 75;
-     r1 = 250;
-     r2 = 210;
+     r1 = 375;
+     r2 = 290;
      r3 = 200;
      r4 = 150;
      offsetX = _game.width;
@@ -542,11 +550,11 @@ class ScoreCounter extends Sprite{
 
        
        
-   TextFormat format = new TextFormat("Arial", 36, Color.White, align: "right", bold: true);
+   TextFormat format = new TextFormat("Arial", 50, Color.White, align: "center", bold: true);
    
    scorePrompt = new TextField("", format);
    scorePrompt..alpha = 0
-              ..width = uiBox.width+50
+              ..width = uiBox.width+150
               ..pivotX = scorePrompt.width/2
               ..rotation = rotationVal
               ..x =offsetX - r1*math.cos(rotationVal)

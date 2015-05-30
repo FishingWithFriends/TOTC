@@ -41,6 +41,8 @@ class Endgame extends Sprite implements Animatable{
   Sound star13Sound;
   Sound star14Sound;
   
+  Bitmap OldStar;
+  Bitmap CurrentStar;
   
   Endgame(this._resourceManager, this._juggler, this._game, this._ecosystem) {
     
@@ -237,12 +239,23 @@ class Endgame extends Sprite implements Animatable{
               ..alpha = 0;
        addChild(toShow);
        
+       
+       
        Tween t1 = new Tween(toShow, .18, TransitionFunction.easeInOutQuadratic);
        t1.animate.alpha.to(1);
        t1.onComplete = showStars;
        _juggler.add(t1);
        animatedRating++;
        
+       if(OldStar != null){
+         Tween t2 = new Tween(OldStar, .18, TransitionFunction.easeInOutQuadratic);
+         t2.animate.alpha.to(0);
+         _juggler.add(t2);
+       }
+       if(CurrentStar != null){
+         OldStar = CurrentStar;
+       }
+       CurrentStar = toShow;
      }
      
    }

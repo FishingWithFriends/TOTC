@@ -9,6 +9,7 @@ class Title extends Sprite implements Animatable{
    
    Bitmap titleBackground;
    MyButton aboutPage;
+   MyButton tutorialPage;
 //   Bitmap endgameIconBottom;
 //   Bitmap emptyStars;
    
@@ -20,11 +21,22 @@ class Title extends Sprite implements Animatable{
    
    //SimpleButton replayButton;
    var aboutOpen = false;
+   var tutorialOpen = true;
   Title(this._resourceManager, this._juggler, this._game, this._ecosystem) {
     
     titleBackground = new Bitmap(_resourceManager.getBitmapData("title"));
     titleBackground.width = _game.width;
     titleBackground.height = _game.height;
+    
+    tutorialPage = new MyButton(_game,0, 0, 
+           _resourceManager.getBitmapData("tutorial"),
+          _resourceManager.getBitmapData("tutorial"),
+          _resourceManager.getBitmapData("tutorial"),
+          hideTutorial);
+    tutorialPage.alpha = 0;
+    tutorialPage.hide();
+    tutorialPage.width = _game.width;
+    tutorialPage.height = _game.height;
     
     aboutPage = new MyButton(_game,0, 0, 
            _resourceManager.getBitmapData("about"),
@@ -42,7 +54,7 @@ class Title extends Sprite implements Animatable{
         playButtonBitmap,
         playButtonBitmap,
        _resourceManager.getBitmapData("playButtonPressed"),
-       playButtonPressed);
+       showTutorial);
     
     BitmapData aboutButtonBitmap =  _resourceManager.getBitmapData("aboutButton");
     aboutButton = new MyButton(_game, _game.width/2 - aboutButtonBitmap.width/2, _game.height/2 + 500, 
@@ -60,6 +72,7 @@ class Title extends Sprite implements Animatable{
     addChild(playButton);
     addChild(aboutButton);
     addChild(aboutPage);
+    addChild(tutorialPage);
 //    _game.tlayer.touchables.add(this);
 
     
@@ -78,6 +91,7 @@ class Title extends Sprite implements Animatable{
   void hide(){
     playButton.hide();
     aboutButton.hide();
+    tutorialPage.hide();
     
     Tween t1 = new Tween(titleBackground, .5, TransitionFunction.linear);
      t1.animate.alpha.to(0);
@@ -133,6 +147,42 @@ class Title extends Sprite implements Animatable{
      Tween t3 = new Tween(aboutButton, .5, TransitionFunction.linear);
       t3.animate.alpha.to(1);
       _juggler.add(t3);
+  
+  
+  }
+
+  void showTutorial(){
+    tutorialOpen = true;
+    playButton.hide();
+    aboutButton.hide();
+    tutorialPage.show();
+    ui_aboutButtonOpenSound.play();
+//    print("Width:" + _game.width.toString());
+//    print("height:" + _game.height.toString());
+    
+    Tween t1 = new Tween(tutorialPage, .5, TransitionFunction.linear);
+     t1.animate.alpha.to(1);
+     _juggler.add(t1);
+    
+    Tween t2 = new Tween(playButton, .5, TransitionFunction.linear);
+     t2.animate.alpha.to(0);
+     _juggler.add(t2);
+     
+     Tween t3 = new Tween(aboutButton, .5, TransitionFunction.linear);
+      t3.animate.alpha.to(0);
+      _juggler.add(t3);
+ }
+  
+  void hideTutorial(){
+    tutorialOpen = false;
+    ui_aboutButtonCloseSound.play();
+    _game._nextSeason();
+    
+    Tween t1 = new Tween(tutorialPage, .5, TransitionFunction.linear);
+     t1.animate.alpha.to(0);
+     _juggler.add(t1);
+     
+     
   
   
   }
