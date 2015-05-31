@@ -94,7 +94,7 @@ class FinalSummary extends Sprite implements Animatable{
   }
   
   void showQuestionPrompt(){
-    TextFormat format = new TextFormat("Arial", 36, Color.WhiteSmoke, align: "center", bold: true);
+    TextFormat format = new TextFormat("Arial", 36, Color.LightGray, align: "center", bold: true);
     
     if(_game.round == Game.MAX_ROUNDS){
          summaryText = new TextField("Congratulations, your ecosystem survived for 5 rounds! \n"+
@@ -103,7 +103,7 @@ class FinalSummary extends Sprite implements Animatable{
          summaryText..alpha = 0
                     ..width = _game.width*3/4
                     ..height = 250
-                    ..x =_game.width/8
+                    ..x =_game.width/2-summaryText.width/2
                     ..y =_game.height/3;
          addChild(summaryText);
          Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
@@ -117,7 +117,7 @@ class FinalSummary extends Sprite implements Animatable{
       summaryText..alpha = 0
                  ..width = _game.width*3/4
                  ..height = 250
-                 ..x =_game.width/8
+                 ..x =_game.width/2-summaryText.width/2
                  ..y =_game.height/3;
       addChild(summaryText);
       Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
@@ -131,7 +131,7 @@ class FinalSummary extends Sprite implements Animatable{
       summaryText..alpha = 0
                  ..width = _game.width*3/4
                  ..height = 250
-                 ..x =_game.width/8
+                 ..x =_game.width/2-summaryText.width/2
                  ..y =_game.height/3;
       addChild(summaryText);
       Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
@@ -145,7 +145,7 @@ class FinalSummary extends Sprite implements Animatable{
       summaryText..alpha = 0
                  ..width = _game.width*3/4
                  ..height = 250
-                 ..x =_game.width/8
+                 ..x =_game.width/2-summaryText.width/2
                  ..y =_game.height/3;
       addChild(summaryText);
       Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
@@ -153,13 +153,13 @@ class FinalSummary extends Sprite implements Animatable{
       _juggler.add(t1);
     }
     
-    informationText = new TextField("Download the Seafood Watch app \n http://www.seafoodwatch.org/ \n"+
-                                    "to learn more about how you can \n help protect our oceans with your \n"+
-                                    "family by eating sustainable seafood!", format);
+    informationText = new TextField("Download the Seafood Watch app to learn more about how you can \n"+
+                                    "help protect our oceans with your family by eating sustainable seafood!\n\n"+
+                                      "http://www.seafoodwatch.org/", format);
     informationText..alpha = 0
                ..width = _game.width*3/4
                ..height = 250
-               ..x =_game.width/8
+               ..x =_game.width/2-informationText.width/2
                ..y =_game.height*7/12;
     addChild(informationText);
     Tween t2 = new Tween(informationText, .05, TransitionFunction.linear);

@@ -518,10 +518,10 @@ class ScoreCounter extends Sprite{
      rotationVal = 3*math.PI/4;
      boxX = 500;
      boxY = 75;
-     r1 = 375;
-     r2 = 290;
-     r3 = 200;
-     r4 = 150;
+     r1 = 395;
+     r2 = 335;
+     r3 = 240;
+     r4 = 180;
      offsetX = 0;
      offsetY = 0;
    }
@@ -529,10 +529,10 @@ class ScoreCounter extends Sprite{
      rotationVal = -math.PI/4;
      boxX = _game.width - 500;
      boxY = _game.height - 75;
-     r1 = 375;
-     r2 = 290;
-     r3 = 200;
-     r4 = 150;
+     r1 = 395;
+     r2 = 335;
+     r3 = 240;
+     r4 = 180;
      offsetX = _game.width;
      offsetY = _game.height;
    }    
@@ -550,7 +550,7 @@ class ScoreCounter extends Sprite{
 
        
        
-   TextFormat format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
+   TextFormat format = new TextFormat("Arial", 50, Color.LightGray, align: "center", bold: true);
    
    scorePrompt = new TextField("", format);
    scorePrompt..alpha = 0
@@ -561,22 +561,22 @@ class ScoreCounter extends Sprite{
               ..y =offsetY + r1*math.sin(rotationVal);
    addChild(scorePrompt);
    
-//   format = new TextFormat("Arial", 50, 12316159, align: "center", bold: true);
+   format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
    
    multiplier = new TextField("", format);
    multiplier..alpha = 0
-             ..width = uiBox.width
+             ..width = uiBox.width+150
              ..pivotX = multiplier.width/2
              ..rotation = rotationVal
              ..x = offsetX - r2*math.cos(rotationVal)
              ..y = offsetY + r2*math.sin(rotationVal);
    addChild(multiplier);
    
-//   format = new TextFormat("Arial", 50, 12316159, align: "center", bold: true);
+   format = new TextFormat("Arial", 50, Color.LightGray, align: "center", bold: true);
    
    total = new TextField("", format);
    total..alpha = 0
-        ..width = uiBox.width
+        ..width = uiBox.width+150
         ..pivotX = total.width/2
         ..rotation = rotationVal
         ..x =offsetX - r3*math.cos(rotationVal)
@@ -584,10 +584,10 @@ class ScoreCounter extends Sprite{
    addChild(total);
    
    
-//    format = new TextFormat("Arial", 50, 12316159, align: "center", bold: true);
+    format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
    sum = new TextField("", format);
    sum..alpha = 0
-        ..width = uiBox.width
+        ..width = uiBox.width+150
         ..pivotX = total.width/2
         ..rotation = rotationVal
         ..x =offsetX - r4*math.cos(rotationVal)
@@ -610,28 +610,38 @@ class ScoreCounter extends Sprite{
     if(teamType == TEAMA) profit = _game.teamARoundProfit;
     else if(teamType == TEAMB) profit = _game.teamBRoundProfit;
     
-    scorePrompt.text = "Season Profit: ${profit}";
+    scorePrompt.text = "Season Profit:";
     Tween t2 = new Tween(scorePrompt, .5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
     t2.onComplete = showTotalProfit;
     _juggler.add(t2);
     
+    multiplier.text = "${profit}";
+    Tween t4 = new Tween(multiplier, .5, TransitionFunction.linear);
+    t4.animate.alpha.to(1);
+    _juggler.add(t4);
+    
   }
   
   void showTotalProfit(){
+    total.text = "Total Profit:";
     if(teamType == TEAMA){
       _game.teamATotalProfit += profit;
-      multiplier.text = "Total: ${_game.teamATotalProfit}";
+      sum.text = "${_game.teamATotalProfit}";
     }
     else if(teamType == TEAMB){
       _game.teamBTotalProfit += profit;
-      multiplier.text = "Total: ${_game.teamBTotalProfit}";
+      sum.text = "${_game.teamBTotalProfit}";
     }
     
-    Tween t2 = new Tween(multiplier, .5, TransitionFunction.linear);
+    Tween t2 = new Tween(total, .5, TransitionFunction.linear);
     t2.animate.alpha.to(1);
 //    t2.onComplete = showTotalProfit;
     _juggler.add(t2);
+    
+    Tween t3 = new Tween(sum, .5, TransitionFunction.linear);
+    t3.animate.alpha.to(1);
+    _juggler.add(t3);
     
   }
   

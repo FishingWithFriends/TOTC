@@ -60,6 +60,8 @@ class Endgame extends Sprite implements Animatable{
     
     endgameIconTop = new Bitmap(_resourceManager.getBitmapData("endgameSardineIcon"));
     endgameIconTop..alpha = 0
+               ..scaleX = html.window.devicePixelRatio
+               ..scaleY = html.window.devicePixelRatio
                ..pivotX = endgameIconTop.width/2
                ..pivotY = endgameIconTop.height/2
                ..rotation = math.PI/4
@@ -68,6 +70,8 @@ class Endgame extends Sprite implements Animatable{
     
     endgameIconBottom = new Bitmap(_resourceManager.getBitmapData("endgameSardineIcon"));
     endgameIconBottom..alpha = 0
+               ..scaleX = html.window.devicePixelRatio
+               ..scaleY = html.window.devicePixelRatio
                ..pivotX = endgameIconBottom.width/2
                ..pivotY = endgameIconBottom.height/2
                ..rotation = -3*math.PI/4
@@ -294,8 +298,8 @@ class Endgame extends Sprite implements Animatable{
   }
 
   void showTeamUI(){
-    teamAui.teamFinalScoreText.text = "Final Score: ${_game.teamAMoney}";
-    teamBui.teamFinalScoreText.text = "Final Score: ${_game.teamBMoney}";
+    teamAui.teamFinalScoreText.text = "${_game.teamAMoney}";
+    teamBui.teamFinalScoreText.text = "${_game.teamBMoney}";
     Tween t1 = new Tween(teamAui, 1.5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
 
@@ -425,8 +429,8 @@ class EndGameTeamUI extends Sprite{
       baseX = 0;
       baseY = 0;
       r1 = 375;
-      r2 = 375;
-      r3 = 290;
+      r2 = 395;
+      r3 = 215;
       offsetX = 0;
       offsetY = 0;
       fillColor = Color.Green;
@@ -438,8 +442,8 @@ class EndGameTeamUI extends Sprite{
       baseX = _game.width;
       baseY = _game.height;
       r1 = 375;
-      r2 = 375;
-      r3 = 290;
+      r2 = 395;
+      r3 = 215;
       offsetX = _game.width;
       offsetY = _game.height;
       fillColor = Color.Red;
@@ -453,17 +457,20 @@ class EndGameTeamUI extends Sprite{
 //             ..alpha = 0.6;
 //    addChild(teamBase);
 
+    TextFormat format = new TextFormat("Arial", 50, Color.LightGray, align: "center", bold: true);
        
-    teamGameOverText = new TextField("GAME OVER", format);
+    teamGameOverText = new TextField("Game Over \n \n Final Score: ", format);
     teamGameOverText..alpha = 1
                   ..width = 600
+                  ..height = 300
                   ..pivotX = teamGameOverText.width/2
                   ..rotation = rotationVal
                   ..x =offsetX - r2*math.cos(rotationVal)
                   ..y =offsetY + r2*math.sin(rotationVal);
    addChild(teamGameOverText);
     
-   teamFinalScoreText = new TextField("Final Score: ${teamScore}", format);
+   format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
+   teamFinalScoreText = new TextField("${teamScore}", format);
    teamFinalScoreText..alpha = 1
                  ..width = 600
                  ..pivotX = teamFinalScoreText.width/2
