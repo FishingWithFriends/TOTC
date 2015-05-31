@@ -60,23 +60,23 @@ class Endgame extends Sprite implements Animatable{
     
     endgameIconTop = new Bitmap(_resourceManager.getBitmapData("endgameSardineIcon"));
     endgameIconTop..alpha = 0
-               ..scaleX = html.window.devicePixelRatio
-               ..scaleY = html.window.devicePixelRatio
+//               ..scaleX = html.window.devicePixelRatio
+//               ..scaleY = html.window.devicePixelRatio
                ..pivotX = endgameIconTop.width/2
                ..pivotY = endgameIconTop.height/2
                ..rotation = math.PI/4
-               ..x = _game.width-150
-               ..y = 150;
+               ..x = _game.width-endgameIconTop.width/2
+               ..y = endgameIconTop.height/2;
     
     endgameIconBottom = new Bitmap(_resourceManager.getBitmapData("endgameSardineIcon"));
     endgameIconBottom..alpha = 0
-               ..scaleX = html.window.devicePixelRatio
-               ..scaleY = html.window.devicePixelRatio
+//               ..scaleX = html.window.devicePixelRatio
+//               ..scaleY = html.window.devicePixelRatio
                ..pivotX = endgameIconBottom.width/2
                ..pivotY = endgameIconBottom.height/2
                ..rotation = -3*math.PI/4
-               ..x = 150
-               ..y = _game.height -150;
+               ..x = endgameIconBottom.width/2
+               ..y = _game.height -endgameIconBottom.height/2;
     
     emptyStars = new Bitmap(_resourceManager.getBitmapData("ecosystemScore0"));
     emptyStars..alpha = 0
