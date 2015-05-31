@@ -550,7 +550,7 @@ class ScoreCounter extends Sprite{
 
        
        
-   TextFormat format = new TextFormat("Arial", 50, Color.White, align: "center", bold: true);
+   TextFormat format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
    
    scorePrompt = new TextField("", format);
    scorePrompt..alpha = 0
@@ -561,6 +561,8 @@ class ScoreCounter extends Sprite{
               ..y =offsetY + r1*math.sin(rotationVal);
    addChild(scorePrompt);
    
+//   format = new TextFormat("Arial", 50, 12316159, align: "center", bold: true);
+   
    multiplier = new TextField("", format);
    multiplier..alpha = 0
              ..width = uiBox.width
@@ -569,6 +571,8 @@ class ScoreCounter extends Sprite{
              ..x = offsetX - r2*math.cos(rotationVal)
              ..y = offsetY + r2*math.sin(rotationVal);
    addChild(multiplier);
+   
+//   format = new TextFormat("Arial", 50, 12316159, align: "center", bold: true);
    
    total = new TextField("", format);
    total..alpha = 0
@@ -579,6 +583,8 @@ class ScoreCounter extends Sprite{
         ..y =offsetY + r3*math.sin(rotationVal);
    addChild(total);
    
+   
+//    format = new TextFormat("Arial", 50, 12316159, align: "center", bold: true);
    sum = new TextField("", format);
    sum..alpha = 0
         ..width = uiBox.width

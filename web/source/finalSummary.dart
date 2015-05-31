@@ -25,7 +25,7 @@ class FinalSummary extends Sprite implements Animatable{
     
 
     BitmapData playButtonBitmap = _resourceManager.getBitmapData("replayButton");
-     replayButton = new MyButton(_game, _game.width/2 + playButtonBitmap.width/2 , _game.height/2 + 500, 
+     replayButton = new MyButton(_game, _game.width/2 - playButtonBitmap.width/2 , _game.height/2 + 500, 
          playButtonBitmap,
          playButtonBitmap,
     _resourceManager.getBitmapData("replayButtonPressed"),
@@ -94,12 +94,15 @@ class FinalSummary extends Sprite implements Animatable{
   }
   
   void showQuestionPrompt(){
-    TextFormat format = new TextFormat("Arial", 16, Color.White, align: "center", bold: true);
-
+    TextFormat format = new TextFormat("Arial", 36, Color.WhiteSmoke, align: "center", bold: true);
+    
     if(_game.round == Game.MAX_ROUNDS){
-         summaryText = new TextField("Congratulations, your ecosystem survived for 5 rounds! \n Try to earn more stars by adjusting your fishing strategy to keep all of your fish populations healthy.", format);
+         summaryText = new TextField("Congratulations, your ecosystem survived for 5 rounds! \n"+
+                                      "Try to earn more stars by adjusting your fishing strategy \n"+
+                                      "to keep all of your fish populations healthy.", format);
          summaryText..alpha = 0
                     ..width = _game.width*3/4
+                    ..height = 250
                     ..x =_game.width/8
                     ..y =_game.height/3;
          addChild(summaryText);
@@ -108,9 +111,12 @@ class FinalSummary extends Sprite implements Animatable{
          _juggler.add(t1);
     }
     else if(_ecosystem._fishCount[Ecosystem.SARDINE]<=0){
-      summaryText = new TextField("Sardines were driven to extinction by overfishing and your ecosystem collapsed! /n Play again and try to maintain a healthy ecosystem by monitoring fish populations and adjusting your fishing strategy.", format);
+      summaryText = new TextField("Sardines were driven to extinction by overfishing and your ecosystem collapsed! \n"+
+                                  "Play again and try to maintain a healthy ecosystem by monitoring fish populations \n"+
+                                  "and adjusting your fishing strategy.", format);
       summaryText..alpha = 0
                  ..width = _game.width*3/4
+                 ..height = 250
                  ..x =_game.width/8
                  ..y =_game.height/3;
       addChild(summaryText);
@@ -119,9 +125,12 @@ class FinalSummary extends Sprite implements Animatable{
       _juggler.add(t1);
     }
     else if(_ecosystem._fishCount[Ecosystem.TUNA]<=0){
-      summaryText = new TextField("Tuna were driven to extinction by overfishing and your ecosystem collapsed! /n Play again and try to maintain a healthy ecosystem by monitoring fish populations and adjusting your fishing strategy.", format);
+      summaryText = new TextField("Tuna were driven to extinction by overfishing and your ecosystem collapsed! \n"+
+                                  "Play again and try to maintain a healthy ecosystem by monitoring fish \n"+
+                                  "populations and adjusting your fishing strategy.", format);
       summaryText..alpha = 0
                  ..width = _game.width*3/4
+                 ..height = 250
                  ..x =_game.width/8
                  ..y =_game.height/3;
       addChild(summaryText);
@@ -130,9 +139,12 @@ class FinalSummary extends Sprite implements Animatable{
       _juggler.add(t1);
     }
     else if(_ecosystem._fishCount[Ecosystem.SHARK]<=0){
-      summaryText = new TextField("Sharks were driven to extinction by overfishing and your ecosystem collapsed! /n Play again and try to maintain a healthy ecosystem by monitoring fish populations and adjusting your fishing strategy.", format);
+      summaryText = new TextField("Sharks were driven to extinction by overfishing and your ecosystem collapsed! \n"+
+                                  "Play again and try to maintain a healthy ecosystem by monitoring fish populations \n"+
+                                  "and adjusting your fishing strategy.", format);
       summaryText..alpha = 0
                  ..width = _game.width*3/4
+                 ..height = 250
                  ..x =_game.width/8
                  ..y =_game.height/3;
       addChild(summaryText);
@@ -141,11 +153,14 @@ class FinalSummary extends Sprite implements Animatable{
       _juggler.add(t1);
     }
     
-    informationText = new TextField("Download the Seafood Watch app [link] to learn more about how you can \n help protect our oceans with your family by eating sustainable seafood!", format);
+    informationText = new TextField("Download the Seafood Watch app \n http://www.seafoodwatch.org/ \n"+
+                                    "to learn more about how you can \n help protect our oceans with your \n"+
+                                    "family by eating sustainable seafood!", format);
     informationText..alpha = 0
                ..width = _game.width*3/4
+               ..height = 250
                ..x =_game.width/8
-               ..y =_game.height*2/3;
+               ..y =_game.height*7/12;
     addChild(informationText);
     Tween t2 = new Tween(informationText, .05, TransitionFunction.linear);
     t2.animate.alpha.to(1);

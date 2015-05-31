@@ -424,9 +424,9 @@ class EndGameTeamUI extends Sprite{
       rotationVal = 3*math.PI/4;
       baseX = 0;
       baseY = 0;
-      r1 = 400;
-      r2 = 445;
-      r3 = 200;
+      r1 = 375;
+      r2 = 375;
+      r3 = 290;
       offsetX = 0;
       offsetY = 0;
       fillColor = Color.Green;
@@ -437,9 +437,9 @@ class EndGameTeamUI extends Sprite{
       rotationVal = -math.PI/4;
       baseX = _game.width;
       baseY = _game.height;
-      r1 = 400;
-      r2 = 445;
-      r3 = 200;
+      r1 = 375;
+      r2 = 375;
+      r3 = 290;
       offsetX = _game.width;
       offsetY = _game.height;
       fillColor = Color.Red;
@@ -453,11 +453,10 @@ class EndGameTeamUI extends Sprite{
 //             ..alpha = 0.6;
 //    addChild(teamBase);
 
-    TextFormat format = new TextFormat("Arial", 36, Color.White, align: "center", bold: true);
        
     teamGameOverText = new TextField("GAME OVER", format);
     teamGameOverText..alpha = 1
-                  ..width = 300
+                  ..width = 600
                   ..pivotX = teamGameOverText.width/2
                   ..rotation = rotationVal
                   ..x =offsetX - r2*math.cos(rotationVal)
@@ -466,7 +465,7 @@ class EndGameTeamUI extends Sprite{
     
    teamFinalScoreText = new TextField("Final Score: ${teamScore}", format);
    teamFinalScoreText..alpha = 1
-                 ..width = 300
+                 ..width = 600
                  ..pivotX = teamFinalScoreText.width/2
                  ..rotation = rotationVal
                  ..x =offsetX - r3*math.cos(rotationVal)
