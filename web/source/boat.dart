@@ -599,7 +599,7 @@ class Boat extends Sprite implements Touchable, Animatable {
         _arrow = new Bitmap(_resourceManager.getBitmapData("arrowGreen"));
         _arrow.scaleX = html.window.devicePixelRatio/2;
         _arrow.scaleY = html.window.devicePixelRatio/2;
-        _arrow.alpha = .6;
+        _arrow.alpha = 1.0;
         _arrow.pivotX = _arrow.width/2;
         _arrow.pivotY = _arrow.height/2;
         _arrow.y = this.y + 120;//100*math.sin(math.atan2(this.y, this.x));
@@ -608,7 +608,7 @@ class Boat extends Sprite implements Touchable, Animatable {
 
       } else {
         _arrow = new Bitmap(_resourceManager.getBitmapData("arrowRed"));
-        _arrow.alpha = .6;
+        _arrow.alpha = 1.0;
         _arrow.scaleX = html.window.devicePixelRatio/2;
         _arrow.scaleY = html.window.devicePixelRatio/2;
         _arrow.pivotX = _arrow.width/2;

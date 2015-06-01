@@ -219,6 +219,8 @@ void main() {
   resourceManager.addBitmapData("end", "images/end.png");
   resourceManager.addBitmapData("replayButton", "images/replayButton.png");
   resourceManager.addBitmapData("replayButtonPressed", "images/replayButtonPressed.png");
+  resourceManager.addBitmapData("mainButton", "images/mainButton.png");
+  resourceManager.addBitmapData("mainButtonPressed", "images/mainButtonPressed.png");
   
   
   resourceManager.addSound("buttonClick", "sounds/button_click.mp3");

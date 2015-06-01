@@ -63,8 +63,8 @@ void directoryHandler(dir, request) {
 }
 
 void main() {
-  virDir = new VirtualDirectory(Platform.script.resolve('/C:/Users/dhpollock/Documents/GitHub/TOTC-FWF/build/web/').toFilePath())
-//  virDir = new VirtualDirectory(Platform.script.resolve('/Users/dhpollock/GitHub/TOTC-FWF/build/web/').toFilePath())
+//  virDir = new VirtualDirectory(Platform.script.resolve('/C:/Users/dhpollock/Documents/GitHub/TOTC-FWF/build/web/').toFilePath())
+  virDir = new VirtualDirectory(Platform.script.resolve('/Users/dhpollock/GitHub/TOTC-FWF/build/web/').toFilePath())
 
     ..allowDirectoryListing = true
     ..directoryHandler = directoryHandler;

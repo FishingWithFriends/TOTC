@@ -342,8 +342,8 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars0 = new Bitmap(_resourceManager.getBitmapData('stars0'));
     stars0..pivotX = stars0.width/2
            ..pivotY = stars0.height/2
-           ..x = _game.width/2+15
-           ..y = _game.height/2
+           ..x = _game.width/2+115
+           ..y = _game.height/2+35
            ..alpha = 0;
     addChild(stars0);
     
@@ -351,8 +351,8 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars1 = new Bitmap(_resourceManager.getBitmapData('stars1'));
     stars1..pivotX = stars1.width/2
            ..pivotY = stars1.height/2
-           ..x = _game.width/2+15
-           ..y = _game.height/2
+           ..x = _game.width/2+115
+           ..y = _game.height/2 + 35
            ..alpha = 0;
     addChild(stars1);
     
@@ -360,16 +360,16 @@ class EcosystemBadge extends Sprite implements Animatable{
     stars2 = new Bitmap(_resourceManager.getBitmapData('stars2'));
     stars2..pivotX = stars2.width/2
            ..pivotY = stars2.height/2
-           ..x = _game.width/2+15
-           ..y = _game.height/2
+           ..x = _game.width/2+115
+           ..y = _game.height/2 +35
            ..alpha = 0;
     addChild(stars2);
     
     stars3 = new Bitmap(_resourceManager.getBitmapData('stars3'));
     stars3..pivotX = stars3.width/2
            ..pivotY = stars3.height/2
-           ..x = _game.width/2+15
-           ..y = _game.height/2
+           ..x = _game.width/2+115
+           ..y = _game.height/2+35
            ..alpha = 0;
     addChild(stars3);
     
@@ -425,7 +425,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     badgeSardine..pivotX = badgeSardine.width/2
                 ..pivotY = badgeSardine.height/2
                 ..x = _game.width/2-100
-                ..y = _game.height/2+300
+                ..y = _game.height/2+325
                 ..alpha = 0
                 ..rotation = -math.PI/4;
     addChild(badgeSardine);
@@ -435,7 +435,7 @@ class EcosystemBadge extends Sprite implements Animatable{
     badgeTuna..pivotX = badgeTuna.width/2
                 ..pivotY = badgeTuna.height/2
                 ..x = _game.width/2 - 400
-                ..y = _game.height/2+30
+                ..y = _game.height/2+50
                 ..alpha = 0
                 ..rotation = -math.PI/4;
     addChild(badgeTuna);
@@ -444,8 +444,8 @@ class EcosystemBadge extends Sprite implements Animatable{
     badgeShark = new Bitmap(_resourceManager.getBitmapData("badgeLeastConcern"));
     badgeShark..pivotX = badgeShark.width/2
                 ..pivotY = badgeShark.height/2
-                ..x = _game.width/2 -60
-                ..y = _game.height/2-240
+                ..x = _game.width/2 -100
+                ..y = _game.height/2-232
                 ..alpha = 0
                 ..rotation = -math.PI/4;
     addChild(badgeShark);
@@ -550,7 +550,7 @@ class ScoreCounter extends Sprite{
 
        
        
-   TextFormat format = new TextFormat("Arial", 50, Color.LightGray, align: "center", bold: true);
+   TextFormat format = new TextFormat("Arial", 50, 16772737, align: "center", bold: true);
    
    scorePrompt = new TextField("", format);
    scorePrompt..alpha = 0
@@ -561,7 +561,7 @@ class ScoreCounter extends Sprite{
               ..y =offsetY + r1*math.sin(rotationVal);
    addChild(scorePrompt);
    
-   format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
+   format = new TextFormat("Arial", 56, Color.WhiteSmoke, align: "center", bold: true);
    
    multiplier = new TextField("", format);
    multiplier..alpha = 0
@@ -572,7 +572,7 @@ class ScoreCounter extends Sprite{
              ..y = offsetY + r2*math.sin(rotationVal);
    addChild(multiplier);
    
-   format = new TextFormat("Arial", 50, Color.LightGray, align: "center", bold: true);
+   format = new TextFormat("Arial", 50, 16772737, align: "center", bold: true);
    
    total = new TextField("", format);
    total..alpha = 0
@@ -584,7 +584,7 @@ class ScoreCounter extends Sprite{
    addChild(total);
    
    
-    format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
+    format = new TextFormat("Arial", 56, Color.WhiteSmoke, align: "center", bold: true);
    sum = new TextField("", format);
    sum..alpha = 0
         ..width = uiBox.width+150

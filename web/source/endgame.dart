@@ -65,8 +65,8 @@ class Endgame extends Sprite implements Animatable{
                ..pivotX = endgameIconTop.width/2
                ..pivotY = endgameIconTop.height/2
                ..rotation = math.PI/4
-               ..x = _game.width-endgameIconTop.width/2
-               ..y = endgameIconTop.height/2;
+               ..x = _game.width-endgameIconTop.width/2-75
+               ..y = endgameIconTop.height/2+75;
     
     endgameIconBottom = new Bitmap(_resourceManager.getBitmapData("endgameSardineIcon"));
     endgameIconBottom..alpha = 0
@@ -75,8 +75,8 @@ class Endgame extends Sprite implements Animatable{
                ..pivotX = endgameIconBottom.width/2
                ..pivotY = endgameIconBottom.height/2
                ..rotation = -3*math.PI/4
-               ..x = endgameIconBottom.width/2
-               ..y = _game.height -endgameIconBottom.height/2;
+               ..x = endgameIconBottom.width/2 +75
+               ..y = _game.height -endgameIconBottom.height/2-75;
     
     emptyStars = new Bitmap(_resourceManager.getBitmapData("ecosystemScore0"));
     emptyStars..alpha = 0
@@ -457,7 +457,7 @@ class EndGameTeamUI extends Sprite{
 //             ..alpha = 0.6;
 //    addChild(teamBase);
 
-    TextFormat format = new TextFormat("Arial", 50, Color.LightGray, align: "center", bold: true);
+    TextFormat format = new TextFormat("Arial", 50, 16772737, align: "center", bold: true);
        
     teamGameOverText = new TextField("Game Over \n \n Final Score: ", format);
     teamGameOverText..alpha = 1
@@ -469,7 +469,7 @@ class EndGameTeamUI extends Sprite{
                   ..y =offsetY + r2*math.sin(rotationVal);
    addChild(teamGameOverText);
     
-   format = new TextFormat("Arial", 50, Color.WhiteSmoke, align: "center", bold: true);
+   format = new TextFormat("Arial", 56, Color.WhiteSmoke, align: "center", bold: true);
    teamFinalScoreText = new TextField("${teamScore}", format);
    teamFinalScoreText..alpha = 1
                  ..width = 600

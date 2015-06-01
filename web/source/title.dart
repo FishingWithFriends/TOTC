@@ -15,6 +15,7 @@ class Title extends Sprite implements Animatable{
    
    MyButton playButton;
    MyButton aboutButton;
+   MyButton mainButton;
    Sound ui_playButtonSound;
    Sound ui_aboutButtonOpenSound;
    Sound ui_aboutButtonCloseSound;
@@ -42,7 +43,7 @@ class Title extends Sprite implements Animatable{
            _resourceManager.getBitmapData("about"),
           _resourceManager.getBitmapData("about"),
           _resourceManager.getBitmapData("about"),
-          hideAbout);
+          (){return;});
     aboutPage.alpha = 0;
     aboutPage.hide();
     aboutPage.width = _game.width;
@@ -50,7 +51,7 @@ class Title extends Sprite implements Animatable{
     
     BitmapData playButtonBitmap = _resourceManager.getBitmapData("playButton");
     
-    playButton = new MyButton(_game,_game.width/2 - playButtonBitmap.width/2, _game.height/2 + 250, 
+    playButton = new MyButton(_game,_game.width/2 - playButtonBitmap.width/2, _game.height/2 + 275, 
         playButtonBitmap,
         playButtonBitmap,
        _resourceManager.getBitmapData("playButtonPressed"),
@@ -62,7 +63,16 @@ class Title extends Sprite implements Animatable{
         aboutButtonBitmap,
     _resourceManager.getBitmapData("aboutButtonPressed"),
        showAbout);
+    
+    BitmapData mainButtonBitmap =  _resourceManager.getBitmapData("mainButton");
+    mainButton = new MyButton(_game, _game.width/2 - mainButtonBitmap.width/2, _game.height/2 + 500, 
+        mainButtonBitmap,
+        mainButtonBitmap,
+    _resourceManager.getBitmapData("mainButtonPressed"),
+       hideAbout);
 
+    mainButton.hide();
+    mainButton.alpha = 0;
     ui_playButtonSound = _resourceManager.getSound("ui_playButton");
     ui_aboutButtonOpenSound = _resourceManager.getSound("ui_aboutButtonOpen");
     ui_aboutButtonCloseSound = _resourceManager.getSound("ui_aboutButtonClose");
@@ -73,6 +83,7 @@ class Title extends Sprite implements Animatable{
     addChild(aboutButton);
     addChild(aboutPage);
     addChild(tutorialPage);
+    addChild(mainButton);
 //    _game.tlayer.touchables.add(this);
 
     
@@ -92,6 +103,7 @@ class Title extends Sprite implements Animatable{
     playButton.hide();
     aboutButton.hide();
     tutorialPage.hide();
+    mainButton.hide();
     
     Tween t1 = new Tween(titleBackground, .5, TransitionFunction.linear);
      t1.animate.alpha.to(0);
@@ -112,6 +124,7 @@ class Title extends Sprite implements Animatable{
     playButton.hide();
     aboutButton.hide();
     aboutPage.show();
+    mainButton.show();
     ui_aboutButtonOpenSound.play();
     print("Width:" + _game.width.toString());
     print("height:" + _game.height.toString());
@@ -127,6 +140,10 @@ class Title extends Sprite implements Animatable{
      Tween t3 = new Tween(aboutButton, .5, TransitionFunction.linear);
       t3.animate.alpha.to(0);
       _juggler.add(t3);
+      
+    Tween t4 = new Tween(mainButton, .5, TransitionFunction.linear);
+       t4.animate.alpha.to(1);
+       _juggler.add(t4);
  }
   
   void hideAbout(){
@@ -134,6 +151,7 @@ class Title extends Sprite implements Animatable{
     playButton.show();
     aboutButton.show();
     aboutPage.hide();
+    mainButton.hide();
     ui_aboutButtonCloseSound.play();
     
     Tween t1 = new Tween(aboutPage, .5, TransitionFunction.linear);
@@ -147,6 +165,10 @@ class Title extends Sprite implements Animatable{
      Tween t3 = new Tween(aboutButton, .5, TransitionFunction.linear);
       t3.animate.alpha.to(1);
       _juggler.add(t3);
+      
+      Tween t4 = new Tween(mainButton, .5, TransitionFunction.linear);
+         t4.animate.alpha.to(0);
+         _juggler.add(t4);
   
   
   }
@@ -246,7 +268,7 @@ class MyButton extends Sprite implements Touchable{
             new Bitmap(regular),
             new Bitmap(onHover),
             new Bitmap(onClick),
-            new Bitmap(regular));
+            new Bitmap(onClick));
     button..x = xPos
                   ..y = yPos;
   

@@ -488,7 +488,7 @@ class Game extends Sprite implements Animatable{
         t1.onComplete = toBuyPhaseTransitionStageOne;
         _juggler.add(t1);
         
-        fadePieTimer(0,2);
+        fadePieTimer(0,2, true);
         
         Tween t2 = new Tween(_ecosystem, 2, TransitionFunction.linear);
         t2.animate.alpha.to(0);
@@ -511,7 +511,7 @@ class Game extends Sprite implements Animatable{
       t1.animate.alpha.to(0);
       t1.onComplete = toFishingPhaseStageOne;
       _juggler.add(t1);
-      fadePieTimer(0,.5);
+      fadePieTimer(0,.5, true);
       
       Tween t2 = new Tween(_offseason.sellIslandTop, .5, TransitionFunction.linear);
       t2.animate.alpha.to(0);
@@ -566,7 +566,7 @@ class Game extends Sprite implements Animatable{
     
     arrangeUILayers();
 
-   animatePieTimer(-width/2+125, height/2-163,.5);
+   animatePieTimer(-width/2+125, height/2-163,.5, false);
     
     Tween t1 = new Tween(_offseason, 2.5, TransitionFunction.easeInQuartic);
     t1.animate.y.to(0);
@@ -582,7 +582,7 @@ class Game extends Sprite implements Animatable{
   }
   void toBuyPhaseTransitionStageTwo(){
     _offseason.showCircles();
-    fadePieTimer(.9,.5);
+    fadePieTimer(.6,.5, false);
     Tween t1 = new Tween(teamAMoneyText, .5, TransitionFunction.linear);
     t1.animate.alpha.to(1);
     _juggler.add(t1);
@@ -609,7 +609,7 @@ class Game extends Sprite implements Animatable{
       timerTextB.text = "Fishing season";
 
       _offseason.sendBoatsToFish();
-      animatePieTimer(width/2-125, -height/2+163, .750);
+      animatePieTimer(width/2-125, -height/2+163, .750, true);
       
       Timer timer = new Timer(const Duration(milliseconds: 750), toFishingPhaseStageTwo);
       
@@ -656,7 +656,7 @@ class Game extends Sprite implements Animatable{
     t1.animate.alpha.to(1);
     _juggler.add(t1);
     
-    fadePieTimer(.7, 1);
+    fadePieTimer(.6, 1, true);
     
     Tween t2 = new Tween(_ecosystem, 1, TransitionFunction.linear);
     t2.animate.alpha.to(1);
@@ -802,7 +802,7 @@ class Game extends Sprite implements Animatable{
             ..graphics.arc(0, timerPieRadius, timerPieRadius, 0, 2*math.PI, false)
             ..graphics.closePath()
             ..graphics.fillColor(Color.Black)
-            ..alpha = .70;
+            ..alpha = .60;
         
     pieTimerBitmap = new Bitmap(_resourceManager.getBitmapData("timer"));
 //    pieTimerBitmap.rotation = math.PI/4;
@@ -839,7 +839,7 @@ class Game extends Sprite implements Animatable{
                ..pivotX = roundNumberDiv.width/2
                ..rotation = math.PI/4; 
     
-    format = new TextFormat("Arial", 15, Color.White, align: "center", bold:true);
+    format = new TextFormat("Arial", 30, Color.White, align: "center", bold:true);
     seasonTitle = new TextField("Double Tap to\nSkip Forward", format);
     seasonTitle..x = timerPie.x - 20 -50
                ..y = timerPie.y + 115 + 50
@@ -1110,7 +1110,7 @@ class Game extends Sprite implements Animatable{
   }
 
 
-  void fadePieTimer(val, dt){
+  void fadePieTimer(val, dt, tapBool){
     Tween t1 = new Tween(timerPie, dt, TransitionFunction.linear);
     t1.animate.alpha.to(val);
     _juggler.add(t1);
@@ -1136,13 +1136,20 @@ class Game extends Sprite implements Animatable{
     t5.animate.alpha.to(val);
     _juggler.add(t5);
     
+    
     Tween t6 = new Tween(seasonTitle, dt, TransitionFunction.linear);
-    t6.animate.alpha.to(val);
-    _juggler.add(t6);
+    if(tapBool){
+      t6.animate.alpha.to(val);
+      _juggler.add(t6);
+    }
+    else{
+      t6.animate.alpha.to(0);
+      _juggler.add(t6);
+    }
     
   }
 
-  void animatePieTimer(dx, dy, dt){
+  void animatePieTimer(dx, dy, dt, tapBool){
       Tween t1 = new Tween(timerPie, dt, TransitionFunction.linear);
       t1.animate.x.by(dx);
       t1.animate.y.by(dy);
@@ -1172,6 +1179,13 @@ class Game extends Sprite implements Animatable{
       t6.animate.x.by(dx);
       t6.animate.y.by(dy);
       _juggler.add(t6);
+      
+      if(tapBool){
+        seasonTitle.alpha = 1.0;
+      }
+      else{
+        seasonTitle.alpha = 0;
+      }
       
       Tween t7 = new Tween(timerButton, dt, TransitionFunction.linear);
       t7.animate.x.by(dx);

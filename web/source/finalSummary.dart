@@ -94,20 +94,20 @@ class FinalSummary extends Sprite implements Animatable{
   }
   
   void showQuestionPrompt(){
-    TextFormat format = new TextFormat("Arial", 36, Color.LightGray, align: "center", bold: true);
+    TextFormat format = new TextFormat("Arial", 42, 12316159, align: "center", bold: true);
     
     if(_game.round == Game.MAX_ROUNDS){
          summaryText = new TextField("Congratulations, your ecosystem survived for 5 rounds! \n"+
                                       "Try to earn more stars by adjusting your fishing strategy \n"+
                                       "to keep all of your fish populations healthy.", format);
          summaryText..alpha = 0
-                    ..width = _game.width*3/4
+                    ..width = _game.width
                     ..height = 250
                     ..x =_game.width/2-summaryText.width/2
                     ..y =_game.height/3;
          addChild(summaryText);
          Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
-         t1.animate.alpha.to(1);
+         t1.animate.alpha.to(.8);
          _juggler.add(t1);
     }
     else if(_ecosystem._fishCount[Ecosystem.SARDINE]<=0){
@@ -115,13 +115,13 @@ class FinalSummary extends Sprite implements Animatable{
                                   "Play again and try to maintain a healthy ecosystem by monitoring fish populations \n"+
                                   "and adjusting your fishing strategy.", format);
       summaryText..alpha = 0
-                 ..width = _game.width*3/4
+                 ..width = _game.width
                  ..height = 250
                  ..x =_game.width/2-summaryText.width/2
                  ..y =_game.height/3;
       addChild(summaryText);
       Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
-      t1.animate.alpha.to(1);
+      t1.animate.alpha.to(.8);
       _juggler.add(t1);
     }
     else if(_ecosystem._fishCount[Ecosystem.TUNA]<=0){
@@ -135,7 +135,7 @@ class FinalSummary extends Sprite implements Animatable{
                  ..y =_game.height/3;
       addChild(summaryText);
       Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
-      t1.animate.alpha.to(1);
+      t1.animate.alpha.to(.8);
       _juggler.add(t1);
     }
     else if(_ecosystem._fishCount[Ecosystem.SHARK]<=0){
@@ -143,13 +143,13 @@ class FinalSummary extends Sprite implements Animatable{
                                   "Play again and try to maintain a healthy ecosystem by monitoring fish populations \n"+
                                   "and adjusting your fishing strategy.", format);
       summaryText..alpha = 0
-                 ..width = _game.width*3/4
+                 ..width = _game.width
                  ..height = 250
                  ..x =_game.width/2-summaryText.width/2
                  ..y =_game.height/3;
       addChild(summaryText);
       Tween t1 = new Tween(summaryText, .05, TransitionFunction.linear);
-      t1.animate.alpha.to(1);
+      t1.animate.alpha.to(.8);
       _juggler.add(t1);
     }
     
@@ -157,13 +157,13 @@ class FinalSummary extends Sprite implements Animatable{
                                     "help protect our oceans with your family by eating sustainable seafood!\n\n"+
                                       "http://www.seafoodwatch.org/", format);
     informationText..alpha = 0
-               ..width = _game.width*3/4
+               ..width = _game.width
                ..height = 250
                ..x =_game.width/2-informationText.width/2
                ..y =_game.height*7/12;
     addChild(informationText);
     Tween t2 = new Tween(informationText, .05, TransitionFunction.linear);
-    t2.animate.alpha.to(1);
+    t2.animate.alpha.to(.8);
     _juggler.add(t2);
      
   return;
